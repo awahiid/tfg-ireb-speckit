@@ -1,0 +1,75 @@
+\section{Plantilla de registro de requisito alineada con CPRE}
+Tomando como base la documentaci\'on oficial usada en el handbook (incluyendo los atributos recomendados por ISO 29148 en la secci\'on de gesti\'on), esta plantilla define un formato m\'inimo com\'un para registrar requisitos de forma uniforme \cite[pp.~30--32, 136--137]{cpre}.
+
+\subsection*{Plantilla recomendada}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{0.32\textwidth}|p{0.6\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Contenido esperado} \\
+\hline
+ID \'unico & Identificador inmutable (ej.: REQ-SEG-001). \\
+\hline
+Nombre corto & T\'itulo sint\'etico y trazable. \\
+\hline
+Tipo & Funcional, calidad o restricci\'on. \\
+\hline
+Descripci\'on formal & Enunciado verificable, no ambiguo. \\
+\hline
+Fuente & Stakeholder, documento, sistema legado, norma, etc. \\
+\hline
+Rationale & Por qu\'e existe y qu\'e objetivo cubre. \\
+\hline
+Prioridad (stakeholder) & Alta/media/baja o escala acordada. \\
+\hline
+Riesgo & Impacto/probabilidad asociados al incumplimiento. \\
+\hline
+Dependencias & Requisitos relacionados o prerequisitos. \\
+\hline
+Dificultad estimada & Esfuerzo relativo para implementaci\'on. \\
+\hline
+Criterio de validaci\'on & C\'omo se comprobar\'a su cumplimiento. \\
+\hline
+Estado de ciclo de vida & Borrador, validado, implementado, archivado, etc. \\
+\hline
+Versi\'on & N\'umero de versi\'on y fecha. \\
+\hline
+Trazabilidad & Enlaces backward/forward (origen, dise\~no, prueba, entrega). \\
+\hline
+\end{tabular}
+
+\subsection*{Ejemplo de registro}
+\begin{tabular}{|p{0.32\textwidth}|p{0.6\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Valor de ejemplo} \\
+\hline
+ID \'unico & REQ-PAGO-012 \\
+\hline
+Nombre corto & Confirmaci\'on de pago con evidencia \\
+\hline
+Tipo & Funcional \\
+\hline
+Descripci\'on formal & El sistema \textbf{deber\'a} generar una confirmaci\'on de pago con identificador de transacci\'on y marca temporal en menos de 5 segundos tras autorizaci\'on exitosa. \\
+\hline
+Fuente & Entrevista con Responsable de Finanzas (2026-04-10) \\
+\hline
+Rationale & Reducir reclamaciones y facilitar auditor\'ia de cobros \\
+\hline
+Prioridad & Alta \\
+\hline
+Riesgo & Alto (impacto legal y operativo) \\
+\hline
+Dependencias & REQ-SEG-004, REQ-INT-007 \\
+\hline
+Dificultad & Media \\
+\hline
+Criterio de validaci\'on & Prueba E2E con 100 transacciones; 100\% con comprobante y $t < 5\,s$ \\
+\hline
+Estado & Validado \\
+\hline
+Versi\'on & 1.1 (2026-04-11) \\
+\hline
+Trazabilidad & Caso de prueba TC-PAGO-021; historia US-45; m\'odulo pagos/api-confirm \\
+\hline
+\end{tabular}
+
+

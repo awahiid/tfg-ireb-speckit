@@ -1,0 +1,37 @@
+\section{Ciclo de vida completo de los requisitos}
+El handbook trata los requisitos como entidades vivas que evolucionan durante desarrollo y operaci\'on. En su ciclo de vida, un requisito puede crearse, elaborarse, validarse, consolidarse, implementarse, usarse, cambiarse, mantenerse, archivarse o retirarse \cite[pp.~130--132]{cpre}.
+
+Fases y controles m\'as relevantes a considerar:
+\begin{enumerate}[leftmargin=1.2em]
+  \item \textbf{Creaci\'on y elaboraci\'on.} Elicitaci\'on, an\'alisis y documentaci\'on inicial.
+  \item \textbf{Validaci\'on y consolidaci\'on.} Comprobaci\'on de cobertura, acuerdo y calidad.
+  \item \textbf{Implementaci\'on y uso.} El requisito pasa de especificado a operado en producto.
+  \item \textbf{Cambio y mantenimiento.} Evoluci\'on controlada mediante gesti\'on de cambios.
+  \item \textbf{Retiro, archivo o eliminaci\'on.} Cierre del requisito seg\'un su vigencia.
+\end{enumerate}
+
+Para gestionar este ciclo de vida, CPRE enfatiza: estados y transiciones expl\'icitas, control de versiones, configuraciones y baselines, atributos de requisito y trazabilidad para evaluar impacto de cambios \cite[pp.~131--140]{cpre}.
+
+\subsection{Estados y transiciones del requisito}
+
+Un requisito transita por los siguientes estados a lo largo de su vida:
+
+\begin{enumerate}[leftmargin=1.5em, labelindent=0pt]
+  \item[] \phantom{0} \textbf{1. Creado (Draft)} — Requisito inicial, documentaci\'on preliminar.
+  \item[] \phantom{0} \textbf{2. Elaborado} — Detallado, analizado, listo para validaci\'on.
+  \item[] \phantom{0} \textbf{3. Validado} — Aprobado por stakeholders relevantes.
+  \item[] \phantom{0} \textbf{4. Consolidado} — Incluido en una baseline de referencia.
+  \item[] \phantom{0} \textbf{5. Implementado} — C\'odigo desarrollado seg\'un el requisito.
+  \item[] \phantom{0} \textbf{6. En producci\'on} — Sistema operativo con el requisito activo.
+  \item[] \phantom{0} \textbf{7. Mantenido} — Sujeto a cambios controlados durante operaci\'on.
+  \item[] \phantom{0} \textbf{8. Finalizado} — Eliminado de la especificaci\'on activa.
+  \item[] \phantom{0} \textbf{9. Archivado} — Almacenado para referencia hist\'orica.
+\end{enumerate}
+
+\textbf{Observaciones importantes:}
+\begin{itemize}[leftmargin=1.2em]
+  \item Los cambios pueden generar ciclos: desde \emph{En producci\'on}, un requisito puede pasar a \emph{Mantenido} para cambios controlados y volver a \emph{En producci\'on}.
+  \item La transici\'on de \emph{Validado} a \emph{Finalizado} también es posible si se rechaza un requisito antes de implementaci\'on.
+  \item No todos los requisitos alcanzan \emph{En producci\'on}; algunos pueden descartarse o cambiar de estado seg\'un prioridad.
+  \item Cada transici\'on debe ser documentada: qu\'e triggeró el cambio, cu\'ando, y qu\'e impacto tuvo.
+\end{itemize}
