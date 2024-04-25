@@ -1,0 +1,224 @@
+{
+  "meta": {
+    "project": "PocketBase evidence extraction",
+    "repo": "pocketbase/pocketbase",
+    "generated": "2026-06-03",
+    "schema_version": "1.0-evidence-only",
+    "literal_only": true,
+    "no_requirement_redaction": true,
+    "undetermined_value": null,
+    "selection_policy": "recent-first, sufficient-threshold"
+  },
+  "entries": [
+    {
+      "id": "pocketbase-e1",
+      "release_tag": "v0.35.1",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.35.1",
+      "entry_text": "Minor UI fixes (normalized relations picker selection and confirmation message when maxSelect=0/1, updated node deps).",
+      "pr_url": null,
+      "pr_number": null,
+      "pr_url_valid": null,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["when maxSelect=0/1"],
+        "surface_terms": ["UI", "relations picker selection", "confirmation message"],
+        "critical_terms": []
+      }
+    },
+    {
+      "id": "pocketbase-e2",
+      "release_tag": "v0.35.0",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.35.0",
+      "entry_text": "Added `nullString()`, `nullInt()`, `nullFloat()`, `nullBool`, `nullArray()`, `nullObject()` JSVM helpers for scanning nullable columns (#7396).",
+      "pr_url": "https://github.com/pocketbase/pocketbase/pull/7396",
+      "pr_number": 7396,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["for scanning nullable columns"],
+        "surface_terms": ["JSVM helpers", "nullString()", "nullInt()", "nullFloat()", "nullBool", "nullArray()", "nullObject()", "nullable columns"],
+        "critical_terms": ["data"]
+      }
+    },
+    {
+      "id": "pocketbase-e3",
+      "release_tag": "v0.35.0",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.35.0",
+      "entry_text": "Store the correct `image/png` as attrs content type when generating a thumb fallback (e.g. for `webp`).",
+      "pr_url": null,
+      "pr_number": null,
+      "pr_url_valid": null,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["when generating a thumb fallback", "e.g. for `webp`"],
+        "surface_terms": ["image/png", "attrs content type", "thumb fallback"],
+        "critical_terms": ["file", "content type"]
+      }
+    },
+    {
+      "id": "pocketbase-e4",
+      "release_tag": "v0.35.0",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.35.0",
+      "entry_text": "Trimmed custom uploaded file name and extension from leftover `.` characters after `filesystem.File` normalization.",
+      "pr_url": null,
+      "pr_number": null,
+      "pr_url_valid": null,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["after `filesystem.File` normalization"],
+        "surface_terms": ["custom uploaded file name", "extension", "`.` characters", "filesystem.File"],
+        "critical_terms": ["file upload", "filesystem"]
+      }
+    },
+    {
+      "id": "pocketbase-e5",
+      "release_tag": "v0.34.2",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.34.2",
+      "entry_text": "Bumped JS SDK to v0.26.5 to fix Safari AbortError detection introduced with the previous release (#7369).",
+      "pr_url": "https://github.com/pocketbase/pocketbase/pull/7369",
+      "pr_number": 7369,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["Safari AbortError detection", "introduced with the previous release"],
+        "surface_terms": ["JS SDK", "v0.26.5", "AbortError detection"],
+        "critical_terms": ["sdk", "browser"]
+      }
+    },
+    {
+      "id": "pocketbase-e6",
+      "release_tag": "v0.34.1",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.34.1",
+      "entry_text": "Added missing `:` char to the autocomplete regex (#7353; thanks @ouvreboite).",
+      "pr_url": "https://github.com/pocketbase/pocketbase/pull/7353",
+      "pr_number": 7353,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": [],
+        "surface_terms": ["`:` char", "autocomplete regex"],
+        "critical_terms": ["validation", "regex"]
+      }
+    },
+    {
+      "id": "pocketbase-e7",
+      "release_tag": "v0.34.1",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.34.1",
+      "entry_text": "Added \"Copy raw JSON\" collection dropdown option (#7357).",
+      "pr_url": "https://github.com/pocketbase/pocketbase/pull/7357",
+      "pr_number": 7357,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": [],
+        "surface_terms": ["Copy raw JSON", "collection dropdown option"],
+        "critical_terms": ["json", "ui"]
+      }
+    },
+    {
+      "id": "pocketbase-e8",
+      "release_tag": "v0.34.0",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.34.0",
+      "entry_text": "Added `@request.body.someField:changed` modifier.",
+      "pr_url": null,
+      "pr_number": null,
+      "pr_url_valid": null,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": [],
+        "surface_terms": ["@request.body.someField:changed", "modifier"],
+        "critical_terms": ["request body", "rule"]
+      }
+    },
+    {
+      "id": "pocketbase-e9",
+      "release_tag": "v0.34.0",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.34.0",
+      "entry_text": "Added `MailerRecordEvent.Meta[\"info\"]` property for the `OnMailerRecordAuthAlertSend` hook.",
+      "pr_url": null,
+      "pr_number": null,
+      "pr_url_valid": null,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": [],
+        "surface_terms": ["MailerRecordEvent.Meta[\"info\"]", "OnMailerRecordAuthAlertSend", "hook"],
+        "critical_terms": ["auth", "mailer", "hook"]
+      }
+    },
+    {
+      "id": "pocketbase-e10",
+      "release_tag": "v0.33.0",
+      "release_url": "https://github.com/pocketbase/pocketbase/releases/tag/v0.33.0",
+      "entry_text": "Added extra `id` characters validation in addition to the user specified regex pattern (#7312).",
+      "pr_url": "https://github.com/pocketbase/pocketbase/pull/7312",
+      "pr_number": 7312,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["in addition to the user specified regex pattern"],
+        "surface_terms": ["id characters validation", "regex pattern"],
+        "critical_terms": ["validation", "id"]
+      }
+    }
+  ]
+}
