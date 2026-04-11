@@ -1,4 +1,0 @@
-{
-  "latex-workshop.latex.outDir": "%DIR%/.generated",
-  "latex-workshop.latex.autoBuild.run": "never"
-}

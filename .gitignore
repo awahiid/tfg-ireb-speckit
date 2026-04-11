@@ -16,3 +16,6 @@ docs/cpre/.generated/
 *.snm
 *.synctex.gz
 *.vrb
+
+# Editor local settings
+.vscode/
