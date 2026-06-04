@@ -1,6 +1,11 @@
 import { Octokit } from "@octokit/rest";
 import fs from "fs";
 import path from "path";
+import "dotenv/config";
+
+if (!process.env.GITHUB_TOKEN) {
+    throw new Error("Missing GITHUB_TOKEN");
+}
 
 const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
