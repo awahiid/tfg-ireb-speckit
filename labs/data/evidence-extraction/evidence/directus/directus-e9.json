@@ -1,0 +1,171 @@
+{
+  "pr": {
+    "number": 26646,
+    "title": "Add MIME type restriction to system upload interface",
+    "body": "## Scope\r\n\r\nNOTE: This is part 1 of 3 for this feature\r\n\r\nWhat's changed:\r\n\r\n- Whilst the MIME type allow list is enforced on the API side, the system upload interface does not take this into account, as such a user is allowed to select a restricted file type only to be met with an error.\r\n- This PR adds functionality that fetches the allowed MIME Types from the API to the APP\r\n- This then plugs the allowed MIME types into the system level file interface so when a user tries to upload a file they cannot select disallowed MIME types from the browser based file select input\r\n\r\n## Potential Risks / Drawbacks\r\n\r\n- File uploads break\r\n\r\n## Tested Scenarios\r\n\r\n- Restrict a MIME Type from you env eg: `# FILES_MIME_TYPE_ALLOW_LIST=audio/*,image/*` then try to upload a file type not in this list, it should be greyed out in the browser file input\r\n\r\n## Review Notes / Questions\r\n\r\n- NA\r\n\r\n## Checklist\r\n\r\n- [x] Added or updated tests\r\n- [x] Documentation PR created [here](https://github.com/directus/docs) or not required\r\n- [x] OpenAPI package PR created [here](https://github.com/directus/openapi) or not required\r\n\r\n---\r\n\r\nFixes CMS-1679\r\n",
+    "state": "closed",
+    "merged": true,
+    "user": "AlexGaillard",
+    "created_at": "2026-02-12T23:30:39Z",
+    "updated_at": "2026-04-18T03:33:08Z",
+    "base": "main",
+    "head": "alexgaillard/cms-1679-add-mime-type-restriction-to-system-upload-interface",
+    "merge_commit_sha": "9e600c00d45af08bc95605a23ac4a405a109c83e"
+  },
+  "issue_comments": [
+    {
+      "user": "linear[bot]",
+      "body": "<!-- linear-linkback -->\n<p><a href=\"https://linear.app/directus/issue/CMS-1679/add-mime-type-restriction-to-system-upload-interface\">CMS-1679 Add MIME type restriction to system upload interface</a></p>",
+      "created_at": "2026-02-12T23:30:42Z"
+    },
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/directus/directus/pull/26646?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) Report\n:x: Patch coverage is `81.25000%` with `3 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 64.74%. Comparing base ([`127db21`](https://app.codecov.io/gh/directus/directus/commit/127db21081b656167ebe57c04ec4e6803b4bff68?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus)) to head ([`fb07bf6`](https://app.codecov.io/gh/directus/directus/commit/fb07bf653fe69f3b641236aa4c1b5306ace5c069?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus)).\n:warning: Report is 1 commits behind head on main.\n\n:x: Your patch status has failed because the patch coverage (0.00%) is below the target coverage (80.00%). You can increase the patch coverage or adjust the [target](https://docs.codecov.com/docs/commit-status#target) coverage.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n```diff\n@@           Coverage Diff           @@\n##             main   #26646   +/-   ##\n=======================================\n  Coverage   64.74%   64.74%           \n=======================================\n  Files        2186     2186           \n  Lines      145076   145091   +15     \n  Branches    10348    10349    +1     \n=======================================\n+ Hits        93931    93943   +12     \n- Misses      51145    51148    +3     \n```\n\n| [Flag](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flags&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | Coverage Δ | |\n|---|---|---|\n| [api](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `49.23% <0.00%> (-0.01%)` | :arrow_down: |\n| [app](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `75.22% <100.00%> (+<0.01%)` | :arrow_up: |\n| [composables](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `82.35% <ø> (ø)` | |\n| [create-directus-extension](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `94.44% <ø> (ø)` | |\n| [create-directus-project](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `98.43% <ø> (ø)` | |\n| [env](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `99.68% <ø> (ø)` | |\n| [errors](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `97.26% <ø> (ø)` | |\n| [extensions](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `35.63% <ø> (ø)` | |\n| [extensions-registry](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `95.27% <ø> (ø)` | |\n| [extensions-sdk](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `14.33% <ø> (ø)` | |\n| [format-title](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `100.00% <ø> (ø)` | |\n| [memory](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `100.00% <ø> (ø)` | |\n| [pressure](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `77.63% <ø> (ø)` | |\n| [release-notes-generator](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `81.14% <ø> (ø)` | |\n| [schema-builder](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `81.42% <ø> (ø)` | |\n| [sdk](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `25.68% <ø> (ø)` | |\n| [storage](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `92.00% <ø> (ø)` | |\n| [storage-driver-azure](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `76.76% <ø> (ø)` | |\n| [storage-driver-cloudinary](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `81.14% <ø> (ø)` | |\n| [storage-driver-gcs](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `69.72% <ø> (ø)` | |\n| [storage-driver-local](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `69.76% <ø> (ø)` | |\n| [storage-driver-s3](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `52.04% <ø> (ø)` | |\n| [storage-driver-supabase](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `68.63% <ø> (ø)` | |\n| [system-data](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `72.54% <ø> (ø)` | |\n| [update-check](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `55.67% <ø> (ø)` | |\n| [utils](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `90.95% <ø> (ø)` | |\n| [validation](https://app.codecov.io/gh/directus/directus/pull/26646/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus) | `44.50% <ø> (ø)` | |\n\nFlags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=directus#carryforward-flags-in-the-pull-request-comment) to find out more.\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>",
+      "created_at": "2026-02-16T17:16:35Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "HZooly",
+      "body": "Could we type it as:\n```ts\nfiles?: {\n  mimeTypeAllowList: string\n}\n```\nor there is a limitation somewhere? That would allow us to remove the cast in [add-new.vue](https://github.com/directus/directus/pull/26646/changes#diff-40c66eb282645c2e526a94526727b6a6fdacc1dca0b321c7b156b6e007557848R25)",
+      "path": "app/src/stores/server.ts",
+      "diff_hunk": "@@ -28,6 +28,7 @@ export type Info = {\n \t};\n \tmcp_enabled: boolean;\n \tai_enabled: boolean;\n+\tfiles?: Record<string, unknown>;",
+      "line": null,
+      "created_at": "2026-02-13T10:44:59Z"
+    },
+    {
+      "user": "HZooly",
+      "body": "The nullish coalescing is never triggered since the `env` is populated with default values in [`create-env.ts`](https://github.com/directus/directus/blob/e95d6df6f7ee081e7b3371db2c87e916fd0c5dba/packages/env/src/lib/create-env.ts#L22) and already defaults to [`*/*`](https://github.com/directus/directus/blob/e95d6df6f7ee081e7b3371db2c87e916fd0c5dba/packages/env/src/constants/defaults.ts#L196)",
+      "path": "api/src/services/server.ts",
+      "diff_hunk": "@@ -73,6 +73,10 @@ export class ServerService {\n \t\t\tinfo['mcp_enabled'] = toBoolean(env['MCP_ENABLED'] ?? true);\n \t\t\tinfo['ai_enabled'] = toBoolean(env['AI_ENABLED'] ?? true);\n \n+\t\t\tinfo['files'] = {\n+\t\t\t\tmimeTypeAllowList: env['FILES_MIME_TYPE_ALLOW_LIST'] ?? '*/*',",
+      "line": null,
+      "created_at": "2026-02-13T10:52:56Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "body": "No, I think your suggestion makes sense 👍. I'll make the change.",
+      "path": "app/src/stores/server.ts",
+      "diff_hunk": "@@ -28,6 +28,7 @@ export type Info = {\n \t};\n \tmcp_enabled: boolean;\n \tai_enabled: boolean;\n+\tfiles?: Record<string, unknown>;",
+      "line": null,
+      "created_at": "2026-02-16T16:59:57Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "body": "Yeah we don't need that because of the default, I'll remove it.",
+      "path": "api/src/services/server.ts",
+      "diff_hunk": "@@ -73,6 +73,10 @@ export class ServerService {\n \t\t\tinfo['mcp_enabled'] = toBoolean(env['MCP_ENABLED'] ?? true);\n \t\t\tinfo['ai_enabled'] = toBoolean(env['AI_ENABLED'] ?? true);\n \n+\t\t\tinfo['files'] = {\n+\t\t\t\tmimeTypeAllowList: env['FILES_MIME_TYPE_ALLOW_LIST'] ?? '*/*',",
+      "line": null,
+      "created_at": "2026-02-16T17:17:46Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "HZooly",
+      "state": "CHANGES_REQUESTED",
+      "body": "Nice work! Some changes if you agree for reducing potential dead code and improve typing.",
+      "submitted_at": "2026-02-13T10:54:31Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-02-16T16:59:58Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-02-16T17:17:47Z"
+    },
+    {
+      "user": "HZooly",
+      "state": "APPROVED",
+      "body": "Looks good to me!",
+      "submitted_at": "2026-02-16T20:48:31Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "8f338f98c69f580eaff5663ce3d2d466c009c934",
+      "message": "Fetch allowed MIME types list from api to app server store",
+      "author": "Alex Gaillard",
+      "date": "2026-01-22T17:00:08Z"
+    },
+    {
+      "sha": "1b2313d52ce61877ce679de47afd576cd62ee456",
+      "message": "Pass allowed MIME types to to add new file v-upload component from server store",
+      "author": "Alex Gaillard",
+      "date": "2026-01-22T17:00:41Z"
+    },
+    {
+      "sha": "aeff8425fccc14877f5d0977ad28e124c265644a",
+      "message": "Renamed accepted to allowed",
+      "author": "Alex Gaillard",
+      "date": "2026-01-22T20:57:18Z"
+    },
+    {
+      "sha": "9bb75dc31531adf2d90ed8645f87b9f5eec3a420",
+      "message": "Fix type error",
+      "author": "Alex Gaillard",
+      "date": "2026-01-23T16:30:44Z"
+    },
+    {
+      "sha": "5635901c6104ac45b4a35fa53940c94ca48e2855",
+      "message": "Add changeset",
+      "author": "Alex Gaillard",
+      "date": "2026-02-12T23:32:13Z"
+    },
+    {
+      "sha": "bbf7ee709a826276d11187bd2748c8e6d519e75f",
+      "message": "Merge branch 'main' into alexgaillard/cms-1679-add-mime-type-restriction-to-system-upload-interface",
+      "author": "Alex Gaillard",
+      "date": "2026-02-16T17:04:13Z"
+    },
+    {
+      "sha": "3b08a1d6787972b281a4cc24c603dc2c1aba5d2e",
+      "message": "Remove unnecessary null coalesce",
+      "author": "Alex Gaillard",
+      "date": "2026-02-16T17:18:33Z"
+    },
+    {
+      "sha": "fb07bf653fe69f3b641236aa4c1b5306ace5c069",
+      "message": "Add explicit allow list type assertion to server store",
+      "author": "Alex Gaillard",
+      "date": "2026-02-16T17:21:10Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/shy-carrots-think.md",
+      "status": "added",
+      "additions": 6,
+      "deletions": 0,
+      "changes": 6,
+      "patch": "@@ -0,0 +1,6 @@\n+---\n+'@directus/api': patch\n+'@directus/app': patch\n+---\n+\n+Added restriction of allowed MIME types to the system file upload interface"
+    },
+    {
+      "filename": "api/src/services/server.ts",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 0,
+      "changes": 4,
+      "patch": "@@ -73,6 +73,10 @@ export class ServerService {\n \t\t\tinfo['mcp_enabled'] = toBoolean(env['MCP_ENABLED'] ?? true);\n \t\t\tinfo['ai_enabled'] = toBoolean(env['AI_ENABLED'] ?? true);\n \n+\t\t\tinfo['files'] = {\n+\t\t\t\tmimeTypeAllowList: env['FILES_MIME_TYPE_ALLOW_LIST'],\n+\t\t\t};\n+\n \t\t\tif (env['RATE_LIMITER_ENABLED']) {\n \t\t\t\tinfo['rateLimit'] = {\n \t\t\t\t\tpoints: env['RATE_LIMITER_POINTS'],"
+    },
+    {
+      "filename": "app/src/modules/files/routes/add-new.vue",
+      "status": "modified",
+      "additions": 15,
+      "deletions": 1,
+      "changes": 16,
+      "patch": "@@ -1,4 +1,5 @@\n <script setup lang=\"ts\">\n+import { computed } from 'vue';\n import { useRouter } from 'vue-router';\n import VButton from '@/components/v-button.vue';\n import VCardActions from '@/components/v-card-actions.vue';\n@@ -8,6 +9,7 @@ import VCard from '@/components/v-card.vue';\n import VDialog from '@/components/v-dialog.vue';\n import VUpload from '@/components/v-upload.vue';\n import { useDialogRoute } from '@/composables/use-dialog-route';\n+import { useServerStore } from '@/stores/server';\n \n const props = defineProps<{\n \tfolder?: string;\n@@ -17,6 +19,18 @@ const router = useRouter();\n \n const isOpen = useDialogRoute();\n \n+const { info } = useServerStore();\n+\n+const allowedMimeTypes = computed(() => {\n+\tconst allowList = info.files?.mimeTypeAllowList;\n+\n+\tif (!allowList || allowList === '*/*') {\n+\t\treturn undefined;\n+\t}\n+\n+\treturn allowList;\n+});\n+\n function close() {\n \trouter.push(props.folder ? { path: `/files/folders/${props.folder}` } : { path: '/files' });\n }\n@@ -27,7 +41,7 @@ function close() {\n \t\t<VCard>\n \t\t\t<VCardTitle>{{ $t('add_file') }}</VCardTitle>\n \t\t\t<VCardText>\n-\t\t\t\t<VUpload :folder=\"props.folder\" multiple from-url @input=\"close\" />\n+\t\t\t\t<VUpload :folder=\"props.folder\" multiple from-url :accept=\"allowedMimeTypes\" @input=\"close\" />\n \t\t\t</VCardText>\n \t\t\t<VCardActions>\n \t\t\t\t<VButton secondary @click=\"close\">{{ $t('done') }}</VButton>"
+    },
+    {
+      "filename": "app/src/stores/server.ts",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -28,6 +28,9 @@ export type Info = {\n \t};\n \tmcp_enabled: boolean;\n \tai_enabled: boolean;\n+\tfiles?: {\n+\t\tmimeTypeAllowList: string;\n+\t};\n \tsetupCompleted: boolean;\n \trateLimit?:\n \t\t| false\n@@ -89,6 +92,7 @@ export const useServerStore = defineStore('serverStore', () => {\n \t\tproject: null,\n \t\tmcp_enabled: true,\n \t\tai_enabled: true,\n+\t\tfiles: undefined,\n \t\tsetupCompleted: false,\n \t\textensions: undefined,\n \t\trateLimit: undefined,\n@@ -127,6 +131,7 @@ export const useServerStore = defineStore('serverStore', () => {\n \t\tinfo.project = serverInfoResponse.data.data?.project;\n \t\tinfo.mcp_enabled = serverInfoResponse.data.data?.mcp_enabled;\n \t\tinfo.ai_enabled = serverInfoResponse.data.data?.ai_enabled;\n+\t\tinfo.files = serverInfoResponse.data.data?.files;\n \t\tinfo.setupCompleted = serverInfoResponse.data.data?.setupCompleted;\n \t\tinfo.queryLimit = serverInfoResponse.data.data?.queryLimit;\n \t\tinfo.extensions = serverInfoResponse.data.data?.extensions;"
+    }
+  ]
+}

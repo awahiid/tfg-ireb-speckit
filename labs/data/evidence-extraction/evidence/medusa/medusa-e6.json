@@ -1,0 +1,203 @@
+{
+  "pr": {
+    "number": 15169,
+    "title": "feat(medusa,js-sdk,types): add POST /admin/payment-collections/:id/payment-sessions",
+    "body": "## Summary                                                \r\n\r\n  **What** — Adds `POST /admin/payment-collections/:id/payment-sessions` to the admin API, including  \r\n  the route handler, Zod validator, middleware registration, TypeScript type, and JS SDK method.\r\n                                                                                                      \r\n  **Why** — The admin API did not support setting payment providers when creating payment collections.\r\n   The store API already exposes this endpoint (`/store/payment-collections/:id/payment-sessions`),\r\n  but the admin API was missing it, preventing merchants from initializing payment sessions with a    \r\n  specific provider from the admin context.                 \r\n\r\n  **How** — Mirrors the existing store implementation. The only intentional difference is that        \r\n  `customer_id` is omitted (not relevant in an admin context). Uses the existing\r\n  `createPaymentSessionsWorkflow` and `refetchEntity` utilities.                                      \r\n                                                            \r\n  **Testing** — Integration test added in                                                             \r\n  `integration-tests/http/__tests__/payment-collection/admin/payment-sessions.spec.ts` using\r\n  `createOrderSeeder` to set up a real order, creating an admin payment collection, and asserting the \r\n  session is created with `status: \"pending\"`.              \r\n\r\n  ---\r\n\r\n  ## Examples\r\n\r\n  ```ts\r\n  sdk.admin.paymentCollection.createPaymentSession(\"paycol_123\", {\r\n    provider_id: \"pp_stripe_stripe\"                                                                   \r\n  })\r\n  .then(({ payment_collection }) => {                                                                 \r\n    console.log(payment_collection)                         \r\n  })\r\n\r\n  ---\r\n  Checklist\r\n           \r\n  - I have added a changeset for this PR\r\n  - The changes are covered by relevant tests                                                         \r\n  - I have verified the code works as intended locally\r\n  - I have linked the related issue(s) if applicable                                                  \r\n                                                            \r\n  ---\r\n  Additional Context\r\n\r\n  Closes #14621\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Medium Risk**\n> Adds a new admin endpoint that initializes payment sessions for payment collections, touching payment-flow API surface area. While it reuses existing workflows/validation, mistakes could affect how payments are initialized from the admin context.\n> \n> **Overview**\n> Adds `POST /admin/payment-collections/:id/payment-sessions`, allowing admins to initialize a payment session for an existing payment collection with a selected `provider_id` (and optional provider `data`).\n> \n> Wires the route through new Zod validation + middleware policy checks, returns the refetched payment collection, exposes the call via a new JS SDK method (`paymentCollection.createPaymentSession`), and adds an integration test covering session creation through the admin API (plus a changeset/type additions).\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 4edfc0f6e8c756219a479215a6349c08c3f40aa1. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+    "state": "closed",
+    "merged": true,
+    "user": "GBreg19",
+    "created_at": "2026-04-22T12:20:08Z",
+    "updated_at": "2026-04-29T14:52:48Z",
+    "base": "develop",
+    "head": "feat/admin-payment-collection-payment-sessions",
+    "merge_commit_sha": "aa407641ce6ddcd2e27352315b0f7b911a2c0acf"
+  },
+  "issue_comments": [
+    {
+      "user": "changeset-bot[bot]",
+      "body": "###  🦋  Changeset detected\n\nLatest commit: 4edfc0f6e8c756219a479215a6349c08c3f40aa1\n\n**The changes in this PR will be included in the next version bump.**\n\n<details><summary>This PR includes changesets to release 78 packages</summary>\n\n  | Name                               | Type  |\n| ---------------------------------- | ----- |\n| @medusajs/medusa                   | Patch |\n| @medusajs/js-sdk                   | Patch |\n| @medusajs/types                    | Patch |\n| @medusajs/test-utils               | Patch |\n| @medusajs/medusa-oas-cli           | Patch |\n| integration-tests-http             | Patch |\n| @medusajs/draft-order              | Patch |\n| @medusajs/dashboard                | Patch |\n| @medusajs/event-bus-redis          | Patch |\n| @medusajs/loyalty-plugin           | Patch |\n| @medusajs/framework                | Patch |\n| @medusajs/modules-sdk              | Patch |\n| @medusajs/orchestration            | Patch |\n| @medusajs/utils                    | Patch |\n| @medusajs/workflows-sdk            | Patch |\n| @medusajs/admin-bundler            | Patch |\n| @medusajs/analytics                | Patch |\n| @medusajs/api-key                  | Patch |\n| @medusajs/auth                     | Patch |\n| @medusajs/caching                  | Patch |\n| @medusajs/cart                     | Patch |\n| @medusajs/currency                 | Patch |\n| @medusajs/customer                 | Patch |\n| @medusajs/file                     | Patch |\n| @medusajs/fulfillment              | Patch |\n| @medusajs/index                    | Patch |\n| @medusajs/inventory                | Patch |\n| @medusajs/link-modules             | Patch |\n| @medusajs/locking                  | Patch |\n| @medusajs/notification             | Patch |\n| @medusajs/order                    | Patch |\n| @medusajs/payment                  | Patch |\n| @medusajs/pricing                  | Patch |\n| @medusajs/product                  | Patch |\n| @medusajs/promotion                | Patch |\n| @medusajs/rbac                     | Patch |\n| @medusajs/region                   | Patch |\n| @medusajs/sales-channel            | Patch |\n| @medusajs/settings                 | Patch |\n| @medusajs/stock-location           | Patch |\n| @medusajs/store                    | Patch |\n| @medusajs/tax                      | Patch |\n| @medusajs/translation              | Patch |\n| @medusajs/user                     | Patch |\n| @medusajs/workflow-engine-inmemory | Patch |\n| @medusajs/workflow-engine-redis    | Patch |\n| @medusajs/oas-github-ci            | Patch |\n| @medusajs/cache-inmemory           | Patch |\n| @medusajs/cache-redis              | Patch |\n| @medusajs/event-bus-local          | Patch |\n| @medusajs/analytics-local          | Patch |\n| @medusajs/analytics-posthog        | Patch |\n| @medusajs/auth-emailpass           | Patch |\n| @medusajs/auth-github              | Patch |\n| @medusajs/auth-google              | Patch |\n| @medusajs/caching-redis            | Patch |\n| @medusajs/file-local               | Patch |\n| @medusajs/file-s3                  | Patch |\n| @medusajs/fulfillment-manual       | Patch |\n| @medusajs/locking-postgres         | Patch |\n| @medusajs/locking-redis            | Patch |\n| @medusajs/notification-local       | Patch |\n| @medusajs/notification-sendgrid    | Patch |\n| @medusajs/payment-stripe           | Patch |\n| @medusajs/core-flows               | Patch |\n| @medusajs/http-types-generator     | Patch |\n| @medusajs/cli                      | Patch |\n| @medusajs/deps                     | Patch |\n| @medusajs/telemetry                | Patch |\n| @medusajs/admin-sdk                | Patch |\n| @medusajs/admin-shared             | Patch |\n| @medusajs/admin-vite-plugin        | Patch |\n| @medusajs/icons                    | Patch |\n| @medusajs/toolbox                  | Patch |\n| @medusajs/ui-preset                | Patch |\n| create-medusa-app                  | Patch |\n| medusa-dev-cli                     | Patch |\n| @medusajs/ui                       | Patch |\n\n</details>\n\nNot sure what this means? [Click here  to learn what changesets are](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md).\n\n[Click here if you're a maintainer who wants to add another changeset to this PR](https://github.com/GBreg19/medusa/new/feat/admin-payment-collection-payment-sessions?filename=.changeset/selfish-scissors-sort.md&value=---%0A%22%40medusajs%2Fmedusa%22%3A%20patch%0A%22%40medusajs%2Fjs-sdk%22%3A%20patch%0A%22%40medusajs%2Ftypes%22%3A%20patch%0A%22integration-tests-http%22%3A%20patch%0A---%0A%0Afeat(medusa%2Cjs-sdk%2Ctypes)%3A%20add%20POST%20%2Fadmin%2Fpayment-collections%2F%3Aid%2Fpayment-sessions%0A)\n\n",
+      "created_at": "2026-04-22T12:20:14Z"
+    },
+    {
+      "user": "vercel[bot]",
+      "body": "Someone is attempting to deploy a commit to the **medusajs** Team on [Vercel](https://vercel.com).\n\nA member of the Team first needs to [authorize it](https://vercel.com/git/authorize?team=medusajs&slug=medusajs&teamId=team_H9FqCbbGqSGhPs9oquyfg6Wt&type=github&job=%7B%22headInfo%22%3A%7B%22sha%22%3A%22f8b2a020a5f9e68587423ad766d8d19ec478a9af%22%7D%2C%22id%22%3A%22QmP8MyDkHhz7RtgkZXV8791uebEJsYqEztbkwGevUoBpGP%22%2C%22org%22%3A%22medusajs%22%2C%22prId%22%3A15169%2C%22repo%22%3A%22medusa%22%7D).\n\n",
+      "created_at": "2026-04-22T12:20:18Z"
+    },
+    {
+      "user": "medusa-os-bot[bot]",
+      "body": "Thank you for your contribution, @GBreg19\\! 🎉\n\nAfter an initial review, this PR looks good to us. Here's a summary:\n\n✅ PR template is complete\n✅ Linked to a verified `help-wanted` issue (#14621)\n✅ Follows contribution guidelines\n✅ Integration test included\n✅ Follows Medusa's conventions\n✅ Zod validator present with `.strict()`\n✅ HTTP types updated (`AdminInitializePaymentSession` in `packages/core/types`)\n✅ Changeset present with correct format\n✅ Route structure, middleware registration, and policy mirror the existing `mark-as-paid` pattern\n\nA team member will do a final review before this is merged. We appreciate your patience\\!\n\n_Triggered by: new PR opened_",
+      "created_at": "2026-04-22T12:24:07Z"
+    },
+    {
+      "user": "medusa-os-bot[bot]",
+      "body": "Thank you for your contribution, @GBreg19\\!\n\nThe new commit looks good — the test `describe` label fix (renaming the store block from `POST /admin/...` to `POST /store/...`) is a welcome cleanup that makes the test file much easier to read.\n\nAfter re-reviewing the updated state, everything still checks out:\n\n✅ Route handler correctly typed with `AuthenticatedMedusaRequest<AdminInitializePaymentSession, AdminGetPaymentCollectionParams>` and `MedusaResponse<AdminPaymentCollectionResponse>`\n✅ Zod validation in strict mode — unknown fields will be rejected\n✅ Workflow-based mutation (`createPaymentSessionsWorkflow`) — no direct service calls in the route\n✅ Middleware registration mirrors the `mark-as-paid` pattern with a `PolicyOperation.update` policy\n✅ HTTP type (`AdminInitializePaymentSession`) added to `packages/core/types`\n✅ JS SDK method added with full JSDoc\n✅ Integration test covers the new admin endpoint end-to-end\n✅ Changeset present with correct `feat(...): ...` format\n\n**Notes (non-blocking):**\n\n- `validators.ts` uses `z.strictObject({...})` for the new validator, while the other validators in the same file use the `z.object({...}).strict()` chain style. Both are functionally identical, but aligning to the existing style would keep the file consistent.\n\nA team member will do a final review before this is merged. We appreciate your patience\\!\n\n_Triggered by: new commit pushed_",
+      "created_at": "2026-04-27T10:53:32Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "NicolasGorga",
+      "body": "Since this was incorrectly named, should be changed to `/admin/payment-collections/:id/payment-sessions`",
+      "path": "integration-tests/http/__tests__/payment-collection/admin/payment-sessions.spec.ts",
+      "diff_hunk": "",
+      "line": null,
+      "created_at": "2026-04-24T20:24:43Z"
+    },
+    {
+      "user": "NicolasGorga",
+      "body": "If we use req.body we get typed properties instead of `any`, can you please update?",
+      "path": "packages/medusa/src/api/admin/payment-collections/[id]/payment-sessions/route.ts",
+      "diff_hunk": "@@ -0,0 +1,35 @@\n+import { createPaymentSessionsWorkflow } from \"@medusajs/core-flows\"\n+import { HttpTypes } from \"@medusajs/framework/types\"\n+import {\n+  AuthenticatedMedusaRequest,\n+  MedusaResponse,\n+  refetchEntity,\n+} from \"@medusajs/framework/http\"\n+\n+export const POST = async (\n+  req: AuthenticatedMedusaRequest<\n+    HttpTypes.AdminInitializePaymentSession,\n+    HttpTypes.AdminGetPaymentCollectionParams\n+  >,\n+  res: MedusaResponse<HttpTypes.AdminPaymentCollectionResponse>\n+) => {\n+  const { id } = req.params\n+  const { provider_id, data } = req.body",
+      "line": null,
+      "created_at": "2026-04-24T20:34:54Z"
+    },
+    {
+      "user": "NicolasGorga",
+      "body": "Please use `strictObject` instead, as its recommended by zod.",
+      "path": "packages/medusa/src/api/admin/payment-collections/validators.ts",
+      "diff_hunk": "@@ -24,3 +24,13 @@ export const AdminMarkPaymentCollectionPaid = z\n     order_id: z.string(),\n   })\n   .strict()\n+\n+export type AdminInitializePaymentSessionType = z.infer<\n+  typeof AdminInitializePaymentSession\n+>\n+export const AdminInitializePaymentSession = z\n+  .object({\n+    provider_id: z.string(),\n+    data: z.record(z.string(), z.unknown()).optional(),\n+  })\n+  .strict()",
+      "line": null,
+      "created_at": "2026-04-24T20:37:03Z"
+    },
+    {
+      "user": "GBreg19",
+      "body": "Renamed the first describe block to POST /store/payment-collections/:id/payment-sessions since the requests inside it all hit /store/... endpoints — let me know if you intended a different rename.",
+      "path": "integration-tests/http/__tests__/payment-collection/admin/payment-sessions.spec.ts",
+      "diff_hunk": "",
+      "line": null,
+      "created_at": "2026-04-27T10:49:54Z"
+    },
+    {
+      "user": "GBreg19",
+      "body": "Updated to use req.validatedBody, that gives us HttpTypes.AdminInitializePaymentSession typing on the destructured provider_id / data instead of falling back to any.",
+      "path": "packages/medusa/src/api/admin/payment-collections/[id]/payment-sessions/route.ts",
+      "diff_hunk": "@@ -0,0 +1,35 @@\n+import { createPaymentSessionsWorkflow } from \"@medusajs/core-flows\"\n+import { HttpTypes } from \"@medusajs/framework/types\"\n+import {\n+  AuthenticatedMedusaRequest,\n+  MedusaResponse,\n+  refetchEntity,\n+} from \"@medusajs/framework/http\"\n+\n+export const POST = async (\n+  req: AuthenticatedMedusaRequest<\n+    HttpTypes.AdminInitializePaymentSession,\n+    HttpTypes.AdminGetPaymentCollectionParams\n+  >,\n+  res: MedusaResponse<HttpTypes.AdminPaymentCollectionResponse>\n+) => {\n+  const { id } = req.params\n+  const { provider_id, data } = req.body",
+      "line": null,
+      "created_at": "2026-04-27T10:54:04Z"
+    },
+    {
+      "user": "GBreg19",
+      "body": "Switched to strictObject",
+      "path": "packages/medusa/src/api/admin/payment-collections/validators.ts",
+      "diff_hunk": "@@ -24,3 +24,13 @@ export const AdminMarkPaymentCollectionPaid = z\n     order_id: z.string(),\n   })\n   .strict()\n+\n+export type AdminInitializePaymentSessionType = z.infer<\n+  typeof AdminInitializePaymentSession\n+>\n+export const AdminInitializePaymentSession = z\n+  .object({\n+    provider_id: z.string(),\n+    data: z.record(z.string(), z.unknown()).optional(),\n+  })\n+  .strict()",
+      "line": null,
+      "created_at": "2026-04-27T10:54:28Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "NicolasGorga",
+      "state": "CHANGES_REQUESTED",
+      "body": "Thanks for the contribution. Left some comments that, after being taken care of, should be good to go. \n\nThis would enable for usages other than the default payment provider when creating orders via Admin panel.",
+      "submitted_at": "2026-04-24T20:38:42Z"
+    },
+    {
+      "user": "GBreg19",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-04-27T10:49:54Z"
+    },
+    {
+      "user": "GBreg19",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-04-27T10:54:05Z"
+    },
+    {
+      "user": "GBreg19",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-04-27T10:54:28Z"
+    },
+    {
+      "user": "NicolasGorga",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-04-28T03:59:28Z"
+    },
+    {
+      "user": "shahednasser",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-04-29T14:52:28Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "f8b2a020a5f9e68587423ad766d8d19ec478a9af",
+      "message": "feat(medusa,js-sdk,types): add POST /admin/payment-collections/:id/payment-sessions\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+      "author": "Giorgi Bregvadze",
+      "date": "2026-04-22T12:08:23Z"
+    },
+    {
+      "sha": "c17fd8b9b72048648c849717c819abbdd0a9574c",
+      "message": "Merge branch 'develop' into feat/admin-payment-collection-payment-sessions",
+      "author": "Nicolas Gorga",
+      "date": "2026-04-24T20:39:00Z"
+    },
+    {
+      "sha": "4edfc0f6e8c756219a479215a6349c08c3f40aa1",
+      "message": "fix(payment-sessions): update endpoint path and improve validation structure\n\n- Changed the endpoint path in the payment sessions test from `/admin/payment-collections/:id/payment-sessions` to `/store/payment-collections/:id/payment-sessions`.\n- Refactored the `AdminInitializePaymentSession` validator to use `z.strictObject` for improved validation.\n- Updated the route handler to use `req.validatedBody` instead of `req.body` for better request validation handling.",
+      "author": "Giorgi Bregvadze",
+      "date": "2026-04-27T10:49:24Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/admin-payment-sessions-route.md",
+      "status": "added",
+      "additions": 7,
+      "deletions": 0,
+      "changes": 7,
+      "patch": "@@ -0,0 +1,7 @@\n+---\n+\"@medusajs/medusa\": patch\n+\"@medusajs/js-sdk\": patch\n+\"@medusajs/types\": patch\n+---\n+\n+feat(medusa,js-sdk,types): add POST /admin/payment-collections/:id/payment-sessions route"
+    },
+    {
+      "filename": "integration-tests/http/__tests__/payment-collection/admin/payment-sessions.spec.ts",
+      "status": "modified",
+      "additions": 38,
+      "deletions": 1,
+      "changes": 39,
+      "patch": "@@ -6,6 +6,7 @@ import {\n   generateStoreHeaders,\n } from \"../../../../helpers/create-admin-user\"\n import { getProductFixture } from \"../../../../helpers/fixtures\"\n+import { createOrderSeeder } from \"../../fixtures/order\"\n import { createAuthenticatedCustomer } from \"../../../../modules/helpers/create-authenticated-customer\"\n \n jest.setTimeout(60000)\n@@ -33,7 +34,7 @@ medusaIntegrationTestRunner({\n       }\n     })\n \n-    describe(\"POST /admin/payment-collections/:id/payment-sessions\", () => {\n+    describe(\"POST /store/payment-collections/:id/payment-sessions\", () => {\n       let region\n       let product\n       let cart\n@@ -185,5 +186,41 @@ medusaIntegrationTestRunner({\n         ])\n       })\n     })\n+\n+    describe(\"POST /admin/payment-collections/:id/payment-sessions\", () => {\n+      let order\n+\n+      beforeEach(async () => {\n+        const container = getContainer()\n+        const result = await createOrderSeeder({ api, container })\n+        order = result.order\n+      })\n+\n+      it(\"should create a payment session via the admin endpoint\", async () => {\n+        const paymentCollection = (\n+          await api.post(\n+            \"/admin/payment-collections\",\n+            { order_id: order.id, amount: 100 },\n+            adminHeaders\n+          )\n+        ).data.payment_collection\n+\n+        const {\n+          data: { payment_collection },\n+        } = await api.post(\n+          `/admin/payment-collections/${paymentCollection.id}/payment-sessions`,\n+          { provider_id: \"pp_system_default\" },\n+          adminHeaders\n+        )\n+\n+        expect(payment_collection.payment_sessions).toEqual([\n+          expect.objectContaining({\n+            provider_id: \"pp_system_default\",\n+            status: \"pending\",\n+            amount: 100,\n+          }),\n+        ])\n+      })\n+    })\n   },\n })"
+    },
+    {
+      "filename": "packages/core/js-sdk/src/admin/payment-collection.ts",
+      "status": "modified",
+      "additions": 36,
+      "deletions": 0,
+      "changes": 36,
+      "patch": "@@ -111,4 +111,40 @@ export class PaymentCollection {\n       }\n     )\n   }\n+\n+  /**\n+   * This method creates a payment session for a payment collection. It sends a request to the\n+   * [Create Payment Session](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollectionsidpayment-sessions)\n+   * API route.\n+   *\n+   * @param id - The payment collection's ID.\n+   * @param body - The payment session's details.\n+   * @param query - Configure the fields to retrieve in the payment collection.\n+   * @param headers - Headers to pass in the request.\n+   * @returns The payment collection's details.\n+   *\n+   * @example\n+   * sdk.admin.paymentCollection.createPaymentSession(\"paycol_123\", {\n+   *   provider_id: \"pp_stripe_stripe\"\n+   * })\n+   * .then(({ payment_collection }) => {\n+   *   console.log(payment_collection)\n+   * })\n+   */\n+  async createPaymentSession(\n+    id: string,\n+    body: HttpTypes.AdminInitializePaymentSession,\n+    query?: SelectParams,\n+    headers?: ClientHeaders\n+  ) {\n+    return await this.client.fetch<HttpTypes.AdminPaymentCollectionResponse>(\n+      `/admin/payment-collections/${id}/payment-sessions`,\n+      {\n+        method: \"POST\",\n+        headers,\n+        body,\n+        query,\n+      }\n+    )\n+  }\n }"
+    },
+    {
+      "filename": "packages/core/types/src/http/payment/admin/payloads.ts",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 0,
+      "changes": 13,
+      "patch": "@@ -36,3 +36,16 @@ export interface AdminCreatePaymentCollection {\n export interface AdminMarkPaymentCollectionAsPaid {\n   order_id: string\n }\n+\n+export interface AdminInitializePaymentSession {\n+  /**\n+   * The ID of the provider to initialize a payment session for.\n+   */\n+  provider_id: string\n+  /**\n+   * Any data necessary for the payment provider to process the payment.\n+   *\n+   * Learn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/payment/payment-session#data-property).\n+   */\n+  data?: Record<string, unknown>\n+}"
+    },
+    {
+      "filename": "packages/medusa/src/api/admin/payment-collections/[id]/payment-sessions/route.ts",
+      "status": "added",
+      "additions": 35,
+      "deletions": 0,
+      "changes": 35,
+      "patch": "@@ -0,0 +1,35 @@\n+import { createPaymentSessionsWorkflow } from \"@medusajs/core-flows\"\n+import { HttpTypes } from \"@medusajs/framework/types\"\n+import {\n+  AuthenticatedMedusaRequest,\n+  MedusaResponse,\n+  refetchEntity,\n+} from \"@medusajs/framework/http\"\n+\n+export const POST = async (\n+  req: AuthenticatedMedusaRequest<\n+    HttpTypes.AdminInitializePaymentSession,\n+    HttpTypes.AdminGetPaymentCollectionParams\n+  >,\n+  res: MedusaResponse<HttpTypes.AdminPaymentCollectionResponse>\n+) => {\n+  const { id } = req.params\n+  const { provider_id, data } = req.validatedBody\n+\n+  await createPaymentSessionsWorkflow(req.scope).run({\n+    input: {\n+      payment_collection_id: id,\n+      provider_id,\n+      data,\n+    },\n+  })\n+\n+  const paymentCollection = await refetchEntity({\n+    entity: \"payment_collection\",\n+    idOrFilter: id,\n+    scope: req.scope,\n+    fields: req.queryConfig.fields,\n+  })\n+\n+  res.status(200).json({ payment_collection: paymentCollection })\n+}"
+    },
+    {
+      "filename": "packages/medusa/src/api/admin/payment-collections/middlewares.ts",
+      "status": "modified",
+      "additions": 18,
+      "deletions": 0,
+      "changes": 18,
+      "patch": "@@ -9,6 +9,7 @@ import { Entities } from \"./query-config\"\n import {\n   AdminCreatePaymentCollection,\n   AdminGetPaymentCollectionParams,\n+  AdminInitializePaymentSession,\n   AdminMarkPaymentCollectionPaid,\n } from \"./validators\"\n \n@@ -56,6 +57,23 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [\n       },\n     ],\n   },\n+  {\n+    method: [\"POST\"],\n+    matcher: \"/admin/payment-collections/:id/payment-sessions\",\n+    middlewares: [\n+      validateAndTransformBody(AdminInitializePaymentSession),\n+      validateAndTransformQuery(\n+        AdminGetPaymentCollectionParams,\n+        queryConfig.retrievePaymentCollectionTransformQueryConfig\n+      ),\n+    ],\n+    policies: [\n+      {\n+        resource: Entities.payment_collection,\n+        operation: PolicyOperation.update,\n+      },\n+    ],\n+  },\n   {\n     method: [\"DELETE\"],\n     matcher: \"/admin/payment-collections/:id\","
+    },
+    {
+      "filename": "packages/medusa/src/api/admin/payment-collections/validators.ts",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 0,
+      "changes": 8,
+      "patch": "@@ -24,3 +24,11 @@ export const AdminMarkPaymentCollectionPaid = z\n     order_id: z.string(),\n   })\n   .strict()\n+\n+export type AdminInitializePaymentSessionType = z.infer<\n+  typeof AdminInitializePaymentSession\n+>\n+export const AdminInitializePaymentSession = z.strictObject({\n+  provider_id: z.string(),\n+  data: z.record(z.string(), z.unknown()).optional(),\n+})"
+    }
+  ]
+}

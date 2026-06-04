@@ -1,0 +1,433 @@
+{
+  "pr": {
+    "number": 24889,
+    "title": "feat: queue or cancel payment reminder flow",
+    "body": "## What does this PR do?\r\n\r\n- Fixes #11272 \r\n- Fixes CAL-2815 \r\n\r\n## Visual Demo (For contributors especially)\r\n\r\n\r\n\r\nhttps://github.com/user-attachments/assets/7f604b0d-84a1-4855-b686-4ded7bb73f43\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\n<!-- This is an auto-generated description by cubic. -->\n---\n## Summary by cubic\nQueues an awaiting payment reminder for unpaid bookings and cancels it if payment succeeds, giving users time to pay without a premature email. Addresses CAL-2815 with seat-aware reminders and improved success handling after Stripe redirects.\n\n- **New Features**\n  - Configurable delay before sending (default 15 minutes via AWAITING_PAYMENT_EMAIL_DELAY_MINUTES).\n  - Scheduled via background task; canceled on payment success and skipped if the Stripe intent already succeeded.\n  - Seat-specific targeting for seated events; payment link prefilled with attendee info.\n  - Success page hides the awaiting payment state when redirect_status=succeeded.\n\n<sup>Written for commit 67f1bd579bd7491b23cdda61e6ffa77fce4e0a60. Summary will update on new commits.</sup>\n\n<!-- End of auto-generated description by cubic. -->\n\n\r\n",
+    "state": "closed",
+    "merged": true,
+    "user": "dhairyashiil",
+    "created_at": "2025-11-03T22:30:37Z",
+    "updated_at": "2026-01-05T08:10:56Z",
+    "base": "main",
+    "head": "feat/queue-or-cancel-payment-reminder-flow",
+    "merge_commit_sha": "87cf3210dc9eff865ad6e798d038a8be4c7abd97"
+  },
+  "issue_comments": [
+    {
+      "user": "vercel[bot]",
+      "body": "@dhairyashiil is attempting to deploy a commit to the **cal** Team on [Vercel](https://vercel.com).\n\nA member of the Team first needs to [authorize it](https://vercel.com/git/authorize?team=cal&type=github&job=%7B%22headInfo%22%3A%7B%22sha%22%3A%22f2e423681d83f588e584f2a3f3d74718fe0bf908%22%7D%2C%22id%22%3A%22QmfX7yXmTcqzZMpmvKbreid1habzLHU9iUuG7oDuPaWQYT%22%2C%22org%22%3A%22calcom%22%2C%22prId%22%3A24889%2C%22repo%22%3A%22cal.com%22%7D).\n\n",
+      "created_at": "2025-11-03T22:30:43Z"
+    },
+    {
+      "user": "github-actions[bot]",
+      "body": "<!-- GENERATED-E2E-RESULTS -->\n## E2E results are ready!\n- [Workflow #94192.1 latest results](https://calcom.github.io/test-results-2/reports/feat/queue-or-cancel-payment-reminder-flow/20333895646/1)",
+      "created_at": "2025-11-10T18:02:13Z"
+    },
+    {
+      "user": "github-actions[bot]",
+      "body": "This PR has been marked as stale due to inactivity. If you're still working on it or need any help, please let us know or update the PR to keep it active.",
+      "created_at": "2025-11-18T00:25:43Z"
+    },
+    {
+      "user": "dhairyashiil",
+      "body": "Tested Locally, working as expected: \r\n\r\nVideo 1:\r\n\r\n\r\nhttps://github.com/user-attachments/assets/9dd386a6-b2b5-4177-8a00-0309fe4511c5\r\n\r\n\r\n\r\n\r\n\r\nVideo 2: Entry is getting deleted from Tasker\r\n\r\n\r\n\r\nhttps://github.com/user-attachments/assets/b712eaaa-0362-4a5d-9638-b06a8f8931b0\r\n\r\n\r\n\r\nScreenshot of mailhog after above two bookings: only received scheduled event mail, not the payment one\r\n\r\n<img width=\"2560\" height=\"1440\" alt=\"Screenshot 2025-12-22 at 4 25 06 AM (2)\" src=\"https://github.com/user-attachments/assets/debefb07-06b9-45e5-9921-3dc6748d539d\" />\r\n\r\n\r\n\r\nScreenshot of stripe cli:\r\n\r\n\r\n<img width=\"1512\" height=\"982\" alt=\"Screenshot 2025-12-22 at 4 26 46 AM\" src=\"https://github.com/user-attachments/assets/fe69dd80-0350-461b-b2b9-6f39c03cdca6\" />\r\n",
+      "created_at": "2025-12-21T22:56:30Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "cubic-dev-ai[bot]",
+      "body": "<!-- metadata:{\"confidence\":8,\"steps\":[{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'cancelWithReference' packages | head -20\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '1,160p' packages/features/tasker/internal-tasker.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '140,220p' packages/features/tasker/repository.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '40,120p' packages/features/ee/payments/api/webhook.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'sendAwaitingPaymentEmail' packages | head -20\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"findReferences\",\"input\":{\"file\":\"packages/features/tasker/tasker.ts\",\"symbol\":\"cancelWithReference\",\"line\":53}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"goToDefinition\",\"input\":{\"file\":\"packages/app-store/_utils/payments/handlePaymentSuccess.ts\",\"symbol\":\"tasker\",\"line\":11}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '360,420p' packages/app-store/stripepayment/lib/PaymentService.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"true\"}}]}]} -->\nThis catch suppresses real cancellation errors; if tasker.cancelWithReference fails (e.g. DB issue), the reminder task stays scheduled and the user still receives the awaiting-payment email despite paying. Please let unexpected errors propagate so the flow surfaces the failure.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n~~~\nAddress the following comment on packages/app-store/_utils/payments/handlePaymentSuccess.ts at line 28:\n\n<comment>This catch suppresses real cancellation errors; if tasker.cancelWithReference fails (e.g. DB issue), the reminder task stays scheduled and the user still receives the awaiting-payment email despite paying. Please let unexpected errors propagate so the flow surfaces the failure.</comment>\n\n<file context>\n@@ -20,6 +21,15 @@ export async function handlePaymentSuccess(paymentId: number, bookingId: number)\n+  try {\n+    await tasker.cancelWithReference(booking.uid, &quot;sendAwaitingPaymentEmail&quot;);\n+    log.debug(`Cancelled scheduled awaiting payment email for booking ${bookingId}`);\n+  } catch (error) {\n+    // Task might not exist if payment completed very quickly, which is fine\n+    log.debug(`No scheduled awaiting payment email to cancel for booking ${bookingId}`);\n</file context>\n~~~\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/d672d80d-386d-4df7-a0f8-a6ad4672cf50\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+      "path": "packages/app-store/_utils/payments/handlePaymentSuccess.ts",
+      "diff_hunk": "@@ -20,6 +21,15 @@ export async function handlePaymentSuccess(paymentId: number, bookingId: number)\n   log.debug(`handling payment success for bookingId ${bookingId}`);\n   const { booking, user: userWithCredentials, evt, eventType } = await getBooking(bookingId);\n \n+  // Cancel the scheduled awaiting payment email if payment completes before the delay\n+  try {\n+    await tasker.cancelWithReference(booking.uid, \"sendAwaitingPaymentEmail\");\n+    log.debug(`Cancelled scheduled awaiting payment email for booking ${bookingId}`);\n+  } catch (error) {",
+      "line": 33,
+      "created_at": "2025-11-07T05:14:53Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "body": "<!-- metadata:{\"confidence\":9,\"steps\":[{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'sendAwaitingPaymentEmailAndSMS' packages | head -20\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '520,620p' packages/emails/email-manager.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '1,200p' packages/features/bookings/lib/payment/getBooking.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '200,400p' packages/features/bookings/lib/payment/getBooking.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'bookingSeat?.referenceUid' packages | head -20\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'attendeeSeatId' packages | head -20\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -n -F 'bookingMinimalSelect' -n packages -R --include='*.ts' | head -20\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '1,200p' packages/prisma/selects/booking.ts\"}}]}]} -->\nWhen attendeeSeatId is provided this filter always returns an empty array because evt.attendees never exposes bookingSeat (getBooking only provides name/email/timezone/language). That drops every seat-targeted reminder email instead of notifying the attendee.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n~~~\nAddress the following comment on packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts at line 78:\n\n<comment>When attendeeSeatId is provided this filter always returns an empty array because evt.attendees never exposes bookingSeat (getBooking only provides name/email/timezone/language). That drops every seat-targeted reminder email instead of notifying the attendee.</comment>\n\n<file context>\n@@ -0,0 +1,126 @@\n+\n+    // Filter attendees if this is for a specific seat\n+    const attendeesToEmail = attendeeSeatId\n+      ? evt.attendees.filter((attendee) =&gt; attendee.bookingSeat?.referenceUid === attendeeSeatId)\n+      : evt.attendees;\n+\n</file context>\n~~~\n\n</details>\n\n✅ Addressed in [`004a18e`](https://github.com/calcom/cal.com/commit/004a18edefd828c5023f3947280d1cf36ea39672)",
+      "path": "packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts",
+      "diff_hunk": "@@ -0,0 +1,126 @@\n+import { z } from \"zod\";\n+\n+import { sendAwaitingPaymentEmailAndSMS } from \"@calcom/emails\";\n+import { getBooking } from \"@calcom/features/bookings/lib/payment/getBooking\";\n+import { createPaymentLink } from \"@calcom/app-store/stripepayment/lib/client\";\n+import stripe from \"@calcom/features/ee/payments/server/stripe\";\n+import logger from \"@calcom/lib/logger\";\n+import { safeStringify } from \"@calcom/lib/safeStringify\";\n+import prisma from \"@calcom/prisma\";\n+\n+const log = logger.getSubLogger({ prefix: [\"sendAwaitingPaymentEmail\"] });\n+\n+export const sendAwaitingPaymentEmailPayloadSchema = z.object({\n+  bookingId: z.number(),\n+  paymentId: z.number(),\n+  attendeeSeatId: z.string().nullable().optional(),\n+});\n+\n+export async function sendAwaitingPaymentEmail(payload: string): Promise<void> {\n+  try {\n+    const { bookingId, paymentId, attendeeSeatId } = sendAwaitingPaymentEmailPayloadSchema.parse(\n+      JSON.parse(payload)\n+    );\n+\n+    log.debug(`Processing sendAwaitingPaymentEmail task for bookingId ${bookingId}, paymentId ${paymentId}`);\n+\n+    // Fetch current booking state\n+    const { booking, evt, eventType } = await getBooking(bookingId);\n+\n+    // Check payment status in database\n+    const payment = await prisma.payment.findUnique({\n+      where: { id: paymentId },\n+      select: {\n+        success: true,\n+        externalId: true,\n+        app: {\n+          select: {\n+            slug: true,\n+          },\n+        },\n+      },\n+    });\n+\n+    if (!payment) {\n+      log.warn(`Payment ${paymentId} not found, skipping email`);\n+      return;\n+    }\n+\n+    // If payment already succeeded or booking is already paid, skip email\n+    if (payment.success || booking.paid) {\n+      log.debug(\n+        `Payment ${paymentId} already succeeded or booking ${bookingId} already paid, skipping email`\n+      );\n+      return;\n+    }\n+\n+    // Optional: Verify Stripe PaymentIntent status directly for delayed webhook scenarios\n+    if (payment.externalId && payment.app?.slug === \"stripe\") {\n+      try {\n+        const paymentIntent = await stripe.paymentIntents.retrieve(payment.externalId);\n+        if (paymentIntent.status === \"succeeded\") {\n+          log.debug(\n+            `Stripe PaymentIntent ${payment.externalId} already succeeded, skipping email (webhook may be delayed)`\n+          );\n+          return;\n+        }\n+      } catch (error) {\n+        // If we can't retrieve the PaymentIntent, log but continue (might be a different payment type)\n+        log.warn(\n+          `Could not verify Stripe PaymentIntent status for ${payment.externalId}, continuing with email send`,\n+          safeStringify(error)\n+        );\n+      }\n+    }\n+\n+    // Filter attendees if this is for a specific seat\n+    const attendeesToEmail = attendeeSeatId\n+      ? evt.attendees.filter((attendee) => attendee.bookingSeat?.referenceUid === attendeeSeatId)",
+      "line": null,
+      "created_at": "2025-11-07T08:15:53Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "body": "<!-- metadata:{\"confidence\":8,\"steps\":[{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'AWAITING_PAYMENT_EMAIL_DELAY_MINUTES' .\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"node -e \\\"const dayjs=require('dayjs'); console.log(dayjs().add(NaN,'minute').isValid())\\\"\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"codeBaseSearch\",\"input\":{\"request\":\"Search in packages/app-store/stripepayment or related features for \\\"paymentAwaitingEmailDelayMinutes\\\" usage to understand expected type or default handling.\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'sendAwaitingPaymentEmail' packages\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '1,160p' packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'tasker.create(' packages\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '1,160p' packages/features/tasker/tasker.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"node -e \\\"console.log(new Date(Number.NaN).toString())\\\"\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"grep -R --include='*.ts' -n -F 'parseInt(process.env.' packages\"}}]}]} -->\nClamp the fallback delay to a valid number instead of using parseInt, which returns NaN for malformed env values; an Invalid Date here makes Tasker run the reminder immediately instead of after the intended delay.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n~~~\nAddress the following comment on packages/app-store/stripepayment/lib/PaymentService.ts at line 391:\n\n<comment>Clamp the fallback delay to a valid number instead of using parseInt, which returns NaN for malformed env values; an Invalid Date here makes Tasker run the reminder immediately instead of after the intended delay.</comment>\n\n<file context>\n@@ -384,27 +384,26 @@ export class PaymentService implements IAbstractPaymentService {\n+    const delayMinutes =\n+      (eventTypeMetadata?.apps?.stripe as { paymentAwaitingEmailDelayMinutes?: number } | undefined)\n+        ?.paymentAwaitingEmailDelayMinutes ??\n+      parseInt(process.env.AWAITING_PAYMENT_EMAIL_DELAY_MINUTES || &quot;10&quot;, 10);\n \n-    await sendAwaitingPaymentEmailAndSMS(\n</file context>\n~~~\n\n</details>\n\n✅ Addressed in [`c962970`](https://github.com/calcom/cal.com/commit/c962970bfc51033354fae0b6c7d77f8ad3dc132d)",
+      "path": "packages/app-store/stripepayment/lib/PaymentService.ts",
+      "diff_hunk": "@@ -384,27 +384,26 @@ export class PaymentService implements IAbstractPaymentService {\n     paymentData: Payment,\n     eventTypeMetadata?: EventTypeMetadata\n   ): Promise<void> {\n-    const attendeesToEmail = event.attendeeSeatId\n-      ? event.attendees.filter((attendee) => attendee.bookingSeat?.referenceUid === event.attendeeSeatId)\n-      : event.attendees;\n+    // Get delay from event type metadata or environment variable (default: 10 minutes)\n+    const delayMinutes =\n+      (eventTypeMetadata?.apps?.stripe as { paymentAwaitingEmailDelayMinutes?: number } | undefined)\n+        ?.paymentAwaitingEmailDelayMinutes ??\n+      parseInt(process.env.AWAITING_PAYMENT_EMAIL_DELAY_MINUTES || \"10\", 10);",
+      "line": null,
+      "created_at": "2025-11-07T10:08:08Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "body": "<!-- metadata:{\"confidence\":7,\"steps\":[{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"rg --line-number -F sendAwaitingPaymentEmail packages/features/tasker/tasks\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"rg --line-number -F \\\"function createPaymentLink\\\" -n packages -g\\\"*.ts\\\"\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '1,200p' packages/app-store/stripepayment/lib/client/createPaymentLink.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"rg --line-number -F \\\"createPaymentLink({\\\" -n packages\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '330,390p' packages/features/bookings/Booker/components/hooks/useBookings.ts\"}}]},{\"text\":\"\",\"toolCalls\":[{\"toolName\":\"bash\",\"input\":{\"command\":\"sed -n '1,200p' packages/features/bookings/lib/payment/getBooking.ts\"}}]}]} -->\nPayment link is populated with the organizer’s name/email, so attendees who receive the reminder land on a payment page prefilled with the host’s identity instead of their own, which is incorrect for a payer-focused flow. Use the attendee info you already computed (e.g., the first entry in attendeesToEmail) when calling createPaymentLink.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nAddress the following comment on packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts at line 120:\n\n<comment>Payment link is populated with the organizer’s name/email, so attendees who receive the reminder land on a payment page prefilled with the host’s identity instead of their own, which is incorrect for a payer-focused flow. Use the attendee info you already computed (e.g., the first entry in attendeesToEmail) when calling createPaymentLink.</comment>\n\n<file context>\n@@ -0,0 +1,141 @@\n+        paymentInfo: {\n+          link: createPaymentLink({\n+            paymentUid: paymentRecord.uid,\n+            name: booking.user?.name ?? null,\n+            email: booking.user?.email ?? null,\n+            date: booking.startTime.toISOString(),\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`8c4a814`](https://github.com/calcom/cal.com/commit/8c4a814abd29875222066806da7990975f9b78cb)",
+      "path": "packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts",
+      "diff_hunk": "@@ -0,0 +1,141 @@\n+import { z } from \"zod\";\n+\n+import { getBooking } from \"@calcom/features/bookings/lib/payment/getBooking\";\n+import { createPaymentLink } from \"@calcom/app-store/stripepayment/lib/client\";\n+import stripe from \"@calcom/features/ee/payments/server/stripe\";\n+import logger from \"@calcom/lib/logger\";\n+import { safeStringify } from \"@calcom/lib/safeStringify\";\n+import prisma from \"@calcom/prisma\";\n+import { AttendeeRepository } from \"@calcom/features/bookings/repositories/AttendeeRepository\";\n+import { sendAwaitingPaymentEmailAndSMS } from \"@calcom/emails/email-manager\";\n+\n+const log = logger.getSubLogger({ prefix: [\"sendAwaitingPaymentEmail\"] });\n+\n+export const sendAwaitingPaymentEmailPayloadSchema = z.object({\n+  bookingId: z.number(),\n+  paymentId: z.number(),\n+  attendeeSeatId: z.string().nullable().optional(),\n+});\n+\n+export async function sendAwaitingPaymentEmail(payload: string): Promise<void> {\n+  try {\n+    const { bookingId, paymentId, attendeeSeatId } = sendAwaitingPaymentEmailPayloadSchema.parse(\n+      JSON.parse(payload)\n+    );\n+\n+    log.debug(`Processing sendAwaitingPaymentEmail task for bookingId ${bookingId}, paymentId ${paymentId}`);\n+\n+    // Fetch current booking state\n+    const { booking, evt, eventType } = await getBooking(bookingId);\n+\n+    // Check payment status in database\n+    const payment = await prisma.payment.findUnique({\n+      where: { id: paymentId },\n+      select: {\n+        success: true,\n+        externalId: true,\n+        app: {\n+          select: {\n+            slug: true,\n+          },\n+        },\n+      },\n+    });\n+\n+    if (!payment) {\n+      log.warn(`Payment ${paymentId} not found, skipping email`);\n+      return;\n+    }\n+\n+    // If payment already succeeded or booking is already paid, skip email\n+    if (payment.success || booking.paid) {\n+      log.debug(\n+        `Payment ${paymentId} already succeeded or booking ${bookingId} already paid, skipping email`\n+      );\n+      return;\n+    }\n+\n+    // Optional: Verify Stripe PaymentIntent status directly for delayed webhook scenarios\n+    if (payment.externalId && payment.app?.slug === \"stripe\") {\n+      try {\n+        const paymentIntent = await stripe.paymentIntents.retrieve(payment.externalId);\n+        if (paymentIntent.status === \"succeeded\") {\n+          log.debug(\n+            `Stripe PaymentIntent ${payment.externalId} already succeeded, skipping email (webhook may be delayed)`\n+          );\n+          return;\n+        }\n+      } catch (error) {\n+        // If we can't retrieve the PaymentIntent, log but continue (might be a different payment type)\n+        log.warn(\n+          `Could not verify Stripe PaymentIntent status for ${payment.externalId}, continuing with email send`,\n+          safeStringify(error)\n+        );\n+      }\n+    }\n+\n+    // Filter attendees if this is for a specific seat\n+    let attendeesToEmail = evt.attendees;\n+    if (attendeeSeatId) {\n+      const attendeeRepository = new AttendeeRepository(prisma);\n+      const seatAttendees = await attendeeRepository.findByBookingIdAndSeatReference(\n+        bookingId,\n+        attendeeSeatId\n+      );\n+      const seatEmails = new Set(seatAttendees.map((a) => (a.email || \"\").toLowerCase()));\n+      attendeesToEmail = evt.attendees.filter((attendee) =>\n+        seatEmails.has((attendee.email || \"\").toLowerCase())\n+      );\n+\n+      if (attendeesToEmail.length === 0) {\n+        log.warn(`No attendees found for seat ${attendeeSeatId} in booking ${bookingId}, skipping email`);\n+        return;\n+      }\n+    }\n+\n+    // Get payment details needed for the email\n+    const paymentRecord = await prisma.payment.findUnique({\n+      where: { id: paymentId },\n+      select: {\n+        uid: true,\n+        paymentOption: true,\n+        amount: true,\n+        currency: true,\n+      },\n+    });\n+\n+    if (!paymentRecord) {\n+      log.warn(`Payment ${paymentId} not found when fetching payment details, skipping email`);\n+      return;\n+    }\n+\n+    // Send the awaiting payment email\n+    await sendAwaitingPaymentEmailAndSMS(\n+      {\n+        ...evt,\n+        attendees: attendeesToEmail,\n+        paymentInfo: {\n+          link: createPaymentLink({\n+            paymentUid: paymentRecord.uid,\n+            name: booking.user?.name ?? null,",
+      "line": null,
+      "created_at": "2025-11-24T15:40:45Z"
+    },
+    {
+      "user": "Ryukemeister",
+      "body": "`payment_intent` and `payment_intent_client_secret` are not being used anywhere, and its not a good practise to expose client secret in the frontend hence removing these",
+      "path": "apps/web/modules/bookings/views/bookings-single-view.tsx",
+      "diff_hunk": "@@ -80,6 +80,10 @@ const querySchema = z.object({\n   seatReferenceUid: z.string().optional(),\n   rating: z.string().optional(),\n   noShow: stringToBoolean,\n+  // Stripe redirect parameters\n+  redirect_status: z.string().optional(),\n+  payment_intent: z.string().optional(),",
+      "line": null,
+      "created_at": "2025-12-18T10:24:36Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**1 issue found** across 7 files\n\n<details>\n<summary>Prompt for AI agents (all 1 issues)</summary>\n\n~~~\n\nUnderstand the root cause of the following 1 issues and fix them.\n\n\n<file name=\"packages/app-store/_utils/payments/handlePaymentSuccess.ts\">\n\n<violation number=\"1\" location=\"packages/app-store/_utils/payments/handlePaymentSuccess.ts:28\">\nThis catch suppresses real cancellation errors; if tasker.cancelWithReference fails (e.g. DB issue), the reminder task stays scheduled and the user still receives the awaiting-payment email despite paying. Please let unexpected errors propagate so the flow surfaces the failure.</violation>\n</file>\n~~~\n\n</details>\n\n<sub>React with 👍 or 👎 to teach cubic. Mention `@cubic-dev-ai` to give feedback, ask questions, or re-run the review.</sub>",
+      "submitted_at": "2025-11-07T05:14:53Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**1 issue found** across 9 files\n\n<details>\n<summary>Prompt for AI agents (all 1 issues)</summary>\n\n~~~\n\nUnderstand the root cause of the following 1 issues and fix them.\n\n\n<file name=\"packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts\">\n\n<violation number=\"1\" location=\"packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts:78\">\nWhen attendeeSeatId is provided this filter always returns an empty array because evt.attendees never exposes bookingSeat (getBooking only provides name/email/timezone/language). That drops every seat-targeted reminder email instead of notifying the attendee.</violation>\n</file>\n~~~\n\n</details>\n\n<sub>React with 👍 or 👎 to teach cubic. Mention `@cubic-dev-ai` to give feedback, ask questions, or re-run the review.</sub>",
+      "submitted_at": "2025-11-07T08:15:53Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**1 issue found** across 9 files\n\n<details>\n<summary>Prompt for AI agents (all 1 issues)</summary>\n\n~~~\n\nUnderstand the root cause of the following 1 issues and fix them.\n\n\n<file name=\"packages/app-store/stripepayment/lib/PaymentService.ts\">\n\n<violation number=\"1\" location=\"packages/app-store/stripepayment/lib/PaymentService.ts:391\">\nClamp the fallback delay to a valid number instead of using parseInt, which returns NaN for malformed env values; an Invalid Date here makes Tasker run the reminder immediately instead of after the intended delay.</violation>\n</file>\n~~~\n\n</details>\n\n<sub>React with 👍 or 👎 to teach cubic. Mention `@cubic-dev-ai` to give feedback, ask questions, or re-run the review.</sub>",
+      "submitted_at": "2025-11-07T10:08:08Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**No issues found** across 10 files",
+      "submitted_at": "2025-11-07T10:37:00Z"
+    },
+    {
+      "user": "pallava-joshi",
+      "state": "DISMISSED",
+      "body": "please remove all the comments, rest all LGTM.",
+      "submitted_at": "2025-11-10T17:23:30Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**No issues found** across 11 files",
+      "submitted_at": "2025-11-19T12:06:40Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**1 issue found** across 11 files\n\n<details>\n<summary>Prompt for AI agents (all 1 issues)</summary>\n\n```text\n\nUnderstand the root cause of the following 1 issues and fix them.\n\n\n<file name=\"packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts\">\n\n<violation number=\"1\" location=\"packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts:120\">\nPayment link is populated with the organizer’s name/email, so attendees who receive the reminder land on a payment page prefilled with the host’s identity instead of their own, which is incorrect for a payer-focused flow. Use the attendee info you already computed (e.g., the first entry in attendeesToEmail) when calling createPaymentLink.</violation>\n</file>\n```\n\n</details>\n\n<sub>Reply to cubic to teach it or ask questions. Re-run a review with `@cubic-dev-ai review this PR`</sub>",
+      "submitted_at": "2025-11-24T15:40:45Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**No issues found** across 11 files",
+      "submitted_at": "2025-12-04T18:17:54Z"
+    },
+    {
+      "user": "Ryukemeister",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2025-12-18T10:24:36Z"
+    },
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**No issues found** across 14 files",
+      "submitted_at": "2025-12-18T19:14:54Z"
+    },
+    {
+      "user": "Ryukemeister",
+      "state": "DISMISSED",
+      "body": "",
+      "submitted_at": "2025-12-22T09:22:25Z"
+    },
+    {
+      "user": "Ryukemeister",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-01-05T08:07:47Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "f2e423681d83f588e584f2a3f3d74718fe0bf908",
+      "message": "feat: queue or cancel payment reminder flow",
+      "author": "Dhairyashil",
+      "date": "2025-11-03T22:29:25Z"
+    },
+    {
+      "sha": "032e791e91f33a20317ac9db7e00d4101061e492",
+      "message": "Merge remote-tracking branch 'upstream/main' into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Dhairyashil",
+      "date": "2025-11-07T03:39:30Z"
+    },
+    {
+      "sha": "911ab8b5c514672e60301738cc7428a83e9454d2",
+      "message": "redirect correctly to success and awaiting booking display pages",
+      "author": "Dhairyashil",
+      "date": "2025-11-07T07:44:05Z"
+    },
+    {
+      "sha": "cac5a1c6038bf03ae8a50540834a799c48abc751",
+      "message": "fix failing type check",
+      "author": "Dhairyashil",
+      "date": "2025-11-07T07:56:09Z"
+    },
+    {
+      "sha": "004a18edefd828c5023f3947280d1cf36ea39672",
+      "message": "addess cubic comment about seated event attendee filtertring",
+      "author": "Dhairyashil",
+      "date": "2025-11-07T10:22:29Z"
+    },
+    {
+      "sha": "ebba530a5ee6b3bc927204513ece334126a58539",
+      "message": "Merge branch 'main' into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Pallav",
+      "date": "2025-11-10T17:21:59Z"
+    },
+    {
+      "sha": "95d703f4ed12a33f56abee986b6138b0304fcec7",
+      "message": "resolved merge conflicts",
+      "author": "Dhairyashil",
+      "date": "2025-11-19T11:45:31Z"
+    },
+    {
+      "sha": "9e8066ec10f0ed4208e5840a63c753283bd41f97",
+      "message": "chore: update email imports after merge with main",
+      "author": "Dhairyashil",
+      "date": "2025-11-19T11:51:37Z"
+    },
+    {
+      "sha": "32551528797c1ce099ac3e6aefa78c0b3af4ac1e",
+      "message": "Merge branch 'main' into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Pallav",
+      "date": "2025-11-24T15:29:01Z"
+    },
+    {
+      "sha": "8c4a814abd29875222066806da7990975f9b78cb",
+      "message": "fix: use attendee info instead of organizer info for payment link pre-fill",
+      "author": "Dhairyashil",
+      "date": "2025-11-24T20:34:46Z"
+    },
+    {
+      "sha": "f570f59c7a59ead04e6dff6d59b75a5a722575b9",
+      "message": "Merge branch 'feat/queue-or-cancel-payment-reminder-flow' of https://github.com/dhairyashiil/cal.com into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Dhairyashil",
+      "date": "2025-11-24T20:35:51Z"
+    },
+    {
+      "sha": "274ad2373c2e591c79ef349e67aa67e4fca7e785",
+      "message": "Merge branch 'main' into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Dhairyashil Shinde",
+      "date": "2025-12-04T18:14:00Z"
+    },
+    {
+      "sha": "f25ac0fa2893734256ab44a43e142d207b41f89e",
+      "message": "chore: merge main into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Dhairyashil",
+      "date": "2025-12-12T15:54:08Z"
+    },
+    {
+      "sha": "f26351980da1264203afdf42ce2c8893c2f7525c",
+      "message": "Merge branch 'feat/queue-or-cancel-payment-reminder-flow' of https://github.com/dhairyashiil/cal.com into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Dhairyashil",
+      "date": "2025-12-12T15:54:40Z"
+    },
+    {
+      "sha": "925776d152bdd983d36ca97255cc7ed748806aec",
+      "message": "chore: merge main into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Dhairyashil",
+      "date": "2025-12-18T08:12:08Z"
+    },
+    {
+      "sha": "eade38accd18b9557b16b9fe5ce7402c4033e0d3",
+      "message": "chore: cleanup unused variables",
+      "author": "Ryukemeister",
+      "date": "2025-12-18T10:23:43Z"
+    },
+    {
+      "sha": "73524e834b12800babf971a8449f84688951c9b2",
+      "message": "fixup: remove comments, improve variable naming",
+      "author": "Ryukemeister",
+      "date": "2025-12-18T10:28:29Z"
+    },
+    {
+      "sha": "ae66cd7647110243ba8ebc8346fe5abc7748ba7b",
+      "message": "chore: cleanup unused comments and simplify logic",
+      "author": "Ryukemeister",
+      "date": "2025-12-18T12:56:14Z"
+    },
+    {
+      "sha": "536b5dc8ec5847cf1018cdd476e503ad08599719",
+      "message": "chore: update booking payment repository",
+      "author": "Ryukemeister",
+      "date": "2025-12-18T19:09:08Z"
+    },
+    {
+      "sha": "98e3ef00711d045e1870fb3a8d3a3f096326161d",
+      "message": "chore: accept delay minutes as number instead of string",
+      "author": "Ryukemeister",
+      "date": "2025-12-18T19:10:12Z"
+    },
+    {
+      "sha": "554f5d7afb747c70b9059dcbb5e71361b2f79de0",
+      "message": "refactor",
+      "author": "Ryukemeister",
+      "date": "2025-12-18T19:10:50Z"
+    },
+    {
+      "sha": "75e04dfde345d171ce1b5d0acf7d8b45ccaed66d",
+      "message": "fix: resolve merge conflicts",
+      "author": "Ryukemeister",
+      "date": "2025-12-18T19:22:29Z"
+    },
+    {
+      "sha": "68598757d8f4577a1ffd30785f416c2799eb0aa8",
+      "message": "Merge branch 'main' into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Rajiv Sahal",
+      "date": "2025-12-18T19:23:46Z"
+    },
+    {
+      "sha": "f7f8d2445a2daebfe4d7a659caa8bf201b00f326",
+      "message": "fixup",
+      "author": "Ryukemeister",
+      "date": "2025-12-18T19:27:50Z"
+    },
+    {
+      "sha": "f2b041f98cf331b90647872ff59ec809e6b227f7",
+      "message": "cleanup",
+      "author": "Ryukemeister",
+      "date": "2025-12-19T07:05:44Z"
+    },
+    {
+      "sha": "056321a25c3dc88ce78a688d6641d532ddf10ab5",
+      "message": "fix: breaking builds",
+      "author": "Ryukemeister",
+      "date": "2025-12-22T09:19:50Z"
+    },
+    {
+      "sha": "eceb4b6d0d57a816151f7ab5a95eaa059ba4be3b",
+      "message": "Merge branch 'main' into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Rajiv Sahal",
+      "date": "2025-12-22T09:21:05Z"
+    },
+    {
+      "sha": "dd440a4a2a459b400ebfcac12bb2d41af1b1511d",
+      "message": "Merge branch 'main' into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Peer Richelsen",
+      "date": "2025-12-22T14:10:14Z"
+    },
+    {
+      "sha": "fbe26ec7da431a262e51882f6cb50156910165f6",
+      "message": "Merge branch 'main' into feat/queue-or-cancel-payment-reminder-flow",
+      "author": "Pallav",
+      "date": "2025-12-23T14:59:18Z"
+    },
+    {
+      "sha": "c962970bfc51033354fae0b6c7d77f8ad3dc132d",
+      "message": "fix: type check",
+      "author": "Ryukemeister",
+      "date": "2026-01-05T08:02:58Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".env.example",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "patch": "@@ -261,6 +261,9 @@ EMAIL_SERVER_PORT=1025\n ## @see https://support.google.com/accounts/answer/185833\n # EMAIL_SERVER_PASSWORD='<gmail_app_password>'\n \n+# queue or cancel payment reminder email/flow\n+AWAITING_PAYMENT_EMAIL_DELAY_MINUTES=\n+\n # Used for E2E for email testing\n # Set it to \"1\" if you need to email checks in E2E tests locally\n # Make sure to run mailhog container manually or with `yarn dx`"
+    },
+    {
+      "filename": "apps/web/modules/bookings/views/bookings-single-view.tsx",
+      "status": "modified",
+      "additions": 9,
+      "deletions": 4,
+      "changes": 13,
+      "patch": "@@ -79,6 +79,7 @@ const querySchema = z.object({\n   seatReferenceUid: z.string().optional(),\n   rating: z.string().optional(),\n   noShow: stringToBoolean,\n+  redirect_status: z.string().optional(),\n });\n \n const useBrandColors = ({\n@@ -120,6 +121,7 @@ export default function Success(props: PageProps) {\n     seatReferenceUid,\n     noShow,\n     rating,\n+    redirect_status,\n   } = querySchema.parse(routerQuery);\n \n   const attendeeTimeZone = bookingInfo?.attendees.find((attendee) => attendee.email === email)?.timeZone;\n@@ -148,7 +150,10 @@ export default function Success(props: PageProps) {\n   const status = bookingInfo?.status;\n   const reschedule = bookingInfo.status === BookingStatus.ACCEPTED;\n   const cancellationReason = bookingInfo.cancellationReason || bookingInfo.rejectionReason;\n-  const isAwaitingPayment = props.paymentStatus && !props.paymentStatus.success;\n+\n+  const isPaymentSucceededFromRedirect = redirect_status === \"succeeded\";\n+  const isAwaitingPayment =\n+    props.paymentStatus && !props.paymentStatus.success && !isPaymentSucceededFromRedirect;\n \n   const attendees = bookingInfo?.attendees;\n \n@@ -499,7 +504,7 @@ export default function Success(props: PageProps) {\n                 {!isFeedbackMode && (\n                   <>\n                     <div\n-                      className={classNames(isRoundRobin && \"relative mx-auto h-24 min-h-24 w-32 min-w-32\")}>\n+                      className={classNames(isRoundRobin && \"min-h-24 min-w-32 relative mx-auto h-24 w-32\")}>\n                       {isRoundRobin && bookingInfo.user && (\n                         <Avatar\n                           className=\"mx-auto flex items-center justify-center\"\n@@ -549,7 +554,7 @@ export default function Success(props: PageProps) {\n                         (bookingInfo.status === BookingStatus.CANCELLED ||\n                           bookingInfo.status === BookingStatus.REJECTED) && <h4>{paymentStatusMessage}</h4>}\n \n-                      <div className=\"border-subtle text-default mt-8 grid grid-cols-3 gap-x-4 border-t pt-8 text-left sm:gap-x-0 rtl:text-right\">\n+                      <div className=\"border-subtle text-default mt-8 grid grid-cols-3 gap-x-4 border-t pt-8 text-left rtl:text-right sm:gap-x-0\">\n                         {(isCancelled || reschedule) && cancellationReason && (\n                           <>\n                             <div className=\"font-medium\">\n@@ -1084,7 +1089,7 @@ export default function Success(props: PageProps) {\n               </div>\n               {isGmail && !isFeedbackMode && (\n                 <Alert\n-                  className=\"main -mb-20 mt-4 inline-block sm:-mt-4 sm:mb-4 sm:w-full sm:max-w-xl sm:align-middle ltr:text-left rtl:text-right\"\n+                  className=\"main -mb-20 mt-4 inline-block ltr:text-left rtl:text-right sm:-mt-4 sm:mb-4 sm:w-full sm:max-w-xl sm:align-middle\"\n                   severity=\"warning\"\n                   message={\n                     <div>"
+    },
+    {
+      "filename": "packages/app-store/_utils/payments/handlePaymentSuccess.ts",
+      "status": "modified",
+      "additions": 11,
+      "deletions": 0,
+      "changes": 11,
+      "patch": "@@ -8,6 +8,7 @@ import { handleConfirmation } from \"@calcom/features/bookings/lib/handleConfirma\n import { getBooking } from \"@calcom/features/bookings/lib/payment/getBooking\";\n import { getPlatformParams } from \"@calcom/features/platform-oauth-client/get-platform-params\";\n import { PlatformOAuthClientRepository } from \"@calcom/features/platform-oauth-client/platform-oauth-client.repository\";\n+import tasker from \"@calcom/features/tasker\";\n import { HttpError as HttpCode } from \"@calcom/lib/http-error\";\n import logger from \"@calcom/lib/logger\";\n import type { TraceContext } from \"@calcom/lib/tracing\";\n@@ -26,6 +27,16 @@ export async function handlePaymentSuccess(paymentId: number, bookingId: number,\n   log.debug(`handling payment success for bookingId ${bookingId}`);\n   const { booking, user: userWithCredentials, evt, eventType } = await getBooking(bookingId);\n \n+  try {\n+    await tasker.cancelWithReference(booking.uid, \"sendAwaitingPaymentEmail\");\n+    log.debug(`Cancelled scheduled awaiting payment email for booking ${bookingId}`);\n+  } catch (error) {\n+    log.warn(\n+      { bookingId, error },\n+      `Failed to cancel awaiting payment task - email may still be sent but will be suppressed by task handler`\n+    );\n+  }\n+\n   if (booking.location) evt.location = booking.location;\n \n   const bookingData: Prisma.BookingUpdateInput = {"
+    },
+    {
+      "filename": "packages/app-store/stripepayment/lib/PaymentService.ts",
+      "status": "modified",
+      "additions": 17,
+      "deletions": 22,
+      "changes": 39,
+      "patch": "@@ -2,21 +2,21 @@ import Stripe from \"stripe\";\n import { v4 as uuidv4 } from \"uuid\";\n import z from \"zod\";\n \n-import { sendAwaitingPaymentEmailAndSMS } from \"@calcom/emails/email-manager\";\n+import dayjs from \"@calcom/dayjs\";\n import { BookingRepository } from \"@calcom/features/bookings/repositories/BookingRepository\";\n+import tasker from \"@calcom/features/tasker\";\n import { ErrorCode } from \"@calcom/lib/errorCodes\";\n import { ErrorWithCode } from \"@calcom/lib/errors\";\n import logger from \"@calcom/lib/logger\";\n-import { getServerErrorFromUnknown } from \"@calcom/lib/server/getServerErrorFromUnknown\";\n import { safeStringify } from \"@calcom/lib/safeStringify\";\n+import { getServerErrorFromUnknown } from \"@calcom/lib/server/getServerErrorFromUnknown\";\n import prisma from \"@calcom/prisma\";\n import type { Booking, Payment, PaymentOption, Prisma } from \"@calcom/prisma/client\";\n import type { EventTypeMetadata } from \"@calcom/prisma/zod-utils\";\n import type { CalendarEvent } from \"@calcom/types/Calendar\";\n import type { IAbstractPaymentService } from \"@calcom/types/PaymentService\";\n \n import { paymentOptionEnum } from \"../zod\";\n-import { createPaymentLink } from \"./client\";\n import { retrieveOrCreateStripeCustomerByEmail } from \"./customer\";\n import type { StripePaymentData, StripeSetupIntentData } from \"./server\";\n \n@@ -382,29 +382,24 @@ export class PaymentService implements IAbstractPaymentService {\n       uid: string;\n     },\n     paymentData: Payment,\n-    eventTypeMetadata?: EventTypeMetadata\n+    _eventTypeMetadata?: EventTypeMetadata\n   ): Promise<void> {\n-    const attendeesToEmail = event.attendeeSeatId\n-      ? event.attendees.filter((attendee) => attendee.bookingSeat?.referenceUid === event.attendeeSeatId)\n-      : event.attendees;\n+    const delayMinutes = Number(process.env.AWAITING_PAYMENT_EMAIL_DELAY_MINUTES) || 15;\n+    const scheduledEmailAt = dayjs().add(delayMinutes, \"minutes\").toDate();\n \n-    await sendAwaitingPaymentEmailAndSMS(\n+    // we give the user 15 minutes to complete the payment\n+    // if the payment is still not processed after 15 minutes, we send an awaiting payment email\n+    await tasker.create(\n+      \"sendAwaitingPaymentEmail\",\n       {\n-        ...event,\n-        attendees: attendeesToEmail,\n-        paymentInfo: {\n-          link: createPaymentLink({\n-            paymentUid: paymentData.uid,\n-            name: booking.user?.name,\n-            email: booking.user?.email,\n-            date: booking.startTime.toISOString(),\n-          }),\n-          paymentOption: paymentData.paymentOption || \"ON_BOOKING\",\n-          amount: paymentData.amount,\n-          currency: paymentData.currency,\n-        },\n+        bookingId: booking.id,\n+        paymentId: paymentData.id,\n+        attendeeSeatId: event.attendeeSeatId || null,\n       },\n-      eventTypeMetadata\n+      {\n+        scheduledAt: scheduledEmailAt,\n+        referenceUid: booking.uid,\n+      }\n     );\n   }\n "
+    },
+    {
+      "filename": "packages/features/bookings/repositories/AttendeeRepository.ts",
+      "status": "modified",
+      "additions": 28,
+      "deletions": 13,
+      "changes": 41,
+      "patch": "@@ -1,24 +1,39 @@\n import type { PrismaClient } from \"@calcom/prisma\";\n+\n import type { IAttendeeRepository } from \"./IAttendeeRepository\";\n \n /**\n  * Prisma-based implementation of IAttendeeRepository\n- * \n+ *\n  * This repository provides methods for looking up attendee information.\n  */\n export class AttendeeRepository implements IAttendeeRepository {\n-    constructor(private prismaClient: PrismaClient) {}\n+  constructor(private prismaClient: PrismaClient) {}\n \n-    async findById(id: number): Promise<{ name: string; email: string } | null> {\n-        const attendee = await this.prismaClient.attendee.findUnique({\n-            where: { id },\n-            select: {\n-                name: true,\n-                email: true,\n-            },\n-        });\n+  async findById(id: number): Promise<{ name: string; email: string } | null> {\n+    const attendee = await this.prismaClient.attendee.findUnique({\n+      where: { id },\n+      select: {\n+        name: true,\n+        email: true,\n+      },\n+    });\n \n-        return attendee;\n-    }\n-}\n+    return attendee;\n+  }\n \n+  async findByBookingIdAndSeatReference(\n+    bookingId: number,\n+    seatReferenceUid: string\n+  ): Promise<{ email: string }[]> {\n+    return this.prismaClient.attendee.findMany({\n+      where: {\n+        bookingId,\n+        bookingSeat: {\n+          referenceUid: seatReferenceUid,\n+        },\n+      },\n+      select: { email: true },\n+    });\n+  }\n+}"
+    },
+    {
+      "filename": "packages/features/tasker/tasker.ts",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 0,
+      "changes": 4,
+      "patch": "@@ -2,6 +2,7 @@ import type { z } from \"zod\";\n \n import type { FORM_SUBMITTED_WEBHOOK_RESPONSES } from \"@calcom/app-store/routing-forms/lib/formSubmissionUtils\";\n import type { BookingAuditTaskConsumerPayload } from \"@calcom/features/booking-audit/lib/types/bookingAuditTask\";\n+\n export type TaskerTypes = \"internal\" | \"redis\";\n type TaskPayloads = {\n   sendWebhook: string;\n@@ -38,6 +39,9 @@ type TaskPayloads = {\n     routedEventTypeId?: number | null;\n   };\n   bookingAudit: BookingAuditTaskConsumerPayload;\n+  sendAwaitingPaymentEmail: z.infer<\n+    typeof import(\"./tasks/sendAwaitingPaymentEmail\").sendAwaitingPaymentEmailPayloadSchema\n+  >;\n };\n export type TaskTypes = keyof TaskPayloads;\n export type TaskHandler = (payload: string, taskId?: string) => Promise<void>;"
+    },
+    {
+      "filename": "packages/features/tasker/tasks/index.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "patch": "@@ -30,6 +30,8 @@ const tasks: Record<TaskTypes, () => Promise<TaskHandler>> = {\n   sendAnalyticsEvent: () =>\n     import(\"./analytics/sendAnalyticsEvent\").then((module) => module.sendAnalyticsEvent),\n   executeAIPhoneCall: () => import(\"./executeAIPhoneCall\").then((module) => module.executeAIPhoneCall),\n+  sendAwaitingPaymentEmail: () =>\n+    import(\"./sendAwaitingPaymentEmail\").then((module) => module.sendAwaitingPaymentEmail),\n   bookingAudit: () => import(\"./bookingAudit\").then((module) => module.bookingAudit),\n };\n "
+    },
+    {
+      "filename": "packages/features/tasker/tasks/sendAwaitingPaymentEmail.ts",
+      "status": "added",
+      "additions": 123,
+      "deletions": 0,
+      "changes": 123,
+      "patch": "@@ -0,0 +1,123 @@\n+import { z } from \"zod\";\n+\n+import { createPaymentLink } from \"@calcom/app-store/stripepayment/lib/client\";\n+import { sendAwaitingPaymentEmailAndSMS } from \"@calcom/emails/email-manager\";\n+import { getBooking } from \"@calcom/features/bookings/lib/payment/getBooking\";\n+import { AttendeeRepository } from \"@calcom/features/bookings/repositories/AttendeeRepository\";\n+import stripe from \"@calcom/features/ee/payments/server/stripe\";\n+import logger from \"@calcom/lib/logger\";\n+import { safeStringify } from \"@calcom/lib/safeStringify\";\n+import { PrismaBookingPaymentRepository } from \"@calcom/lib/server/repository/PrismaBookingPaymentRepository\";\n+import prisma from \"@calcom/prisma\";\n+\n+const log = logger.getSubLogger({ prefix: [\"sendAwaitingPaymentEmail\"] });\n+\n+export const sendAwaitingPaymentEmailPayloadSchema = z.object({\n+  bookingId: z.number(),\n+  paymentId: z.number(),\n+  attendeeSeatId: z.string().nullable().optional(),\n+});\n+\n+export async function sendAwaitingPaymentEmail(payload: string): Promise<void> {\n+  const paymentRepository = new PrismaBookingPaymentRepository();\n+\n+  try {\n+    const { bookingId, paymentId, attendeeSeatId } = sendAwaitingPaymentEmailPayloadSchema.parse(\n+      JSON.parse(payload)\n+    );\n+\n+    log.debug(`Processing sendAwaitingPaymentEmail task for bookingId ${bookingId}, paymentId ${paymentId}`);\n+\n+    const { booking, evt, eventType } = await getBooking(bookingId);\n+\n+    const payment = await paymentRepository.findByIdForAwaitingPaymentEmail(paymentId);\n+\n+    if (!payment) {\n+      log.warn(`Payment ${paymentId} not found, skipping email`);\n+      return;\n+    }\n+\n+    if (payment.success || booking.paid) {\n+      log.debug(\n+        `Payment ${paymentId} already succeeded or booking ${bookingId} already paid, skipping email`\n+      );\n+      return;\n+    }\n+\n+    // verify stripe payment intent status directly in case of a delayed webhook scenario\n+    if (payment.externalId && payment.app?.slug === \"stripe\") {\n+      try {\n+        const paymentIntent = await stripe.paymentIntents.retrieve(payment.externalId);\n+        if (paymentIntent.status === \"succeeded\") {\n+          log.debug(\n+            `Stripe PaymentIntent ${payment.externalId} already succeeded, skipping email (webhook may be delayed)`\n+          );\n+          return;\n+        }\n+      } catch (error) {\n+        log.warn(\n+          `Could not verify Stripe PaymentIntent status for ${payment.externalId}, continuing with email send`,\n+          safeStringify(error)\n+        );\n+      }\n+    }\n+\n+    // filter attendees if this is for a specific seat\n+    let attendeesToEmail = evt.attendees;\n+    if (attendeeSeatId) {\n+      const attendeeRepository = new AttendeeRepository(prisma);\n+      const seatAttendees = await attendeeRepository.findByBookingIdAndSeatReference(\n+        bookingId,\n+        attendeeSeatId\n+      );\n+      const seatEmails = new Set(seatAttendees.map((a) => (a.email || \"\").toLowerCase()));\n+      attendeesToEmail = evt.attendees.filter((attendee) =>\n+        seatEmails.has((attendee.email || \"\").toLowerCase())\n+      );\n+\n+      if (attendeesToEmail.length === 0) {\n+        log.warn(`No attendees found for seat ${attendeeSeatId} in booking ${bookingId}, skipping email`);\n+        return;\n+      }\n+    }\n+\n+    /*\n+      the reason why we use the first attendee's info for the payment link is because:\n+      1. for regular bookings: the first attendee in the array is typically the booker (the person who made the booking and is responsible for payment)\n+      2. for seated events: after filtering by attendeeSeatId, there's usually only one attendee anyway\n+    */\n+    const primaryAttendee = attendeesToEmail[0];\n+\n+    if (!primaryAttendee) {\n+      log.warn(`No attendees found for booking ${bookingId}, skipping email`);\n+      return;\n+    }\n+\n+    await sendAwaitingPaymentEmailAndSMS(\n+      {\n+        ...evt,\n+        attendees: attendeesToEmail,\n+        paymentInfo: {\n+          link: createPaymentLink({\n+            paymentUid: payment.uid,\n+            name: primaryAttendee.name ?? null,\n+            email: primaryAttendee.email ?? null,\n+            date: booking.startTime.toISOString(),\n+          }),\n+          paymentOption: payment.paymentOption || \"ON_BOOKING\",\n+          amount: payment.amount,\n+          currency: payment.currency,\n+        },\n+      },\n+      eventType.metadata\n+    );\n+\n+    log.debug(`Successfully sent awaiting payment email for bookingId ${bookingId}`);\n+  } catch (error) {\n+    log.error(\n+      `Failed to send awaiting payment email`,\n+      safeStringify({ payload, error: error instanceof Error ? error.message : String(error) })\n+    );\n+    throw error;\n+  }\n+}"
+    },
+    {
+      "filename": "packages/lib/server/repository/BookingPaymentRepository.interface.ts",
+      "status": "modified",
+      "additions": 17,
+      "deletions": 2,
+      "changes": 19,
+      "patch": "@@ -1,3 +1,4 @@\n+import type { Payment, PaymentOption, Prisma } from \"@calcom/prisma/client\";\n import type { JsonValue } from \"@calcom/types/Json\";\n \n export interface BookingPaymentWithCredentials {\n@@ -24,7 +25,19 @@ export interface CreatePaymentData {\n   refunded: boolean;\n   success: boolean;\n   currency: string;\n-  data: Record<string, any>;\n+  data: Prisma.InputJsonValue;\n+}\n+\n+export interface PaymentForAwaitingEmail {\n+  success: boolean;\n+  externalId: string | null;\n+  uid: string;\n+  paymentOption: PaymentOption | null;\n+  amount: number;\n+  currency: string;\n+  app: {\n+    slug: string | null;\n+  } | null;\n }\n \n export interface IBookingPaymentRepository {\n@@ -33,5 +46,7 @@ export interface IBookingPaymentRepository {\n     credentialType: string\n   ): Promise<BookingPaymentWithCredentials | null>;\n \n-  createPaymentRecord(data: CreatePaymentData): Promise<any>;\n+  createPaymentRecord(data: CreatePaymentData): Promise<Payment>;\n+\n+  findByIdForAwaitingPaymentEmail(id: number): Promise<PaymentForAwaitingEmail | null>;\n }"
+    },
+    {
+      "filename": "packages/lib/server/repository/PrismaBookingPaymentRepository.ts",
+      "status": "modified",
+      "additions": 20,
+      "deletions": 0,
+      "changes": 20,
+      "patch": "@@ -5,6 +5,7 @@ import type {\n   IBookingPaymentRepository,\n   BookingPaymentWithCredentials,\n   CreatePaymentData,\n+  PaymentForAwaitingEmail,\n } from \"./BookingPaymentRepository.interface\";\n \n export class PrismaBookingPaymentRepository implements IBookingPaymentRepository {\n@@ -45,4 +46,23 @@ export class PrismaBookingPaymentRepository implements IBookingPaymentRepository\n     });\n     return createdPayment;\n   }\n+\n+  async findByIdForAwaitingPaymentEmail(id: number): Promise<PaymentForAwaitingEmail | null> {\n+    return await this.prismaClient.payment.findUnique({\n+      where: { id },\n+      select: {\n+        success: true,\n+        externalId: true,\n+        uid: true,\n+        paymentOption: true,\n+        amount: true,\n+        currency: true,\n+        app: {\n+          select: {\n+            slug: true,\n+          },\n+        },\n+      },\n+    });\n+  }\n }"
+    },
+    {
+      "filename": "packages/types/environment.d.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "patch": "@@ -34,6 +34,7 @@ declare namespace NodeJS {\n     readonly STRIPE_TEAM_PRODUCT_ID: `prod_${string}` | undefined;\n     readonly PAYMENT_FEE_PERCENTAGE: number | undefined;\n     readonly PAYMENT_FEE_FIXED: number | undefined;\n+    readonly AWAITING_PAYMENT_EMAIL_DELAY_MINUTES: number | undefined;\n     readonly NEXT_PUBLIC_INTERCOM_APP_ID: string | undefined;\n     readonly NEXT_PUBLIC_POSTHOG_KEY: string | undefined;\n     readonly NEXT_PUBLIC_POSTHOG_HOST: string | undefined;"
+    },
+    {
+      "filename": "turbo.json",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "patch": "@@ -4,6 +4,7 @@\n   \"globalEnv\": [\n     \"ALLOWED_HOSTNAMES\",\n     \"ANALYZE\",\n+    \"AWAITING_PAYMENT_EMAIL_DELAY_MINUTES\",\n     \"API_KEY_PREFIX\",\n     \"ATOMS_E2E_API_URL\",\n     \"ATOMS_E2E_OAUTH_CLIENT_ID\","
+    }
+  ]
+}

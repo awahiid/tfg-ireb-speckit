@@ -1,0 +1,203 @@
+{
+  "pr": {
+    "number": 26638,
+    "title": "Add activity logging for explicit user logout",
+    "body": "## Scope\r\n\r\nWhat's changed:\r\n\r\n- Added `LOGOUT` action type to the Action enum in `@directus/constants`\r\n- Added activity logging to `authenticationService.logout()` in `api/src/services/authentication.ts`, mirroring the existing `LOGIN` pattern\r\n\r\n## Potential Risks / Drawbacks\r\n\r\n - Only covers explicit/user-initiated logouts (via `POST /auth/logout`). Passive session terminations (token expiration, forced logouts from password changes, user suspension) are not logged\r\n - If `this.accountability` is not set on the service for any reason, the logout activity will silently not be logged (same behavior as login)\r\n\r\n\r\n## Tested Scenarios\r\n\r\n - Explicit logout via `POST /auth/logout` (Local, LDAP, OAuth2, OIDC auth methods)\r\n - SAML logout via `POST /auth/logout/saml/:provider` (calls authService.logout() internally) 🔴 [Not Tested]\r\n - Verified activity record is created with correct action, user, IP, user agent, and origin\r\n\r\n## Review Notes / Questions\r\n\r\n - The change follows the exact same pattern as the existing LOGIN activity logging\r\n - All auth methods (Local, LDAP, OAuth2, OIDC, SAML) flow through the same `logout()` method, so a single code change covers all providers\r\n - Passive session terminations (expiry, admin-forced) are intentionally excluded from this scope — could be a follow-up if needed\r\n\r\n\r\n## Checklist\r\n\r\n- [ ] Added or updated tests\r\n- [x] Documentation PR not required\r\n- [x] OpenAPI package PR not required\r\n\r\n---\r\n\r\nFixes #\\<num\\>\r\n",
+    "state": "closed",
+    "merged": true,
+    "user": "JamesW1",
+    "created_at": "2026-02-12T16:02:20Z",
+    "updated_at": "2026-04-14T03:39:48Z",
+    "base": "main",
+    "head": "jw-logout-activity-event",
+    "merge_commit_sha": "e95d6df6f7ee081e7b3371db2c87e916fd0c5dba"
+  },
+  "issue_comments": [
+    {
+      "user": "AlexGaillard",
+      "body": ">Should we add a tab for viewing logout events in the app? We have one already for login\r\n\r\nYeah might as well while we're here",
+      "created_at": "2026-02-12T17:11:06Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "body": "I'll handle the changes",
+      "created_at": "2026-02-12T21:07:37Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "br41nslug",
+      "body": "```suggestion\nAdded activity logging to authenticationService.logout(), mirroring the existing\n```\nNo need to include the file path in the changeset.",
+      "path": ".changeset/perky-lies-search.md",
+      "diff_hunk": "@@ -0,0 +1,7 @@\n+---\n+'@directus/constants': minor\n+'@directus/api': minor\n+---\n+\n+Added activity logging to authenticationService.logout() in api/src/services/authentication.ts, mirroring the existing",
+      "line": null,
+      "created_at": "2026-02-12T16:38:15Z"
+    },
+    {
+      "user": "br41nslug",
+      "body": "```suggestion\r\nlogin pattern\r\n```\r\nWhy scream \"LOGIN\" all caps 😂 \r\n\r\nIt's probably enough to just say \"Added activity logging for logout\"",
+      "path": ".changeset/perky-lies-search.md",
+      "diff_hunk": "@@ -0,0 +1,7 @@\n+---\n+'@directus/constants': minor\n+'@directus/api': minor\n+---\n+\n+Added activity logging to authenticationService.logout() in api/src/services/authentication.ts, mirroring the existing\n+LOGIN pattern",
+      "line": null,
+      "created_at": "2026-02-12T16:38:44Z"
+    },
+    {
+      "user": "JamesW1",
+      "body": "IN YOUR FACE @br41nslug  😆 ",
+      "path": ".changeset/perky-lies-search.md",
+      "diff_hunk": "@@ -0,0 +1,7 @@\n+---\n+'@directus/constants': minor\n+'@directus/api': minor\n+---\n+\n+Added activity logging to authenticationService.logout() in api/src/services/authentication.ts, mirroring the existing\n+LOGIN pattern",
+      "line": null,
+      "created_at": "2026-02-12T16:42:21Z"
+    },
+    {
+      "user": "ComfortablyCoding",
+      "body": "I would simplify this further\n```suggestion\nAdded activity logging for explicit user logout\n```",
+      "path": ".changeset/perky-lies-search.md",
+      "diff_hunk": "@@ -0,0 +1,7 @@\n+---\n+'@directus/constants': minor\n+'@directus/api': minor\n+---\n+\n+Added activity logging to authenticationService.logout(), mirroring the existing\n+login pattern",
+      "line": null,
+      "created_at": "2026-02-12T16:55:51Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "br41nslug",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-02-12T16:38:49Z"
+    },
+    {
+      "user": "JamesW1",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-02-12T16:42:21Z"
+    },
+    {
+      "user": "ComfortablyCoding",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-02-12T16:55:51Z"
+    },
+    {
+      "user": "ComfortablyCoding",
+      "state": "COMMENTED",
+      "body": "Should we add a tab for viewing logout events in the app? We have one already for login https://github.com/directus/directus/blob/main/app/src/modules/activity/components/navigation.vue#L103",
+      "submitted_at": "2026-02-12T16:59:51Z"
+    },
+    {
+      "user": "ComfortablyCoding",
+      "state": "CHANGES_REQUESTED",
+      "body": "The action text seems to be missing from the activity record. \n\nhttps://github.com/user-attachments/assets/eee1de28-cec2-4d1b-9ff5-06658204e9de\n\n\nThis should be fixed by adding a translation for \"logout\" in the en-US translation file at `field_options.directus_activity.logout`. \n\nAs we are already here thoughts on adding a fallback to raw value if no translation is present? Not a blocker. [Relevant code](https://github.com/directus/directus/blob/main/app/src/modules/activity/routes/item.vue#L82)",
+      "submitted_at": "2026-02-12T17:52:25Z"
+    },
+    {
+      "user": "ComfortablyCoding",
+      "state": "APPROVED",
+      "body": "LGTM! 🚢 ",
+      "submitted_at": "2026-02-12T21:54:35Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "state": "APPROVED",
+      "body": ":cool::beans:",
+      "submitted_at": "2026-02-12T22:29:08Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "4f432c09ffff7dc384035ebac7dbba9cef61926d",
+      "message": "add logout activity event",
+      "author": "JamesW1",
+      "date": "2026-02-12T15:51:54Z"
+    },
+    {
+      "sha": "e7965154257b2e3baccb691f62f3e376617a899f",
+      "message": "add changeset",
+      "author": "JamesW1",
+      "date": "2026-02-12T16:11:54Z"
+    },
+    {
+      "sha": "974e443583f36fc46beca6626be79cea461808a8",
+      "message": "Update .changeset/perky-lies-search.md\n\nCo-authored-by: Brainslug <br41nslug@users.noreply.github.com>",
+      "author": "James White",
+      "date": "2026-02-12T16:41:44Z"
+    },
+    {
+      "sha": "57148957bff1c4fee4dd0176aa91b606144feff9",
+      "message": "Update .changeset/perky-lies-search.md\n\nCo-authored-by: Brainslug <br41nslug@users.noreply.github.com>",
+      "author": "James White",
+      "date": "2026-02-12T16:42:30Z"
+    },
+    {
+      "sha": "dbcc52af42934124023b9c82eb6d930210173cb3",
+      "message": "Update .changeset/perky-lies-search.md\n\nCo-authored-by: judda <44623501+ComfortablyCoding@users.noreply.github.com>",
+      "author": "Alex Gaillard",
+      "date": "2026-02-12T17:11:44Z"
+    },
+    {
+      "sha": "b11cefe87772f0f82effb0977f924a53a18b0e4f",
+      "message": "Add logout translation string",
+      "author": "Alex Gaillard",
+      "date": "2026-02-12T21:12:44Z"
+    },
+    {
+      "sha": "f260a6703b80ad8665e22bc53c6f5f2b87984de5",
+      "message": "Add logout tab to activity module",
+      "author": "Alex Gaillard",
+      "date": "2026-02-12T21:28:42Z"
+    },
+    {
+      "sha": "abb598cf58abf58b314f72b6e73d6fcdbe4f659a",
+      "message": "add missing package in changeset",
+      "author": "daedalus",
+      "date": "2026-02-12T21:55:26Z"
+    },
+    {
+      "sha": "8f0144cae048dfeafd0052528182ee4ad883c57a",
+      "message": "Merge branch 'main' into jw-logout-activity-event",
+      "author": "Rijk van Zanten",
+      "date": "2026-02-12T21:57:52Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/perky-lies-search.md",
+      "status": "added",
+      "additions": 7,
+      "deletions": 0,
+      "changes": 7,
+      "patch": "@@ -0,0 +1,7 @@\n+---\n+'@directus/constants': minor\n+'@directus/api': minor\n+'@directus/app': minor\n+---\n+\n+Added activity logging for explicit user logout"
+    },
+    {
+      "filename": "api/src/services/authentication.ts",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 0,
+      "changes": 12,
+      "patch": "@@ -535,6 +535,18 @@ export class AuthenticationService {\n \t\t\tconst provider = getAuthProvider(user.provider);\n \t\t\tawait provider.logout(clone(user));\n \n+\t\t\tif (this.accountability) {\n+\t\t\t\tawait this.activityService.createOne({\n+\t\t\t\t\taction: Action.LOGOUT,\n+\t\t\t\t\tuser: user.id,\n+\t\t\t\t\tip: this.accountability.ip,\n+\t\t\t\t\tuser_agent: this.accountability.userAgent,\n+\t\t\t\t\torigin: this.accountability.origin,\n+\t\t\t\t\tcollection: 'directus_users',\n+\t\t\t\t\titem: user.id,\n+\t\t\t\t});\n+\t\t\t}\n+\n \t\t\tawait this.knex.delete().from('directus_sessions').where('token', refreshToken);\n \t\t}\n \t}"
+    },
+    {
+      "filename": "app/src/lang/translations/en-US.yaml",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "patch": "@@ -1687,6 +1687,7 @@ field_options:\n     overrides_divider_title: App Overrides\n   directus_activity:\n     login: Login\n+    logout: Logout\n     create: Create\n     update: Update\n     delete: Delete\n@@ -1972,6 +1973,7 @@ colors:\n junction_collection: Junction Collection\n latency: Latency\n login: Log in\n+logout: Log out\n my_activity: My Activity\n not_authenticated: Not Authenticated\n authenticated: Authenticated"
+    },
+    {
+      "filename": "app/src/modules/activity/components/navigation.vue",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 0,
+      "changes": 13,
+      "patch": "@@ -112,5 +112,18 @@ function clearNavFilter() {\n \t\t\t\t<VTextOverflow :text=\"$t('login')\" />\n \t\t\t</VListItemContent>\n \t\t</VListItem>\n+\n+\t\t<VListItem\n+\t\t\tclickable\n+\t\t\t:active=\"filterField === 'action' && filterValue === 'logout'\"\n+\t\t\t@click=\"setNavFilter('action', 'logout')\"\n+\t\t>\n+\t\t\t<VListItemIcon>\n+\t\t\t\t<VIcon name=\"logout\" />\n+\t\t\t</VListItemIcon>\n+\t\t\t<VListItemContent>\n+\t\t\t\t<VTextOverflow :text=\"$t('logout')\" />\n+\t\t\t</VListItemContent>\n+\t\t</VListItem>\n \t</VList>\n </template>"
+    },
+    {
+      "filename": "packages/constants/src/activity.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "patch": "@@ -7,6 +7,7 @@ export enum Action {\n \tCOMMENT = 'comment',\n \tUPLOAD = 'upload',\n \tLOGIN = 'login',\n+\tLOGOUT = 'logout',\n \tRUN = 'run',\n \tINSTALL = 'install',\n }"
+    }
+  ]
+}

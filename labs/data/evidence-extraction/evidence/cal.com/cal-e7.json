@@ -1,0 +1,102 @@
+{
+  "pr": {
+    "number": 26286,
+    "title": "fix: validate owner email on platform org creation",
+    "body": "## What does this PR do?\r\n\r\nEnforces owner email validation for Platform organization creation. Previously, the `isPlatform` flag bypassed the owner verification check, allowing organizations to be created with a different user as owner.\r\n\r\n### Changes\r\n\r\n- Removed `isPlatform` bypass from owner email check in `create.handler.ts`\r\n- Removed `isPlatform` bypass from owner email check in `intentToCreateOrg.handler.ts`\r\n- Other `isPlatform` behaviors preserved (self-serve, company email validation)\r\n\r\n### How to test\r\n\r\n1. Login as a non-admin user\r\n2. Call `/api/trpc/organizations/create` with `isPlatform: true` and a different user's email as `orgOwnerEmail`\r\n3. Should return error: \"You can only create organization where you are the owner\"\r\n4. Verify Platform org creation still works when using your own email\r\n\r\n## Mandatory Tasks\r\n\r\n- [x] I have self-reviewed the code\r\n- [ ] **N/A** I have updated the developer docs in /docs if this PR makes changes that would require a documentation change\r\n- [ ] **N/A** I confirm automated tests are in place that prove my fix is effective or that my feature works.",
+    "state": "closed",
+    "merged": true,
+    "user": "pedroccastro",
+    "created_at": "2025-12-29T17:30:24Z",
+    "updated_at": "2026-01-07T01:46:45Z",
+    "base": "main",
+    "head": "fix/org-creation-schema-cleanup",
+    "merge_commit_sha": "01be9f1ef230fb1b73899986e20537ddcdd4a0d3"
+  },
+  "issue_comments": [
+    {
+      "user": "vercel[bot]",
+      "body": "[vc]: #zwpmp7Z9DEDZlfFh3ew/e5mjwQyMyjxhF9xt6vGQogU=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJjYWwtY29tcGFuaW9uIiwicm9vdERpcmVjdG9yeSI6ImNvbXBhbmlvbiIsImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9jYWwvY2FsLWNvbXBhbmlvbi9GTmlZb0o1eEIzUHZTbjRYV2F0d0d2SlkyamhhIiwicHJldmlld1VybCI6ImNhbC1jb21wYW5pb24tZ2l0LWZpeC1vcmctY3JlYXRpb24tc2NoZW1hLWNsZWFudXAtY2FsLXN0YWdpbmcudmVyY2VsLmFwcCIsIm5leHRDb21taXRTdGF0dXMiOiJJR05PUkVEIiwibGl2ZUZlZWRiYWNrIjp7InJlc29sdmVkIjowLCJ1bnJlc29sdmVkIjowLCJ0b3RhbCI6MCwibGluayI6IiJ9fSx7Im5hbWUiOiJjYWwtZXUiLCJyb290RGlyZWN0b3J5IjoiYXBwcy93ZWIiLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoiIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9jYWwvY2FsLWV1L0NYekFuUzV1UlpUaUVCQkNXR21iMWV5TWdnblgiLCJuZXh0Q29tbWl0U3RhdHVzIjoiSUdOT1JFRCJ9LHsibmFtZSI6ImNhbCIsInJvb3REaXJlY3RvcnkiOiJhcHBzL3dlYiIsImxpdmVGZWVkYmFjayI6eyJyZXNvbHZlZCI6MCwidW5yZXNvbHZlZCI6MCwidG90YWwiOjAsImxpbmsiOiIifSwiaW5zcGVjdG9yVXJsIjoiaHR0cHM6Ly92ZXJjZWwuY29tL2NhbC9jYWwvR0JycmpKUFlITkJnYko2WmJVc3d5Q0RGY3NUVCIsIm5leHRDb21taXRTdGF0dXMiOiJJR05PUkVEIn1dfQ==\nThe latest updates on your projects. Learn more about [Vercel for GitHub](https://vercel.link/github-learn-more).\n\n\n<details><summary>3 Skipped Deployments</summary>\n\n| Project | Deployment | Review | Updated (UTC) |\n| :--- | :----- | :------ | :------ |\n| [cal](https://vercel.com/cal/cal) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/cal/cal/GBrrjJPYHNBgbJ6ZbUswyCDFcsTT) |  | Jan 7, 2026 1:27am |\n| [cal-companion](https://vercel.com/cal/cal-companion) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/cal/cal-companion/FNiYoJ5xB3PvSn4XWatwGvJY2jha) | [Preview](https://cal-companion-git-fix-org-creation-schema-cleanup-cal-staging.vercel.app) | Jan 7, 2026 1:27am |\n| [cal-eu](https://vercel.com/cal/cal-eu) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/cal/cal-eu/CXzAnS5uRZTiEBBCWGmb1eyMggnX) |  | Jan 7, 2026 1:27am |\n</details>\n\n\n\n",
+      "created_at": "2025-12-29T18:47:10Z"
+    },
+    {
+      "user": "github-actions[bot]",
+      "body": "This PR has been marked as stale due to inactivity. If you're still working on it or need any help, please let us know or update the PR to keep it active.",
+      "created_at": "2026-01-06T00:27:21Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**No issues found** across 4 files",
+      "submitted_at": "2026-01-06T12:15:20Z"
+    },
+    {
+      "user": "volnei",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-01-06T12:16:51Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "5e595314359422fb4f320a4824d320b9db07318f",
+      "message": "fix: enforce owner email check for platform orgs\n\nRemove isPlatform bypass from owner verification to ensure users\ncan only create organizations where they are the designated owner",
+      "author": "Pedro Castro",
+      "date": "2025-12-29T17:18:14Z"
+    },
+    {
+      "sha": "daafbecb0bcbd190ca1f3bcf6b2d4e361539c233",
+      "message": "test: add organization ownership authorization tests\n\nAdd test coverage for create and intentToCreateOrg handlers:\n- Regression tests for isPlatform bypass fix\n- Happy path for admin creating org for another user",
+      "author": "Pedro Castro",
+      "date": "2025-12-29T18:46:38Z"
+    },
+    {
+      "sha": "63e9cd2dacd0dab7c6cff8c32da5dc037f67e9ea",
+      "message": "Merge branch 'main' into fix/org-creation-schema-cleanup",
+      "author": "Pedro Castro",
+      "date": "2026-01-06T12:12:38Z"
+    },
+    {
+      "sha": "093c2f4af073f1ff2bdcd0aa1fba8740bb25f782",
+      "message": "Merge branch 'main' into fix/org-creation-schema-cleanup",
+      "author": "Pedro Castro",
+      "date": "2026-01-07T01:27:24Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "packages/trpc/server/routers/viewer/organizations/create.handler.test.ts",
+      "status": "added",
+      "additions": 87,
+      "deletions": 0,
+      "changes": 87,
+      "patch": "@@ -0,0 +1,87 @@\n+import prismock from \"../../../../../../tests/libs/__mocks__/prisma\";\n+\n+import { describe, expect, it, vi, beforeEach } from \"vitest\";\n+import { UserPermissionRole } from \"@calcom/prisma/enums\";\n+import { createHandler } from \"./create.handler\";\n+\n+vi.mock(\"@calcom/lib/constants\", async (importOriginal) => {\n+  const actual = await importOriginal<typeof import(\"@calcom/lib/constants\")>();\n+  return {\n+    ...actual,\n+    RESERVED_SUBDOMAINS: [],\n+    ORG_SELF_SERVE_ENABLED: true,\n+    ORG_MINIMUM_PUBLISHED_TEAMS_SELF_SERVE: 0,\n+  };\n+});\n+\n+vi.mock(\"@calcom/lib/domainManager/organization\", () => ({\n+  createDomain: vi.fn().mockResolvedValue(true),\n+}));\n+\n+vi.mock(\"@calcom/lib/server/i18n\", () => ({\n+  getTranslation: vi.fn().mockResolvedValue((key: string) => key),\n+}));\n+\n+const createTestUser = async (overrides: { email: string; role?: UserPermissionRole }) => {\n+  return prismock.user.create({\n+    data: {\n+      email: overrides.email,\n+      username: overrides.email.split(\"@\")[0],\n+      role: overrides.role ?? UserPermissionRole.USER,\n+      completedOnboarding: true,\n+      emailVerified: new Date(),\n+    },\n+  });\n+};\n+\n+const createInput = (overrides: Partial<Parameters<typeof createHandler>[0][\"input\"]> = {}) => ({\n+  name: \"Test Org\",\n+  slug: \"test-org\",\n+  orgOwnerEmail: \"owner@example.com\",\n+  isPlatform: false,\n+  creationSource: \"WEBAPP\" as const,\n+  ...overrides,\n+});\n+\n+describe(\"createHandler\", () => {\n+  beforeEach(async () => {\n+    vi.clearAllMocks();\n+    await prismock.reset();\n+  });\n+\n+  describe(\"organization ownership authorization\", () => {\n+    it.each([\n+      { orgOwnerEmail: \"other@example.com\" },\n+      { orgOwnerEmail: \"other@example.com\", isPlatform: true },\n+    ])(\"rejects non-admin creating org for another user (%o)\", async (inputOverrides) => {\n+      const user = await createTestUser({ email: \"user@example.com\" });\n+\n+      await expect(\n+        createHandler({\n+          input: createInput(inputOverrides),\n+          ctx: { user },\n+        })\n+      ).rejects.toMatchObject({\n+        code: \"FORBIDDEN\",\n+        message: \"You can only create organization where you are the owner\",\n+      });\n+    });\n+\n+    it(\"allows admin to bypass owner email restriction\", async () => {\n+      const admin = await createTestUser({ email: \"admin@example.com\", role: UserPermissionRole.ADMIN });\n+      await createTestUser({ email: \"owner@example.com\" });\n+\n+      const adminWithProfile = {\n+        ...admin,\n+        profile: admin.profile ?? { organizationId: null },\n+      };\n+\n+      const result = await createHandler({\n+        input: createInput({ orgOwnerEmail: \"owner@example.com\" }),\n+        ctx: { user: adminWithProfile },\n+      });\n+\n+      expect(result.email).toBe(\"owner@example.com\");\n+    });\n+  });\n+});"
+    },
+    {
+      "filename": "packages/trpc/server/routers/viewer/organizations/create.handler.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "patch": "@@ -92,7 +92,7 @@ export const createHandler = async ({ input, ctx }: CreateOptions) => {\n     throw new TRPCError({ code: \"FORBIDDEN\", message: \"Only admins can create organizations\" });\n   }\n \n-  if (!IS_USER_ADMIN && loggedInUser.email !== orgOwnerEmail && !isPlatform) {\n+  if (!IS_USER_ADMIN && loggedInUser.email !== orgOwnerEmail) {\n     throw new TRPCError({\n       code: \"FORBIDDEN\",\n       message: \"You can only create organization where you are the owner\","
+    },
+    {
+      "filename": "packages/trpc/server/routers/viewer/organizations/intentToCreateOrg.handler.test.ts",
+      "status": "modified",
+      "additions": 19,
+      "deletions": 0,
+      "changes": 19,
+      "patch": "@@ -281,6 +281,25 @@ describe(\"intentToCreateOrgHandler\", () => {\n       );\n     });\n \n+    it(\"should reject non-admin creating org for another user even with isPlatform flag\", async () => {\n+      const nonAdminUser = await createTestUser({\n+        email: \"nonadmin@example.com\",\n+        role: UserPermissionRole.USER,\n+      });\n+\n+      await expect(\n+        intentToCreateOrgHandler({\n+          input: { ...mockInput, isPlatform: true },\n+          ctx: {\n+            user: nonAdminUser,\n+          },\n+        })\n+      ).rejects.toMatchObject({\n+        code: \"FORBIDDEN\",\n+        message: \"You can only create organization where you are the owner\",\n+      });\n+    });\n+\n     it(\"should throw error when target user is not found\", async () => {\n       // Create admin user\n       const adminUser = await createTestUser({"
+    },
+    {
+      "filename": "packages/trpc/server/routers/viewer/organizations/intentToCreateOrg.handler.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "patch": "@@ -52,7 +52,7 @@ export const intentToCreateOrgHandler = async ({ input, ctx }: CreateOptions) =>\n   const IS_USER_ADMIN = loggedInUser.role === UserPermissionRole.ADMIN;\n   log.debug(\"User authorization check\", safeStringify({ userId: loggedInUser.id, isAdmin: IS_USER_ADMIN }));\n \n-  if (!IS_USER_ADMIN && loggedInUser.email !== orgOwnerEmail && !isPlatform) {\n+  if (!IS_USER_ADMIN && loggedInUser.email !== orgOwnerEmail) {\n     log.warn(\n       \"Unauthorized organization creation attempt\",\n       safeStringify({ loggedInUserEmail: loggedInUser.email, orgOwnerEmail })"
+    }
+  ]
+}

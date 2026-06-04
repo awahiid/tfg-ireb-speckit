@@ -1,0 +1,341 @@
+{
+  "pr": {
+    "number": 26836,
+    "title": "Add Tabs group interface",
+    "body": "## Scope\r\n\r\nAdds Tabs group interface as a really nice alternative to accordion interface. Works 100% with collaborative editing.\r\n\r\n<img width=\"5120\" height=\"2880\" alt=\"ScreenShot 2026-03-06 at 17 59 43@2x\" src=\"https://github.com/user-attachments/assets/0b8081d8-743c-43c2-99cf-0bce52ee9fb8\" />\r\n\r\n\r\n**What's changed:** \r\n- Migrates the community directus-extension-group-tabs-interface (from your boi @hanneskuettner) into Directus core as a new group-tabs interface\r\n- Built on reka-ui Tabs components (already a dependency) — gives us WAI-ARIA tabs pattern, roving tabindex, keyboard nav (arrows, Home/End), and RTL support for free\r\n- Adds fillWidth option to allow the tab group to span the full page width\r\n- Fixes several bugs from the original extension: validation error auto-switch was using the wrong array index, hidden first tab caused a blank panel, and RTL keyboard nav didn't work\r\n- Validation error tooltips show all errors per tab with field names (matching group-detail pattern) instead of just the first error\r\n- Full feature parity with other group interfaces: ComparisonContext support for revision diff indicators, CollabContext passthrough, nonEditable prop, logical CSS properties for RTL \r\n\r\n\r\n## Potential Risks / Drawbacks \r\n- No existing tests for any group interface (accordion, detail, raw) so no test coverage added here either — consistent with current state but worth flagging\r\n- fillWidth is a new option unique to group-tabs — no other group interface has it yet (but it is valuable)\r\n\r\n##  Tested Scenarios \r\n- Tab switching, keyboard nav (ArrowLeft/Right, Home/End)\r\n- Edit dot indicators showing on tabs with unsaved changes\r\n- Validation errors: auto-switches to the correct tab including for nested field errors, tooltip shows all errors\r\n- Hidden tabs filtered correctly — no blank panels\r\n- fillWidth option spans the full grid width\r\n- Collab editing context passes through to nested VForm \r\n\r\n\r\n## Review Notes / Questions \r\n- Used reka-ui Tabs instead of hand-rolling tab logic — seemed like a no-brainer since we already use reka-ui for Accordion, Collapsible, and DatePicker in core\r\n- The useComputedGroup() pattern is identical to group-accordion.vue — could potentially be extracted into a shared composable later but kept inline for now to match existing conventions\r\n- Edit dot is positioned inline (left of field name) rather than absolutely positioned outside the trigger like accordion does — absolute positioning caused the dot to bleed into the gap between tabs \r\n\r\n## Checklist \r\n- ~~Added or updated tests~~\r\n- [Documentation PR created here or not required](https://github.com/directus/docs/pull/584)\r\n- ~~OpenAPI package PR created here or not required~~",
+    "state": "closed",
+    "merged": true,
+    "user": "bryantgillespie",
+    "created_at": "2026-03-06T23:07:48Z",
+    "updated_at": "2026-04-09T01:29:17Z",
+    "base": "main",
+    "head": "bry/group-tabs-port",
+    "merge_commit_sha": "c5d64ad902efd659554e1ea49f38b1780624da63"
+  },
+  "issue_comments": [
+    {
+      "user": "linear[bot]",
+      "body": "<!-- linear-linkback -->\n<p><a href=\"https://linear.app/directus/issue/CMS-2039/migrate-group-tabs-interface\">CMS-2039 Migrate Group Tabs Interface</a></p>",
+      "created_at": "2026-03-23T13:44:14Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "body": "Sorry to say it @bryantgillespie, but this doesn't work with collaborative editing",
+      "created_at": "2026-03-26T21:33:59Z"
+    },
+    {
+      "user": "bryantgillespie",
+      "body": "> Sorry to say it @bryantgillespie, but this doesn't work with collaborative editing\r\n\r\nIt worked in my testing. What's the issue?",
+      "created_at": "2026-03-26T21:51:16Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "body": "<!-- linear:replyTo:4000340578 -->\n\nit doesn't highlight the inputs (as per my testing)",
+      "created_at": "2026-03-26T21:55:48Z"
+    },
+    {
+      "user": "bryantgillespie",
+      "body": "> it doesn't highlight the inputs (as per my testing)\r\n\r\nDid you uninstall the extension? \r\nDo you have a screen recording? \r\n\r\nHere's me pulling the latest from this branch locally.\r\n\r\nhttps://github.com/user-attachments/assets/50aa73f9-95be-46b4-9e16-337b39557583\r\n\r\n",
+      "created_at": "2026-03-26T22:08:44Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "body": ">Did you uninstall the extension?\r\n\r\nAh, my B, it must have been interference from the extension 🫠 ",
+      "created_at": "2026-03-27T01:27:25Z"
+    },
+    {
+      "user": "alexvdvalk",
+      "body": "can I just remove @hanneskuettner 's tabs extension and this will take over?",
+      "created_at": "2026-04-08T15:59:07Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "body": "> can I just remove @hanneskuettner 's tabs extension and this will take over?\r\n\r\n@alexvdvalk Yes I believe so, they use the same key",
+      "created_at": "2026-04-08T16:01:04Z"
+    },
+    {
+      "user": "hanneskuettner",
+      "body": "<!-- linear:replyTo:4018347951 -->\n\nYes you can!",
+      "created_at": "2026-04-08T16:01:32Z"
+    },
+    {
+      "user": "abdonrd",
+      "body": "This new interface does not have the Edit/Copy/Paste & Undo/Clear dropdown menu. It would be great to have it available.",
+      "created_at": "2026-04-08T16:25:51Z"
+    },
+    {
+      "user": "bryantgillespie",
+      "body": "> This new interface does not have the Edit/Copy/Paste & Undo/Clear dropdown menu. It would be great to have it available.\r\n\r\nI recommend to nest `Raw` groups within the `Tabs` group to get the regular effect you're referring to.\r\n<img width=\"1762\" height=\"1356\" alt=\"CleanShot 2026-04-08 at 13 40 27@2x\" src=\"https://github.com/user-attachments/assets/7397c2ce-837c-4380-87b7-89191ee868b3\" />\r\n",
+      "created_at": "2026-04-08T17:41:21Z"
+    },
+    {
+      "user": "abdonrd",
+      "body": "@bryantgillespie thanks for the workaround!\r\n\r\nFrom:\r\n<img width=\"664\" height=\"109\" alt=\"Screenshot 2026-04-08 at 9 24 32 PM\" src=\"https://github.com/user-attachments/assets/db9a33a5-5503-4ca0-8d2c-aa95ca2cd2a3\" />\r\n\r\nTo:\r\n<img width=\"679\" height=\"130\" alt=\"Screenshot 2026-04-08 at 9 24 00 PM\" src=\"https://github.com/user-attachments/assets/a5a82360-ca24-4686-9f7d-c70b1a6f8c8b\" />\r\n\r\nAlthough it ends up being quite repetitive. It would be great if this were integrated, so we wouldn't have to create multiple \"ghost groups\", where we also have to duplicate the field name translations.\r\n\r\n<img width=\"658\" height=\"272\" alt=\"Screenshot 2026-04-08 at 9 28 26 PM\" src=\"https://github.com/user-attachments/assets/d2f892a7-9008-4f2e-aa8a-da78e704001c\" />\r\n<img width=\"689\" height=\"519\" alt=\"Screenshot 2026-04-08 at 9 28 54 PM\" src=\"https://github.com/user-attachments/assets/17c48b50-4dda-4c02-b9ca-31dbece52b82\" />\r\n",
+      "created_at": "2026-04-09T01:29:17Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "robluton",
+      "body": "When I have the extension installed, I cannot select Tabs or Group Tabs as an interface by itself. If I select one, the other one comes along for the ride. This continues to happen even after uninstalling the extension. I think this interface id is the same one used by the extension, so maybe by changing it here, we can avoid this double selection behavior. \n\n<img width=\"576\" height=\"265\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/de0de123-9ed5-46cc-a6a2-532a6e34370c\" />",
+      "path": "app/src/interfaces/group-tabs/index.ts",
+      "diff_hunk": "@@ -0,0 +1,36 @@\n+import { defineInterface } from '@directus/extensions';\n+import InterfaceGroupTabs from './group-tabs.vue';\n+import PreviewSVG from './preview.svg?raw';\n+\n+export default defineInterface({\n+\tid: 'group-tabs',",
+      "line": 6,
+      "created_at": "2026-03-23T15:10:59Z"
+    },
+    {
+      "user": "robluton",
+      "body": "in props, this is typed as <string, unknown> so I suggest using that same type here for consistency. It should be inferred, so you can just leave the type off here altogether.\n\n```suggestion\n\tconst groupValues = ref(props.values);\n```\n\n",
+      "path": "app/src/interfaces/group-tabs/group-tabs.vue",
+      "diff_hunk": "@@ -0,0 +1,161 @@\n+<script setup lang=\"ts\">\n+import { Field, ValidationError } from '@directus/types';\n+import { isEqual } from 'lodash';\n+import { TabsList, TabsRoot } from 'reka-ui';\n+import { computed, ref, watch } from 'vue';\n+import TabContent from './tab-content.vue';\n+import TabTrigger from './tab-trigger.vue';\n+import type { ComparisonContext } from '@/components/v-form/types';\n+import { CollabContext } from '@/composables/use-collab';\n+import { getFieldsInGroup } from '@/utils/get-fields-in-group';\n+\n+const props = withDefaults(\n+\tdefineProps<{\n+\t\tfield: Field;\n+\t\tfields: Field[];\n+\t\tvalues: Record<string, unknown>;\n+\t\tinitialValues: Record<string, unknown>;\n+\t\tdisabled?: boolean;\n+\t\tnonEditable?: boolean;\n+\t\tbatchMode?: boolean;\n+\t\tbatchActiveFields?: string[];\n+\t\tcollabContext?: CollabContext;\n+\t\tcomparison?: ComparisonContext;\n+\t\tprimaryKey: string | number;\n+\t\tloading?: boolean;\n+\t\tvalidationErrors?: ValidationError[];\n+\t\tbadge?: string;\n+\t\trawEditorEnabled?: boolean;\n+\t\tdirection?: 'ltr' | 'rtl';\n+\t\tfillWidth?: boolean;\n+\t}>(),\n+\t{\n+\t\tbatchActiveFields: () => [],\n+\t\tvalidationErrors: () => [],\n+\t\tfillWidth: false,\n+\t},\n+);\n+\n+defineEmits<{\n+\t(e: 'apply', value: Record<string, unknown>): void;\n+}>();\n+\n+const { groupFields, groupValues } = useComputedGroup();\n+\n+const visibleFields = computed(() => groupFields.value.filter((field) => !field.meta?.hidden));\n+\n+const activeTab = ref(visibleFields.value[0]?.field ?? '');\n+\n+watch(visibleFields, (newFields) => {\n+\tif (newFields.length > 0 && !newFields.some((f) => f.field === activeTab.value)) {\n+\t\tactiveTab.value = newFields[0]!.field;\n+\t}\n+});\n+\n+watch(\n+\t() => props.validationErrors,\n+\t(newVal, oldVal) => {\n+\t\tif (!props.validationErrors) return;\n+\t\tif (isEqual(newVal, oldVal)) return;\n+\n+\t\tconst tabWithError = visibleFields.value.find((tabField) => {\n+\t\t\tconst nested = getFieldsInGroup(tabField.field, props.fields);\n+\n+\t\t\treturn props.validationErrors!.some(\n+\t\t\t\t(err) => err.field === tabField.field || nested.some((f) => f.field === err.field),\n+\t\t\t);\n+\t\t});\n+\n+\t\tif (tabWithError) {\n+\t\t\tactiveTab.value = tabWithError.field;\n+\t\t}\n+\t},\n+);\n+\n+function useComputedGroup() {\n+\tconst groupFields = ref<Field[]>(limitFields());\n+\tconst groupValues = ref<Record<string, any>>(props.values);",
+      "line": null,
+      "created_at": "2026-03-23T15:57:29Z"
+    },
+    {
+      "user": "hanneskuettner",
+      "body": "Even _after_ uninstalling the extension? That seems like a weird one to me. Could you double check if your client bundle updated? The extension information should not be available anymore after uninstalling.",
+      "path": "app/src/interfaces/group-tabs/index.ts",
+      "diff_hunk": "@@ -0,0 +1,36 @@\n+import { defineInterface } from '@directus/extensions';\n+import InterfaceGroupTabs from './group-tabs.vue';\n+import PreviewSVG from './preview.svg?raw';\n+\n+export default defineInterface({\n+\tid: 'group-tabs',",
+      "line": 6,
+      "created_at": "2026-03-23T16:17:41Z"
+    },
+    {
+      "user": "robluton",
+      "body": "@hanneskuettner you're right. I had to re-run the build after uninstalling the extension.",
+      "path": "app/src/interfaces/group-tabs/index.ts",
+      "diff_hunk": "@@ -0,0 +1,36 @@\n+import { defineInterface } from '@directus/extensions';\n+import InterfaceGroupTabs from './group-tabs.vue';\n+import PreviewSVG from './preview.svg?raw';\n+\n+export default defineInterface({\n+\tid: 'group-tabs',",
+      "line": 6,
+      "created_at": "2026-03-23T20:51:23Z"
+    },
+    {
+      "user": "hanneskuettner",
+      "body": "Huh that also seems weird, tbh. Reloading the page should be enough as the `extensions` bundle should be regenerated at that point",
+      "path": "app/src/interfaces/group-tabs/index.ts",
+      "diff_hunk": "@@ -0,0 +1,36 @@\n+import { defineInterface } from '@directus/extensions';\n+import InterfaceGroupTabs from './group-tabs.vue';\n+import PreviewSVG from './preview.svg?raw';\n+\n+export default defineInterface({\n+\tid: 'group-tabs',",
+      "line": 6,
+      "created_at": "2026-03-23T20:52:13Z"
+    },
+    {
+      "user": "bryantgillespie",
+      "body": "We can change the ID if needed but was just trying to make the process as seamless as possible.",
+      "path": "app/src/interfaces/group-tabs/index.ts",
+      "diff_hunk": "@@ -0,0 +1,36 @@\n+import { defineInterface } from '@directus/extensions';\n+import InterfaceGroupTabs from './group-tabs.vue';\n+import PreviewSVG from './preview.svg?raw';\n+\n+export default defineInterface({\n+\tid: 'group-tabs',",
+      "line": 6,
+      "created_at": "2026-03-24T00:36:38Z"
+    },
+    {
+      "user": "robluton",
+      "body": "@bryantgillespie that's probably fine, it just might be a bit odd for user that already have the extension installed, and experience both interfaces being selected any time they add or remove on of the tabs interfaces. Not a huge deal though, so I'm fine with whatever you think is best here.",
+      "path": "app/src/interfaces/group-tabs/index.ts",
+      "diff_hunk": "@@ -0,0 +1,36 @@\n+import { defineInterface } from '@directus/extensions';\n+import InterfaceGroupTabs from './group-tabs.vue';\n+import PreviewSVG from './preview.svg?raw';\n+\n+export default defineInterface({\n+\tid: 'group-tabs',",
+      "line": 6,
+      "created_at": "2026-03-24T15:47:27Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-23T15:10:59Z"
+    },
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-23T15:57:31Z"
+    },
+    {
+      "user": "hanneskuettner",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-23T16:17:41Z"
+    },
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-23T20:51:23Z"
+    },
+    {
+      "user": "hanneskuettner",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-23T20:52:13Z"
+    },
+    {
+      "user": "bryantgillespie",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-24T00:36:38Z"
+    },
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-24T15:47:27Z"
+    },
+    {
+      "user": "robluton",
+      "state": "APPROVED",
+      "body": "LGTM! 🎸",
+      "submitted_at": "2026-03-24T15:49:29Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "state": "APPROVED",
+      "body": "![Image](https://github.com/user-attachments/assets/ff83b8f3-be58-4b47-8fb5-7cd6a8f1184f)",
+      "submitted_at": "2026-03-27T01:28:19Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "acae9a6252238cb5d11d5b5148ffa98f05d5cbe2",
+      "message": "Port over group tabs interface to core",
+      "author": "bryantgillespie",
+      "date": "2026-03-06T23:01:54Z"
+    },
+    {
+      "sha": "ac5fcf4e6abef723db0221d7a973a835781d17bd",
+      "message": "changeset",
+      "author": "bryantgillespie",
+      "date": "2026-03-06T23:03:47Z"
+    },
+    {
+      "sha": "9988699b67a855bc51ab5b8a04cf3e954ce2d885",
+      "message": "lint, format, typefix",
+      "author": "bryantgillespie",
+      "date": "2026-03-06T23:06:31Z"
+    },
+    {
+      "sha": "3dea52f5329b6e4a8e031f1599e1242c24ee4d54",
+      "message": "Merge branch 'main' into bry/group-tabs-port",
+      "author": "Bryant Gillespie",
+      "date": "2026-03-10T00:12:06Z"
+    },
+    {
+      "sha": "181c1cbac318a98db8971754898f4851fd69cba4",
+      "message": "Merge branch 'main' into bry/group-tabs-port",
+      "author": "Bryant Gillespie",
+      "date": "2026-03-12T17:36:26Z"
+    },
+    {
+      "sha": "357c214a5ce339757eb9ede6d9e28922edcc2474",
+      "message": "update to rem",
+      "author": "bryantgillespie",
+      "date": "2026-03-12T18:23:40Z"
+    },
+    {
+      "sha": "e58eef69921fde92edfbb35755697e4787a333e5",
+      "message": "formatter",
+      "author": "bryantgillespie",
+      "date": "2026-03-12T18:24:26Z"
+    },
+    {
+      "sha": "b3b9ab45647c1dc33fcea2f0e36236e20129e98b",
+      "message": "remove font size - to use default label size",
+      "author": "bryantgillespie",
+      "date": "2026-03-12T18:27:22Z"
+    },
+    {
+      "sha": "a6675c0aa99cdf688e535b13f5e6b45ab7eee510",
+      "message": "formatter",
+      "author": "bryantgillespie",
+      "date": "2026-03-12T18:31:09Z"
+    },
+    {
+      "sha": "b16d5147f309ec2c9dc9ecf52f19ca187714fd92",
+      "message": "Merge branch 'main' into bry/group-tabs-port",
+      "author": "Bryant Gillespie",
+      "date": "2026-03-12T18:40:02Z"
+    },
+    {
+      "sha": "e9761063600ca40fdb18ad976d9910db5a65494c",
+      "message": "Merge branch 'main' into bry/group-tabs-port",
+      "author": "Rob Luton",
+      "date": "2026-03-23T13:44:10Z"
+    },
+    {
+      "sha": "7ab508aa7de90877e43a405fa687008ea3181887",
+      "message": "Merge branch 'main' into bry/group-tabs-port",
+      "author": "Bryant Gillespie",
+      "date": "2026-03-24T00:37:30Z"
+    },
+    {
+      "sha": "1fe0383a8fdc961e46c64c9c53f110ecf164d6ab",
+      "message": "Update app/src/interfaces/group-tabs/group-tabs.vue\n\nCo-authored-by: Rob Luton <rob.luton@gmail.com>",
+      "author": "Bryant Gillespie",
+      "date": "2026-03-24T00:38:05Z"
+    },
+    {
+      "sha": "3fada2ffff81cdc47bbeab5b57cf874cfa326e55",
+      "message": "Merge branch 'main' into bry/group-tabs-port",
+      "author": "Bryant Gillespie",
+      "date": "2026-03-24T15:08:25Z"
+    },
+    {
+      "sha": "b65049b7fc9fd1c31ad80b9f648cc8270187960d",
+      "message": "Merge branch 'main' into bry/group-tabs-port",
+      "author": "Alex Gaillard",
+      "date": "2026-03-26T20:19:24Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/many-symbols-decide.md",
+      "status": "added",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -0,0 +1,5 @@\n+---\n+'@directus/app': minor\n+---\n+\n+Added Tabs group interface"
+    },
+    {
+      "filename": "app/src/interfaces/group-tabs/group-tabs.vue",
+      "status": "added",
+      "additions": 161,
+      "deletions": 0,
+      "changes": 161,
+      "patch": "@@ -0,0 +1,161 @@\n+<script setup lang=\"ts\">\n+import { Field, ValidationError } from '@directus/types';\n+import { isEqual } from 'lodash';\n+import { TabsList, TabsRoot } from 'reka-ui';\n+import { computed, ref, watch } from 'vue';\n+import TabContent from './tab-content.vue';\n+import TabTrigger from './tab-trigger.vue';\n+import type { ComparisonContext } from '@/components/v-form/types';\n+import { CollabContext } from '@/composables/use-collab';\n+import { getFieldsInGroup } from '@/utils/get-fields-in-group';\n+\n+const props = withDefaults(\n+\tdefineProps<{\n+\t\tfield: Field;\n+\t\tfields: Field[];\n+\t\tvalues: Record<string, unknown>;\n+\t\tinitialValues: Record<string, unknown>;\n+\t\tdisabled?: boolean;\n+\t\tnonEditable?: boolean;\n+\t\tbatchMode?: boolean;\n+\t\tbatchActiveFields?: string[];\n+\t\tcollabContext?: CollabContext;\n+\t\tcomparison?: ComparisonContext;\n+\t\tprimaryKey: string | number;\n+\t\tloading?: boolean;\n+\t\tvalidationErrors?: ValidationError[];\n+\t\tbadge?: string;\n+\t\trawEditorEnabled?: boolean;\n+\t\tdirection?: 'ltr' | 'rtl';\n+\t\tfillWidth?: boolean;\n+\t}>(),\n+\t{\n+\t\tbatchActiveFields: () => [],\n+\t\tvalidationErrors: () => [],\n+\t\tfillWidth: false,\n+\t},\n+);\n+\n+defineEmits<{\n+\t(e: 'apply', value: Record<string, unknown>): void;\n+}>();\n+\n+const { groupFields, groupValues } = useComputedGroup();\n+\n+const visibleFields = computed(() => groupFields.value.filter((field) => !field.meta?.hidden));\n+\n+const activeTab = ref(visibleFields.value[0]?.field ?? '');\n+\n+watch(visibleFields, (newFields) => {\n+\tif (newFields.length > 0 && !newFields.some((f) => f.field === activeTab.value)) {\n+\t\tactiveTab.value = newFields[0]!.field;\n+\t}\n+});\n+\n+watch(\n+\t() => props.validationErrors,\n+\t(newVal, oldVal) => {\n+\t\tif (!props.validationErrors) return;\n+\t\tif (isEqual(newVal, oldVal)) return;\n+\n+\t\tconst tabWithError = visibleFields.value.find((tabField) => {\n+\t\t\tconst nested = getFieldsInGroup(tabField.field, props.fields);\n+\n+\t\t\treturn props.validationErrors!.some(\n+\t\t\t\t(err) => err.field === tabField.field || nested.some((f) => f.field === err.field),\n+\t\t\t);\n+\t\t});\n+\n+\t\tif (tabWithError) {\n+\t\t\tactiveTab.value = tabWithError.field;\n+\t\t}\n+\t},\n+);\n+\n+function useComputedGroup() {\n+\tconst groupFields = ref<Field[]>(limitFields());\n+\tconst groupValues = ref(props.values);\n+\n+\twatch(\n+\t\t() => props.fields,\n+\t\t() => {\n+\t\t\tconst newVal = limitFields();\n+\n+\t\t\tif (!isEqual(groupFields.value, newVal)) {\n+\t\t\t\tgroupFields.value = newVal;\n+\t\t\t}\n+\t\t},\n+\t);\n+\n+\twatch(\n+\t\t() => props.values,\n+\t\t(newVal) => {\n+\t\t\tif (!isEqual(groupValues.value, newVal)) {\n+\t\t\t\tgroupValues.value = newVal;\n+\t\t\t}\n+\t\t},\n+\t);\n+\n+\treturn { groupFields, groupValues };\n+\n+\tfunction limitFields(): Field[] {\n+\t\treturn props.fields.filter((field) => field.meta?.group === props.field.meta?.field);\n+\t}\n+}\n+</script>\n+\n+<template>\n+\t<TabsRoot\n+\t\tv-if=\"visibleFields.length > 0\"\n+\t\tv-model=\"activeTab\"\n+\t\tclass=\"group-tabs\"\n+\t\t:class=\"{ fill: fillWidth }\"\n+\t\t:dir=\"direction\"\n+\t>\n+\t\t<TabsList class=\"tab-list\">\n+\t\t\t<TabTrigger\n+\t\t\t\tv-for=\"tabField in visibleFields\"\n+\t\t\t\t:key=\"tabField.field\"\n+\t\t\t\t:field=\"tabField\"\n+\t\t\t\t:fields=\"fields\"\n+\t\t\t\t:values=\"groupValues\"\n+\t\t\t\t:validation-errors=\"validationErrors\"\n+\t\t\t\t:comparison=\"comparison\"\n+\t\t\t\t:badge=\"badge\"\n+\t\t\t/>\n+\t\t</TabsList>\n+\n+\t\t<TabContent\n+\t\t\tv-for=\"tabField in visibleFields\"\n+\t\t\t:key=\"tabField.field\"\n+\t\t\t:field=\"tabField\"\n+\t\t\t:fields=\"fields\"\n+\t\t\t:values=\"groupValues\"\n+\t\t\t:initial-values=\"initialValues\"\n+\t\t\t:disabled=\"disabled\"\n+\t\t\t:non-editable=\"nonEditable\"\n+\t\t\t:batch-mode=\"batchMode\"\n+\t\t\t:batch-active-fields=\"batchActiveFields\"\n+\t\t\t:comparison=\"comparison\"\n+\t\t\t:collab-context=\"collabContext\"\n+\t\t\t:primary-key=\"primaryKey\"\n+\t\t\t:loading=\"loading\"\n+\t\t\t:validation-errors=\"validationErrors\"\n+\t\t\t:raw-editor-enabled=\"rawEditorEnabled\"\n+\t\t\t:group=\"field.meta?.field ?? ''\"\n+\t\t\t:direction=\"direction\"\n+\t\t\t@apply=\"$emit('apply', $event)\"\n+\t\t/>\n+\t</TabsRoot>\n+</template>\n+\n+<style lang=\"scss\" scoped>\n+.tab-list {\n+\tdisplay: flex;\n+\tgap: 0 0.5rem;\n+\tpadding: 0.25rem;\n+\tborder-radius: var(--theme--border-radius);\n+\tbackground-color: var(--theme--background-subdued);\n+\tflex-wrap: wrap;\n+}\n+</style>"
+    },
+    {
+      "filename": "app/src/interfaces/group-tabs/index.ts",
+      "status": "added",
+      "additions": 36,
+      "deletions": 0,
+      "changes": 36,
+      "patch": "@@ -0,0 +1,36 @@\n+import { defineInterface } from '@directus/extensions';\n+import InterfaceGroupTabs from './group-tabs.vue';\n+import PreviewSVG from './preview.svg?raw';\n+\n+export default defineInterface({\n+\tid: 'group-tabs',\n+\tname: '$t:interfaces.group-tabs.name',\n+\tdescription: '$t:interfaces.group-tabs.description',\n+\ticon: 'tab',\n+\tcomponent: InterfaceGroupTabs,\n+\thideLabel: true,\n+\thideLoader: true,\n+\tautoKey: true,\n+\ttypes: ['alias'],\n+\tlocalTypes: ['group'],\n+\tgroup: 'group',\n+\toptions: [\n+\t\t{\n+\t\t\tfield: 'fillWidth',\n+\t\t\ttype: 'boolean',\n+\t\t\tname: '$t:interfaces.group-tabs.overwrite_group_width',\n+\t\t\tmeta: {\n+\t\t\t\tinterface: 'boolean',\n+\t\t\t\tnote: '$t:interfaces.group-tabs.fill_width_note',\n+\t\t\t\toptions: {\n+\t\t\t\t\tlabel: '$t:interfaces.group-tabs.fill_width',\n+\t\t\t\t},\n+\t\t\t\twidth: 'half',\n+\t\t\t},\n+\t\t\tschema: {\n+\t\t\t\tdefault_value: false,\n+\t\t\t},\n+\t\t},\n+\t],\n+\tpreview: PreviewSVG,\n+});"
+    },
+    {
+      "filename": "app/src/interfaces/group-tabs/preview.svg",
+      "status": "added",
+      "additions": 10,
+      "deletions": 0,
+      "changes": 10,
+      "patch": "@@ -0,0 +1,10 @@\n+<svg width=\"156\" height=\"96\" viewBox=\"0 0 156 96\" fill=\"none\"\n+\txmlns=\"http://www.w3.org/2000/svg\">\n+\t<rect x=\"18\" y=\"15\" width=\"36\" height=\"10\" rx=\"3\" fill=\"var(--theme--primary)\"/>\n+\t<rect opacity=\"0.25\" x=\"60\" y=\"15\" width=\"30\" height=\"10\" rx=\"3\" fill=\"var(--theme--primary)\"/>\n+\t<rect opacity=\"0.25\" x=\"96\" y=\"15\" width=\"30\" height=\"10\" rx=\"3\" fill=\"var(--theme--primary)\"/>\n+\t<rect opacity=\"0.25\" x=\"18\" y=\"31\" width=\"120\" height=\"2\" rx=\"1\" fill=\"var(--theme--primary)\"/>\n+\t<rect opacity=\"0.25\" x=\"18\" y=\"43\" width=\"80\" height=\"6\" rx=\"2\" fill=\"var(--theme--primary)\"/>\n+\t<rect opacity=\"0.25\" x=\"18\" y=\"57\" width=\"120\" height=\"6\" rx=\"2\" fill=\"var(--theme--primary)\"/>\n+\t<rect opacity=\"0.25\" x=\"18\" y=\"71\" width=\"60\" height=\"6\" rx=\"2\" fill=\"var(--theme--primary)\"/>\n+</svg>"
+    },
+    {
+      "filename": "app/src/interfaces/group-tabs/tab-content.vue",
+      "status": "added",
+      "additions": 78,
+      "deletions": 0,
+      "changes": 78,
+      "patch": "@@ -0,0 +1,78 @@\n+<script setup lang=\"ts\">\n+import { Field, ValidationError } from '@directus/types';\n+import { merge } from 'lodash';\n+import { TabsContent } from 'reka-ui';\n+import { computed } from 'vue';\n+import type { ComparisonContext } from '@/components/v-form/types';\n+import VForm from '@/components/v-form/v-form.vue';\n+import { CollabContext } from '@/composables/use-collab';\n+import { getFieldsInGroup } from '@/utils/get-fields-in-group';\n+\n+const props = withDefaults(\n+\tdefineProps<{\n+\t\tfield: Field;\n+\t\tfields: Field[];\n+\t\tvalues: Record<string, unknown>;\n+\t\tinitialValues: Record<string, unknown>;\n+\t\tdisabled?: boolean;\n+\t\tnonEditable?: boolean;\n+\t\tbatchMode?: boolean;\n+\t\tbatchActiveFields?: string[];\n+\t\tcollabContext?: CollabContext;\n+\t\tcomparison?: ComparisonContext;\n+\t\tprimaryKey: number | string;\n+\t\tloading?: boolean;\n+\t\tvalidationErrors?: ValidationError[];\n+\t\trawEditorEnabled?: boolean;\n+\t\tgroup: string;\n+\t\tdirection?: string;\n+\t}>(),\n+\t{\n+\t\tbatchActiveFields: () => [],\n+\t\tvalidationErrors: () => [],\n+\t},\n+);\n+\n+defineEmits<{\n+\t(e: 'apply', value: Record<string, unknown>): void;\n+}>();\n+\n+const fieldsInSection = computed(() => {\n+\tconst fields: Field[] = [merge({}, props.field, { hideLabel: true })];\n+\n+\tif (props.field.meta?.special?.includes('group')) {\n+\t\tfields.push(...getFieldsInGroup(props.field.field, props.fields));\n+\t}\n+\n+\treturn fields;\n+});\n+</script>\n+\n+<template>\n+\t<TabsContent :value=\"field.field\" class=\"tab-content\">\n+\t\t<VForm\n+\t\t\t:initial-values=\"initialValues\"\n+\t\t\t:fields=\"fieldsInSection\"\n+\t\t\t:model-value=\"values\"\n+\t\t\t:primary-key=\"primaryKey\"\n+\t\t\t:group=\"group\"\n+\t\t\t:validation-errors=\"validationErrors\"\n+\t\t\t:loading=\"loading\"\n+\t\t\t:batch-mode=\"batchMode\"\n+\t\t\t:disabled=\"disabled\"\n+\t\t\t:non-editable=\"nonEditable\"\n+\t\t\t:comparison=\"comparison\"\n+\t\t\t:collab-context=\"collabContext\"\n+\t\t\t:direction=\"direction\"\n+\t\t\t:show-no-visible-fields=\"false\"\n+\t\t\t:show-validation-errors=\"false\"\n+\t\t\t@update:model-value=\"$emit('apply', $event)\"\n+\t\t/>\n+\t</TabsContent>\n+</template>\n+\n+<style lang=\"scss\" scoped>\n+.tab-content {\n+\tpadding-block-start: var(--theme--form--row-gap);\n+}\n+</style>"
+    },
+    {
+      "filename": "app/src/interfaces/group-tabs/tab-trigger.vue",
+      "status": "added",
+      "additions": 175,
+      "deletions": 0,
+      "changes": 175,
+      "patch": "@@ -0,0 +1,175 @@\n+<script setup lang=\"ts\">\n+import formatTitle from '@directus/format-title';\n+import { Field, ValidationError } from '@directus/types';\n+import { TabsTrigger } from 'reka-ui';\n+import { computed } from 'vue';\n+import { useI18n } from 'vue-i18n';\n+import VChip from '@/components/v-chip.vue';\n+import type { ComparisonContext } from '@/components/v-form/types';\n+import VIcon from '@/components/v-icon/v-icon.vue';\n+import { getFieldsInGroup } from '@/utils/get-fields-in-group';\n+\n+const props = withDefaults(\n+\tdefineProps<{\n+\t\tfield: Field;\n+\t\tfields: Field[];\n+\t\tvalues: Record<string, unknown>;\n+\t\tvalidationErrors?: ValidationError[];\n+\t\tcomparison?: ComparisonContext;\n+\t\tbadge?: string;\n+\t}>(),\n+\t{\n+\t\tvalidationErrors: () => [],\n+\t},\n+);\n+\n+const { t } = useI18n();\n+\n+const fieldsInSection = computed(() => {\n+\tconst fields: Field[] = [props.field];\n+\n+\tif (props.field.meta?.special?.includes('group')) {\n+\t\tfields.push(...getFieldsInGroup(props.field.field, props.fields));\n+\t}\n+\n+\treturn fields;\n+});\n+\n+const edited = computed(() => {\n+\tif (!props.values) return false;\n+\tconst editedFields = Object.keys(props.values);\n+\treturn fieldsInSection.value.some((field) => editedFields.includes(field.field));\n+});\n+\n+const validationMessages = computed(() => {\n+\tconst fieldNames = fieldsInSection.value.map((field) => field.field);\n+\n+\tconst errors = props.validationErrors.reduce((acc, validationError) => {\n+\t\tif (fieldNames.includes(validationError.field) === false) return acc;\n+\n+\t\tif (validationError.code === 'RECORD_NOT_UNIQUE') {\n+\t\t\tacc.push(`${formatTitle(validationError.field)} ${t('validationError.unique').toLowerCase()}`);\n+\t\t} else {\n+\t\t\tacc.push(\n+\t\t\t\t`${formatTitle(validationError.field)} ${t(\n+\t\t\t\t\t`validationError.${validationError.type}`,\n+\t\t\t\t\tvalidationError,\n+\t\t\t\t).toLowerCase()}`,\n+\t\t\t);\n+\t\t}\n+\n+\t\treturn acc;\n+\t}, [] as string[]);\n+\n+\treturn errors;\n+});\n+\n+const { isFieldWithDifference, isRevisionUpdateOnly } = useComparisonIndicator();\n+\n+function useComparisonIndicator() {\n+\tconst isFieldWithDifference = computed(() => props.comparison?.fields.has(props.field.field));\n+\n+\tconst isRevisionUpdateOnly = computed(() => {\n+\t\treturn !isFieldWithDifference.value && props.comparison?.revisionFields?.has(props.field.field);\n+\t});\n+\n+\treturn { isFieldWithDifference, isRevisionUpdateOnly };\n+}\n+</script>\n+\n+<template>\n+\t<TabsTrigger\n+\t\t:value=\"field.field\"\n+\t\tclass=\"tab-trigger\"\n+\t\t:class=\"{\n+\t\t\t'indicator-active': isFieldWithDifference,\n+\t\t\t'indicator-muted': isRevisionUpdateOnly,\n+\t\t}\"\n+\t>\n+\t\t<span v-if=\"edited\" v-tooltip=\"t('edited')\" class=\"edit-dot\"></span>\n+\t\t<span class=\"field-name\">{{ field.name }}</span>\n+\t\t<VChip v-if=\"badge\" x-small>{{ badge }}</VChip>\n+\t\t<VIcon\n+\t\t\tv-if=\"validationMessages.length > 0\"\n+\t\t\tv-tooltip=\"validationMessages.join('\\n')\"\n+\t\t\tclass=\"warning\"\n+\t\t\tname=\"error\"\n+\t\t\tsmall\n+\t\t/>\n+\t</TabsTrigger>\n+</template>\n+\n+<style lang=\"scss\" scoped>\n+@use '@/styles/mixins';\n+\n+.tab-trigger {\n+\tposition: relative;\n+\tdisplay: inline-flex;\n+\talign-items: center;\n+\tpadding: 0.25rem 0.625rem;\n+\tborder: var(--theme--border-width) solid transparent;\n+\tborder-radius: var(--theme--border-radius);\n+\tbackground-color: transparent;\n+\tcolor: var(--theme--foreground-subdued);\n+\tcursor: pointer;\n+\tfont-weight: 600;\n+\ttransition:\n+\t\tcolor var(--fast) var(--transition),\n+\t\tbackground-color var(--fast) var(--transition),\n+\t\tborder-color var(--fast) var(--transition);\n+\n+\t&:hover {\n+\t\tcolor: var(--theme--foreground-accent);\n+\t}\n+\n+\t&[data-state='active'] {\n+\t\tborder-color: var(--theme--background-accent);\n+\t\tbackground-color: var(--theme--background-accent);\n+\t\tcolor: var(--theme--foreground-accent);\n+\n+\t\t.edit-dot {\n+\t\t\tbackground-color: var(--theme--foreground);\n+\t\t}\n+\t}\n+\n+\t.field-name {\n+\t\ttransition: color var(--fast) var(--transition);\n+\t}\n+\n+\t.v-chip {\n+\t\tmargin: 0;\n+\t\tmargin-inline-start: 0.5rem;\n+\t}\n+\n+\t.edit-dot {\n+\t\tdisplay: inline-block;\n+\t\tinline-size: 0.25rem;\n+\t\tblock-size: 0.25rem;\n+\t\tmargin-inline-end: 0.25rem;\n+\t\tbackground-color: var(--theme--foreground-subdued);\n+\t\tborder-radius: 50%;\n+\t\tflex-shrink: 0;\n+\t}\n+}\n+\n+.indicator-active {\n+\t@include mixins.field-indicator;\n+\n+\t&::before {\n+\t\ttransition: background-color var(--slow) var(--transition);\n+\t}\n+}\n+\n+.indicator-muted {\n+\t@include mixins.field-indicator('muted');\n+\n+\t&::before {\n+\t\ttransition: background-color var(--slow) var(--transition) var(--fast);\n+\t}\n+}\n+\n+.warning {\n+\tmargin-inline-start: 0.5rem;\n+\tcolor: var(--theme--danger);\n+}\n+</style>"
+    },
+    {
+      "filename": "app/src/lang/translations/en-US.yaml",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 0,
+      "changes": 6,
+      "patch": "@@ -2149,6 +2149,12 @@ interfaces:\n     all_opened: All Opened\n     accordion_mode: Accordion Mode\n     max_one_section_open: Max 1 Section Open\n+  group-tabs:\n+    name: Tabs\n+    description: Display fields or groups as tabs\n+    overwrite_group_width: Overwrite Group Width\n+    fill_width: Fill Width\n+    fill_width_note: Allow this group to fill the full width of the page.\n   presentation-links:\n     presentation-links: Buttons\n     description: Configurable link buttons for launching dynamic URLs or triggering Flows"
+    }
+  ]
+}

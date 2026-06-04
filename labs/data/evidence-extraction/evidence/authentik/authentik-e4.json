@@ -1,0 +1,65 @@
+{
+  "pr": {
+    "number": 20744,
+    "title": "lifecycle: make gunicorn --max-requests configurable (cherry-pick #20736 to version-2026.2)",
+    "body": "Cherry-pick of #20736 to `version-2026.2` branch.\n\n**Original PR:** #20736\n**Original Author:** @severin\n**Cherry-picked commit:** ea3c56ad80c57302e8e49ac92a150015d64516a5",
+    "state": "closed",
+    "merged": true,
+    "user": "authentik-automation[bot]",
+    "created_at": "2026-03-05T15:35:05Z",
+    "updated_at": "2026-03-05T16:14:27Z",
+    "base": "version-2026.2",
+    "head": "cherry-pick/20736-to-version-2026.2",
+    "merge_commit_sha": "093e60c75355373f1e23206f84d78b8540ae417b"
+  },
+  "issue_comments": [
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-docs* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 8635966a5e9488de37b65307f6559959e9abf1cf |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/projects/authentik-docs/deploys/69a9a2ae4855790008d5dee1 |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-20744--authentik-docs.netlify.app](https://deploy-preview-20744--authentik-docs.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTIwNzQ0LS1hdXRoZW50aWstZG9jcy5uZXRsaWZ5LmFwcCJ9.tL1oc8qFFwhdj8nLAplrNACOzyVjENkZ-9UjsGDsrxc)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n<!-- [authentik-docs Preview](https://deploy-preview-20744--authentik-docs.netlify.app) -->\n_To edit notification comments on pull requests, go to your [Netlify project configuration](https://app.netlify.com/projects/authentik-docs/configuration/notifications#deploy-notifications)._",
+      "created_at": "2026-03-05T15:37:17Z"
+    },
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-integrations* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 8635966a5e9488de37b65307f6559959e9abf1cf |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/projects/authentik-integrations/deploys/69a9a2aebd1d420008df39ed |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-20744--authentik-integrations.netlify.app](https://deploy-preview-20744--authentik-integrations.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTIwNzQ0LS1hdXRoZW50aWstaW50ZWdyYXRpb25zLm5ldGxpZnkuYXBwIn0.ZuslmPFz3nSbhSW3AsR_8reB7cuxJUMTXrrY5EjFPCc)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n<!-- [authentik-integrations Preview](https://deploy-preview-20744--authentik-integrations.netlify.app) -->\n_To edit notification comments on pull requests, go to your [Netlify project configuration](https://app.netlify.com/projects/authentik-integrations/configuration/notifications#deploy-notifications)._",
+      "created_at": "2026-03-05T15:37:23Z"
+    },
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/goauthentik/authentik/pull/20744?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 93.32%. Comparing base ([`af646f3`](https://app.codecov.io/gh/goauthentik/authentik/commit/af646f32d25eaba21db87d1890727669911e9327?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)) to head ([`8635966`](https://app.codecov.io/gh/goauthentik/authentik/commit/8635966a5e9488de37b65307f6559959e9abf1cf?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)).\n:warning: Report is 1 commits behind head on version-2026.2.\n:white_check_mark: All tests successful. No failed tests found.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n```diff\n@@               Coverage Diff               @@\n##           version-2026.2   #20744   +/-   ##\n===============================================\n  Coverage           93.32%   93.32%           \n===============================================\n  Files                 980      980           \n  Lines               54853    54853           \n===============================================\n+ Hits                51193    51194    +1     \n+ Misses               3660     3659    -1     \n```\n\n| [Flag](https://app.codecov.io/gh/goauthentik/authentik/pull/20744/flags?src=pr&el=flags&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | Coverage Δ | |\n|---|---|---|\n| [conformance](https://app.codecov.io/gh/goauthentik/authentik/pull/20744/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `37.63% <ø> (+<0.01%)` | :arrow_up: |\n| [e2e](https://app.codecov.io/gh/goauthentik/authentik/pull/20744/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `43.44% <ø> (+<0.01%)` | :arrow_up: |\n| [integration](https://app.codecov.io/gh/goauthentik/authentik/pull/20744/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `22.47% <ø> (+<0.01%)` | :arrow_up: |\n| [unit](https://app.codecov.io/gh/goauthentik/authentik/pull/20744/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.51% <ø> (+<0.01%)` | :arrow_up: |\n| [unit-migrate](https://app.codecov.io/gh/goauthentik/authentik/pull/20744/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.55% <ø> (+<0.01%)` | :arrow_up: |\n\nFlags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik#carryforward-flags-in-the-pull-request-comment) to find out more.\n</details>\n\n[:umbrella: View full report in Codecov by Sentry](https://app.codecov.io/gh/goauthentik/authentik/pull/20744?dropdown=coverage&src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).   \n:loudspeaker: Have feedback on the report? [Share it here](https://about.codecov.io/codecov-pr-comment-feedback/?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).",
+      "created_at": "2026-03-05T15:43:06Z"
+    },
+    {
+      "user": "github-actions[bot]",
+      "body": "authentik PR Installation instructions\n\n<details>\n  <summary>Instructions for docker-compose</summary>\n\n  Add the following block to your `.env` file:\n\n  ```shell\n  AUTHENTIK_IMAGE=ghcr.io/goauthentik/dev-server\n  AUTHENTIK_TAG=gh-8635966a5e9488de37b65307f6559959e9abf1cf\n  AUTHENTIK_OUTPOSTS__CONTAINER_IMAGE_BASE=ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  ```\n\n  Afterwards, run the upgrade commands from the latest release notes.\n</details>\n<details>\n  <summary>Instructions for Kubernetes</summary>\n\n  Add the following block to your `values.yml` file:\n\n  ```yaml\n  authentik:\n      outposts:\n          container_image_base: ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  global:\n      image:\n          repository: ghcr.io/goauthentik/dev-server\n          tag: gh-8635966a5e9488de37b65307f6559959e9abf1cf\n  ```\n\n  Afterwards, run the upgrade commands from the latest release notes.\n</details>",
+      "created_at": "2026-03-05T16:14:27Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [],
+  "commits": [
+    {
+      "sha": "8635966a5e9488de37b65307f6559959e9abf1cf",
+      "message": "lifecycle: make gunicorn --max-requests configurable (#20736)",
+      "author": "Severin Schoepke",
+      "date": "2026-03-05T15:34:18Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "lifecycle/gunicorn.conf.py",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "patch": "@@ -42,8 +42,8 @@\n \n preload_app = True\n \n-max_requests = 1000\n-max_requests_jitter = 50\n+max_requests = CONFIG.get_int(\"web.max_requests\", 1000)\n+max_requests_jitter = CONFIG.get_int(\"web.max_requests_jitter\", 50)\n \n logconfig_dict = get_logger_config()\n "
+    },
+    {
+      "filename": "website/docs/install-config/configuration/configuration.mdx",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 0,
+      "changes": 12,
+      "patch": "@@ -627,6 +627,18 @@ Configure how many gunicorn threads a worker processes should have (see https://\n \n Defaults to 4.\n \n+### `AUTHENTIK_WEB__MAX_REQUESTS`\n+\n+The maximum number of requests a worker will process before restarting. If this is set to zero then the automatic worker restarts are disabled (see https://gunicorn.org/reference/settings/#max_requests).\n+\n+Defaults to 1000.\n+\n+### `AUTHENTIK_WEB__MAX_REQUESTS_JITTER`\n+\n+The maximum jitter to add to the `AUTHENTIK_WEB__MAX_REQUESTS` setting (see https://gunicorn.org/reference/settings/#max_requests_jitter).\n+\n+Defaults to 50.\n+\n ### `AUTHENTIK_WEB__PATH`\n \n Configure the path under which authentik is served. For example to access authentik under `https://my.domain/authentik/`, set this to `/authentik/`. Value _must_ contain both a leading and trailing slash."
+    }
+  ]
+}

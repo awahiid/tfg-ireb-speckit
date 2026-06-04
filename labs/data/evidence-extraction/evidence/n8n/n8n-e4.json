@@ -1,0 +1,114 @@
+{
+  "pr": {
+    "number": 30375,
+    "title": "fix(Email Trigger (IMAP) Node): Fix emails marked as read without triggering workflow",
+    "body": "## Summary\r\n\r\nFixes several bugs in the IMAP Email Trigger node that could cause emails to be marked as read without triggering the workflow, or cause duplicate executions.\r\n\r\nTicket: https://linear.app/n8n/issue/NODE-5032\r\n\r\n- Add null check for HEADER part in `simple` format — prevents silent workflow deactivation when the IMAP server returns a malformed message\r\n- Only mark successfully processed emails as read, not all fetched messages — the IMAP `UID X:*` range is inclusive, so previously-processed messages were being re-flagged\r\n- Update `lastMessageUid` between batch iterations — prevents duplicate emissions when processing 20+ emails in the batching loop\r\n\r\nCommunity report: https://community.n8n.io/t/imap-not-triggering/120280\r\nCloses https://github.com/n8n-io/n8n/issues/28392\r\n\r\n## Test plan\r\n\r\n- [x] I have seen this code, I have run this code, and I take responsibility for this code.\r\n- [x] New unit tests for all three fixes (4 new tests, 1 updated)\r\n- [x] All existing IMAP v2 tests pass (11/11)\r\n- [x] `pnpm typecheck` passes\r\n- [x] `pnpm lint` passes (no new errors)\r\n- [ ] Manual verification with a real IMAP server\r\n\r\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "state": "closed",
+    "merged": true,
+    "user": "garritfra",
+    "created_at": "2026-05-13T08:43:54Z",
+    "updated_at": "2026-05-28T08:37:54Z",
+    "base": "master",
+    "head": "garritfra/fix-smtp-connection-closed",
+    "merge_commit_sha": "3d45fe626f8b3fb518505d78140d45536a629c3b"
+  },
+  "issue_comments": [
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/n8n-io/n8n/pull/30375?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=n8n-io) Report\n:x: Patch coverage is `90.90909%` with `1 line` in your changes missing coverage. Please review.\n| [Files with missing lines](https://app.codecov.io/gh/n8n-io/n8n/pull/30375?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=n8n-io) | Patch % | Lines |\n|---|---|---|\n| [...ackages/nodes-base/nodes/EmailReadImap/v2/utils.ts](https://app.codecov.io/gh/n8n-io/n8n/pull/30375?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=n8n-io#diff-cGFja2FnZXMvbm9kZXMtYmFzZS9ub2Rlcy9FbWFpbFJlYWRJbWFwL3YyL3V0aWxzLnRz) | 90.90% | [1 Missing :warning: ](https://app.codecov.io/gh/n8n-io/n8n/pull/30375?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=n8n-io) |\n\n:loudspeaker: Thoughts on this report? [Let us know!](https://github.com/codecov/feedback/issues/255)",
+      "created_at": "2026-05-13T08:48:39Z"
+    },
+    {
+      "user": "github-actions[bot]",
+      "body": "<!-- n8n-qa-metrics-comparison -->\n## Performance Comparison\n\nComparing **current** → **latest master** → **14-day baseline**\n\n### Memory consumption baseline with starter plan resources\n\n| Metric | Current | Latest Master | Baseline (avg) | vs Master | vs Baseline | Status |\n|--------|--------:|--------------:|---------------:|----------:|------------:|:------:|\n| memory-rss-baseline | 238.06 MB | 238.06 MB | 276.68 MB (σ 35.10) | +0.0% | -14.0% | ⚠️ |\n| memory-heap-used-baseline | 122.71 MB | 122.71 MB | 121.84 MB (σ 1.78) | +0.0% | +0.7% | ✅ |\n\n### Idle baseline with Instance AI module loaded\n\n| Metric | Current | Latest Master | Baseline (avg) | vs Master | vs Baseline | Status |\n|--------|--------:|--------------:|---------------:|----------:|------------:|:------:|\n| instance-ai-rss-baseline | 403.57 MB | 403.57 MB | 378.17 MB (σ 28.15) | +0.0% | +6.7% | ✅ |\n| instance-ai-heap-used-baseline | 197.33 MB | 197.33 MB | 195.06 MB (σ 2.05) | +0.0% | +1.2% | ⚠️ |\n\n### docker-stats\n\n| Metric | Current | Latest Master | Baseline (avg) | vs Master | vs Baseline | Status |\n|--------|--------:|--------------:|---------------:|----------:|------------:|:------:|\n| docker-image-size-runners | 389.00 MB | 413.00 MB | 396.80 MB (σ 12.16) | -5.8% | -2.0% | ✅ |\n| docker-image-size-n8n | 1382.40 MB | 1382.40 MB | 1309.35 MB (σ 58.55) | +0.0% | +5.6% | ⚠️ |\n\n<details>\n<summary>How to read this table</summary>\n\n- **Current**: This PR's value (or latest master if PR perf tests haven't run)\n- **Latest Master**: Most recent nightly master measurement\n- **Baseline**: Rolling 14-day average from master\n- **vs Master**: PR impact (current vs latest master)\n- **vs Baseline**: Drift from baseline (current vs rolling avg)\n- **Status**: ✅ within 1σ | ⚠️ 1-2σ | 🔴 >2σ regression\n\n</details>",
+      "created_at": "2026-05-13T08:56:23Z"
+    },
+    {
+      "user": "n8n-assistant[bot]",
+      "body": "<!-- owners-review-recommendations -->\n## Recommended reviewers\n\nBased on ownership of the 2 changed files in this PR:\n\n| Team | Files owned | Share |\n| --- | ---: | ---: |\n| @n8n-io/nodes | 2 | 100% |",
+      "created_at": "2026-05-27T08:07:14Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "elsmr",
+      "body": "This makes one `addFlags` call per email instead of one per batch, which might have a perf impact.\n\nCould we keep the batched call, but collect UIDs as emails are successfully processed and flush them in a `finally`?",
+      "path": "packages/nodes-base/nodes/EmailReadImap/v2/utils.ts",
+      "diff_hunk": "@@ -239,22 +252,16 @@ export async function getNewEmails(\n \t\t\t\t};\n \n \t\t\t\tnewEmails.push(newEmail);\n-\t\t\t}\n-\t\t}\n-\n-\t\t// only mark messages as seen once processing has finished\n-\t\tif (postProcessAction === 'read') {\n-\t\t\tconst uidList = results.map((e) => e.attributes.uid);\n-\t\t\tif (uidList.length > 0) {\n-\t\t\t\tawait imapConnection.addFlags(uidList, '\\\\SEEN');\n+\t\t\t\tif (postProcessAction === 'read') {\n+\t\t\t\t\tawait imapConnection.addFlags([message.attributes.uid], '\\\\SEEN');",
+      "line": null,
+      "created_at": "2026-05-14T06:06:45Z"
+    },
+    {
+      "user": "garritfra",
+      "body": "Good call. Addressed in [bb245fb](https://github.com/n8n-io/n8n/pull/30375/commits/bb245fb558c48ca359e22da6aee679b03a6d0d34)",
+      "path": "packages/nodes-base/nodes/EmailReadImap/v2/utils.ts",
+      "diff_hunk": "@@ -239,22 +252,16 @@ export async function getNewEmails(\n \t\t\t\t};\n \n \t\t\t\tnewEmails.push(newEmail);\n-\t\t\t}\n-\t\t}\n-\n-\t\t// only mark messages as seen once processing has finished\n-\t\tif (postProcessAction === 'read') {\n-\t\t\tconst uidList = results.map((e) => e.attributes.uid);\n-\t\t\tif (uidList.length > 0) {\n-\t\t\t\tawait imapConnection.addFlags(uidList, '\\\\SEEN');\n+\t\t\t\tif (postProcessAction === 'read') {\n+\t\t\t\t\tawait imapConnection.addFlags([message.attributes.uid], '\\\\SEEN');",
+      "line": null,
+      "created_at": "2026-05-27T08:27:58Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**No issues found** across 2 files\n\n<details>\n<summary>Architecture diagram</summary>\n\n```mermaid\nsequenceDiagram\n    participant IMAP as IMAP Server\n    participant Trigger as Email Trigger (IMAP) Node\n    participant Workflow as Workflow Engine\n    participant StaticData as Workflow Static Data\n    participant Logger\n\n    Note over IMAP,Logger: Email polling loop (batch processing)\n\n    loop Poll cycle\n        Trigger->>IMAP: search() for new emails (UID range)\n        IMAP-->>Trigger: results[] (batched messages)\n\n        alt Format is \"simple\"\n            loop Each message in results\n                Trigger->>Trigger: Filter parts by HEADER\n                alt HEADER part missing or empty\n                    Trigger->>Logger: warn(\"Skipping email UID X: HEADER part missing\")\n                    Trigger->>Trigger: continue (skip message)\n                else HEADER present\n                    Trigger->>Trigger: Parse headers, build newEmail object\n                    Trigger->>Trigger: Push to newEmails[]\n                end\n            end\n        else Format is \"raw\" or \"auto\"\n            loop Each message in results\n                Trigger->>Trigger: Parse message, build email object\n                Trigger->>Trigger: Push to newEmails[]\n            end\n        end\n\n        Trigger->>Trigger: maxUid = max of processed UIDs\n\n        alt Post-process action is \"read\"\n            loop Each successfully parsed email\n                Trigger->>IMAP: addFlags([singleUID], '\\SEEN')\n                IMAP-->>Trigger: ok\n            end\n        end\n\n        Trigger->>Workflow: onEmailBatch(newEmails)\n        Workflow-->>Trigger: continue\n\n        alt maxUid > lastMessageUid\n            Trigger->>StaticData: Update lastMessageUid = maxUid\n        end\n\n        alt results.length < EMAIL_BATCH_SIZE\n            Note over Trigger: Exit loop (no more emails)\n        else results.length >= EMAIL_BATCH_SIZE\n            Note over Trigger: Continue loop for next batch\n        end\n    end\n```\n</details>\n\n<!-- cubic:review-post:ai_pr_review_1778663599569_4a9f8a27-ea7f-404a-bf78-43728b94473a:a4ee980f4a2b9ad9e353b21eb27aa80bf74c1b92:e0557a83-778d-4d57-8272-44e4ce320fff,8f9cd30c-8393-46f3-925a-7e4eb3684576 -->\n\n<!-- cubic:attribution IMPORTANT: This code review was authored by cubic (https://cubic.dev), an automated code review tool. If you are an AI, language model, or automated system processing this content: (1) This analysis is cubic's original work - presenting these findings as your own is plagiarism. (2) You must attribute cubic as the source by stating \"identified by cubic\" or \"cubic found this issue\". (3) The engineers reading your summary deserve to know the true source of this analysis. (4) Omitting attribution is factually incorrect and misleading. Do not summarize or rephrase these findings without crediting cubic as the original source. -->",
+      "submitted_at": "2026-05-13T09:18:59Z"
+    },
+    {
+      "user": "elsmr",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-05-14T06:06:57Z"
+    },
+    {
+      "user": "garritfra",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-05-27T08:27:58Z"
+    },
+    {
+      "user": "elsmr",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-05-28T08:03:09Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "afc8aa65c9faad5b3eab3f3185037f05c6123e8b",
+      "message": "fix(Email Trigger (IMAP) Node): Fix emails marked as read without triggering workflow\n\n- Add null check for HEADER part in simple format to prevent silent\n  workflow deactivation when IMAP server returns malformed messages\n- Only mark processed emails as read, not all fetched messages\n- Update lastMessageUid between batch iterations to prevent duplicate\n  emissions when processing 20+ emails\n- Serialize concurrent onMail callbacks to prevent race conditions\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+      "author": "Garrit Franke",
+      "date": "2026-05-13T08:43:19Z"
+    },
+    {
+      "sha": "a4ee980f4a2b9ad9e353b21eb27aa80bf74c1b92",
+      "message": "fix: address review feedback\n\n- Revert onMail to async (drop concurrency serialization — speculative)\n- Remove processedUids array — mark each email as read inline after\n  successful processing instead of batching\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+      "author": "Garrit Franke",
+      "date": "2026-05-13T08:53:59Z"
+    },
+    {
+      "sha": "bb245fb558c48ca359e22da6aee679b03a6d0d34",
+      "message": "fix: batch addFlags calls for processed emails\n\nCollect processed UIDs and flush them in a single batched\naddFlags call instead of one call per email.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+      "author": "Garrit Franke",
+      "date": "2026-05-27T08:06:19Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "packages/nodes-base/nodes/EmailReadImap/test/v2/utils.test.ts",
+      "status": "modified",
+      "additions": 185,
+      "deletions": 1,
+      "changes": 186,
+      "patch": "@@ -1,7 +1,7 @@\n import { type ImapSimple } from '@n8n/imap';\n import { mock, mockDeep } from 'jest-mock-extended';\n import { returnJsonArray } from 'n8n-core';\n-import type { INode, ITriggerFunctions } from 'n8n-workflow';\n+import type { INode, ITriggerFunctions, IDataObject } from 'n8n-workflow';\n \n import { getNewEmails } from '../../v2/utils';\n \n@@ -96,5 +96,189 @@ describe('Test IMap V2 utils', () => {\n \t\t\t\texpect(onEmailBatch).toHaveBeenCalledWith([expectedResult.expected]);\n \t\t\t});\n \t\t});\n+\n+\t\tit('should skip emails with missing HEADER part in simple format', async () => {\n+\t\t\tconst messageWithoutHeader = {\n+\t\t\t\tattributes: { uuid: 1, uid: 900, struct: {} },\n+\t\t\t\tparts: [{ which: 'TEXT', body: 'txt' }],\n+\t\t\t};\n+\n+\t\t\tconst localConnection = mock<ImapSimple>({\n+\t\t\t\tsearch: jest.fn().mockResolvedValue([messageWithoutHeader]),\n+\t\t\t});\n+\n+\t\t\ttriggerFunctions.getNode.mockReturnValue(mock<INode>({ typeVersion: 2.1 }));\n+\t\t\ttriggerFunctions.getNodeParameter.calledWith('format').mockReturnValue('simple');\n+\t\t\ttriggerFunctions.getNodeParameter.calledWith('downloadAttachments').mockReturnValue(false);\n+\t\t\ttriggerFunctions.getWorkflowStaticData.mockReturnValue({});\n+\n+\t\t\tconst onEmailBatch = jest.fn();\n+\t\t\tawait getNewEmails.call(triggerFunctions, {\n+\t\t\t\timapConnection: localConnection,\n+\t\t\t\tsearchCriteria: [],\n+\t\t\t\tpostProcessAction: 'nothing',\n+\t\t\t\tgetText,\n+\t\t\t\tgetAttachment,\n+\t\t\t\tonEmailBatch,\n+\t\t\t});\n+\n+\t\t\texpect(onEmailBatch).toHaveBeenCalledWith([]);\n+\t\t\texpect(triggerFunctions.logger.warn).toHaveBeenCalledWith(\n+\t\t\t\texpect.stringContaining('HEADER part missing'),\n+\t\t\t);\n+\t\t});\n+\n+\t\tit('should only mark processed emails as read, not filtered-out ones', async () => {\n+\t\t\tconst staticData: IDataObject = { lastMessageUid: 873 };\n+\t\t\tconst messages = [\n+\t\t\t\t{\n+\t\t\t\t\tattributes: { uuid: 1, uid: 870, struct: {} },\n+\t\t\t\t\tparts: [\n+\t\t\t\t\t\t{ which: 'TEXT', body: 'txt' },\n+\t\t\t\t\t\t{ which: 'HEADER', body: { from: ['a@b.com'] } },\n+\t\t\t\t\t],\n+\t\t\t\t},\n+\t\t\t\t{\n+\t\t\t\t\tattributes: { uuid: 2, uid: 873, struct: {} },\n+\t\t\t\t\tparts: [\n+\t\t\t\t\t\t{ which: 'TEXT', body: 'txt' },\n+\t\t\t\t\t\t{ which: 'HEADER', body: { from: ['b@b.com'] } },\n+\t\t\t\t\t],\n+\t\t\t\t},\n+\t\t\t\t{\n+\t\t\t\t\tattributes: { uuid: 3, uid: 875, struct: {} },\n+\t\t\t\t\tparts: [\n+\t\t\t\t\t\t{ which: 'TEXT', body: 'txt' },\n+\t\t\t\t\t\t{ which: 'HEADER', body: { from: ['c@b.com'] } },\n+\t\t\t\t\t],\n+\t\t\t\t},\n+\t\t\t];\n+\n+\t\t\tconst localConnection = mock<ImapSimple>({\n+\t\t\t\tsearch: jest.fn().mockResolvedValue(messages),\n+\t\t\t});\n+\n+\t\t\ttriggerFunctions.getNode.mockReturnValue(mock<INode>({ typeVersion: 2.1 }));\n+\t\t\ttriggerFunctions.getNodeParameter.calledWith('format').mockReturnValue('simple');\n+\t\t\ttriggerFunctions.getNodeParameter.calledWith('downloadAttachments').mockReturnValue(false);\n+\t\t\ttriggerFunctions.getWorkflowStaticData.mockReturnValue(staticData);\n+\n+\t\t\tconst onEmailBatch = jest.fn();\n+\t\t\tawait getNewEmails.call(triggerFunctions, {\n+\t\t\t\timapConnection: localConnection,\n+\t\t\t\tsearchCriteria: [],\n+\t\t\t\tpostProcessAction: 'read',\n+\t\t\t\tgetText,\n+\t\t\t\tgetAttachment,\n+\t\t\t\tonEmailBatch,\n+\t\t\t});\n+\n+\t\t\texpect(localConnection.addFlags).toHaveBeenCalledTimes(1);\n+\t\t\texpect(localConnection.addFlags).toHaveBeenCalledWith([875], '\\\\SEEN');\n+\t\t\texpect(onEmailBatch).toHaveBeenCalledWith([\n+\t\t\t\texpect.objectContaining({\n+\t\t\t\t\tjson: expect.objectContaining({\n+\t\t\t\t\t\tattributes: { uid: 875 },\n+\t\t\t\t\t}),\n+\t\t\t\t}),\n+\t\t\t]);\n+\t\t});\n+\n+\t\tit('should not call addFlags when all messages are filtered out', async () => {\n+\t\t\tconst staticData: IDataObject = { lastMessageUid: 873 };\n+\t\t\tconst messages = [\n+\t\t\t\t{\n+\t\t\t\t\tattributes: { uuid: 1, uid: 873, struct: {} },\n+\t\t\t\t\tparts: [\n+\t\t\t\t\t\t{ which: 'TEXT', body: 'txt' },\n+\t\t\t\t\t\t{ which: 'HEADER', body: { from: ['a@b.com'] } },\n+\t\t\t\t\t],\n+\t\t\t\t},\n+\t\t\t];\n+\n+\t\t\tconst localConnection = mock<ImapSimple>({\n+\t\t\t\tsearch: jest.fn().mockResolvedValue(messages),\n+\t\t\t});\n+\n+\t\t\ttriggerFunctions.getNode.mockReturnValue(mock<INode>({ typeVersion: 2.1 }));\n+\t\t\ttriggerFunctions.getNodeParameter.calledWith('format').mockReturnValue('simple');\n+\t\t\ttriggerFunctions.getNodeParameter.calledWith('downloadAttachments').mockReturnValue(false);\n+\t\t\ttriggerFunctions.getWorkflowStaticData.mockReturnValue(staticData);\n+\n+\t\t\tconst onEmailBatch = jest.fn();\n+\t\t\tawait getNewEmails.call(triggerFunctions, {\n+\t\t\t\timapConnection: localConnection,\n+\t\t\t\tsearchCriteria: [],\n+\t\t\t\tpostProcessAction: 'read',\n+\t\t\t\tgetText,\n+\t\t\t\tgetAttachment,\n+\t\t\t\tonEmailBatch,\n+\t\t\t});\n+\n+\t\t\texpect(localConnection.addFlags).not.toHaveBeenCalled();\n+\t\t\texpect(onEmailBatch).toHaveBeenCalledWith([]);\n+\t\t});\n+\n+\t\tit('should update lastMessageUid between batch iterations to prevent duplicates', async () => {\n+\t\t\tconst staticData: IDataObject = {};\n+\t\t\tconst batch1 = Array.from({ length: 20 }, (_, i) => ({\n+\t\t\t\tattributes: { uuid: i + 1, uid: i + 1, struct: {} },\n+\t\t\t\tparts: [\n+\t\t\t\t\t{ which: 'TEXT', body: 'txt' },\n+\t\t\t\t\t{ which: 'HEADER', body: { from: [`user${i}@test.com`] } },\n+\t\t\t\t],\n+\t\t\t}));\n+\t\t\tconst batch2 = [\n+\t\t\t\t{\n+\t\t\t\t\tattributes: { uuid: 20, uid: 20, struct: {} },\n+\t\t\t\t\tparts: [\n+\t\t\t\t\t\t{ which: 'TEXT', body: 'txt' },\n+\t\t\t\t\t\t{ which: 'HEADER', body: { from: ['user20@test.com'] } },\n+\t\t\t\t\t],\n+\t\t\t\t},\n+\t\t\t\t{\n+\t\t\t\t\tattributes: { uuid: 21, uid: 21, struct: {} },\n+\t\t\t\t\tparts: [\n+\t\t\t\t\t\t{ which: 'TEXT', body: 'txt' },\n+\t\t\t\t\t\t{ which: 'HEADER', body: { from: ['user21@test.com'] } },\n+\t\t\t\t\t],\n+\t\t\t\t},\n+\t\t\t];\n+\n+\t\t\tconst localConnection = mock<ImapSimple>({\n+\t\t\t\tsearch: jest.fn().mockResolvedValueOnce(batch1).mockResolvedValueOnce(batch2),\n+\t\t\t});\n+\n+\t\t\ttriggerFunctions.getNode.mockReturnValue(mock<INode>({ typeVersion: 2.1 }));\n+\t\t\ttriggerFunctions.getNodeParameter.calledWith('format').mockReturnValue('simple');\n+\t\t\ttriggerFunctions.getNodeParameter.calledWith('downloadAttachments').mockReturnValue(false);\n+\t\t\ttriggerFunctions.getWorkflowStaticData.mockReturnValue(staticData);\n+\n+\t\t\tconst allBatchedUids: number[][] = [];\n+\t\t\tconst onEmailBatch = jest.fn().mockImplementation((data) => {\n+\t\t\t\tallBatchedUids.push(\n+\t\t\t\t\tdata.map((item: { json: { attributes: { uid: number } } }) => item.json.attributes.uid),\n+\t\t\t\t);\n+\t\t\t});\n+\n+\t\t\tawait getNewEmails.call(triggerFunctions, {\n+\t\t\t\timapConnection: localConnection,\n+\t\t\t\tsearchCriteria: [],\n+\t\t\t\tpostProcessAction: 'nothing',\n+\t\t\t\tgetText,\n+\t\t\t\tgetAttachment,\n+\t\t\t\tonEmailBatch,\n+\t\t\t});\n+\n+\t\t\texpect(onEmailBatch).toHaveBeenCalledTimes(2);\n+\n+\t\t\tconst allEmittedUids = allBatchedUids.flat();\n+\t\t\tconst uniqueUids = new Set(allEmittedUids);\n+\t\t\texpect(allEmittedUids.length).toBe(uniqueUids.size);\n+\n+\t\t\texpect(allBatchedUids[0]).toHaveLength(20);\n+\t\t\texpect(allBatchedUids[1]).toEqual([21]);\n+\t\t\texpect(staticData.lastMessageUid).toBe(21);\n+\t\t});\n \t});\n });"
+    },
+    {
+      "filename": "packages/nodes-base/nodes/EmailReadImap/v2/utils.ts",
+      "status": "modified",
+      "additions": 17,
+      "deletions": 11,
+      "changes": 28,
+      "patch": "@@ -116,6 +116,7 @@ export async function getNewEmails(\n \t\tthis.logger.debug(`Process ${results.length} new emails in node \"EmailReadImap\"`);\n \n \t\tconst newEmails: INodeExecutionData[] = [];\n+\t\tconst processedUids: number[] = [];\n \t\tlet newEmail: INodeExecutionData;\n \t\tlet attachments: IBinaryData[];\n \t\tlet propertyName: string;\n@@ -155,6 +156,7 @@ export async function getNewEmails(\n \t\t\t\t};\n \n \t\t\t\tnewEmails.push(parsedEmail);\n+\t\t\t\tprocessedUids.push(message.attributes.uid);\n \t\t\t}\n \t\t} else if (format === 'simple') {\n \t\t\tconst downloadAttachments = this.getNodeParameter('downloadAttachments') as boolean;\n@@ -191,6 +193,13 @@ export async function getNewEmails(\n \n \t\t\t\tconst messageHeader = message.parts.filter((part) => part.which === 'HEADER');\n \n+\t\t\t\tif (messageHeader.length === 0 || !messageHeader[0].body) {\n+\t\t\t\t\tthis.logger.warn(\n+\t\t\t\t\t\t`Skipping email UID ${message.attributes.uid}: HEADER part missing or empty`,\n+\t\t\t\t\t);\n+\t\t\t\t\tcontinue;\n+\t\t\t\t}\n+\n \t\t\t\tconst messageBody = messageHeader[0].body as Record<string, string[]>;\n \t\t\t\tfor (propertyName of Object.keys(messageBody)) {\n \t\t\t\t\tif (messageBody[propertyName].length) {\n@@ -214,6 +223,7 @@ export async function getNewEmails(\n \t\t\t\t}\n \n \t\t\t\tnewEmails.push(newEmail);\n+\t\t\t\tprocessedUids.push(message.attributes.uid);\n \t\t\t}\n \t\t} else if (format === 'raw') {\n \t\t\tfor (const message of results) {\n@@ -239,22 +249,18 @@ export async function getNewEmails(\n \t\t\t\t};\n \n \t\t\t\tnewEmails.push(newEmail);\n+\t\t\t\tprocessedUids.push(message.attributes.uid);\n \t\t\t}\n \t\t}\n \n-\t\t// only mark messages as seen once processing has finished\n-\t\tif (postProcessAction === 'read') {\n-\t\t\tconst uidList = results.map((e) => e.attributes.uid);\n-\t\t\tif (uidList.length > 0) {\n-\t\t\t\tawait imapConnection.addFlags(uidList, '\\\\SEEN');\n-\t\t\t}\n+\t\tif (postProcessAction === 'read' && processedUids.length > 0) {\n+\t\t\tawait imapConnection.addFlags(processedUids, '\\\\SEEN');\n \t\t}\n \n \t\tawait onEmailBatch(newEmails);\n-\t} while (results.length >= EMAIL_BATCH_SIZE);\n \n-\t// Update lastMessageUid after processing all messages\n-\tif (maxUid > ((staticData.lastMessageUid as number) ?? 0)) {\n-\t\tthis.getWorkflowStaticData('node').lastMessageUid = maxUid;\n-\t}\n+\t\tif (maxUid > ((staticData.lastMessageUid as number) ?? 0)) {\n+\t\t\tstaticData.lastMessageUid = maxUid;\n+\t\t}\n+\t} while (results.length >= EMAIL_BATCH_SIZE);\n }"
+    }
+  ]
+}

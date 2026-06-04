@@ -1,0 +1,97 @@
+{
+  "pr": {
+    "number": 10110,
+    "title": "admin: system api: fix FIPS status schema",
+    "body": "<!--\r\n👋 Hi there! Welcome.\r\n\r\nPlease check the Contributing guidelines: https://goauthentik.io/developer-docs/#how-can-i-contribute\r\n-->\r\n\r\n## Details\r\n\r\n<!--\r\nExplain what this PR changes, what the rationale behind the change is, if any new requirements are introduced or any breaking changes caused by this PR.\r\n\r\nIdeally also link an Issue for context that this PR will close using `closes #`\r\n-->\r\nREPLACE ME\r\n\r\n---\r\n\r\n## Checklist\r\n\r\n-   [ ] Local tests pass (`ak test authentik/`)\r\n-   [ ] The code has been formatted (`make lint-fix`)\r\n\r\nIf an API change has been made\r\n\r\n-   [ ] The API schema has been updated (`make gen-build`)\r\n\r\nIf changes to the frontend have been made\r\n\r\n-   [ ] The code has been formatted (`make web`)\r\n\r\nIf applicable\r\n\r\n-   [ ] The documentation has been updated\r\n-   [ ] The documentation has been formatted (`make website`)\r\n",
+    "state": "closed",
+    "merged": true,
+    "user": "rissson",
+    "created_at": "2024-06-14T15:00:22Z",
+    "updated_at": "2024-06-14T15:42:09Z",
+    "base": "main",
+    "head": "fips-fix-api-response",
+    "merge_commit_sha": "c0521762bc96718358591db47bdd649c06dcefd3"
+  },
+  "issue_comments": [
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-docs* canceled.\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 99378660072bd0d3121134532126dca5bb6fc955 |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/sites/authentik-docs/deploys/666c5c2d4bcd9d000827722d |",
+      "created_at": "2024-06-14T15:00:37Z"
+    },
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-storybook* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 99378660072bd0d3121134532126dca5bb6fc955 |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/sites/authentik-storybook/deploys/666c5c2e0b05d0000890963e |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-10110--authentik-storybook.netlify.app](https://deploy-preview-10110--authentik-storybook.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTEwMTEwLS1hdXRoZW50aWstc3Rvcnlib29rLm5ldGxpZnkuYXBwIn0.onV-4xIhIYQaHIAO2pWeF31NGUg4VGHV2ci3KU2yCAk)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n\n_To edit notification comments on pull requests, go to your [Netlify site configuration](https://app.netlify.com/sites/authentik-storybook/configuration/deploys#deploy-notifications)._",
+      "created_at": "2024-06-14T15:00:38Z"
+    },
+    {
+      "user": "rissson",
+      "body": "/cherry-pick version-2024.6",
+      "created_at": "2024-06-14T15:00:49Z"
+    },
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/goauthentik/authentik/pull/10110?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) Report\nAll modified and coverable lines are covered by tests :white_check_mark:\n> Project coverage is 92.60%. Comparing base [(`0c604ce`)](https://app.codecov.io/gh/goauthentik/authentik/commit/0c604ceba4984eb7a6ca598456105b702b7928e6?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) to head [(`9937866`)](https://app.codecov.io/gh/goauthentik/authentik/commit/99378660072bd0d3121134532126dca5bb6fc955?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).\n\n\n<details><summary>Additional details and impacted files</summary>\n\n\n```diff\n@@            Coverage Diff             @@\n##             main   #10110      +/-   ##\n==========================================\n- Coverage   92.61%   92.60%   -0.02%     \n==========================================\n  Files         711      711              \n  Lines       34905    34905              \n==========================================\n- Hits        32329    32324       -5     \n- Misses       2576     2581       +5     \n```\n\n| [Flag](https://app.codecov.io/gh/goauthentik/authentik/pull/10110/flags?src=pr&el=flags&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | Coverage Δ | |\n|---|---|---|\n| [e2e](https://app.codecov.io/gh/goauthentik/authentik/pull/10110/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `49.55% <100.00%> (-0.01%)` | :arrow_down: |\n| [integration](https://app.codecov.io/gh/goauthentik/authentik/pull/10110/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `25.42% <0.00%> (ø)` | |\n| [unit](https://app.codecov.io/gh/goauthentik/authentik/pull/10110/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `90.09% <100.00%> (-0.01%)` | :arrow_down: |\n\nFlags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik#carryforward-flags-in-the-pull-request-comment) to find out more.\n\n\n</details>\n\n[:umbrella: View full report in Codecov by Sentry](https://app.codecov.io/gh/goauthentik/authentik/pull/10110?dropdown=coverage&src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).   \n:loudspeaker: Have feedback on the report? [Share it here](https://about.codecov.io/codecov-pr-comment-feedback/?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).\n",
+      "created_at": "2024-06-14T15:06:03Z"
+    },
+    {
+      "user": "github-actions[bot]",
+      "body": "authentik PR Installation instructions\n\n<details>\n  <summary>Instructions for docker-compose</summary>\n\n  Add the following block to your `.env` file:\n\n  ```shell\n  AUTHENTIK_IMAGE=ghcr.io/goauthentik/dev-server\n  AUTHENTIK_TAG=gh-ghcr.io/goauthentik/dev-server:gh-99378660072bd0d3121134532126dca5bb6fc955\n  AUTHENTIK_OUTPOSTS__CONTAINER_IMAGE_BASE=ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  ```\n\n  For arm64, use these values:\n\n  ```shell\n  AUTHENTIK_IMAGE=ghcr.io/goauthentik/dev-server\n  AUTHENTIK_TAG=gh-ghcr.io/goauthentik/dev-server:gh-99378660072bd0d3121134532126dca5bb6fc955-arm64\n  AUTHENTIK_OUTPOSTS__CONTAINER_IMAGE_BASE=ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  ```\n\n  Afterwards, run the upgrade commands from the latest release notes.\n</details>\n<details>\n  <summary>Instructions for Kubernetes</summary>\n\n  Add the following block to your `values.yml` file:\n\n  ```yaml\n  authentik:\n      outposts:\n          container_image_base: ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  image:\n      repository: ghcr.io/goauthentik/dev-server\n      tag: gh-ghcr.io/goauthentik/dev-server:gh-99378660072bd0d3121134532126dca5bb6fc955\n  ```\n\n  For arm64, use these values:\n\n  ```yaml\n  authentik:\n      outposts:\n          container_image_base: ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  image:\n      repository: ghcr.io/goauthentik/dev-server\n      tag: gh-ghcr.io/goauthentik/dev-server:gh-99378660072bd0d3121134532126dca5bb6fc955-arm64\n  ```\n\n  Afterwards, run the upgrade commands from the latest release notes.\n</details>",
+      "created_at": "2024-06-14T15:35:52Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "kensternberg-authentik",
+      "state": "APPROVED",
+      "body": "Correct and correspondent.",
+      "submitted_at": "2024-06-14T15:03:42Z"
+    },
+    {
+      "user": "BeryJu",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2024-06-14T15:05:24Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "419daf1656f5ede98c27db1e9ef7111f841be3c9",
+      "message": "admin: system api: fix FIPS status schema\n\nSigned-off-by: Marc 'risson' Schmitt <marc.schmitt@risson.space>",
+      "author": "Marc 'risson' Schmitt",
+      "date": "2024-06-14T15:00:00Z"
+    },
+    {
+      "sha": "99378660072bd0d3121134532126dca5bb6fc955",
+      "message": "I think openssl_fips_enabled makes more sense\n\nSigned-off-by: Jens Langhammer <jens@goauthentik.io>",
+      "author": "Jens Langhammer",
+      "date": "2024-06-14T15:05:07Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "authentik/admin/api/system.py",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "patch": "@@ -33,7 +33,7 @@ class RuntimeDict(TypedDict):\n     platform: str\n     uname: str\n     openssl_version: str\n-    openssl_fips_mode: bool | None\n+    openssl_fips_enabled: bool | None\n     authentik_version: str\n \n "
+    },
+    {
+      "filename": "schema.yml",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "patch": "@@ -47406,7 +47406,7 @@ components:\n               type: string\n             openssl_version:\n               type: string\n-            openssl_fips_mode:\n+            openssl_fips_enabled:\n               type: boolean\n               nullable: true\n             authentik_version:\n@@ -47415,7 +47415,7 @@ components:\n           - architecture\n           - authentik_version\n           - environment\n-          - openssl_fips_mode\n+          - openssl_fips_enabled\n           - openssl_version\n           - platform\n           - python_version"
+    },
+    {
+      "filename": "web/src/admin/admin-overview/cards/FipsStatusCard.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "patch": "@@ -29,7 +29,7 @@ export class FipsStatusCard extends AdminStatusCard<SystemInfo> {\n     }\n \n     getStatus(value: SystemInfo): Promise<AdminStatus> {\n-        return value.runtime.opensslFipsMode\n+        return value.runtime.opensslFipsEnabled\n             ? this.setStatus(msg(\"OK\"), {\n                   icon: \"fa fa-check-circle pf-m-success\",\n                   message: html`${msg(\"FIPS compliance: passing\")}`,"
+    }
+  ]
+}

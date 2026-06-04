@@ -1,0 +1,75 @@
+{
+  "pr": {
+    "number": 21803,
+    "title": "providers/oauth2: device code flow client id via auth header (cherry-pick #20457 to version-2025.12)",
+    "body": "Cherry-pick of #20457 to `version-2025.12` branch.\n\n**Original PR:** #20457\n**Original Author:** @brooklynbagel\n**Cherry-picked commit:** d9df013a482d3207b5bedc6ddfd1929d091c0612",
+    "state": "closed",
+    "merged": true,
+    "user": "authentik-automation[bot]",
+    "created_at": "2026-04-23T13:44:42Z",
+    "updated_at": "2026-04-23T14:11:09Z",
+    "base": "version-2025.12",
+    "head": "cherry-pick/20457-to-version-2025.12",
+    "merge_commit_sha": "ad02dc6b924261d45cddace1fd968837135b5b96"
+  },
+  "issue_comments": [
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/goauthentik/authentik/pull/21803?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 93.32%. Comparing base ([`ae6d459`](https://app.codecov.io/gh/goauthentik/authentik/commit/ae6d459a1add3966ffa4f4d43c9f96dd97918720?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)) to head ([`7030a4b`](https://app.codecov.io/gh/goauthentik/authentik/commit/7030a4bb2e0ec0f41fe8b0467874e7051c960425?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)).\n:warning: Report is 1 commits behind head on version-2025.12.\n:white_check_mark: All tests successful. No failed tests found.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n```diff\n@@                 Coverage Diff                 @@\n##           version-2025.12   #21803      +/-   ##\n===================================================\n+ Coverage            92.65%   93.32%   +0.66%     \n===================================================\n  Files                  947      947              \n  Lines                52887    52904      +17     \n===================================================\n+ Hits                 49001    49371     +370     \n+ Misses                3886     3533     -353     \n```\n\n| [Flag](https://app.codecov.io/gh/goauthentik/authentik/pull/21803/flags?src=pr&el=flags&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | Coverage Δ | |\n|---|---|---|\n| [e2e](https://app.codecov.io/gh/goauthentik/authentik/pull/21803/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `44.20% <4.76%> (+0.04%)` | :arrow_up: |\n| [integration](https://app.codecov.io/gh/goauthentik/authentik/pull/21803/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `23.39% <0.00%> (-0.02%)` | :arrow_down: |\n| [unit](https://app.codecov.io/gh/goauthentik/authentik/pull/21803/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.66% <100.00%> (+0.66%)` | :arrow_up: |\n\nFlags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik#carryforward-flags-in-the-pull-request-comment) to find out more.\n</details>\n\n[:umbrella: View full report in Codecov by Sentry](https://app.codecov.io/gh/goauthentik/authentik/pull/21803?dropdown=coverage&src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).   \n:loudspeaker: Have feedback on the report? [Share it here](https://about.codecov.io/codecov-pr-comment-feedback/?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).",
+      "created_at": "2026-04-23T13:50:14Z"
+    },
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-docs* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 7030a4bb2e0ec0f41fe8b0467874e7051c960425 |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/projects/authentik-docs/deploys/69ea224e49ff3c00079baa55 |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-21803--authentik-docs.netlify.app](https://deploy-preview-21803--authentik-docs.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTIxODAzLS1hdXRoZW50aWstZG9jcy5uZXRsaWZ5LmFwcCJ9.IugGmxjj2OIauOB18J8Yqm9vYkOX0uAyzubaubxMOTA)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n<!-- [authentik-docs Preview](https://deploy-preview-21803--authentik-docs.netlify.app) -->\n_To edit notification comments on pull requests, go to your [Netlify project configuration](https://app.netlify.com/projects/authentik-docs/configuration/notifications#deploy-notifications)._",
+      "created_at": "2026-04-23T13:53:07Z"
+    },
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-integrations* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 7030a4bb2e0ec0f41fe8b0467874e7051c960425 |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/projects/authentik-integrations/deploys/69ea224e115fc700088f28d3 |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-21803--authentik-integrations.netlify.app](https://deploy-preview-21803--authentik-integrations.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTIxODAzLS1hdXRoZW50aWstaW50ZWdyYXRpb25zLm5ldGxpZnkuYXBwIn0.4sn8Hdt9f4c7C9t0ZRc9SuFO1QonhLUad3LE-cjOwR8)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n<!-- [authentik-integrations Preview](https://deploy-preview-21803--authentik-integrations.netlify.app) -->\n_To edit notification comments on pull requests, go to your [Netlify project configuration](https://app.netlify.com/projects/authentik-integrations/configuration/notifications#deploy-notifications)._",
+      "created_at": "2026-04-23T13:53:13Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "BeryJu",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-04-23T13:45:47Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "7030a4bb2e0ec0f41fe8b0467874e7051c960425",
+      "message": "providers/oauth2: device code flow client id via auth header (#20457)\n\n* Use `extract_client_auth` which can get client id from either HTTP\nAuthorization header or POST body\n\n* Update documentation to reflect allow sending client id via header\n\n* Add tests for using HTTP Basic Auth to pass in client id",
+      "author": "Michael Beigelmacher",
+      "date": "2026-02-23T12:18:07Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "authentik/providers/oauth2/tests/test_device_backchannel.py",
+      "status": "modified",
+      "additions": 37,
+      "deletions": 2,
+      "changes": 39,
+      "patch": "@@ -1,5 +1,6 @@\n \"\"\"Device backchannel tests\"\"\"\n \n+from base64 import b64encode\n from json import loads\n \n from django.urls import reverse\n@@ -26,7 +27,7 @@ def setUp(self) -> None:\n             provider=self.provider,\n         )\n \n-    def test_backchannel_invalid(self):\n+    def test_backchannel_invalid_client_id_via_post_body(self):\n         \"\"\"Test backchannel\"\"\"\n         res = self.client.post(\n             reverse(\"authentik_providers_oauth2:device\"),\n@@ -50,7 +51,7 @@ def test_backchannel_invalid(self):\n         )\n         self.assertEqual(res.status_code, 400)\n \n-    def test_backchannel(self):\n+    def test_backchannel_client_id_via_post_body(self):\n         \"\"\"Test backchannel\"\"\"\n         res = self.client.post(\n             reverse(\"authentik_providers_oauth2:device\"),\n@@ -61,3 +62,37 @@ def test_backchannel(self):\n         self.assertEqual(res.status_code, 200)\n         body = loads(res.content.decode())\n         self.assertEqual(body[\"expires_in\"], 60)\n+\n+    def test_backchannel_invalid_client_id_via_auth_header(self):\n+        \"\"\"Test backchannel\"\"\"\n+        creds = b64encode(b\"foo:\").decode()\n+        res = self.client.post(\n+            reverse(\"authentik_providers_oauth2:device\"),\n+            HTTP_AUTHORIZATION=f\"Basic {creds}\",\n+        )\n+        self.assertEqual(res.status_code, 400)\n+        res = self.client.post(\n+            reverse(\"authentik_providers_oauth2:device\"),\n+        )\n+        self.assertEqual(res.status_code, 400)\n+        # test without application\n+        self.application.provider = None\n+        self.application.save()\n+        res = self.client.post(\n+            reverse(\"authentik_providers_oauth2:device\"),\n+            data={\n+                \"client_id\": \"test\",\n+            },\n+        )\n+        self.assertEqual(res.status_code, 400)\n+\n+    def test_backchannel_client_id_via_auth_header(self):\n+        \"\"\"Test backchannel\"\"\"\n+        creds = b64encode(f\"{self.provider.client_id}:\".encode()).decode()\n+        res = self.client.post(\n+            reverse(\"authentik_providers_oauth2:device\"),\n+            HTTP_AUTHORIZATION=f\"Basic {creds}\",\n+        )\n+        self.assertEqual(res.status_code, 200)\n+        body = loads(res.content.decode())\n+        self.assertEqual(body[\"expires_in\"], 60)"
+    },
+    {
+      "filename": "authentik/providers/oauth2/views/device_backchannel.py",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "patch": "@@ -16,7 +16,7 @@\n from authentik.lib.utils.time import timedelta_from_string\n from authentik.providers.oauth2.errors import DeviceCodeError\n from authentik.providers.oauth2.models import DeviceToken, OAuth2Provider\n-from authentik.providers.oauth2.utils import TokenResponse\n+from authentik.providers.oauth2.utils import TokenResponse, extract_client_auth\n from authentik.providers.oauth2.views.device_init import QS_KEY_CODE\n \n LOGGER = get_logger()\n@@ -32,7 +32,7 @@ class DeviceView(View):\n \n     def parse_request(self):\n         \"\"\"Parse incoming request\"\"\"\n-        client_id = self.request.POST.get(\"client_id\", None)\n+        client_id, _ = extract_client_auth(self.request)\n         if not client_id:\n             raise DeviceCodeError(\"invalid_client\")\n         provider = OAuth2Provider.objects.filter(client_id=client_id).first()"
+    },
+    {
+      "filename": "website/docs/add-secure-apps/providers/oauth2/device_code.md",
+      "status": "modified",
+      "additions": 11,
+      "deletions": 0,
+      "changes": 11,
+      "patch": "@@ -25,6 +25,17 @@ client_id=application_client_id&\n scope=openid email my-other-scope\n ```\n \n+Alternatively the client id may be sent via the HTTP Authorization header:\n+\n+```http\n+POST /application/o/device/ HTTP/1.1\n+Host: authentik.company\n+Content-Type: application/x-www-form-urlencoded\n+Authorization: Bearer YXBwbGljYXRpb25fY2xpZW50X2lkOg==\n+\n+scope=openid email my-other-scope\n+```\n+\n The response contains the following fields:\n \n - `device_code`: Device code, which is the code kept on the device"
+    }
+  ]
+}

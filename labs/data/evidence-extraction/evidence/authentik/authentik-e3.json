@@ -1,0 +1,137 @@
+{
+  "pr": {
+    "number": 20712,
+    "title": "web/flows: continuous login (cherry-pick #19862 to version-2026.2)",
+    "body": "⚠️ **This cherry-pick has conflicts that require manual resolution.**\n\nCherry-pick of #19862 to `version-2026.2` branch.\n\n**Original PR:** #19862\n**Original Author:** @BeryJu\n**Cherry-picked commit:** 6245809eaeeb07a3863d55ae42cf43fed4754887\n\n**Please resolve the conflicts in this PR before merging.**",
+    "state": "closed",
+    "merged": true,
+    "user": "authentik-automation[bot]",
+    "created_at": "2026-03-04T10:38:41Z",
+    "updated_at": "2026-03-04T11:58:42Z",
+    "base": "version-2026.2",
+    "head": "cherry-pick/19862-to-version-2026.2",
+    "merge_commit_sha": "de4afc732200db41a4b7b1f629f24e4cc6edad8a"
+  },
+  "issue_comments": [
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-integrations* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 2420ed08e9a16e0c3e21b8f06369d562a2f77a58 |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/projects/authentik-integrations/deploys/69a80bb502a8b000079d14e3 |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-20712--authentik-integrations.netlify.app](https://deploy-preview-20712--authentik-integrations.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTIwNzEyLS1hdXRoZW50aWstaW50ZWdyYXRpb25zLm5ldGxpZnkuYXBwIn0.QZ4pPRYsNvCUYFvJgEYcGcwaiJk8PmHK5LjSxPem4I0)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n<!-- [authentik-integrations Preview](https://deploy-preview-20712--authentik-integrations.netlify.app) -->\n_To edit notification comments on pull requests, go to your [Netlify project configuration](https://app.netlify.com/projects/authentik-integrations/configuration/notifications#deploy-notifications)._",
+      "created_at": "2026-03-04T10:40:04Z"
+    },
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/goauthentik/authentik/pull/20712?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 93.33%. Comparing base ([`bc19831`](https://app.codecov.io/gh/goauthentik/authentik/commit/bc1983106f0bd1ceb85d483ca2b8ac53d381b3f5?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)) to head ([`09af2b0`](https://app.codecov.io/gh/goauthentik/authentik/commit/09af2b0c06551fc53947719d4d5e2bb26bcd316e?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)).\n:warning: Report is 1 commits behind head on version-2026.2.\n:white_check_mark: All tests successful. No failed tests found.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n```diff\n@@               Coverage Diff               @@\n##           version-2026.2   #20712   +/-   ##\n===============================================\n  Coverage           93.32%   93.33%           \n===============================================\n  Files                 980      980           \n  Lines               54849    54853    +4     \n===============================================\n+ Hits                51189    51195    +6     \n+ Misses               3660     3658    -2     \n```\n\n| [Flag](https://app.codecov.io/gh/goauthentik/authentik/pull/20712/flags?src=pr&el=flags&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | Coverage Δ | |\n|---|---|---|\n| [conformance](https://app.codecov.io/gh/goauthentik/authentik/pull/20712/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `37.63% <100.00%> (+0.05%)` | :arrow_up: |\n| [e2e](https://app.codecov.io/gh/goauthentik/authentik/pull/20712/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `43.44% <100.00%> (+<0.01%)` | :arrow_up: |\n| [integration](https://app.codecov.io/gh/goauthentik/authentik/pull/20712/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `22.47% <20.00%> (+<0.01%)` | :arrow_up: |\n| [unit](https://app.codecov.io/gh/goauthentik/authentik/pull/20712/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.51% <20.00%> (-0.01%)` | :arrow_down: |\n| [unit-migrate](https://app.codecov.io/gh/goauthentik/authentik/pull/20712/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.55% <20.00%> (-0.01%)` | :arrow_down: |\n\nFlags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik#carryforward-flags-in-the-pull-request-comment) to find out more.\n</details>\n\n[:umbrella: View full report in Codecov by Sentry](https://app.codecov.io/gh/goauthentik/authentik/pull/20712?dropdown=coverage&src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).   \n:loudspeaker: Have feedback on the report? [Share it here](https://about.codecov.io/codecov-pr-comment-feedback/?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).",
+      "created_at": "2026-03-04T10:42:47Z"
+    },
+    {
+      "user": "github-actions[bot]",
+      "body": "authentik PR Installation instructions\n\n<details>\n  <summary>Instructions for docker-compose</summary>\n\n  Add the following block to your `.env` file:\n\n  ```shell\n  AUTHENTIK_IMAGE=ghcr.io/goauthentik/dev-server\n  AUTHENTIK_TAG=gh-09af2b0c06551fc53947719d4d5e2bb26bcd316e\n  AUTHENTIK_OUTPOSTS__CONTAINER_IMAGE_BASE=ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  ```\n\n  Afterwards, run the upgrade commands from the latest release notes.\n</details>\n<details>\n  <summary>Instructions for Kubernetes</summary>\n\n  Add the following block to your `values.yml` file:\n\n  ```yaml\n  authentik:\n      outposts:\n          container_image_base: ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  global:\n      image:\n          repository: ghcr.io/goauthentik/dev-server\n          tag: gh-09af2b0c06551fc53947719d4d5e2bb26bcd316e\n  ```\n\n  Afterwards, run the upgrade commands from the latest release notes.\n</details>",
+      "created_at": "2026-03-04T11:18:45Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "BeryJu",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-03-04T11:58:11Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "2420ed08e9a16e0c3e21b8f06369d562a2f77a58",
+      "message": "Cherry-pick #19862 to version-2026.2 (with conflicts)\n\nThis cherry-pick has conflicts that need manual resolution.\n\nOriginal PR: #19862\nOriginal commit: 6245809eaeeb07a3863d55ae42cf43fed4754887",
+      "author": "Jens L.",
+      "date": "2026-03-04T10:37:53Z"
+    },
+    {
+      "sha": "09af2b0c06551fc53947719d4d5e2bb26bcd316e",
+      "message": "fix conflict\n\nSigned-off-by: Jens Langhammer <jens@goauthentik.io>",
+      "author": "Jens Langhammer",
+      "date": "2026-03-04T10:46:57Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "authentik/flows/apps.py",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 0,
+      "changes": 6,
+      "patch": "@@ -29,6 +29,12 @@ class RefreshOtherFlowsAfterAuthentication(Flag[bool], key=\"flows_refresh_others\n     visibility = \"public\"\n \n \n+class ContinuousLogin(Flag[bool], key=\"flows_continuous_login\"):\n+\n+    default = False\n+    visibility = \"public\"\n+\n+\n class AuthentikFlowsConfig(ManagedAppConfig):\n     \"\"\"authentik flows app config\"\"\"\n "
+    },
+    {
+      "filename": "authentik/stages/identification/stage.py",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 2,
+      "changes": 8,
+      "patch": "@@ -99,6 +99,7 @@ class IdentificationChallenge(Challenge):\n     password_fields = BooleanField()\n     allow_show_password = BooleanField(default=False)\n     application_pre = CharField(required=False)\n+    application_pre_launch = CharField(required=False)\n     flow_designation = ChoiceField(FlowDesignation.choices)\n     captcha_stage = CaptchaChallenge(required=False, allow_null=True)\n \n@@ -348,9 +349,12 @@ def get_challenge(self) -> Challenge:\n         # If the user has been redirected to us whilst trying to access an\n         # application, PLAN_CONTEXT_APPLICATION is set in the flow plan\n         if PLAN_CONTEXT_APPLICATION in self.executor.plan.context:\n-            challenge.initial_data[\"application_pre\"] = self.executor.plan.context.get(\n+            app: Application = self.executor.plan.context.get(\n                 PLAN_CONTEXT_APPLICATION, Application()\n-            ).name\n+            )\n+            challenge.initial_data[\"application_pre\"] = app.name\n+            if launch_url := app.get_launch_url():\n+                challenge.initial_data[\"application_pre_launch\"] = launch_url\n         if (\n             PLAN_CONTEXT_DEVICE in self.executor.plan.context\n             and PLAN_CONTEXT_DEVICE_AUTH_TOKEN in self.executor.plan.context"
+    },
+    {
+      "filename": "schema.yml",
+      "status": "modified",
+      "additions": 14,
+      "deletions": 0,
+      "changes": 14,
+      "patch": "@@ -36768,10 +36768,13 @@ components:\n               type: boolean\n             policies_buffered_access_view:\n               type: boolean\n+            flows_continuous_login:\n+              type: boolean\n             flows_refresh_others:\n               type: boolean\n           required:\n           - enterprise_audit_include_expanded_diff\n+          - flows_continuous_login\n           - flows_refresh_others\n           - policies_buffered_access_view\n           readOnly: true\n@@ -40443,6 +40446,8 @@ components:\n           default: false\n         application_pre:\n           type: string\n+        application_pre_launch:\n+          type: string\n         flow_designation:\n           $ref: '#/components/schemas/FlowDesignationEnum'\n         captcha_stage:\n@@ -50379,10 +50384,13 @@ components:\n               type: boolean\n             policies_buffered_access_view:\n               type: boolean\n+            flows_continuous_login:\n+              type: boolean\n             flows_refresh_others:\n               type: boolean\n           required:\n           - enterprise_audit_include_expanded_diff\n+          - flows_continuous_login\n           - flows_refresh_others\n           - policies_buffered_access_view\n     PatchedSourceStageRequest:\n@@ -55074,10 +55082,13 @@ components:\n               type: boolean\n             policies_buffered_access_view:\n               type: boolean\n+            flows_continuous_login:\n+              type: boolean\n             flows_refresh_others:\n               type: boolean\n           required:\n           - enterprise_audit_include_expanded_diff\n+          - flows_continuous_login\n           - flows_refresh_others\n           - policies_buffered_access_view\n       required:\n@@ -55152,10 +55163,13 @@ components:\n               type: boolean\n             policies_buffered_access_view:\n               type: boolean\n+            flows_continuous_login:\n+              type: boolean\n             flows_refresh_others:\n               type: boolean\n           required:\n           - enterprise_audit_include_expanded_diff\n+          - flows_continuous_login\n           - flows_refresh_others\n           - policies_buffered_access_view\n       required:"
+    },
+    {
+      "filename": "web/src/admin/admin-settings/AdminSettingsForm.ts",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 0,
+      "changes": 6,
+      "patch": "@@ -293,6 +293,12 @@ export class AdminSettingsForm extends Form<SettingsRequest> {\n                         )}\n                     >\n                     </ak-switch-input>\n+                    <ak-switch-input\n+                        name=\"flags.flowsContinuousLogin\"\n+                        ?checked=${settings?.flags.flowsContinuousLogin ?? false}\n+                        label=${msg(\"Continuous Login\")}\n+                    >\n+                    </ak-switch-input>\n                 </div>\n             </ak-form-group>\n         `;"
+    },
+    {
+      "filename": "web/src/common/ui/config.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "patch": "@@ -19,6 +19,7 @@ export const DefaultBrand = {\n         policiesBufferedAccessView: false,\n         flowsRefreshOthers: false,\n         enterpriseAuditIncludeExpandedDiff: false,\n+        flowsContinuousLogin: false,\n     },\n } as const satisfies CurrentBrand;\n "
+    },
+    {
+      "filename": "web/src/flow/FlowExecutor.ts",
+      "status": "modified",
+      "additions": 24,
+      "deletions": 0,
+      "changes": 24,
+      "patch": "@@ -9,6 +9,7 @@ import \"#flow/sources/telegram/TelegramLogin\";\n import \"#flow/stages/FlowErrorStage\";\n import \"#flow/stages/FlowFrameStage\";\n import \"#flow/stages/RedirectStage\";\n+import \"#flow/tabs/broadcast\";\n \n import Styles from \"./FlowExecutor.css\" with { type: \"bundled-text\" };\n \n@@ -31,6 +32,7 @@ import { ThemedImage } from \"#elements/utils/images\";\n \n import { AKFlowAdvanceEvent, AKFlowInspectorChangeEvent } from \"#flow/events\";\n import { BaseStage, StageHost, SubmitOptions } from \"#flow/stages/base\";\n+import { multiTabOrchestrateLeave } from \"#flow/tabs/orchestrator\";\n \n import { ConsoleLogger } from \"#logger/browser\";\n \n@@ -191,6 +193,28 @@ export class FlowExecutor\n                 this.submit({} as FlowChallengeResponseRequest);\n             }\n         });\n+\n+        window.addEventListener(\"ak-multitab-continue\", () => {\n+            document.title = \"continued\";\n+            if (\n+                this.challenge?.component === \"ak-stage-identification\" &&\n+                this.challenge.applicationPreLaunch &&\n+                this.challenge.applicationPreLaunch !== \"blank://blank\"\n+            ) {\n+                multiTabOrchestrateLeave();\n+                window.location.assign(this.challenge.applicationPreLaunch);\n+                return;\n+            }\n+            const qs = new URLSearchParams(window.location.search);\n+            const next = qs.get(\"next\");\n+            if (next) {\n+                const url = new URL(next, window.location.origin);\n+                if (url.origin !== window.location.origin) {\n+                    multiTabOrchestrateLeave();\n+                }\n+                window.location.assign(url);\n+            }\n+        });\n     }\n \n     /**"
+    },
+    {
+      "filename": "web/src/flow/stages/RedirectStage.ts",
+      "status": "modified",
+      "additions": 15,
+      "deletions": 2,
+      "changes": 17,
+      "patch": "@@ -3,6 +3,7 @@ import \"#flow/components/ak-flow-card\";\n import { SlottedTemplateResult } from \"#elements/types\";\n \n import { BaseStage } from \"#flow/stages/base\";\n+import { multiTabOrchestrateResume } from \"#flow/tabs/orchestrator\";\n \n import { FlowChallengeResponseRequest, RedirectChallenge } from \"@goauthentik/api\";\n \n@@ -58,13 +59,25 @@ export class RedirectStage extends BaseStage<RedirectChallenge, FlowChallengeRes\n         this.redirect();\n     }\n \n-    redirect() {\n+    isForeignURL() {\n+        try {\n+            const destination = new URL(this.challenge!.to, window.origin);\n+            return destination.origin === window.origin;\n+        } catch {\n+            return true;\n+        }\n+    }\n+\n+    async redirect() {\n         console.debug(\n             \"authentik/stages/redirect: redirecting to url from server\",\n             this.challenge?.to,\n         );\n \n-        window.location.assign(this.challenge?.to || \"\");\n+        if (this.isForeignURL()) {\n+            await multiTabOrchestrateResume();\n+        }\n+        window.location.assign(this.challenge!.to);\n         this.startedRedirect = true;\n     }\n "
+    },
+    {
+      "filename": "web/src/flow/tabs/TabID.ts",
+      "status": "added",
+      "additions": 28,
+      "deletions": 0,
+      "changes": 28,
+      "patch": "@@ -0,0 +1,28 @@\n+import { ascii_letters, digits, randomString } from \"#common/utils\";\n+\n+export const SESSION_STORAGE_TAB_ID = \"authentik_tab_id\";\n+\n+export class TabID {\n+    static shared: TabID = new TabID();\n+\n+    #id: string;\n+\n+    constructor() {\n+        const id = sessionStorage.getItem(SESSION_STORAGE_TAB_ID);\n+        const newId = randomString(32, ascii_letters + digits);\n+        if (id) {\n+            this.#id = id;\n+            return;\n+        }\n+        this.#id = newId;\n+        sessionStorage.setItem(SESSION_STORAGE_TAB_ID, this.#id);\n+    }\n+\n+    get current() {\n+        return this.#id;\n+    }\n+\n+    clear() {\n+        sessionStorage.removeItem(SESSION_STORAGE_TAB_ID);\n+    }\n+}"
+    },
+    {
+      "filename": "web/src/flow/tabs/broadcast.ts",
+      "status": "added",
+      "additions": 91,
+      "deletions": 0,
+      "changes": 91,
+      "patch": "@@ -0,0 +1,91 @@\n+import { TabID } from \"#flow/tabs/TabID\";\n+\n+import { ConsoleLogger, Logger } from \"#logger/browser\";\n+\n+export const BROADCAST_CHANNEL_NAME = \"authentik\";\n+\n+enum BroadcastMessageType {\n+    discover = \"discover\",\n+    continue = \"continue\",\n+    exit = \"exit\",\n+    discoverReply = \"discoverReply\",\n+}\n+\n+export interface BroadcastMessage {\n+    type: BroadcastMessageType;\n+    sender: string;\n+    [key: string]: unknown;\n+}\n+\n+export class Broadcast extends BroadcastChannel {\n+    static shared = new Broadcast();\n+\n+    private discoveredTabIds = new Set<string>();\n+    exitedTabIds: string[] = [];\n+\n+    #logger: Logger;\n+\n+    #onMessage = (ev: MessageEvent<BroadcastMessage>) => {\n+        this.#logger.debug(\"broadcast event\", ev.data);\n+        switch (ev.data.type) {\n+            case BroadcastMessageType.discover:\n+                if (ev.data.sender === TabID.shared.current) {\n+                    return;\n+                }\n+                this.postMessage({\n+                    type: BroadcastMessageType.discoverReply,\n+                    sender: TabID.shared.current,\n+                });\n+                return;\n+            case BroadcastMessageType.discoverReply:\n+                this.discoveredTabIds.add(ev.data.sender as string);\n+                return;\n+            case BroadcastMessageType.exit:\n+                this.exitedTabIds.push(ev.data.sender);\n+                return;\n+            case BroadcastMessageType.continue:\n+                if (ev.data.target === TabID.shared.current) {\n+                    this.#logger.debug(\"Continuing upon event\");\n+                    window.dispatchEvent(new CustomEvent(\"ak-multitab-continue\"));\n+                }\n+                return;\n+        }\n+    };\n+\n+    constructor() {\n+        super(BROADCAST_CHANNEL_NAME);\n+        this.addEventListener(\"message\", this.#onMessage);\n+        this.#logger = ConsoleLogger.prefix(\"mtab/broadcast\");\n+    }\n+\n+    [Symbol.dispose]() {\n+        this.removeEventListener(\"message\", this.#onMessage);\n+    }\n+\n+    async akTabDiscover(): Promise<Set<string>> {\n+        this.discoveredTabIds.clear();\n+        this.postMessage({\n+            type: BroadcastMessageType.discover,\n+            sender: TabID.shared.current,\n+        });\n+        await new Promise<void>((r) => {\n+            setTimeout(r, 20);\n+        });\n+        return this.discoveredTabIds;\n+    }\n+\n+    akResumeTab(tabId: string) {\n+        this.postMessage({\n+            type: BroadcastMessageType.continue,\n+            sender: TabID.shared.current,\n+            target: tabId,\n+        });\n+    }\n+\n+    akExitTab() {\n+        this.postMessage({\n+            type: BroadcastMessageType.exit,\n+            sender: TabID.shared.current,\n+        });\n+    }\n+}"
+    },
+    {
+      "filename": "web/src/flow/tabs/orchestrator.ts",
+      "status": "added",
+      "additions": 54,
+      "deletions": 0,
+      "changes": 54,
+      "patch": "@@ -0,0 +1,54 @@\n+import { globalAK } from \"#common/global\";\n+\n+import { Broadcast } from \"#flow/tabs/broadcast\";\n+import { TabID } from \"#flow/tabs/TabID\";\n+\n+import { ConsoleLogger } from \"#logger/browser\";\n+\n+const lockKey = \"authentik-tab-locked\";\n+const logger = ConsoleLogger.prefix(\"mtab/orchestrate\");\n+\n+export function multiTabOrchestrateLeave() {\n+    if (!globalAK().brand.flags.flowsContinuousLogin) {\n+        return;\n+    }\n+    Broadcast.shared.akExitTab();\n+    TabID.shared.clear();\n+}\n+\n+export async function multiTabOrchestrateResume() {\n+    if (!globalAK().brand.flags.flowsContinuousLogin) {\n+        return;\n+    }\n+    const lockTabId = localStorage.getItem(lockKey);\n+    const tabs = await Broadcast.shared.akTabDiscover();\n+    logger.debug(\"Got list of tabs\", tabs);\n+\n+    if (lockTabId && tabs.has(lockTabId)) {\n+        logger.debug(\"Tabs locked, leaving.\");\n+        multiTabOrchestrateLeave();\n+        return;\n+    }\n+    logger.debug(\"Locking tabs\");\n+    localStorage.setItem(lockKey, TabID.shared.current);\n+\n+    for (const tab of tabs) {\n+        logger.debug(\"Telling tab to continue\", tab);\n+        Broadcast.shared.akResumeTab(tab);\n+        const done = Promise.withResolvers<void>();\n+        const checker = setInterval(() => {\n+            if (Broadcast.shared.exitedTabIds.includes(tab)) {\n+                logger.debug(\"tab exited\", tab);\n+                setTimeout(() => {\n+                    logger.debug(\"continue exited\", tab);\n+                    done.resolve();\n+                }, 1000);\n+                clearInterval(checker);\n+            }\n+        }, 1);\n+        await done.promise;\n+        logger.debug(\"Tab done, continuing\", tab);\n+    }\n+    logger.debug(\"All tabs done.\");\n+    localStorage.removeItem(lockKey);\n+}"
+    }
+  ]
+}

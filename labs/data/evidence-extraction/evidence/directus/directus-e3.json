@@ -1,0 +1,350 @@
+{
+  "pr": {
+    "number": 26886,
+    "title": "Add bulk folder deletion from the files grid",
+    "body": "## Scope\r\n\r\nWhat's changed:\r\n\r\n- Add `DeleteFolderDialog` component with a radio input: **move contents one level up** or **recursively delete all contents**\r\n- Replace the inline sidebar folder-delete dialog with the new `DeleteFolderDialog`, making both sidebar and grid deletion consistent\r\n- Add `FolderSection` component to display subfolders as cards inside the files grid layout\r\n- Support bulk folder selection in the cards layout via `extraSelection` / `hasPrependContent` props and a `#prepend` slot\r\n- Enable batch deletion of folders (and mixed folder+file selections) from the files grid header bar, respecting per-collection delete permissions\r\n\r\n## Potential Risks / Drawbacks\r\n\r\n- `moveAndDelete` calls `moveSingleFolder` in parallel across selected folders. If both a parent and its child were in `folders`, the parallel execution would cause the child's contents to end up under the soon-to-be-deleted parent. No fix was applied because the scenario is impossible in the current UI: `FolderSection` only renders siblings (same-level folders), and `folderSelection` is cleared on every navigation, so a parent and one of its descendants can never be co-selected.\r\n- `recursiveDelete` relies on `allFolders` being a complete snapshot of the tree. If the folder tree is very large and not fully loaded in the store, deeply nested descendant folders may not be collected and would be left behind after deletion.\r\n- The `watch(folders, refresh)` in `collection.vue` will trigger a file list refresh on any folder store change, including unrelated mutations (e.g. rename, move). This is intentional but adds extra requests.\r\n\r\n## Tested Scenarios\r\n\r\n- Select multiple sibling folders and delete with \"move content up\": files and subfolders appear at the parent level\r\n- Select multiple sibling folders and delete with \"delete all content\": all nested files and subfolders are removed\r\n- Delete a single folder from the sidebar context menu using the new dialog\r\n- Select a mix of files and folders and trigger batch delete: file-only dialog appears when no folders are selected; folder dialog appears when folders are selected\r\n- Navigate between folders and confirm selection resets and no stale content flashes\r\n\r\n```\r\nRoot\r\n├── F1/                        ← empty folder\r\n├── F2/\r\n│   └── file-a.jpg\r\n├── F3/\r\n│   ├── file-b.jpg\r\n│   └── F3-1/                  ← subfolder\r\n│       └── file-c.jpg\r\n├── F4/                        ← sibling of F3, for multi-select tests\r\n│   └── file-d.jpg\r\n└── file-root.jpg              ← loose file at root\r\n```\r\n\r\n```\r\nF1 — empty folder\r\nSelect F1 → delete (move) → F1 disappears, nothing else changes\r\nSelect F1 → delete (delete all) → same\r\n\r\nF2 — folder with file\r\nSelect F2 → delete (move) → F2 disappears, file-a.jpg appears at root\r\nSelect F2 → delete (delete all) → F2 and file-a.jpg are gone\r\n\r\nF3 — folder with file + subfolder\r\nSelect F3 → delete (move) → F3 disappears, file-b.jpg and F3-1 appear at root\r\nSelect F3 → delete (delete all) → F3, file-b.jpg, F3-1, and file-c.jpg are all gone\r\n\r\nF3 + F4 — multi-select siblings\r\nSelect F3 + F4 → delete (move) → both disappear, file-b.jpg, F3-1, file-d.jpg appear at root\r\nSelect F3 + F4 → delete (delete all) → all gone\r\n\r\nF2 + file-root.jpg — mixed selection\r\nSelect F2 + file-root.jpg → delete → folder dialog appears (radio options shown) → confirm → F2, file-a.jpg, and file-root.jpg are all gone\r\n\r\nfile-root.jpg — files only\r\nSelect file-root.jpg → delete → simple confirm dialog (no radio options) → confirm → file gone\r\n```\r\n\r\n## Checklist\r\n\r\n- [x] Added or updated tests\r\n- [x] Documentation PR created [here](https://github.com/directus/docs) or not required\r\n- [x] OpenAPI package PR created [here](https://github.com/directus/openapi) or not required\r\n\r\n---\r\n\r\nFixes #CMS-1442",
+    "state": "closed",
+    "merged": true,
+    "user": "HZooly",
+    "created_at": "2026-03-12T15:28:31Z",
+    "updated_at": "2026-05-25T03:46:11Z",
+    "base": "main",
+    "head": "hugo/cms-1442-enable-bulk-delete-for-folders",
+    "merge_commit_sha": "a3d0f3cf01c07faee9a149ba842cb57eefc68de5"
+  },
+  "issue_comments": [
+    {
+      "user": "linear[bot]",
+      "body": "<!-- linear-linkback -->\n<p><a href=\"https://linear.app/directus/issue/CMS-1442/enable-bulk-delete-for-folders\">CMS-1442 Enable Bulk Delete for Folders</a></p>",
+      "created_at": "2026-03-12T15:28:36Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "robluton",
+      "body": "this computed is also defined [here](https://github.com/directus/directus/pull/26886/changes#diff-18191896fea419f514d6dcc68cb2225cb12476815a8e6d3236c70f3f606e16f1R15). I would pick one place to avoid multiple sources of truth. Maybe pass it as a prop from this component down to the folder-section component.",
+      "path": "app/src/modules/files/routes/collection.vue",
+      "diff_hunk": "@@ -47,35 +49,56 @@ const router = useRouter();\n \n const notificationsStore = useNotificationsStore();\n const { info } = useServerStore();\n-const { folders } = useFolders();\n+const { folders, fetchFolders } = useFolders();\n \n const layoutRef = ref();\n const selection = ref<string[]>([]);\n+const folderSelection = ref<string[]>([]);\n+const selectedFolderObjects = computed(() => (folders.value ?? []).filter((f) => folderSelection.value.includes(f.id)));\n \n const userStore = useUserStore();\n \n const { layout, layoutOptions, layoutQuery, filter, search, resetPreset } = usePreset(ref('directus_files'));\n \n-const { confirmDelete, deleting, batchDelete, batchEditActive } = useBatch();\n+const confirmDelete = ref(false);\n+const batchEditActive = ref(false);\n+const isTransitioning = ref(false);\n \n const { breadcrumb, title } = useBreadcrumb();\n \n const folderFilter = computed(() => {\n \treturn getFolderFilter(props.folder, props.special, userStore?.currentUser?.id);\n });\n \n+const subfolders = computed(() => {",
+      "line": 73,
+      "created_at": "2026-03-12T21:26:39Z"
+    },
+    {
+      "user": "robluton",
+      "body": "I believe nextTick is [still referenced in this file](https://github.com/directus/directus/blob/f88520d6b2a7defc6ed44810c34e10021c6010b5/app/src/modules/files/routes/collection.vue#L238)",
+      "path": "app/src/modules/files/routes/collection.vue",
+      "diff_hunk": "@@ -2,10 +2,11 @@\n import { useLayout } from '@directus/composables';\n import { getDateTimeFormatted, mergeFilters } from '@directus/utils';\n import { storeToRefs } from 'pinia';\n-import { computed, nextTick, ref, watch } from 'vue';",
+      "line": 5,
+      "created_at": "2026-03-12T21:40:16Z"
+    },
+    {
+      "user": "robluton",
+      "body": "The refresh is triggered twice here, since it is also triggered by the watcher, so you should be able to remove this one.",
+      "path": "app/src/modules/files/routes/collection.vue",
+      "diff_hunk": "@@ -89,46 +112,59 @@ watch(isAnyUploadActive, (isUploading, wasUploading) => {\n \t}\n });\n \n+// Refresh file list when folders change (e.g. sidebar delete moves files into current folder)\n+watch(folders, (_newVal, oldVal) => {\n+\tif (oldVal === null) return; // skip initial load\n+\trefresh();\n+});\n+\n+watch(\n+\t() => layoutRef.value?.state?.items,\n+\t() => {\n+\t\tisTransitioning.value = false;\n+\t},\n+);\n+\n const {\n \tupdateAllowed: batchEditAllowed,\n \tdeleteAllowed: batchDeleteAllowed,\n \tcreateAllowed,\n } = useCollectionPermissions('directus_files');\n \n-const { createAllowed: createFolderAllowed } = useCollectionPermissions('directus_folders');\n-\n-function useBatch() {\n-\tconst confirmDelete = ref(false);\n-\tconst deleting = ref(false);\n-\n-\tconst batchEditActive = ref(false);\n-\n-\tconst error = ref<any>();\n-\n-\treturn { batchEditActive, confirmDelete, deleting, batchDelete, error };\n+const { createAllowed: createFolderAllowed, deleteAllowed: folderDeleteAllowed } =\n+\tuseCollectionPermissions('directus_folders');\n \n-\tasync function batchDelete() {\n-\t\tif (deleting.value) return;\n-\n-\t\tdeleting.value = true;\n-\n-\t\tconst batchPrimaryKeys = selection.value;\n-\n-\t\ttry {\n-\t\t\tawait api.delete('/files', {\n-\t\t\t\tdata: batchPrimaryKeys,\n-\t\t\t});\n+async function onFolderDeleteDone() {\n+\ttry {\n+\t\tif (selection.value.length > 0) {\n+\t\t\tawait api.delete('/files', { data: selection.value });\n+\t\t}\n+\t} catch (e) {\n+\t\tunexpectedError(e);\n+\t}\n \n-\t\t\tawait refresh();\n+\tselection.value = [];\n+\tfolderSelection.value = [];\n+\tconfirmDelete.value = false;\n+\tfetchFolders();\n+\trefresh();",
+      "line": null,
+      "created_at": "2026-03-12T21:49:41Z"
+    },
+    {
+      "user": "robluton",
+      "body": "I think there's enough going on in this file to warrant extracting much of the logic into a composable and adding some tests for it.",
+      "path": "app/src/modules/files/components/delete-folder-dialog.vue",
+      "diff_hunk": "@@ -0,0 +1,171 @@\n+<script setup lang=\"ts\">",
+      "line": 1,
+      "created_at": "2026-03-12T22:05:02Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "body": "Let's maybe nest these?\n\n```\ndelete_folder:\n  move_content: Move content one level up\n  // etc\n```\n\nYou'll also have to amend the strings where they are used in the app. `delete_folder_move_content` -> `delete_folder.move_content`",
+      "path": "app/src/lang/translations/en-US.yaml",
+      "diff_hunk": "@@ -280,6 +280,9 @@ recommended_defaults: Recommended Defaults\n unarchive: Unarchive\n unarchive_confirm: Are you sure you want to unarchive this item?\n nested_files_folders_will_be_moved: Nested files and folders will be moved one level up.\n+delete_folder_move_content: Move content one level up\n+delete_folder_delete_content: Delete all content\n+delete_folder_content_behavior: What should happen to the folder contents?",
+      "line": null,
+      "created_at": "2026-03-23T15:54:22Z"
+    },
+    {
+      "user": "robluton",
+      "body": "I don't think we need this, given folder.parent is already typed as string | null\n\n```suggestion\n\tconst newParent = folder.parent;\n```",
+      "path": "app/src/utils/delete-folder.ts",
+      "diff_hunk": "@@ -0,0 +1,62 @@\n+import api from '@/api';\n+import { Folder } from '@/composables/use-folders';\n+import { collectAllFolderIds } from '@/utils/collect-folder-ids';\n+\n+export async function moveSingleFolder(folder: Folder): Promise<void> {\n+\tconst newParent = folder.parent ?? null;",
+      "line": null,
+      "created_at": "2026-03-23T19:47:19Z"
+    },
+    {
+      "user": "robluton",
+      "body": "I don't think this statement matches what the test is doing. It looks like maybe you're testing that only the selected folder and its direct descendants are included?",
+      "path": "app/src/utils/collect-folder-ids.test.ts",
+      "diff_hunk": "@@ -0,0 +1,60 @@\n+import { describe, expect, it } from 'vitest';\n+import { collectAllFolderIds } from './collect-folder-ids';\n+\n+const allFolders = [\n+\t{ id: 'root-1', name: 'Root 1', parent: null },\n+\t{ id: 'root-2', name: 'Root 2', parent: null },\n+\t{ id: 'child-1a', name: 'Child 1A', parent: 'root-1' },\n+\t{ id: 'child-1b', name: 'Child 1B', parent: 'root-1' },\n+\t{ id: 'grandchild-1a-i', name: 'Grandchild 1A-I', parent: 'child-1a' },\n+\t{ id: 'child-2a', name: 'Child 2A', parent: 'root-2' },\n+];\n+\n+describe('collectAllFolderIds', () => {\n+\tit('returns root ids when no children', () => {",
+      "line": null,
+      "created_at": "2026-03-24T18:10:30Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-12T21:26:39Z"
+    },
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-12T21:40:16Z"
+    },
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-12T21:49:43Z"
+    },
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-12T22:05:01Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "state": "DISMISSED",
+      "body": "",
+      "submitted_at": "2026-03-23T15:57:29Z"
+    },
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-23T19:47:20Z"
+    },
+    {
+      "user": "robluton",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-03-24T18:10:32Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "state": "APPROVED",
+      "body": "LGTM TY @HZooly ",
+      "submitted_at": "2026-03-25T18:37:01Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "8b6cbb84d958b69c1d16911e887273a9e3c33bcf",
+      "message": "deleteFolderDialog component with move/delete options",
+      "author": "HZooly",
+      "date": "2026-03-11T23:07:56Z"
+    },
+    {
+      "sha": "fddf642762c45174f84bc96948a11052725fca95",
+      "message": "replace sidebar folder delete with dialog",
+      "author": "HZooly",
+      "date": "2026-03-11T23:12:25Z"
+    },
+    {
+      "sha": "140be31abd01e7698b0b3085cc68332fd6a47a83",
+      "message": "add folder display and selection in layout",
+      "author": "HZooly",
+      "date": "2026-03-11T23:31:52Z"
+    },
+    {
+      "sha": "f79fb7ba4cd5333245cf4d6bc85bf8a2d1db89d1",
+      "message": "batch folder delete in files grid",
+      "author": "HZooly",
+      "date": "2026-03-11T23:42:22Z"
+    },
+    {
+      "sha": "16f3be8f4ae8e3accdbb43b84d10e700320c364c",
+      "message": "prevent flash of stale content during folder navigation",
+      "author": "HZooly",
+      "date": "2026-03-12T07:15:42Z"
+    },
+    {
+      "sha": "98a371ab5d415539638b09e3ff78a42a982b972c",
+      "message": "add changeset",
+      "author": "HZooly",
+      "date": "2026-03-12T15:03:37Z"
+    },
+    {
+      "sha": "f88520d6b2a7defc6ed44810c34e10021c6010b5",
+      "message": "remove file select",
+      "author": "HZooly",
+      "date": "2026-03-12T16:26:12Z"
+    },
+    {
+      "sha": "890e988b3cb20300fd414ea249350ebc65da5d07",
+      "message": "Merge branch 'main' into hugo/cms-1442-enable-bulk-delete-for-folders",
+      "author": "Hugo Torzuoli",
+      "date": "2026-03-13T15:22:01Z"
+    },
+    {
+      "sha": "81a92087340af20acc4b3d54c33eea841e071bc4",
+      "message": "clean collection component",
+      "author": "HZooly",
+      "date": "2026-03-13T15:31:34Z"
+    },
+    {
+      "sha": "557289547c265cb5dc04df78708b764001d3e838",
+      "message": "extract in util and test",
+      "author": "HZooly",
+      "date": "2026-03-13T17:33:53Z"
+    },
+    {
+      "sha": "8499a2e1fc0681736e2d2baa17637e45210e9dcd",
+      "message": "test > it",
+      "author": "HZooly",
+      "date": "2026-03-13T17:35:20Z"
+    },
+    {
+      "sha": "e2de61e5e5c010aed4ecfe872e4c1f9951e0a06f",
+      "message": "Merge branch 'main' into hugo/cms-1442-enable-bulk-delete-for-folders",
+      "author": "Hugo Torzuoli",
+      "date": "2026-03-16T15:27:20Z"
+    },
+    {
+      "sha": "c4840700c1bc7aa81f571e65ab8f3b0f6ddd21ce",
+      "message": "hide file actions when folder is selected",
+      "author": "HZooly",
+      "date": "2026-03-16T16:06:35Z"
+    },
+    {
+      "sha": "0ae22a7e2036d1b5a6a928a89e0b450606e25bf6",
+      "message": "hide folders when search/filter is performed",
+      "author": "HZooly",
+      "date": "2026-03-17T16:31:11Z"
+    },
+    {
+      "sha": "3cc46a58a24070cadba87a689eb9cc81155d2381",
+      "message": "Merge branch 'main' into hugo/cms-1442-enable-bulk-delete-for-folders",
+      "author": "Hugo Torzuoli",
+      "date": "2026-03-24T10:52:13Z"
+    },
+    {
+      "sha": "fe4a1bf56ab479a533709ec9cb3c0ee1c419c446",
+      "message": "replace i18n keys",
+      "author": "HZooly",
+      "date": "2026-03-24T11:37:44Z"
+    },
+    {
+      "sha": "6d556e5a513ae32359c6f58dcfe81eb1f8ac2ecd",
+      "message": "remove nullish coalescing",
+      "author": "HZooly",
+      "date": "2026-03-24T11:40:51Z"
+    },
+    {
+      "sha": "0cea03ebd32e572b8bab6ef04b019e4308ee6e31",
+      "message": "fix matching folder",
+      "author": "HZooly",
+      "date": "2026-03-24T11:54:40Z"
+    },
+    {
+      "sha": "1926659c378beb4e34a9185d5f9047d807459274",
+      "message": "Merge branch 'main' into hugo/cms-1442-enable-bulk-delete-for-folders",
+      "author": "Hugo Torzuoli",
+      "date": "2026-03-24T16:47:13Z"
+    },
+    {
+      "sha": "c8ced19f8287ca7036aa345f4996a1834fde93ed",
+      "message": "fix test description",
+      "author": "HZooly",
+      "date": "2026-03-25T10:22:50Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/strict-rules-follow.md",
+      "status": "added",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -0,0 +1,5 @@\n+---\n+'@directus/app': minor\n+---\n+\n+Added bulk folder deletion from the files grid with move-up or delete-all options"
+    },
+    {
+      "filename": "app/src/lang/translations/en-US.yaml",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 0,
+      "changes": 4,
+      "patch": "@@ -280,6 +280,10 @@ recommended_defaults: Recommended Defaults\n unarchive: Unarchive\n unarchive_confirm: Are you sure you want to unarchive this item?\n nested_files_folders_will_be_moved: Nested files and folders will be moved one level up.\n+delete_folder_dialog:\n+  move_content: Move content one level up\n+  delete_content: Delete all content\n+  content_behavior: What should happen to the folder contents?\n validation_errors_notice: 'The following fields have invalid values:'\n validation_value_is_invalid: Value is invalid\n validationError:"
+    },
+    {
+      "filename": "app/src/layouts/cards/cards.vue",
+      "status": "modified",
+      "additions": 24,
+      "deletions": 5,
+      "changes": 29,
+      "patch": "@@ -48,15 +48,27 @@ const props = withDefaults(\n \t\tinfo?: Collection;\n \t\tfilterUser?: Filter;\n \t\tsearch?: string;\n+\t\thasPrependContent?: boolean;\n+\t\textraSelection?: (number | string)[];\n \t}>(),\n \t{\n \t\tshowSelect: 'multiple',\n+\t\textraSelection: () => [],\n \t},\n );\n \n-const emit = defineEmits(['update:selection', 'update:limit', 'update:size', 'update:sort', 'update:width']);\n+const emit = defineEmits([\n+\t'update:selection',\n+\t'update:extraSelection',\n+\t'update:limit',\n+\t'update:size',\n+\t'update:sort',\n+\t'update:width',\n+\t'select-all',\n+]);\n \n const selectionWritable = useSync(props, 'selection', emit);\n+const extraSelectionWritable = useSync(props, 'extraSelection', emit);\n const limitWritable = useSync(props, 'limit', emit);\n const sizeWritable = useSync(props, 'size', emit);\n const sortWritable = useSync(props, 'sort', emit);\n@@ -87,23 +99,30 @@ watch(\n watch(innerWidth, (value) => {\n \temit('update:width', value);\n });\n+\n+function onSelectAll() {\n+\tprops.selectAll();\n+\temit('select-all');\n+}\n </script>\n \n <template>\n \t<div ref=\"layoutElement\" class=\"layout-cards\">\n-\t\t<template v-if=\"loading || (items.length > 0 && !error)\">\n+\t\t<template v-if=\"loading || (items.length > 0 && !error) || hasPrependContent\">\n \t\t\t<CardsHeader\n \t\t\t\tv-model:size=\"sizeWritable\"\n \t\t\t\tv-model:selection=\"selectionWritable\"\n+\t\t\t\tv-model:extra-selection=\"extraSelectionWritable\"\n \t\t\t\tv-model:sort=\"sortWritable\"\n \t\t\t\t:fields=\"fieldsInCollection\"\n \t\t\t\t:show-select=\"showSelect\"\n-\t\t\t\t@select-all=\"selectAll\"\n+\t\t\t\t@select-all=\"onSelectAll\"\n \t\t\t/>\n \n-\t\t\t<VProgressCircular v-if=\"loading\" indeterminate rounded />\n+\t\t\t<VProgressCircular v-if=\"loading && !hasPrependContent\" indeterminate rounded />\n \n-\t\t\t<div v-else class=\"grid\" :class=\"{ 'single-row': isSingleRow }\">\n+\t\t\t<div v-if=\"!loading || hasPrependContent\" class=\"grid\" :class=\"{ 'single-row': isSingleRow }\">\n+\t\t\t\t<slot name=\"prepend\" />\n \t\t\t\t<Card\n \t\t\t\t\tv-for=\"item in items\"\n \t\t\t\t\t:key=\"item[primaryKeyField!.field]\""
+    },
+    {
+      "filename": "app/src/layouts/cards/components/header.vue",
+      "status": "modified",
+      "additions": 15,
+      "deletions": 6,
+      "changes": 21,
+      "patch": "@@ -15,18 +15,23 @@ const props = withDefaults(\n \t\tsort: string[];\n \t\tshowSelect?: ShowSelect;\n \t\tselection?: (number | string)[];\n+\t\textraSelection?: (number | string)[];\n \t}>(),\n \t{\n \t\tshowSelect: 'multiple',\n \t\tselection: () => [],\n+\t\textraSelection: () => [],\n \t},\n );\n \n-const emit = defineEmits(['select-all', 'update:size', 'update:sort', 'update:selection']);\n+const emit = defineEmits(['select-all', 'update:size', 'update:sort', 'update:selection', 'update:extraSelection']);\n \n const sizeSync = useSync(props, 'size', emit);\n const sortSync = useSync(props, 'sort', emit);\n const selectionSync = useSync(props, 'selection', emit);\n+const extraSelectionSync = useSync(props, 'extraSelection', emit);\n+\n+const totalSelectionCount = computed(() => selectionSync.value.length + extraSelectionSync.value.length);\n \n const descending = computed(() => props.sort[0]?.startsWith('-'));\n \n@@ -63,18 +68,22 @@ function toggleDescending() {\n }\n \n function onClickSelect() {\n-\tif (selectionSync.value.length) selectionSync.value = [];\n-\telse if (props.showSelect === 'multiple') emit('select-all');\n+\tif (totalSelectionCount.value) {\n+\t\tselectionSync.value = [];\n+\t\textraSelectionSync.value = [];\n+\t} else if (props.showSelect === 'multiple') {\n+\t\temit('select-all');\n+\t}\n }\n </script>\n \n <template>\n \t<div class=\"cards-header\">\n \t\t<div class=\"start\">\n-\t\t\t<button type=\"button\" :class=\"{ 'no-selection': !selectionSync.length }\" @click=\"onClickSelect\">\n-\t\t\t\t<template v-if=\"selectionSync.length\">\n+\t\t\t<button type=\"button\" :class=\"{ 'no-selection': !totalSelectionCount }\" @click=\"onClickSelect\">\n+\t\t\t\t<template v-if=\"totalSelectionCount\">\n \t\t\t\t\t<VIcon name=\"cancel\" outline />\n-\t\t\t\t\t<span class=\"label\">{{ $t('n_items_selected', selectionSync.length) }}</span>\n+\t\t\t\t\t<span class=\"label\">{{ $t('n_items_selected', totalSelectionCount) }}</span>\n \t\t\t\t</template>\n \t\t\t\t<template v-else>\n \t\t\t\t\t<VIcon name=\"check_circle\" outline />"
+    },
+    {
+      "filename": "app/src/modules/files/components/delete-folder-dialog.vue",
+      "status": "added",
+      "additions": 97,
+      "deletions": 0,
+      "changes": 97,
+      "patch": "@@ -0,0 +1,97 @@\n+<script setup lang=\"ts\">\n+import { ref, watch } from 'vue';\n+import { useI18n } from 'vue-i18n';\n+import VButton from '@/components/v-button.vue';\n+import VCardActions from '@/components/v-card-actions.vue';\n+import VCardText from '@/components/v-card-text.vue';\n+import VCardTitle from '@/components/v-card-title.vue';\n+import VCard from '@/components/v-card.vue';\n+import VDialog from '@/components/v-dialog.vue';\n+import VRadio from '@/components/v-radio.vue';\n+import { Folder } from '@/composables/use-folders';\n+import { moveAndDelete, recursiveDelete } from '@/utils/delete-folder';\n+import { unexpectedError } from '@/utils/unexpected-error';\n+\n+const modelValue = defineModel<boolean>({ required: true });\n+\n+const props = defineProps<{\n+\tfolders: Folder[];\n+\tallFolders: Folder[];\n+}>();\n+\n+const emit = defineEmits<{\n+\tdone: [];\n+}>();\n+\n+const { t } = useI18n();\n+\n+type DeleteMode = 'move' | 'delete';\n+\n+const deleteMode = ref<DeleteMode>('move');\n+const saving = ref(false);\n+\n+watch(modelValue, (val) => {\n+\tif (val) deleteMode.value = 'move';\n+});\n+\n+const radioOptions = [\n+\t{ value: 'move', label: t('delete_folder_dialog.move_content') },\n+\t{ value: 'delete', label: t('delete_folder_dialog.delete_content') },\n+];\n+\n+async function save() {\n+\tif (saving.value) return;\n+\tsaving.value = true;\n+\n+\ttry {\n+\t\tif (deleteMode.value === 'move') {\n+\t\t\tawait moveAndDelete(props.folders);\n+\t\t} else {\n+\t\t\tawait recursiveDelete(props.folders, props.allFolders);\n+\t\t}\n+\n+\t\tmodelValue.value = false;\n+\t\temit('done');\n+\t} catch (error) {\n+\t\tunexpectedError(error);\n+\t} finally {\n+\t\tsaving.value = false;\n+\t}\n+}\n+</script>\n+\n+<template>\n+\t<VDialog v-model=\"modelValue\" persistent @esc=\"modelValue = false\" @apply=\"save\">\n+\t\t<VCard>\n+\t\t\t<VCardTitle>{{ $t('delete_folder') }}</VCardTitle>\n+\n+\t\t\t<VCardText>\n+\t\t\t\t<p>{{ $t('delete_folder_dialog.content_behavior') }}</p>\n+\t\t\t\t<div class=\"radio-options\">\n+\t\t\t\t\t<VRadio\n+\t\t\t\t\t\tv-for=\"option in radioOptions\"\n+\t\t\t\t\t\t:key=\"option.value\"\n+\t\t\t\t\t\tv-model=\"deleteMode\"\n+\t\t\t\t\t\t:value=\"option.value\"\n+\t\t\t\t\t\t:label=\"option.label\"\n+\t\t\t\t\t/>\n+\t\t\t\t</div>\n+\t\t\t</VCardText>\n+\n+\t\t\t<VCardActions>\n+\t\t\t\t<VButton secondary @click=\"modelValue = false\">{{ $t('cancel') }}</VButton>\n+\t\t\t\t<VButton kind=\"danger\" :loading=\"saving\" @click=\"save\">{{ $t('delete_label') }}</VButton>\n+\t\t\t</VCardActions>\n+\t\t</VCard>\n+\t</VDialog>\n+</template>\n+\n+<style lang=\"scss\" scoped>\n+.radio-options {\n+\tmargin-block-start: 0.675rem;\n+\n+\t.v-radio + .v-radio {\n+\t\tmargin-block-start: 0.45rem;\n+\t}\n+}\n+</style>"
+    },
+    {
+      "filename": "app/src/modules/files/components/folder-section.vue",
+      "status": "added",
+      "additions": 29,
+      "deletions": 0,
+      "changes": 29,
+      "patch": "@@ -0,0 +1,29 @@\n+<script setup lang=\"ts\">\n+import { computed } from 'vue';\n+import { Folder } from '@/composables/use-folders';\n+import Card from '@/layouts/cards/components/card.vue';\n+\n+const props = defineProps<{\n+\tsubfolders: Folder[];\n+\tanySelection?: boolean;\n+}>();\n+\n+const selection = defineModel<string[]>('selection', { default: () => [] });\n+\n+const selectMode = computed(() => selection.value.length > 0 || (props.anySelection ?? false));\n+</script>\n+\n+<template>\n+\t<Card\n+\t\tv-for=\"folder in props.subfolders\"\n+\t\t:key=\"folder.id\"\n+\t\tv-model=\"selection\"\n+\t\titem-key=\"id\"\n+\t\ticon=\"folder\"\n+\t\t:item=\"folder\"\n+\t\t:to=\"`/files/folders/${folder.id}`\"\n+\t\t:select-mode=\"selectMode\"\n+\t>\n+\t\t<template #title>{{ folder.name }}</template>\n+\t</Card>\n+</template>"
+    },
+    {
+      "filename": "app/src/modules/files/routes/collection.vue",
+      "status": "modified",
+      "additions": 116,
+      "deletions": 49,
+      "changes": 165,
+      "patch": "@@ -6,6 +6,7 @@ import { computed, nextTick, ref, watch } from 'vue';\n import { useI18n } from 'vue-i18n';\n import { onBeforeRouteLeave, onBeforeRouteUpdate, RouterView, useRouter } from 'vue-router';\n import AddFolder from '../components/add-folder.vue';\n+import FolderSection from '../components/folder-section.vue';\n import api from '@/api';\n import VBreadcrumb from '@/components/v-breadcrumb.vue';\n import VButton from '@/components/v-button.vue';\n@@ -20,6 +21,7 @@ import { Folder, useFolders } from '@/composables/use-folders';\n import { useCollectionPermissions } from '@/composables/use-permissions';\n import { usePreset } from '@/composables/use-preset';\n import { emitter, Events } from '@/events';\n+import DeleteFolderDialog from '@/modules/files/components/delete-folder-dialog.vue';\n import { useFilesStore } from '@/stores/files.js';\n import { useNotificationsStore } from '@/stores/notifications';\n import { useServerStore } from '@/stores/server';\n@@ -47,35 +49,56 @@ const router = useRouter();\n \n const notificationsStore = useNotificationsStore();\n const { info } = useServerStore();\n-const { folders } = useFolders();\n+const { folders, fetchFolders } = useFolders();\n \n const layoutRef = ref();\n const selection = ref<string[]>([]);\n+const folderSelection = ref<string[]>([]);\n+const selectedFolderObjects = computed(() => (folders.value ?? []).filter((f) => folderSelection.value.includes(f.id)));\n \n const userStore = useUserStore();\n \n const { layout, layoutOptions, layoutQuery, filter, search, resetPreset } = usePreset(ref('directus_files'));\n \n-const { confirmDelete, deleting, batchDelete, batchEditActive } = useBatch();\n+const confirmDelete = ref(false);\n+const batchEditActive = ref(false);\n+const isTransitioning = ref(false);\n \n const { breadcrumb, title } = useBreadcrumb();\n \n const folderFilter = computed(() => {\n \treturn getFolderFilter(props.folder, props.special, userStore?.currentUser?.id);\n });\n \n+const subfolders = computed(() => {\n+\tif (props.special || !folders.value) return [];\n+\treturn folders.value.filter((f) => (f.parent ?? null) === (props.folder ?? null));\n+});\n+\n const { layoutWrapper } = useLayout(layout);\n \n const { moveToDialogActive, moveToFolder, moving, selectedFolder } = useMovetoFolder();\n \n onBeforeRouteLeave(() => {\n \tselection.value = [];\n+\tfolderSelection.value = [];\n+\tconfirmDelete.value = false;\n });\n \n onBeforeRouteUpdate(() => {\n \tselection.value = [];\n+\tfolderSelection.value = [];\n+\tconfirmDelete.value = false;\n });\n \n+watch(\n+\t() => [props.folder, props.special],\n+\t() => {\n+\t\tisTransitioning.value = true;\n+\t},\n+\t{ flush: 'sync' },\n+);\n+\n const { isAnyUploadActive, onDragEnter, onDragLeave, onDrop, onDragOver, showDropEffect, dragging } = useFileUpload();\n \n useEventListener(window, 'dragenter', onDragEnter);\n@@ -89,46 +112,58 @@ watch(isAnyUploadActive, (isUploading, wasUploading) => {\n \t}\n });\n \n+// Refresh file list when folders change (e.g. sidebar delete moves files into current folder)\n+watch(folders, (_newVal, oldVal) => {\n+\tif (oldVal === null) return; // skip initial load\n+\trefresh();\n+});\n+\n+watch(\n+\t() => layoutRef.value?.state?.items,\n+\t() => {\n+\t\tisTransitioning.value = false;\n+\t},\n+);\n+\n const {\n \tupdateAllowed: batchEditAllowed,\n \tdeleteAllowed: batchDeleteAllowed,\n \tcreateAllowed,\n } = useCollectionPermissions('directus_files');\n \n-const { createAllowed: createFolderAllowed } = useCollectionPermissions('directus_folders');\n-\n-function useBatch() {\n-\tconst confirmDelete = ref(false);\n-\tconst deleting = ref(false);\n-\n-\tconst batchEditActive = ref(false);\n-\n-\tconst error = ref<any>();\n-\n-\treturn { batchEditActive, confirmDelete, deleting, batchDelete, error };\n+const { createAllowed: createFolderAllowed, deleteAllowed: folderDeleteAllowed } =\n+\tuseCollectionPermissions('directus_folders');\n \n-\tasync function batchDelete() {\n-\t\tif (deleting.value) return;\n-\n-\t\tdeleting.value = true;\n-\n-\t\tconst batchPrimaryKeys = selection.value;\n-\n-\t\ttry {\n-\t\t\tawait api.delete('/files', {\n-\t\t\t\tdata: batchPrimaryKeys,\n-\t\t\t});\n+async function onFolderDeleteDone() {\n+\ttry {\n+\t\tif (selection.value.length > 0) {\n+\t\t\tawait api.delete('/files', { data: selection.value });\n+\t\t}\n+\t} catch (e) {\n+\t\tunexpectedError(e);\n+\t}\n \n-\t\t\tawait refresh();\n+\tselection.value = [];\n+\tfolderSelection.value = [];\n+\tconfirmDelete.value = false;\n+\tfetchFolders();\n+}\n \n-\t\t\tselection.value = [];\n-\t\t} catch (e) {\n-\t\t\tunexpectedError(e);\n-\t\t\terror.value = e;\n-\t\t} finally {\n-\t\t\tconfirmDelete.value = false;\n-\t\t\tdeleting.value = false;\n-\t\t}\n+const deletingFiles = ref(false);\n+\n+async function batchDeleteFiles() {\n+\tif (deletingFiles.value) return;\n+\tdeletingFiles.value = true;\n+\n+\ttry {\n+\t\tawait api.delete('/files', { data: selection.value });\n+\t\tselection.value = [];\n+\t\tconfirmDelete.value = false;\n+\t\tawait refresh();\n+\t} catch (e) {\n+\t\tunexpectedError(e);\n+\t} finally {\n+\t\tdeletingFiles.value = false;\n \t}\n }\n \n@@ -409,6 +444,7 @@ async function downloadFiles() {\n \t\t:filter-system=\"folderFilter\"\n \t\t:search=\"search\"\n \t\tcollection=\"directus_files\"\n+\t\t:select-mode=\"folderSelection.length > 0\"\n \t\t:reset-preset=\"resetPreset\"\n \t>\n \t\t<PrivateView :title=\"title\" icon=\"folder\" :class=\"{ dragging }\">\n@@ -426,7 +462,7 @@ async function downloadFiles() {\n \t\t\t\t<AddFolder :parent=\"folder\" :disabled=\"createFolderAllowed !== true\" />\n \n \t\t\t\t<VDialog\n-\t\t\t\t\tv-if=\"selection.length > 0\"\n+\t\t\t\t\tv-if=\"selection.length > 0 && folderSelection.length === 0\"\n \t\t\t\t\tv-model=\"moveToDialogActive\"\n \t\t\t\t\t@esc=\"moveToDialogActive = false\"\n \t\t\t\t\t@apply=\"moveToFolder\"\n@@ -460,34 +496,49 @@ async function downloadFiles() {\n \t\t\t\t\t</VCard>\n \t\t\t\t</VDialog>\n \n-\t\t\t\t<VDialog v-if=\"selection.length > 0\" v-model=\"confirmDelete\" @esc=\"confirmDelete = false\" @apply=\"batchDelete\">\n-\t\t\t\t\t<template #activator=\"{ on }\">\n-\t\t\t\t\t\t<PrivateViewHeaderBarActionButton\n-\t\t\t\t\t\t\tv-tooltip.bottom=\"batchDeleteAllowed ? $t('delete_label') : $t('not_allowed')\"\n-\t\t\t\t\t\t\t:disabled=\"batchDeleteAllowed !== true\"\n-\t\t\t\t\t\t\tclass=\"action-delete\"\n-\t\t\t\t\t\t\tsecondary\n-\t\t\t\t\t\t\ticon=\"delete\"\n-\t\t\t\t\t\t\t@click=\"on\"\n-\t\t\t\t\t\t/>\n-\t\t\t\t\t</template>\n+\t\t\t\t<PrivateViewHeaderBarActionButton\n+\t\t\t\t\tv-if=\"selection.length > 0 || folderSelection.length > 0\"\n+\t\t\t\t\tv-tooltip.bottom=\"\n+\t\t\t\t\t\tbatchDeleteAllowed && (folderSelection.length === 0 || folderDeleteAllowed)\n+\t\t\t\t\t\t\t? $t('delete_label')\n+\t\t\t\t\t\t\t: $t('not_allowed')\n+\t\t\t\t\t\"\n+\t\t\t\t\t:disabled=\"batchDeleteAllowed !== true || (folderSelection.length > 0 && folderDeleteAllowed !== true)\"\n+\t\t\t\t\tclass=\"action-delete\"\n+\t\t\t\t\tsecondary\n+\t\t\t\t\ticon=\"delete\"\n+\t\t\t\t\t@click=\"confirmDelete = true\"\n+\t\t\t\t/>\n+\n+\t\t\t\t<DeleteFolderDialog\n+\t\t\t\t\tv-if=\"folderSelection.length > 0\"\n+\t\t\t\t\tv-model=\"confirmDelete\"\n+\t\t\t\t\t:folders=\"selectedFolderObjects\"\n+\t\t\t\t\t:all-folders=\"folders ?? []\"\n+\t\t\t\t\t@done=\"onFolderDeleteDone\"\n+\t\t\t\t/>\n \n+\t\t\t\t<VDialog\n+\t\t\t\t\tv-if=\"folderSelection.length === 0 && selection.length > 0\"\n+\t\t\t\t\tv-model=\"confirmDelete\"\n+\t\t\t\t\t@esc=\"confirmDelete = false\"\n+\t\t\t\t>\n \t\t\t\t\t<VCard>\n \t\t\t\t\t\t<VCardTitle>{{ $t('batch_delete_confirm', selection.length) }}</VCardTitle>\n \n \t\t\t\t\t\t<VCardActions>\n \t\t\t\t\t\t\t<VButton secondary @click=\"confirmDelete = false\">\n \t\t\t\t\t\t\t\t{{ $t('cancel') }}\n \t\t\t\t\t\t\t</VButton>\n-\t\t\t\t\t\t\t<VButton kind=\"danger\" :loading=\"deleting\" @click=\"batchDelete\">\n+\t\t\t\t\t\t\t<VButton kind=\"danger\" :loading=\"deletingFiles\" @click=\"batchDeleteFiles\">\n \t\t\t\t\t\t\t\t{{ $t('delete_label') }}\n \t\t\t\t\t\t\t</VButton>\n \t\t\t\t\t\t</VCardActions>\n \t\t\t\t\t</VCard>\n \t\t\t\t</VDialog>\n \n \t\t\t\t<PrivateViewHeaderBarActionButton\n-\t\t\t\t\tv-if=\"selection.length > 0\"\n+\t\t\t\t\tv-if=\"selection.length > 0 && folderSelection.length === 0\"\n \t\t\t\t\tv-tooltip.bottom=\"batchEditAllowed ? $t('edit') : $t('not_allowed')\"\n \t\t\t\t\tsecondary\n \t\t\t\t\t:disabled=\"batchEditAllowed === false\"\n@@ -496,7 +547,7 @@ async function downloadFiles() {\n \t\t\t\t/>\n \n \t\t\t\t<PrivateViewHeaderBarActionButton\n-\t\t\t\t\tv-if=\"selection.length > 0\"\n+\t\t\t\t\tv-if=\"selection.length > 0 && folderSelection.length === 0\"\n \t\t\t\t\tv-tooltip.bottom=\"$t('download')\"\n \t\t\t\t\tsecondary\n \t\t\t\t\ticon=\"download\"\n@@ -515,7 +566,23 @@ async function downloadFiles() {\n \t\t\t\t<FilesNavigation :current-folder=\"folder\" :current-special=\"special\" />\n \t\t\t</template>\n \n-\t\t\t<component :is=\"`layout-${layout}`\" v-bind=\"layoutState\">\n+\t\t\t<component\n+\t\t\t\t:is=\"`layout-${layout}`\"\n+\t\t\t\tv-bind=\"layoutState\"\n+\t\t\t\tv-model:extra-selection=\"folderSelection\"\n+\t\t\t\t:loading=\"layoutState.loading || isTransitioning\"\n+\t\t\t\t:has-prepend-content=\"!isTransitioning && subfolders.length > 0 && !search && !filter\"\n+\t\t\t\t:select-mode=\"layoutState.selectMode\"\n+\t\t\t\t@select-all=\"folderSelection = subfolders.map((f) => f.id)\"\n+\t\t\t>\n+\t\t\t\t<template v-if=\"!special && !search && !filter\" #prepend>\n+\t\t\t\t\t<FolderSection\n+\t\t\t\t\t\tv-model:selection=\"folderSelection\"\n+\t\t\t\t\t\t:subfolders=\"subfolders\"\n+\t\t\t\t\t\t:any-selection=\"selection.length > 0\"\n+\t\t\t\t\t/>\n+\t\t\t\t</template>\n+\n \t\t\t\t<template #no-results>\n \t\t\t\t\t<VInfo v-if=\"!filter && !search\" :title=\"$t('file_count', 0)\" icon=\"folder\" center>\n \t\t\t\t\t\t{{ $t('no_files_copy') }}"
+    },
+    {
+      "filename": "app/src/utils/collect-folder-ids.test.ts",
+      "status": "added",
+      "additions": 60,
+      "deletions": 0,
+      "changes": 60,
+      "patch": "@@ -0,0 +1,60 @@\n+import { describe, expect, it } from 'vitest';\n+import { collectAllFolderIds } from './collect-folder-ids';\n+\n+const allFolders = [\n+\t{ id: 'root-1', name: 'Root 1', parent: null },\n+\t{ id: 'root-2', name: 'Root 2', parent: null },\n+\t{ id: 'child-1a', name: 'Child 1A', parent: 'root-1' },\n+\t{ id: 'child-1b', name: 'Child 1B', parent: 'root-1' },\n+\t{ id: 'grandchild-1a-i', name: 'Grandchild 1A-I', parent: 'child-1a' },\n+\t{ id: 'child-2a', name: 'Child 2A', parent: 'root-2' },\n+];\n+\n+describe('collectAllFolderIds', () => {\n+\tit('collects root and its direct children', () => {\n+\t\tconst result = collectAllFolderIds(allFolders, ['root-2']);\n+\t\texpect(result).toContain('root-2');\n+\t\texpect(result).toContain('child-2a');\n+\t\texpect(result).not.toContain('root-1');\n+\t});\n+\n+\tit('recursively collects nested children', () => {\n+\t\tconst result = collectAllFolderIds(allFolders, ['root-1']);\n+\t\texpect(result).toEqual(expect.arrayContaining(['root-1', 'child-1a', 'child-1b', 'grandchild-1a-i']));\n+\t\texpect(result).not.toContain('root-2');\n+\t\texpect(result).not.toContain('child-2a');\n+\t});\n+\n+\tit('handles multiple root ids', () => {\n+\t\tconst result = collectAllFolderIds(allFolders, ['root-1', 'root-2']);\n+\n+\t\texpect(result).toEqual(\n+\t\t\texpect.arrayContaining(['root-1', 'root-2', 'child-1a', 'child-1b', 'grandchild-1a-i', 'child-2a']),\n+\t\t);\n+\t});\n+\n+\tit('returns only the root when it has no children', () => {\n+\t\tconst result = collectAllFolderIds([{ id: 'lone', name: 'Lone', parent: null }], ['lone']);\n+\t\texpect(result).toEqual(['lone']);\n+\t});\n+\n+\tit('empty rootIds returns empty array', () => {\n+\t\tconst result = collectAllFolderIds(allFolders, []);\n+\t\texpect(result).toEqual([]);\n+\t});\n+\n+\tit('empty allFolders returns rootIds', () => {\n+\t\tconst result = collectAllFolderIds([], ['root-1']);\n+\t\texpect(result).toEqual(['root-1']);\n+\t});\n+\n+\tit('handles cyclic parent references without infinite loop', () => {\n+\t\tconst cyclic = [\n+\t\t\t{ id: 'a', name: 'A', parent: 'b' },\n+\t\t\t{ id: 'b', name: 'B', parent: 'a' },\n+\t\t];\n+\n+\t\tconst result = collectAllFolderIds(cyclic, ['a']);\n+\t\texpect(result).toEqual(expect.arrayContaining(['a', 'b']));\n+\t});\n+});"
+    },
+    {
+      "filename": "app/src/utils/collect-folder-ids.ts",
+      "status": "added",
+      "additions": 19,
+      "deletions": 0,
+      "changes": 19,
+      "patch": "@@ -0,0 +1,19 @@\n+import { Folder } from '@/composables/use-folders';\n+\n+export function collectAllFolderIds(allFolders: Folder[], rootIds: string[]): string[] {\n+\tconst result = new Set<string>(rootIds);\n+\tlet changed = true;\n+\n+\twhile (changed) {\n+\t\tchanged = false;\n+\n+\t\tfor (const folder of allFolders) {\n+\t\t\tif (folder.parent && result.has(folder.parent) && !result.has(folder.id)) {\n+\t\t\t\tresult.add(folder.id);\n+\t\t\t\tchanged = true;\n+\t\t\t}\n+\t\t}\n+\t}\n+\n+\treturn [...result];\n+}"
+    },
+    {
+      "filename": "app/src/utils/delete-folder.test.ts",
+      "status": "added",
+      "additions": 106,
+      "deletions": 0,
+      "changes": 106,
+      "patch": "@@ -0,0 +1,106 @@\n+import { afterEach, describe, expect, it, vi } from 'vitest';\n+import { moveAndDelete, moveSingleFolder, recursiveDelete } from './delete-folder';\n+\n+const apiGet = vi.hoisted(() => vi.fn());\n+const apiPatch = vi.hoisted(() => vi.fn());\n+const apiDelete = vi.hoisted(() => vi.fn());\n+\n+vi.mock('@/api', () => ({\n+\tdefault: { get: apiGet, patch: apiPatch, delete: apiDelete },\n+}));\n+\n+const folder = (id: string, parent: string | null = null) => ({ id, name: id, parent });\n+\n+afterEach(() => {\n+\tvi.resetAllMocks();\n+});\n+\n+describe('moveSingleFolder', () => {\n+\tit('moves child folders and files to parent', async () => {\n+\t\tapiGet\n+\t\t\t.mockResolvedValueOnce({ data: { data: [{ id: 'child-folder' }] } })\n+\t\t\t.mockResolvedValueOnce({ data: { data: [{ id: 'child-file' }] } });\n+\n+\t\tawait moveSingleFolder(folder('f1', 'parent-1'));\n+\n+\t\texpect(apiPatch).toHaveBeenCalledWith('/folders', { keys: ['child-folder'], data: { parent: 'parent-1' } });\n+\t\texpect(apiPatch).toHaveBeenCalledWith('/files', { keys: ['child-file'], data: { folder: 'parent-1' } });\n+\t});\n+\n+\tit('skips patch when no children', async () => {\n+\t\tapiGet.mockResolvedValueOnce({ data: { data: [] } }).mockResolvedValueOnce({ data: { data: [] } });\n+\n+\t\tawait moveSingleFolder(folder('f1', null));\n+\n+\t\texpect(apiPatch).not.toHaveBeenCalled();\n+\t});\n+\n+\tit('uses null parent for root folder', async () => {\n+\t\tapiGet\n+\t\t\t.mockResolvedValueOnce({ data: { data: [{ id: 'child-folder' }] } })\n+\t\t\t.mockResolvedValueOnce({ data: { data: [] } });\n+\n+\t\tawait moveSingleFolder(folder('f1', null));\n+\n+\t\texpect(apiPatch).toHaveBeenCalledWith('/folders', { keys: ['child-folder'], data: { parent: null } });\n+\t});\n+});\n+\n+describe('moveAndDelete', () => {\n+\tit('moves contents of all folders then deletes them', async () => {\n+\t\tapiGet.mockResolvedValue({ data: { data: [] } });\n+\n+\t\tawait moveAndDelete([folder('f1'), folder('f2')]);\n+\n+\t\texpect(apiDelete).toHaveBeenCalledWith('/folders', { data: ['f1', 'f2'] });\n+\t});\n+});\n+\n+describe('recursiveDelete', () => {\n+\tit('deletes folder, its descendants, and all contained files', async () => {\n+\t\tconst all = [folder('root'), folder('child', 'root'), folder('grandchild', 'child')];\n+\n+\t\tapiGet.mockResolvedValueOnce({ data: { data: [{ id: 'file-1' }, { id: 'file-2' }] } });\n+\n+\t\tawait recursiveDelete([folder('root')], all);\n+\n+\t\texpect(apiDelete).toHaveBeenCalledWith('/files', { data: ['file-1', 'file-2'] });\n+\n+\t\texpect(apiDelete).toHaveBeenCalledWith('/folders', {\n+\t\t\tdata: expect.arrayContaining(['root', 'child', 'grandchild']),\n+\t\t});\n+\t});\n+\n+\tit('nullifies parents of nested folders before delete to avoid FK issues', async () => {\n+\t\tconst all = [folder('root'), folder('child', 'root')];\n+\n+\t\tapiGet.mockResolvedValueOnce({ data: { data: [] } });\n+\n+\t\tawait recursiveDelete([folder('root')], all);\n+\n+\t\texpect(apiPatch).toHaveBeenCalledWith('/folders', { keys: ['child'], data: { parent: null } });\n+\t});\n+\n+\tit('deletes files before folders', async () => {\n+\t\tconst calls: string[] = [];\n+\t\tapiGet.mockResolvedValueOnce({ data: { data: [{ id: 'f1' }] } });\n+\n+\t\tapiDelete.mockImplementation((path: string) => {\n+\t\t\tcalls.push(path);\n+\t\t\treturn Promise.resolve();\n+\t\t});\n+\n+\t\tawait recursiveDelete([folder('root')], [folder('root')]);\n+\n+\t\texpect(calls.indexOf('/files')).toBeLessThan(calls.indexOf('/folders'));\n+\t});\n+\n+\tit('skips file delete when no files', async () => {\n+\t\tapiGet.mockResolvedValueOnce({ data: { data: [] } });\n+\n+\t\tawait recursiveDelete([folder('root')], [folder('root')]);\n+\n+\t\texpect(apiDelete).not.toHaveBeenCalledWith('/files', expect.anything());\n+\t\texpect(apiDelete).toHaveBeenCalledWith('/folders', { data: ['root'] });\n+\t});\n+});"
+    },
+    {
+      "filename": "app/src/utils/delete-folder.ts",
+      "status": "added",
+      "additions": 62,
+      "deletions": 0,
+      "changes": 62,
+      "patch": "@@ -0,0 +1,62 @@\n+import api from '@/api';\n+import { Folder } from '@/composables/use-folders';\n+import { collectAllFolderIds } from '@/utils/collect-folder-ids';\n+\n+export async function moveSingleFolder(folder: Folder): Promise<void> {\n+\tconst newParent = folder.parent;\n+\n+\tconst [foldersRes, filesRes] = await Promise.all([\n+\t\tapi.get('/folders', {\n+\t\t\tparams: { filter: { parent: { _eq: folder.id } }, fields: ['id'], limit: -1 },\n+\t\t}),\n+\t\tapi.get('/files', {\n+\t\t\tparams: { filter: { folder: { _eq: folder.id } }, fields: ['id'], limit: -1 },\n+\t\t}),\n+\t]);\n+\n+\tconst childFolderIds: string[] = foldersRes.data.data.map((f: { id: string }) => f.id);\n+\tconst childFileIds: string[] = filesRes.data.data.map((f: { id: string }) => f.id);\n+\n+\tawait Promise.all([\n+\t\tchildFolderIds.length > 0\n+\t\t\t? api.patch('/folders', { keys: childFolderIds, data: { parent: newParent } })\n+\t\t\t: Promise.resolve(),\n+\t\tchildFileIds.length > 0\n+\t\t\t? api.patch('/files', { keys: childFileIds, data: { folder: newParent } })\n+\t\t\t: Promise.resolve(),\n+\t]);\n+}\n+\n+export async function moveAndDelete(folders: Folder[]): Promise<void> {\n+\tawait Promise.all(folders.map(moveSingleFolder));\n+\tawait api.delete('/folders', { data: folders.map((f) => f.id) });\n+}\n+\n+export async function recursiveDelete(folders: Folder[], allFolders: Folder[]): Promise<void> {\n+\tconst allFolderIds = collectAllFolderIds(\n+\t\tallFolders,\n+\t\tfolders.map((f) => f.id),\n+\t);\n+\n+\tconst allFolderIdSet = new Set(allFolderIds);\n+\n+\tconst withParentInSet = allFolders\n+\t\t.filter((f) => allFolderIdSet.has(f.id) && f.parent !== null && allFolderIdSet.has(f.parent!))\n+\t\t.map((f) => f.id);\n+\n+\tif (withParentInSet.length > 0) {\n+\t\tawait api.patch('/folders', { keys: withParentInSet, data: { parent: null } });\n+\t}\n+\n+\tconst filesRes = await api.get('/files', {\n+\t\tparams: { filter: { folder: { _in: allFolderIds } }, fields: ['id'], limit: -1 },\n+\t});\n+\n+\tconst fileIds: string[] = filesRes.data.data.map((f: { id: string }) => f.id);\n+\n+\tif (fileIds.length > 0) {\n+\t\tawait api.delete('/files', { data: fileIds });\n+\t}\n+\n+\tawait api.delete('/folders', { data: allFolderIds });\n+}"
+    },
+    {
+      "filename": "app/src/views/private/components/files-navigation-folder.vue",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 88,
+      "changes": 101,
+      "patch": "@@ -17,9 +17,9 @@ import VListItemIcon from '@/components/v-list-item-icon.vue';\n import VListItem from '@/components/v-list-item.vue';\n import VList from '@/components/v-list.vue';\n import VMenu from '@/components/v-menu.vue';\n-import VNotice from '@/components/v-notice.vue';\n import VTextOverflow from '@/components/v-text-overflow.vue';\n import { Folder, useFolders } from '@/composables/use-folders';\n+import DeleteFolderDialog from '@/modules/files/components/delete-folder-dialog.vue';\n import { FolderTarget } from '@/types/folders';\n import { getFolderUrl } from '@/utils/get-asset-url';\n import { unexpectedError } from '@/utils/unexpected-error';\n@@ -42,9 +42,10 @@ const router = useRouter();\n \n const { renameActive, renameValue, renameSave, renameSaving } = useRenameFolder();\n const { moveActive, moveValue, moveSave, moveSaving } = useMoveFolder();\n-const { deleteActive, deleteSave, deleteSaving } = useDeleteFolder();\n \n-const { fetchFolders } = useFolders();\n+const deleteActive = ref(false);\n+\n+const { fetchFolders, folders } = useFolders();\n \n function useRenameFolder() {\n \tconst renameActive = ref(false);\n@@ -98,79 +99,16 @@ function useMoveFolder() {\n \t}\n }\n \n-function useDeleteFolder() {\n-\tconst deleteActive = ref(false);\n-\tconst deleteSaving = ref(false);\n-\n-\treturn { deleteActive, deleteSave, deleteSaving };\n-\n-\tasync function deleteSave() {\n-\t\tif (deleteSaving.value) return;\n-\n-\t\tdeleteSaving.value = true;\n-\n-\t\ttry {\n-\t\t\tconst foldersToUpdate = await api.get('/folders', {\n-\t\t\t\tparams: {\n-\t\t\t\t\tfilter: {\n-\t\t\t\t\t\tparent: {\n-\t\t\t\t\t\t\t_eq: props.folder.id,\n-\t\t\t\t\t\t},\n-\t\t\t\t\t},\n-\t\t\t\t\tfields: ['id'],\n-\t\t\t\t},\n-\t\t\t});\n-\n-\t\t\tconst filesToUpdate = await api.get('/files', {\n-\t\t\t\tparams: {\n-\t\t\t\t\tfilter: {\n-\t\t\t\t\t\tfolder: {\n-\t\t\t\t\t\t\t_eq: props.folder.id,\n-\t\t\t\t\t\t},\n-\t\t\t\t\t},\n-\t\t\t\t\tfields: ['id'],\n-\t\t\t\t},\n-\t\t\t});\n-\n-\t\t\tconst newParent = props.folder.parent || null;\n-\n-\t\t\tconst folderKeys = foldersToUpdate.data.data.map((folder: { id: string }) => folder.id);\n-\t\t\tconst fileKeys = filesToUpdate.data.data.map((file: { id: string }) => file.id);\n-\n-\t\t\tif (folderKeys.length > 0) {\n-\t\t\t\tawait api.patch(`/folders`, {\n-\t\t\t\t\tkeys: folderKeys,\n-\t\t\t\t\tdata: {\n-\t\t\t\t\t\tparent: newParent,\n-\t\t\t\t\t},\n-\t\t\t\t});\n-\t\t\t}\n-\n-\t\t\tif (fileKeys.length > 0) {\n-\t\t\t\tawait api.patch(`/files`, {\n-\t\t\t\t\tkeys: fileKeys,\n-\t\t\t\t\tdata: {\n-\t\t\t\t\t\tfolder: newParent,\n-\t\t\t\t\t},\n-\t\t\t\t});\n-\t\t\t}\n-\n-\t\t\tawait api.delete(`/folders/${props.folder.id}`);\n+function onDeleted() {\n+\tconst newParent = props.folder.parent;\n \n-\t\t\tif (newParent) {\n-\t\t\t\trouter.replace(`/files/folders/${newParent}`);\n-\t\t\t} else {\n-\t\t\t\trouter.replace('/files');\n-\t\t\t}\n-\n-\t\t\tdeleteActive.value = false;\n-\t\t} catch (error) {\n-\t\t\tunexpectedError(error);\n-\t\t} finally {\n-\t\t\tawait fetchFolders();\n-\t\t\tdeleteSaving.value = false;\n-\t\t}\n+\tif (newParent) {\n+\t\trouter.replace(`/files/folders/${newParent}`);\n+\t} else {\n+\t\trouter.replace('/files');\n \t}\n+\n+\tfetchFolders();\n }\n \n async function downloadFolder() {\n@@ -306,20 +244,7 @@ async function downloadFolder() {\n \t\t\t</VCard>\n \t\t</VDialog>\n \n-\t\t<VDialog v-model=\"deleteActive\" persistent @esc=\"deleteActive = false\" @apply=\"deleteSave\">\n-\t\t\t<VCard>\n-\t\t\t\t<VCardTitle>{{ $t('delete_folder') }}</VCardTitle>\n-\t\t\t\t<VCardText>\n-\t\t\t\t\t<VNotice>\n-\t\t\t\t\t\t{{ $t('nested_files_folders_will_be_moved') }}\n-\t\t\t\t\t</VNotice>\n-\t\t\t\t</VCardText>\n-\t\t\t\t<VCardActions>\n-\t\t\t\t\t<VButton secondary @click=\"deleteActive = false\">{{ $t('cancel') }}</VButton>\n-\t\t\t\t\t<VButton kind=\"danger\" :loading=\"deleteSaving\" @click=\"deleteSave\">{{ $t('delete_label') }}</VButton>\n-\t\t\t\t</VCardActions>\n-\t\t\t</VCard>\n-\t\t</VDialog>\n+\t\t<DeleteFolderDialog v-model=\"deleteActive\" :folders=\"[folder]\" :all-folders=\"folders ?? []\" @done=\"onDeleted\" />\n \t</div>\n </template>\n "
+    }
+  ]
+}

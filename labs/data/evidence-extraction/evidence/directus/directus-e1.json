@@ -1,0 +1,63 @@
+{
+  "pr": {
+    "number": 26976,
+    "title": "Add keyboard navigation to the cards layout",
+    "body": "## Scope\r\n\r\nWhat's changed:\r\n\r\n- Add keyboard navigation to the cards layout — cards are now focusable via `Tab` and activate on `Enter` or `Space`\r\n- Skip Tab focus (`tabindex=\"-1\"`) on cards when a selection is active, keeping the selector icon as the only keyboard target in that mode\r\n- Prevent navigation when items are already selected — `handleClick` now toggles selection whenever `modelValue` is non-empty, regardless of `selectMode`\r\n\r\n## Potential Risks / Drawbacks\r\n\r\n- Cards become unreachable via Tab while any selection is active; keyboard users must clear the selection before they can Tab-navigate to an item\r\n- The `@keydown.self` modifier scopes Enter/Space to the card root only — child elements (e.g. selector icon) handle their own keyboard events independently, which is intentional but worth verifying in edge cases\r\n\r\n## Tested Scenarios\r\n\r\n- Tab to a card and press Enter — confirm navigation to the item\r\n- Tab to a card and press Space — confirm navigation to the item\r\n- Select one or more items, then Tab — confirm cards are skipped and only selector icons receive focus\r\n- With items selected, focus a selector icon and press Enter/Space — confirm selection toggles without navigating\r\n- Verify the focus ring appears around the card header only, respects the header's border-radius, and matches the project focus ring style\r\n\r\n## Checklist\r\n\r\n- [ ] Added or updated tests\r\n- [x] Documentation PR created [here](https://github.com/directus/docs) or not required\r\n- [x] OpenAPI package PR created [here](https://github.com/directus/openapi) or not required\r\n\r\n---\r\n\r\nFixes #26945",
+    "state": "closed",
+    "merged": true,
+    "user": "HZooly",
+    "created_at": "2026-03-25T21:52:15Z",
+    "updated_at": "2026-05-26T03:45:51Z",
+    "base": "main",
+    "head": "hugo/cms-2046-cannot-navigate-with-keyboard-to-an-item-using-cards-layout",
+    "merge_commit_sha": "b49f3fc7be7b775f013e46ba8394b04c11361925"
+  },
+  "issue_comments": [
+    {
+      "user": "linear[bot]",
+      "body": "<!-- linear-linkback -->\n<p><a href=\"https://linear.app/directus/issue/CMS-2046/cannot-navigate-with-keyboard-to-an-item-using-cards-layout\">CMS-2046 Cannot navigate with keyboard to an item using Cards layout</a></p>",
+      "created_at": "2026-03-25T21:52:19Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "AlexGaillard",
+      "state": "APPROVED",
+      "body": "Nice @HZooly 👍 Works like a charm 🚀 ",
+      "submitted_at": "2026-03-26T15:40:03Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "a7bbf6cfe2376b69331e5497e4a59997d6a22f72",
+      "message": "add keyboard navigation to the cards layout",
+      "author": "HZooly",
+      "date": "2026-03-25T21:49:31Z"
+    },
+    {
+      "sha": "491866d6958297f7e46aa8259182cb108b6f78cb",
+      "message": "add changeset",
+      "author": "HZooly",
+      "date": "2026-03-25T21:49:52Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/green-kiwis-camp.md",
+      "status": "added",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -0,0 +1,5 @@\n+---\n+'@directus/app': minor\n+---\n+\n+Added keyboard navigation to the cards layout"
+    },
+    {
+      "filename": "app/src/layouts/cards/components/card.vue",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 1,
+      "changes": 14,
+      "patch": "@@ -94,7 +94,7 @@ function toggleSelection() {\n }\n \n function handleClick() {\n-\tif (props.selectMode === true) {\n+\tif (props.selectMode === true || props.modelValue.length > 0) {\n \t\ttoggleSelection();\n \t} else {\n \t\trouter.push(props.to);\n@@ -106,7 +106,10 @@ function handleClick() {\n \t<div\n \t\tclass=\"card\"\n \t\t:class=\"{ loading, readonly, selected: item && modelValue.includes(item[itemKey]), 'select-mode': selectMode }\"\n+\t\t:tabindex=\"readonly || loading || modelValue.length > 0 ? -1 : 0\"\n \t\t@click=\"handleClick\"\n+\t\t@keydown.self.enter.prevent=\"handleClick\"\n+\t\t@keydown.self.space.prevent=\"handleClick\"\n \t>\n \t\t<VIcon class=\"selector\" :name=\"selectionIcon\" clickable @click.stop=\"toggleSelection\" />\n \t\t<div class=\"header\">\n@@ -146,6 +149,15 @@ function handleClick() {\n \tposition: relative;\n \tcursor: pointer;\n \n+\t&:focus-visible {\n+\t\toutline: none;\n+\n+\t\t.header {\n+\t\t\toutline: var(--focus-ring-width) solid var(--focus-ring-color);\n+\t\t\toutline-offset: var(--focus-ring-offset);\n+\t\t}\n+\t}\n+\n \t.header {\n \t\tposition: relative;\n \t\tz-index: 1;"
+    }
+  ]
+}

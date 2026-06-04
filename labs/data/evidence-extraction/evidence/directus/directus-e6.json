@@ -1,0 +1,69 @@
+{
+  "pr": {
+    "number": 26669,
+    "title": "Fix translation interface disable logic",
+    "body": "## Scope\n\nWhat's changed:\n\n- Fixes a regression from https://github.com/directus/directus/pull/26470 which was fully disabling the translation interface when delete permission was not allowed\n- Now the disable logic is seperated out so the entire interface is disabled for `!isSaveAllowed` and the delete button is disabled when `!deleteAllowed`\n\n## Potential Risks / Drawbacks\n\n- Probably very little as this partially backtracks to logic we had before\n\n## Tested Scenarios\n\n- The stated issue is no longer occuring\n\n## Review Notes / Questions\n\n- Is there something I'm not seeing?\n\n## Checklist\n\n- [x] Added or updated tests\n- [x] Documentation PR created [here](https://github.com/directus/docs) or not required\n- [x] OpenAPI package PR created [here](https://github.com/directus/openapi) or not required\n\n---\n\nFixes CMS-1818\n",
+    "state": "closed",
+    "merged": true,
+    "user": "AlexGaillard",
+    "created_at": "2026-02-16T20:48:17Z",
+    "updated_at": "2026-04-18T03:33:06Z",
+    "base": "main",
+    "head": "alexgaillard/cms-1818",
+    "merge_commit_sha": "65377415645afa9bcadaf0cea6517c28b1445951"
+  },
+  "issue_comments": [],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "robluton",
+      "state": "APPROVED",
+      "body": "LGTM! 🎸",
+      "submitted_at": "2026-02-16T21:32:25Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "ee3c8f10be65381500367996be96a4cc07d00c21",
+      "message": "Separate activator and remove button disable logic",
+      "author": "Alex Gaillard",
+      "date": "2026-02-16T20:40:41Z"
+    },
+    {
+      "sha": "d7b37b47e297980cb453e81cd3fe3b9e6223b865",
+      "message": "Add changeset",
+      "author": "Alex Gaillard",
+      "date": "2026-02-16T20:41:47Z"
+    },
+    {
+      "sha": "c6cbf570ff1a3627b93d11ebd6017c81fdb28eaa",
+      "message": "Revert \"Separate activator and remove button disable logic\"\n\nThis reverts commit ee3c8f10be65381500367996be96a4cc07d00c21.",
+      "author": "Alex Gaillard",
+      "date": "2026-02-16T21:17:48Z"
+    },
+    {
+      "sha": "c427c825db236cd76312f7eb752a543c6edabd25",
+      "message": "Only disable entire interface on disabled prop",
+      "author": "Alex Gaillard",
+      "date": "2026-02-16T21:21:54Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/common-jars-cover.md",
+      "status": "added",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -0,0 +1,5 @@\n+---\n+'@directus/app': patch\n+---\n+\n+Fixed translation interface being disabled when delete permission not allowed"
+    },
+    {
+      "filename": "app/src/interfaces/translations/translation-form.vue",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "patch": "@@ -143,7 +143,7 @@ function onToggleDelete(item: DisplayItem, itemInitial?: DisplayItem) {\n \t\t\t:items=\"languageOptions\"\n \t\t\t:danger=\"item?.$type === 'deleted'\"\n \t\t\t:secondary\n-\t\t\t:disabled=\"activatorDisabled\"\n+\t\t\t:disabled=\"disabled\"\n \t\t\t:non-editable\n \t\t>\n \t\t\t<template #prepend>"
+    }
+  ]
+}

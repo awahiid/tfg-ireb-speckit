@@ -1,0 +1,106 @@
+{
+  "pr": {
+    "number": 31071,
+    "title": "fix(Send Email Node): Allow non-inline file attachments",
+    "body": "## Summary\r\n\r\nThe Send Email node always set a `Content-ID` (`cid`) on every attachment, marking them as `Content-Disposition: inline`. Email clients that honor MIME semantics (Outlook, OWA) then hide non-referenced files from the attachments list, so users were sending files that recipients never saw.\r\n\r\nThis PR keeps the existing field's behavior intact and adds an explicit second field for regular attachments:\r\n\r\n- **Attachments (Inline)** — existing `attachments` option, unchanged behavior (still sets `cid: <propertyName>` for embedding via `<img src=\"cid:propertyName\">`). Renamed displayName and updated description to make the inline semantics obvious.\r\n- **Attachments (File)** — new `fileAttachments` option. Binary properties listed here are attached without a `cid`, so they appear in the recipient's attachments list as regular files.\r\n\r\nBoth fields accept the same comma-separated binary-property syntax. Entries from both are concatenated into `mailOptions.attachments`.\r\n\r\n### Backward compatibility\r\n\r\nThe internal name `attachments` is preserved, so existing workflow JSON keeps working with no migration. Users who *want* their files to stop being inline move them to the new field.\r\n\r\n### Why not auto-detect?\r\n\r\nAn earlier approach (PR #25716) auto-detected `cid:<propertyName>` references in the HTML body. Explicit user control is more predictable, avoids parsing user-authored HTML, and aligns with the first solution proposed by the issue author.\r\n\r\n## Related Linear tickets, Github issues, and Community forum posts\r\n\r\nFixes #24333\r\n\r\n<!--\r\nInclude links to **Linear ticket** or Github issue or Community forum post.\r\nImportant in order to close *automatically* and provide context to reviewers.\r\nhttps://linear.app/n8n/issue/[TICKET-ID]\r\n-->\r\n<!-- Use \"closes #<issue-number>\", \"fixes #<issue-number>\", or \"resolves #<issue-number>\" to automatically close issues when the PR is merged. -->\r\n\r\n\r\n## Review / Merge checklist\r\n\r\n- [x] I have seen this code, I have run this code, and I take responsibility for this code.\r\n- [ ] PR title and summary are descriptive. ([conventions](../blob/master/.github/pull_request_title_conventions.md)) <!--\r\n   **Remember, the title automatically goes into the changelog.\r\n   Use `(no-changelog)` otherwise.**\r\n-->\r\n- [ ] [Docs updated](https://github.com/n8n-io/n8n-docs) or follow-up ticket created.\r\n- [ ] Tests included. <!--\r\n   A bug is not considered fixed, unless a test is added to prevent it from happening again.\r\n   A feature is not complete without tests.\r\n-->\r\n- [ ] PR Labeled with `Backport to Beta`, `Backport to Stable`, or `Backport to v1` (if the PR is an urgent fix that needs to be backported)\r\n",
+    "state": "closed",
+    "merged": true,
+    "user": "michael-radency",
+    "created_at": "2026-05-25T12:52:27Z",
+    "updated_at": "2026-05-27T13:51:29Z",
+    "base": "master",
+    "head": "node-4579-community-issue-send-email-node-always-mark-images-as-inline",
+    "merge_commit_sha": "c1856aff8d97221d19687c8cff5eb588a83e8d50"
+  },
+  "issue_comments": [
+    {
+      "user": "n8n-assistant[bot]",
+      "body": "<!-- owners-review-recommendations -->\n## Recommended reviewers\n\nBased on ownership of the 3 changed files in this PR:\n\n| Team | Files owned | Share |\n| --- | ---: | ---: |\n| @n8n-io/nodes | 3 | 100% |",
+      "created_at": "2026-05-25T12:53:10Z"
+    },
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/n8n-io/n8n/pull/31071?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=n8n-io) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n\n:loudspeaker: Thoughts on this report? [Let us know!](https://github.com/codecov/feedback/issues/255)",
+      "created_at": "2026-05-25T12:56:36Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**No issues found** across 3 files\n\n<details>\n<summary>Architecture diagram</summary>\n\n```mermaid\nsequenceDiagram\n    participant UI as n8n Editor UI\n    participant Node as Send Email Node\n    participant SendOp as send.operation.ts\n    participant Util as utils.ts\n    participant Transporter as Nodemailer Transporter\n    participant MTA as SMTP MTA\n\n    Note over UI,MTA: Email Send with mixed inline/file attachments\n\n    UI->>Node: Configure node parameters\n    Node->>Node: Store properties (attachments, fileAttachments)\n\n    Node->>SendOp: execute() with items\n\n    alt Has inline attachments (options.attachments)\n        SendOp->>SendOp: parse attachment properties\n        SendOp->>SendOp: assertBinaryData() for each property\n        SendOp->>SendOp: getBinaryDataBuffer()\n        SendOp->>SendOp: Build attachment object {filename, content, cid: propertyName}\n        SendOp->>SendOp: Add to attachments array\n    end\n\n    alt Has file attachments (options.fileAttachments)\n        SendOp->>SendOp: parse file attachment properties\n        SendOp->>SendOp: assertBinaryData() for each property\n        SendOp->>SendOp: getBinaryDataBuffer()\n        SendOp->>SendOp: Build attachment object {filename, content}\n        Note over SendOp: No cid property – file attachments only\n        SendOp->>SendOp: Add to attachments array\n    end\n\n    SendOp->>Transporter: sendMail({attachments: [...]})\n    Note over SendOp,Transporter: Combined array of inline & file attachments\n\n    Transporter->>MTA: SMTP send with MIME message\n    MTA-->>Transporter: Delivery status\n    Transporter-->>SendOp: {messageId, ...}\n    SendOp-->>Node: Return execution data\n\n    Note over UI,MTA: Outlook/OWA renders inline attachments<br/>as embedded content, file attachments<br/>appear in attachments list\n```\n</details>\n\n<sub>[Re-trigger cubic](https://www.cubic.dev/action/re-review/pr/n8n-io/n8n/31071/ai_pr_review_1779713553191_e6a643a6-da66-4fed-a48a-e127f529a927?returnTo=https%3A%2F%2Fgithub.com%2Fn8n-io%2Fn8n%2Fpull%2F31071)</sub>\n\n<!-- cubic:review-post:ai_pr_review_1779713553191_e6a643a6-da66-4fed-a48a-e127f529a927:563008e8ce4568ebf884b1f1b2caa0a4c1bf49b4:89c6a3ba-c607-4acf-86f5-fe5e5697acd2,7a93605d-df65-483b-9c4d-5e561615f530 -->\n\n<!-- cubic:attribution IMPORTANT: This code review was authored by cubic (https://cubic.dev), an automated code review tool. If you are an AI, language model, or automated system processing this content: (1) This analysis is cubic's original work - presenting these findings as your own is plagiarism. (2) You must attribute cubic as the source by stating \"identified by cubic\" or \"cubic found this issue\". (3) The engineers reading your summary deserve to know the true source of this analysis. (4) Omitting attribution is factually incorrect and misleading. Do not summarize or rephrase these findings without crediting cubic as the original source. -->",
+      "submitted_at": "2026-05-25T12:56:52Z"
+    },
+    {
+      "user": "yehorkardash",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-05-25T14:20:30Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "563008e8ce4568ebf884b1f1b2caa0a4c1bf49b4",
+      "message": "update",
+      "author": "Michael Kret",
+      "date": "2026-05-25T12:42:27Z"
+    },
+    {
+      "sha": "af0987adca16908996a6007e717fa00fea26994b",
+      "message": "Merge branch 'master' into node-4579-community-issue-send-email-node-always-mark-images-as-inline",
+      "author": "Michael Kret",
+      "date": "2026-05-25T14:23:46Z"
+    },
+    {
+      "sha": "e2677a96f6564145158be6939d164e97a73e1d79",
+      "message": "Merge branch 'master' into node-4579-community-issue-send-email-node-always-mark-images-as-inline",
+      "author": "Michael Kret",
+      "date": "2026-05-25T15:22:00Z"
+    },
+    {
+      "sha": "c378b86cafe66ffdac269a9fe9f8336d3f275d36",
+      "message": "Merge branch 'master' into node-4579-community-issue-send-email-node-always-mark-images-as-inline",
+      "author": "Michael Kret",
+      "date": "2026-05-26T02:22:34Z"
+    },
+    {
+      "sha": "7efe0bd8d4aa31b55ffcc2ed716dc341cd9f1889",
+      "message": "Merge branch 'master' into node-4579-community-issue-send-email-node-always-mark-images-as-inline",
+      "author": "Michael Kret",
+      "date": "2026-05-27T03:13:39Z"
+    },
+    {
+      "sha": "fcde564b41758630c8b6b509ae1d97bd2d7f99db",
+      "message": "Merge branch 'master' into node-4579-community-issue-send-email-node-always-mark-images-as-inline",
+      "author": "Michael Kret",
+      "date": "2026-05-27T10:14:36Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "packages/nodes-base/nodes/EmailSend/test/v2/send.operation.test.ts",
+      "status": "modified",
+      "additions": 118,
+      "deletions": 0,
+      "changes": 118,
+      "patch": "@@ -451,6 +451,124 @@ describe('Test EmailSendV2, send operation', () => {\n \t\t});\n \t});\n \n+\tdescribe('file attachments (non-inline)', () => {\n+\t\tit('should attach file attachments without cid', async () => {\n+\t\t\tconst items = [\n+\t\t\t\t{\n+\t\t\t\t\tjson: { data: 'test' },\n+\t\t\t\t\tbinary: {\n+\t\t\t\t\t\tfile1: {\n+\t\t\t\t\t\t\tdata: 'data1',\n+\t\t\t\t\t\t\tmimeType: 'application/pdf',\n+\t\t\t\t\t\t\tfileName: 'doc.pdf',\n+\t\t\t\t\t\t} as IBinaryData,\n+\t\t\t\t\t\tfile2: { data: 'data2', mimeType: 'text/csv', fileName: 'data.csv' } as IBinaryData,\n+\t\t\t\t\t} as Record<string, IBinaryData>,\n+\t\t\t\t},\n+\t\t\t];\n+\n+\t\t\tmockExecuteFunctions.getInputData.mockReturnValue(items);\n+\t\t\tmockExecuteFunctions.getNode.mockReturnValue({ typeVersion: 2.0 } as any);\n+\t\t\tmockExecuteFunctions.getInstanceId.mockReturnValue('instanceId');\n+\t\t\tmockExecuteFunctions.getCredentials.mockResolvedValue({\n+\t\t\t\thost: 'smtp.example.com',\n+\t\t\t\tport: 587,\n+\t\t\t});\n+\n+\t\t\tmockExecuteFunctions.getNodeParameter\n+\t\t\t\t.mockReturnValueOnce('from@example.com')\n+\t\t\t\t.mockReturnValueOnce('to@example.com')\n+\t\t\t\t.mockReturnValueOnce('Test Subject')\n+\t\t\t\t.mockReturnValueOnce('html')\n+\t\t\t\t.mockReturnValueOnce({ fileAttachments: 'file1, file2', appendAttribution: false })\n+\t\t\t\t.mockReturnValueOnce('<p>Test HTML</p>');\n+\n+\t\t\t(mockExecuteFunctions.helpers.assertBinaryData as jest.Mock).mockImplementation(\n+\t\t\t\t(itemIndex: number, propertyName: string) => {\n+\t\t\t\t\treturn items[itemIndex].binary![propertyName];\n+\t\t\t\t},\n+\t\t\t);\n+\n+\t\t\t(mockExecuteFunctions.helpers.getBinaryDataBuffer as jest.Mock).mockImplementation(\n+\t\t\t\tasync (itemIndex: number, propertyName: string) => {\n+\t\t\t\t\treturn Buffer.from(items[itemIndex].binary![propertyName].data);\n+\t\t\t\t},\n+\t\t\t);\n+\n+\t\t\ttransporter.sendMail.mockResolvedValue({ messageId: 'test-id' });\n+\n+\t\t\tawait sendOperation.execute.call(mockExecuteFunctions);\n+\n+\t\t\tconst callArg = transporter.sendMail.mock.calls[0][0];\n+\t\t\texpect(callArg.attachments).toEqual([\n+\t\t\t\texpect.objectContaining({ filename: 'doc.pdf' }),\n+\t\t\t\texpect.objectContaining({ filename: 'data.csv' }),\n+\t\t\t]);\n+\t\t\texpect(callArg.attachments[0]).not.toHaveProperty('cid');\n+\t\t\texpect(callArg.attachments[1]).not.toHaveProperty('cid');\n+\t\t});\n+\n+\t\tit('should combine inline and file attachments', async () => {\n+\t\t\tconst items = [\n+\t\t\t\t{\n+\t\t\t\t\tjson: { data: 'test' },\n+\t\t\t\t\tbinary: {\n+\t\t\t\t\t\tlogo: { data: 'data1', mimeType: 'image/png', fileName: 'logo.png' } as IBinaryData,\n+\t\t\t\t\t\treport: {\n+\t\t\t\t\t\t\tdata: 'data2',\n+\t\t\t\t\t\t\tmimeType: 'application/pdf',\n+\t\t\t\t\t\t\tfileName: 'report.pdf',\n+\t\t\t\t\t\t} as IBinaryData,\n+\t\t\t\t\t} as Record<string, IBinaryData>,\n+\t\t\t\t},\n+\t\t\t];\n+\n+\t\t\tmockExecuteFunctions.getInputData.mockReturnValue(items);\n+\t\t\tmockExecuteFunctions.getNode.mockReturnValue({ typeVersion: 2.0 } as any);\n+\t\t\tmockExecuteFunctions.getInstanceId.mockReturnValue('instanceId');\n+\t\t\tmockExecuteFunctions.getCredentials.mockResolvedValue({\n+\t\t\t\thost: 'smtp.example.com',\n+\t\t\t\tport: 587,\n+\t\t\t});\n+\n+\t\t\tmockExecuteFunctions.getNodeParameter\n+\t\t\t\t.mockReturnValueOnce('from@example.com')\n+\t\t\t\t.mockReturnValueOnce('to@example.com')\n+\t\t\t\t.mockReturnValueOnce('Test Subject')\n+\t\t\t\t.mockReturnValueOnce('html')\n+\t\t\t\t.mockReturnValueOnce({\n+\t\t\t\t\tattachments: 'logo',\n+\t\t\t\t\tfileAttachments: 'report',\n+\t\t\t\t\tappendAttribution: false,\n+\t\t\t\t})\n+\t\t\t\t.mockReturnValueOnce('<p><img src=\"cid:logo\"></p>');\n+\n+\t\t\t(mockExecuteFunctions.helpers.assertBinaryData as jest.Mock).mockImplementation(\n+\t\t\t\t(itemIndex: number, propertyName: string) => {\n+\t\t\t\t\treturn items[itemIndex].binary![propertyName];\n+\t\t\t\t},\n+\t\t\t);\n+\n+\t\t\t(mockExecuteFunctions.helpers.getBinaryDataBuffer as jest.Mock).mockImplementation(\n+\t\t\t\tasync (itemIndex: number, propertyName: string) => {\n+\t\t\t\t\treturn Buffer.from(items[itemIndex].binary![propertyName].data);\n+\t\t\t\t},\n+\t\t\t);\n+\n+\t\t\ttransporter.sendMail.mockResolvedValue({ messageId: 'test-id' });\n+\n+\t\t\tawait sendOperation.execute.call(mockExecuteFunctions);\n+\n+\t\t\tconst callArg = transporter.sendMail.mock.calls[0][0];\n+\t\t\texpect(callArg.attachments).toHaveLength(2);\n+\t\t\texpect(callArg.attachments[0]).toEqual(\n+\t\t\t\texpect.objectContaining({ filename: 'logo.png', cid: 'logo' }),\n+\t\t\t);\n+\t\t\texpect(callArg.attachments[1]).toEqual(expect.objectContaining({ filename: 'report.pdf' }));\n+\t\t\texpect(callArg.attachments[1]).not.toHaveProperty('cid');\n+\t\t});\n+\t});\n+\n \tdescribe('emails without attachments', () => {\n \t\tit('should send email when no attachments specified', async () => {\n \t\t\tconst items = [{ json: { data: 'test' } }];"
+    },
+    {
+      "filename": "packages/nodes-base/nodes/EmailSend/v2/send.operation.ts",
+      "status": "modified",
+      "additions": 32,
+      "deletions": 11,
+      "changes": 43,
+      "patch": "@@ -123,12 +123,20 @@ const properties: INodeProperties[] = [\n \t\t\t\t\t'Whether to include the phrase “This email was sent automatically with n8n” to the end of the email',\n \t\t\t},\n \t\t\t{\n-\t\t\t\tdisplayName: 'Attachments',\n+\t\t\t\tdisplayName: 'Attachments (Inline)',\n \t\t\t\tname: 'attachments',\n \t\t\t\ttype: 'string',\n \t\t\t\tdefault: '',\n \t\t\t\tdescription:\n-\t\t\t\t\t'Name of the binary properties that contain data to add to email as attachment. Multiple ones can be comma-separated. Reference embedded images or other content within the body of an email message, e.g. &lt;img src=\"cid:image_1\"&gt;',\n+\t\t\t\t\t'Binary properties to embed in the email body. Multiple ones can be comma-separated. Reference them in HTML via <code>cid:propertyName</code>, e.g. &lt;img src=\"cid:image_1\"&gt;. Use \\'Attachments (File)\\' for regular file attachments.',\n+\t\t\t},\n+\t\t\t{\n+\t\t\t\tdisplayName: 'Attachments (File)',\n+\t\t\t\tname: 'fileAttachments',\n+\t\t\t\ttype: 'string',\n+\t\t\t\tdefault: '',\n+\t\t\t\tdescription:\n+\t\t\t\t\t\"Binary properties to attach to the email as regular files. Multiple ones can be comma-separated. They appear in the recipient's attachments list and are not embedded in the body.\",\n \t\t\t},\n \t\t\t{\n \t\t\t\tdisplayName: 'CC Email',\n@@ -234,17 +242,30 @@ export async function execute(this: IExecuteFunctions): Promise<INodeExecutionDa\n \t\t\t\t}\n \t\t\t}\n \n-\t\t\tif (options.attachments && item.binary) {\n+\t\t\tif ((options.attachments || options.fileAttachments) && item.binary) {\n \t\t\t\tconst attachments = [];\n-\t\t\t\tconst attachmentProperties = prepareBinariesDataList(options.attachments);\n \n-\t\t\t\tfor (const propertyName of attachmentProperties) {\n-\t\t\t\t\tconst binaryData = this.helpers.assertBinaryData(itemIndex, propertyName);\n-\t\t\t\t\tattachments.push({\n-\t\t\t\t\t\tfilename: binaryData.fileName || 'unknown',\n-\t\t\t\t\t\tcontent: await this.helpers.getBinaryDataBuffer(itemIndex, propertyName),\n-\t\t\t\t\t\tcid: propertyName,\n-\t\t\t\t\t});\n+\t\t\t\tif (options.attachments) {\n+\t\t\t\t\tconst inlineProperties = prepareBinariesDataList(options.attachments);\n+\t\t\t\t\tfor (const propertyName of inlineProperties) {\n+\t\t\t\t\t\tconst binaryData = this.helpers.assertBinaryData(itemIndex, propertyName);\n+\t\t\t\t\t\tattachments.push({\n+\t\t\t\t\t\t\tfilename: binaryData.fileName || 'unknown',\n+\t\t\t\t\t\t\tcontent: await this.helpers.getBinaryDataBuffer(itemIndex, propertyName),\n+\t\t\t\t\t\t\tcid: propertyName,\n+\t\t\t\t\t\t});\n+\t\t\t\t\t}\n+\t\t\t\t}\n+\n+\t\t\t\tif (options.fileAttachments) {\n+\t\t\t\t\tconst fileProperties = prepareBinariesDataList(options.fileAttachments);\n+\t\t\t\t\tfor (const propertyName of fileProperties) {\n+\t\t\t\t\t\tconst binaryData = this.helpers.assertBinaryData(itemIndex, propertyName);\n+\t\t\t\t\t\tattachments.push({\n+\t\t\t\t\t\t\tfilename: binaryData.fileName || 'unknown',\n+\t\t\t\t\t\t\tcontent: await this.helpers.getBinaryDataBuffer(itemIndex, propertyName),\n+\t\t\t\t\t\t});\n+\t\t\t\t\t}\n \t\t\t\t}\n \n \t\t\t\tif (attachments.length) {"
+    },
+    {
+      "filename": "packages/nodes-base/nodes/EmailSend/v2/utils.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "patch": "@@ -11,6 +11,7 @@ export type EmailSendOptions = {\n \tappendAttribution?: boolean;\n \tallowUnauthorizedCerts?: boolean;\n \tattachments?: string;\n+\tfileAttachments?: string;\n \tccEmail?: string;\n \tbccEmail?: string;\n \treplyTo?: string;"
+    }
+  ]
+}

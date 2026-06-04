@@ -1,0 +1,153 @@
+{
+  "pr": {
+    "number": 15386,
+    "title": "feat(medusa): enable index when querying products via promotion attribute values and enable sku search in products entrypoint",
+    "body": "## Summary\r\n\r\n**What** — What changes are introduced in this PR?\r\n\r\nEnable the use of the Index module in the promotions rule value options endpoint for `product` attribute. Also, enable product entrypoint when using Index module to search by variant SKU, by including a `variants` filter noop, that triggers the Index build query logic to consider the variant vector column when performing the search.\r\n\r\nFor the SKU search, this is a quick `hack` but we should probably decide on what search behavior we want in Index and make it cohesive with what we do with query.graph, since right now, both are disconnected and define the searchable fields differently as well as the keyword matching when performing search.\r\n\r\n**Why** — Why are these changes relevant or necessary?  \r\n\r\nSearching for products in the promotions rule value form takes a long time in large catalogs, even when the Index module is enabled. Performing search queries passing a variant SKU has no effect when using the Index module, when the opposite is true when not using it.\r\n\r\n**How** — How have these changes been implemented?\r\n\r\n*Please provide answer here*\r\n\r\n**Testing** — How have these changes been tested, or how can the reviewer test the feature?\r\n\r\n*Please provide answer here*\r\n\r\n---\r\n\r\n## Examples\r\n\r\nProvide examples or code snippets that demonstrate how this feature works, or how it can be used in practice.  \r\nThis helps with documentation and ensures maintainers can quickly understand and verify the change.\r\n\r\n```ts\r\n// Example usage\r\n```\r\n\r\n---\r\n\r\n## Checklist\r\n\r\nPlease ensure the following before requesting a review:\r\n\r\n- [ ] I have added a **changeset** for this PR\r\n    - Every non-breaking change should be marked as a **patch**\r\n    - To add a changeset, run `yarn changeset` and follow the prompts\r\n- [ ] The changes are covered by relevant **tests**\r\n- [ ] I have verified the code works as intended locally\r\n- [ ] I have linked the related issue(s) if applicable\r\n\r\n---\r\n\r\n## Additional Context\r\n\r\nAdd any additional context, related issues, or references that might help the reviewer understand this PR.\r\n",
+    "state": "closed",
+    "merged": true,
+    "user": "NicolasGorga",
+    "created_at": "2026-05-12T21:38:35Z",
+    "updated_at": "2026-05-13T12:03:02Z",
+    "base": "develop",
+    "head": "feat/promotion-rule-value-options-index",
+    "merge_commit_sha": "5e8fc904fe00d8c89b6615cfbbdbde66531d2337"
+  },
+  "issue_comments": [
+    {
+      "user": "changeset-bot[bot]",
+      "body": "###  🦋  Changeset detected\n\nLatest commit: 67d67cc0e54c0addd43bb97f65d30c798706b162\n\n**The changes in this PR will be included in the next version bump.**\n\n<details><summary>This PR includes changesets to release 78 packages</summary>\n\n  | Name                               | Type  |\n| ---------------------------------- | ----- |\n| @medusajs/medusa                   | Patch |\n| @medusajs/test-utils               | Patch |\n| @medusajs/medusa-oas-cli           | Patch |\n| integration-tests-http             | Patch |\n| @medusajs/analytics                | Patch |\n| @medusajs/api-key                  | Patch |\n| @medusajs/auth                     | Patch |\n| @medusajs/caching                  | Patch |\n| @medusajs/cart                     | Patch |\n| @medusajs/currency                 | Patch |\n| @medusajs/customer                 | Patch |\n| @medusajs/file                     | Patch |\n| @medusajs/fulfillment              | Patch |\n| @medusajs/index                    | Patch |\n| @medusajs/inventory                | Patch |\n| @medusajs/link-modules             | Patch |\n| @medusajs/locking                  | Patch |\n| @medusajs/notification             | Patch |\n| @medusajs/order                    | Patch |\n| @medusajs/payment                  | Patch |\n| @medusajs/pricing                  | Patch |\n| @medusajs/product                  | Patch |\n| @medusajs/promotion                | Patch |\n| @medusajs/rbac                     | Patch |\n| @medusajs/region                   | Patch |\n| @medusajs/sales-channel            | Patch |\n| @medusajs/settings                 | Patch |\n| @medusajs/stock-location           | Patch |\n| @medusajs/store                    | Patch |\n| @medusajs/tax                      | Patch |\n| @medusajs/translation              | Patch |\n| @medusajs/user                     | Patch |\n| @medusajs/workflow-engine-inmemory | Patch |\n| @medusajs/workflow-engine-redis    | Patch |\n| @medusajs/draft-order              | Patch |\n| @medusajs/loyalty-plugin           | Patch |\n| @medusajs/oas-github-ci            | Patch |\n| @medusajs/cache-inmemory           | Patch |\n| @medusajs/cache-redis              | Patch |\n| @medusajs/event-bus-local          | Patch |\n| @medusajs/event-bus-redis          | Patch |\n| @medusajs/analytics-local          | Patch |\n| @medusajs/analytics-posthog        | Patch |\n| @medusajs/auth-emailpass           | Patch |\n| @medusajs/auth-github              | Patch |\n| @medusajs/auth-google              | Patch |\n| @medusajs/caching-redis            | Patch |\n| @medusajs/file-local               | Patch |\n| @medusajs/file-s3                  | Patch |\n| @medusajs/fulfillment-manual       | Patch |\n| @medusajs/locking-postgres         | Patch |\n| @medusajs/locking-redis            | Patch |\n| @medusajs/notification-local       | Patch |\n| @medusajs/notification-sendgrid    | Patch |\n| @medusajs/payment-stripe           | Patch |\n| @medusajs/core-flows               | Patch |\n| @medusajs/framework                | Patch |\n| @medusajs/js-sdk                   | Patch |\n| @medusajs/modules-sdk              | Patch |\n| @medusajs/orchestration            | Patch |\n| @medusajs/types                    | Patch |\n| @medusajs/utils                    | Patch |\n| @medusajs/workflows-sdk            | Patch |\n| @medusajs/http-types-generator     | Patch |\n| @medusajs/cli                      | Patch |\n| @medusajs/deps                     | Patch |\n| @medusajs/telemetry                | Patch |\n| @medusajs/admin-bundler            | Patch |\n| @medusajs/admin-sdk                | Patch |\n| @medusajs/admin-shared             | Patch |\n| @medusajs/admin-vite-plugin        | Patch |\n| @medusajs/dashboard                | Patch |\n| @medusajs/icons                    | Patch |\n| @medusajs/toolbox                  | Patch |\n| @medusajs/ui-preset                | Patch |\n| create-medusa-app                  | Patch |\n| medusa-dev-cli                     | Patch |\n| @medusajs/ui                       | Patch |\n\n</details>\n\nNot sure what this means? [Click here  to learn what changesets are](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md).\n\n[Click here if you're a maintainer who wants to add another changeset to this PR](https://github.com/medusajs/medusa/new/feat/promotion-rule-value-options-index?filename=.changeset/flat-plums-cheat.md&value=---%0A%22%40medusajs%2Fmedusa%22%3A%20patch%0A---%0A%0Afeat(medusa)%3A%20enable%20index%20when%20querying%20products%20via%20promotion%20attribute%20values%20and%20enable%20sku%20search%20in%20products%20entrypoint%0A)\n\n",
+      "created_at": "2026-05-12T21:38:39Z"
+    },
+    {
+      "user": "vercel[bot]",
+      "body": "[vc]: #Rg4VkyajVn7L2XnzC6Uca+qVx/QxJRuOuSlQp0rMODY=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJtZWR1c2EtZG9jcyIsInByb2plY3RJZCI6InByal80T3BaZk1LUTdTaU8yaGFSQU9zd2xXUmtGUFdCIiwicm9vdERpcmVjdG9yeSI6Ind3dy9hcHBzL2RvY3MiLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoiIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9tZWR1c2Fqcy9tZWR1c2EtZG9jcy8xM3M0TVAzMnNab2dIQktMVmRiVnpSZWJVRXRLIiwibmV4dENvbW1pdFN0YXR1cyI6IklHTk9SRUQiLCJwcmV2aWV3VXJsIjoibWVkdXNhLWRvY3MtZ2l0LWZlYXQtcHJvbW90aW9uLXJ1bGUtdmFsdWUtb3B0aW8tYzVkMTExLW1lZHVzYWpzLnZlcmNlbC5hcHAifSx7Im5hbWUiOiJhcGktcmVmZXJlbmNlIiwicHJvamVjdElkIjoicHJqX3RCNFJkUTcyRnk4NVh4RXJzTFRvMnMybTJ3OEciLCJ2MCI6ZmFsc2UsInJvb3REaXJlY3RvcnkiOiJ3d3cvYXBwcy9hcGktcmVmZXJlbmNlIiwibGl2ZUZlZWRiYWNrIjp7InJlc29sdmVkIjowLCJ1bnJlc29sdmVkIjowLCJ0b3RhbCI6MCwibGluayI6IiJ9LCJpbnNwZWN0b3JVcmwiOiJodHRwczovL3ZlcmNlbC5jb20vbWVkdXNhanMvYXBpLXJlZmVyZW5jZS9GN3VzaGJuWUc5QXpCN3dXZU54NUNTTGF1dXVyIiwibmV4dENvbW1pdFN0YXR1cyI6IklHTk9SRUQifSx7Im5hbWUiOiJkb2NzLXVpIiwicHJvamVjdElkIjoicHJqX052NmdlN25Ha2lKUTZSaDZQcFgxU2VmN2JGcGEiLCJyb290RGlyZWN0b3J5Ijoid3d3L2FwcHMvdWkiLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoiIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9tZWR1c2Fqcy9kb2NzLXVpL0dhRHlyVkRKenhpZHVWYWFHZW10SmNZYjNyeFciLCJuZXh0Q29tbWl0U3RhdHVzIjoiSUdOT1JFRCIsInByZXZpZXdVcmwiOiJkb2NzLXVpLWdpdC1mZWF0LXByb21vdGlvbi1ydWxlLXZhbHVlLW9wdGlvbnMtaW5kZXgtbWVkdXNhanMudmVyY2VsLmFwcCJ9LHsibmFtZSI6InJlc291cmNlcy1kb2NzIiwicHJvamVjdElkIjoicHJqX3h5aW5KVld2aVVrUzVzeVVQaVBSVHhSQ2xGNXEiLCJyb290RGlyZWN0b3J5Ijoid3d3L2FwcHMvcmVzb3VyY2VzIiwibGl2ZUZlZWRiYWNrIjp7InJlc29sdmVkIjowLCJ1bnJlc29sdmVkIjowLCJ0b3RhbCI6MCwibGluayI6IiJ9LCJpbnNwZWN0b3JVcmwiOiJodHRwczovL3ZlcmNlbC5jb20vbWVkdXNhanMvcmVzb3VyY2VzLWRvY3MvNlFnZkQ4YXBtd3QySEpUaWtYM2R1UnRwMnhhSCIsIm5leHRDb21taXRTdGF0dXMiOiJJR05PUkVEIiwicHJldmlld1VybCI6InJlc291cmNlcy1kb2NzLWdpdC1mZWF0LXByb21vdGlvbi1ydWxlLXZhbHVlLW9wLTA1ODQ0YS1tZWR1c2Fqcy52ZXJjZWwuYXBwIn0seyJuYW1lIjoiYXBpLXJlZmVyZW5jZS12MiIsInByb2plY3RJZCI6InByal9yMWxmZlJrMzhqZVdoUE12N3lEN3VrcjA2TnBBIiwicm9vdERpcmVjdG9yeSI6Ind3dy9hcHBzL2FwaS1yZWZlcmVuY2UiLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoiIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9tZWR1c2Fqcy9hcGktcmVmZXJlbmNlLXYyL0NnVDNVZXNnRDVLdDFoSk5ENXJWU1pZdFpvd3EiLCJuZXh0Q29tbWl0U3RhdHVzIjoiSUdOT1JFRCIsInByZXZpZXdVcmwiOiJhcGktcmVmZXJlbmNlLXYyLWdpdC1mZWF0LXByb21vdGlvbi1ydWxlLXZhbHVlLTZlM2M0Ni1tZWR1c2Fqcy52ZXJjZWwuYXBwIn0seyJuYW1lIjoiZG9jcy12MiIsInByb2plY3RJZCI6InByal9XZ1VrV3pIYVp0MXdvcTFaU3BMMm5WZE5DN2w4Iiwicm9vdERpcmVjdG9yeSI6Ind3dy9hcHBzL2Jvb2siLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoiIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9tZWR1c2Fqcy9kb2NzLXYyL0V3UzFxMXVQWkhaNmV6YmVQbVVnN2hySlpyNzUiLCJuZXh0Q29tbWl0U3RhdHVzIjoiSUdOT1JFRCIsInByZXZpZXdVcmwiOiJkb2NzLXYyLWdpdC1mZWF0LXByb21vdGlvbi1ydWxlLXZhbHVlLW9wdGlvbnMtaW5kZXgtbWVkdXNhanMudmVyY2VsLmFwcCJ9LHsibmFtZSI6InVzZXItZ3VpZGUiLCJwcm9qZWN0SWQiOiJwcmpfRDRvQ1VJSjVQSDV1M3ZsZklEMTNqTFBmRENNViIsInJvb3REaXJlY3RvcnkiOiJ3d3cvYXBwcy91c2VyLWd1aWRlIiwibGl2ZUZlZWRiYWNrIjp7InJlc29sdmVkIjowLCJ1bnJlc29sdmVkIjowLCJ0b3RhbCI6MCwibGluayI6IiJ9LCJpbnNwZWN0b3JVcmwiOiJodHRwczovL3ZlcmNlbC5jb20vbWVkdXNhanMvdXNlci1ndWlkZS9CRnBnM2dqZnVwRDhiWVlSbjZoTkRWVjNyU2JkIiwibmV4dENvbW1pdFN0YXR1cyI6IklHTk9SRUQiLCJwcmV2aWV3VXJsIjoidXNlci1ndWlkZS1naXQtZmVhdC1wcm9tb3Rpb24tcnVsZS12YWx1ZS1vcHRpb25zLWluZGV4LW1lZHVzYWpzLnZlcmNlbC5hcHAifSx7Im5hbWUiOiJjbG91ZC1kb2NzIiwicHJvamVjdElkIjoicHJqX2FDZVd6TFVNN25lOWtKVmN3QzlqcDY3dU13RHciLCJyb290RGlyZWN0b3J5Ijoid3d3L2FwcHMvY2xvdWQiLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoiIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9tZWR1c2Fqcy9jbG91ZC1kb2NzL0ZmSkZmYU12bmhwcjJKRkUxc3VMenNlcWFic0QiLCJuZXh0Q29tbWl0U3RhdHVzIjoiSUdOT1JFRCIsInByZXZpZXdVcmwiOiJjbG91ZC1kb2NzLWdpdC1mZWF0LXByb21vdGlvbi1ydWxlLXZhbHVlLW9wdGlvbnMtaW5kZXgtbWVkdXNhanMudmVyY2VsLmFwcCJ9LHsibmFtZSI6ImJsb29tLWRvY3MiLCJwcm9qZWN0SWQiOiJwcmpfRU1TbmpoclNZeGRzZ3pqQnRZVEJPTjV6SjdTMiIsInJvb3REaXJlY3RvcnkiOiJ3d3cvYXBwcy9ibG9vbSIsImxpdmVGZWVkYmFjayI6eyJyZXNvbHZlZCI6MCwidW5yZXNvbHZlZCI6MCwidG90YWwiOjAsImxpbmsiOiIifSwiaW5zcGVjdG9yVXJsIjoiaHR0cHM6Ly92ZXJjZWwuY29tL21lZHVzYWpzL2Jsb29tLWRvY3MvQXFnTDhZTXoxYXBMaWd2OG1LWW5kb01jWks2NSIsIm5leHRDb21taXRTdGF0dXMiOiJJR05PUkVEIiwicHJldmlld1VybCI6ImJsb29tLWRvY3MtZ2l0LWZlYXQtcHJvbW90aW9uLXJ1bGUtdmFsdWUtb3B0aW9ucy1pbmRleC1tZWR1c2Fqcy52ZXJjZWwuYXBwIn1dLCJyZXF1ZXN0UmV2aWV3VXJsIjoiaHR0cHM6Ly92ZXJjZWwuY29tL3ZlcmNlbC1hZ2VudC9yZXF1ZXN0LXJldmlldz9vd25lcj1tZWR1c2FqcyZyZXBvPW1lZHVzYSZwcj0xNTM4NiJ9\nThe latest updates on your projects. Learn more about [Vercel for GitHub](https://vercel.link/github-learn-more).\n\n\n<details><summary>9 Skipped Deployments</summary>\n\n| Project | Deployment | Actions | Updated (UTC) |\n| :--- | :----- | :------ | :------ |\n| [api-reference](https://vercel.com/medusajs/api-reference) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/api-reference/F7ushbnYG9AzB7wWeNx5CSLauuur) |  | May 13, 2026 11:41am |\n| [api-reference-v2](https://vercel.com/medusajs/api-reference-v2) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/api-reference-v2/CgT3UesgD5Kt1hJND5rVSZYtZowq) | [Preview](https://api-reference-v2-git-feat-promotion-rule-value-6e3c46-medusajs.vercel.app) | May 13, 2026 11:41am |\n| [bloom-docs](https://vercel.com/medusajs/bloom-docs) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/bloom-docs/AqgL8YMz1apLigv8mKYndoMcZK65) | [Preview](https://bloom-docs-git-feat-promotion-rule-value-options-index-medusajs.vercel.app) | May 13, 2026 11:41am |\n| [cloud-docs](https://vercel.com/medusajs/cloud-docs) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/cloud-docs/FfJFfaMvnhpr2JFE1suLzseqabsD) | [Preview](https://cloud-docs-git-feat-promotion-rule-value-options-index-medusajs.vercel.app) | May 13, 2026 11:41am |\n| [docs-ui](https://vercel.com/medusajs/docs-ui) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/docs-ui/GaDyrVDJzxiduVaaGemtJcYb3rxW) | [Preview](https://docs-ui-git-feat-promotion-rule-value-options-index-medusajs.vercel.app) | May 13, 2026 11:41am |\n| [docs-v2](https://vercel.com/medusajs/docs-v2) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/docs-v2/EwS1q1uPZHZ6ezbePmUg7hrJZr75) | [Preview](https://docs-v2-git-feat-promotion-rule-value-options-index-medusajs.vercel.app) | May 13, 2026 11:41am |\n| [medusa-docs](https://vercel.com/medusajs/medusa-docs) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/medusa-docs/13s4MP32sZogHBKLVdbVzRebUEtK) | [Preview](https://medusa-docs-git-feat-promotion-rule-value-optio-c5d111-medusajs.vercel.app) | May 13, 2026 11:41am |\n| [resources-docs](https://vercel.com/medusajs/resources-docs) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/resources-docs/6QgfD8apmwt2HJTikX3duRtp2xaH) | [Preview](https://resources-docs-git-feat-promotion-rule-value-op-05844a-medusajs.vercel.app) | May 13, 2026 11:41am |\n| [user-guide](https://vercel.com/medusajs/user-guide) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/medusajs/user-guide/BFpg3gjfupD8bYYRn6hNDVV3rSbd) | [Preview](https://user-guide-git-feat-promotion-rule-value-options-index-medusajs.vercel.app) | May 13, 2026 11:41am |\n</details>\n\n<a href=\"https://vercel.com/vercel-agent/request-review?owner=medusajs&repo=medusa&pr=15386\" rel=\"noreferrer\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://agents-vade-review.vercel.sh/request-review-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://agents-vade-review.vercel.sh/request-review-light.svg\"><img src=\"https://agents-vade-review.vercel.sh/request-review-light.svg\" alt=\"Request Review\"></picture></a>\n\n\n\n\n\n\n\n\n\n",
+      "created_at": "2026-05-12T21:38:40Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "giulliano-au-schein",
+      "body": "[DRY]\nHey, great work so far. One question, could you avoid this duplication since the same code is written a few lines down here (line 111).",
+      "path": "packages/medusa/src/api/admin/promotions/rule-value-options/[rule_type]/[rule_attribute_id]/route.ts",
+      "diff_hunk": "@@ -55,26 +65,58 @@ export const GET = async (\n     delete filterableFields.application_method_target_type\n   }\n \n-  const { rows, metadata } = await remoteQuery(\n-    remoteQueryObjectFromString({\n-      entryPoint: queryConfig.entryPoint,\n-      variables: {\n-        filters: filterableFields,\n-        ...req.queryConfig.pagination,\n-      },\n-      fields: [queryConfig.labelAttr, queryConfig.valueAttr],\n+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)\n+  const fields = [queryConfig.labelAttr, queryConfig.valueAttr]\n+\n+  const useIndexEngine =\n+    FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&\n+    ENTITIES_SUPPORTED_BY_INDEX_ENGINE.includes(queryConfig.entryPoint)\n+\n+  if (useIndexEngine) {\n+    // TODO: Remove once we implement search by relations in a similar way to query.graph\n+    const filters = { ...filterableFields }\n+    if (!!filters.q) {\n+      filters.variants = filters.variants ?? {}\n+    }\n+\n+    const { data, metadata } = await query.index({\n+      entity: queryConfig.entryPoint,\n+      fields,\n+      filters,\n+      pagination: req.queryConfig.pagination,\n     })\n-  )\n \n-  const values = rows.map((r) => ({\n+    const values = data.map((r) => ({",
+      "line": 89,
+      "created_at": "2026-05-13T08:53:15Z"
+    },
+    {
+      "user": "giulliano-au-schein",
+      "body": "[DRY]\nSimilar situation here since this is the only line extra.",
+      "path": "packages/medusa/src/api/admin/promotions/rule-value-options/[rule_type]/[rule_attribute_id]/route.ts",
+      "diff_hunk": "@@ -55,26 +65,58 @@ export const GET = async (\n     delete filterableFields.application_method_target_type\n   }\n \n-  const { rows, metadata } = await remoteQuery(\n-    remoteQueryObjectFromString({\n-      entryPoint: queryConfig.entryPoint,\n-      variables: {\n-        filters: filterableFields,\n-        ...req.queryConfig.pagination,\n-      },\n-      fields: [queryConfig.labelAttr, queryConfig.valueAttr],\n+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)\n+  const fields = [queryConfig.labelAttr, queryConfig.valueAttr]\n+\n+  const useIndexEngine =\n+    FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&\n+    ENTITIES_SUPPORTED_BY_INDEX_ENGINE.includes(queryConfig.entryPoint)\n+\n+  if (useIndexEngine) {\n+    // TODO: Remove once we implement search by relations in a similar way to query.graph\n+    const filters = { ...filterableFields }\n+    if (!!filters.q) {\n+      filters.variants = filters.variants ?? {}\n+    }\n+\n+    const { data, metadata } = await query.index({\n+      entity: queryConfig.entryPoint,\n+      fields,\n+      filters,\n+      pagination: req.queryConfig.pagination,\n     })\n-  )\n \n-  const values = rows.map((r) => ({\n+    const values = data.map((r) => ({\n+      label: r[queryConfig.labelAttr],\n+      value: r[queryConfig.valueAttr],\n+    }))\n+\n+    res.json({\n+      values,\n+      count: metadata!.estimate_count,\n+      estimate_count: metadata!.estimate_count,",
+      "line": 97,
+      "created_at": "2026-05-13T08:54:39Z"
+    },
+    {
+      "user": "giulliano-au-schein",
+      "body": "[OWASP]\nNot a high issue, but according to OWASP A04, here you are adding a: Behavioral Divergence (OWASP A04 / Insecure Design).\n\nI mean, the two query paths apply different logic to the same input. The Index Engine path (lines 77–80) injects a variants noop and uses a shallow copy of filterableFields. The query.graph path (lines 107) passes filterableFields directly, with no variant injection. This means the same ?q= search parameter produces structurally different queries, and can match different fields, depending purely on whether the feature flag is on.\n\nAgain, it is not a big deal. Great work!\n",
+      "path": "packages/medusa/src/api/admin/promotions/rule-value-options/[rule_type]/[rule_attribute_id]/route.ts",
+      "diff_hunk": "@@ -55,26 +65,58 @@ export const GET = async (\n     delete filterableFields.application_method_target_type\n   }\n \n-  const { rows, metadata } = await remoteQuery(\n-    remoteQueryObjectFromString({\n-      entryPoint: queryConfig.entryPoint,\n-      variables: {\n-        filters: filterableFields,\n-        ...req.queryConfig.pagination,\n-      },\n-      fields: [queryConfig.labelAttr, queryConfig.valueAttr],\n+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)\n+  const fields = [queryConfig.labelAttr, queryConfig.valueAttr]\n+\n+  const useIndexEngine =",
+      "line": 71,
+      "created_at": "2026-05-13T08:58:41Z"
+    },
+    {
+      "user": "giulliano-au-schein",
+      "body": "... and it may be causing an **_inconsistent API Response Contract (count semantics)_**.\n\n**Line 96** sets count to an estimated value from the index engine. **Line 118** sets count to a real count from query.graph. The field name is identical but the semantics are entirely different, one is a **_probabilistic_** estimate, the other is **_exact_**. A client paginating on count will behave differently (and **_potentially_** incorrectly) depending on which code path was executed, with no signal in the response to distinguish between them.\n\nThe fix is either to always return `estimate_count: number | null` in both paths (null when using graph), or to rename `count` in the Index Engine path to `estimate_count` only and document clearly that exact pagination is not available in that mode.",
+      "path": "packages/medusa/src/api/admin/promotions/rule-value-options/[rule_type]/[rule_attribute_id]/route.ts",
+      "diff_hunk": "@@ -55,26 +65,58 @@ export const GET = async (\n     delete filterableFields.application_method_target_type\n   }\n \n-  const { rows, metadata } = await remoteQuery(\n-    remoteQueryObjectFromString({\n-      entryPoint: queryConfig.entryPoint,\n-      variables: {\n-        filters: filterableFields,\n-        ...req.queryConfig.pagination,\n-      },\n-      fields: [queryConfig.labelAttr, queryConfig.valueAttr],\n+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)\n+  const fields = [queryConfig.labelAttr, queryConfig.valueAttr]\n+\n+  const useIndexEngine =\n+    FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&\n+    ENTITIES_SUPPORTED_BY_INDEX_ENGINE.includes(queryConfig.entryPoint)\n+\n+  if (useIndexEngine) {\n+    // TODO: Remove once we implement search by relations in a similar way to query.graph\n+    const filters = { ...filterableFields }\n+    if (!!filters.q) {\n+      filters.variants = filters.variants ?? {}\n+    }\n+\n+    const { data, metadata } = await query.index({\n+      entity: queryConfig.entryPoint,\n+      fields,\n+      filters,\n+      pagination: req.queryConfig.pagination,\n     })\n-  )\n \n-  const values = rows.map((r) => ({\n+    const values = data.map((r) => ({\n+      label: r[queryConfig.labelAttr],\n+      value: r[queryConfig.valueAttr],\n+    }))\n+\n+    res.json({\n+      values,\n+      count: metadata!.estimate_count,\n+      estimate_count: metadata!.estimate_count,",
+      "line": 97,
+      "created_at": "2026-05-13T09:02:40Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "shahednasser",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-05-13T07:13:16Z"
+    },
+    {
+      "user": "giulliano-au-schein",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-05-13T08:53:15Z"
+    },
+    {
+      "user": "giulliano-au-schein",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-05-13T08:54:39Z"
+    },
+    {
+      "user": "giulliano-au-schein",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-05-13T08:58:41Z"
+    },
+    {
+      "user": "giulliano-au-schein",
+      "state": "COMMENTED",
+      "body": "",
+      "submitted_at": "2026-05-13T09:02:41Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "0df66da77e5c9600d8b547bd4eb8aa7963a09749",
+      "message": "Add index module support to promotions rule value options endpoint",
+      "author": "Nicolas Gorga",
+      "date": "2026-05-12T19:51:08Z"
+    },
+    {
+      "sha": "ee7a4e1285ddf927cdd6b93f0618f044aef3cbbf",
+      "message": "Enable sku search via products entry point",
+      "author": "Nicolas Gorga",
+      "date": "2026-05-12T21:28:54Z"
+    },
+    {
+      "sha": "219f61a86de077cd11b10eb580044b6477adea5e",
+      "message": "Changeset",
+      "author": "Nicolas Gorga",
+      "date": "2026-05-12T21:30:24Z"
+    },
+    {
+      "sha": "67d67cc0e54c0addd43bb97f65d30c798706b162",
+      "message": "Merge branch 'develop' into feat/promotion-rule-value-options-index",
+      "author": "Shahed Nasser",
+      "date": "2026-05-13T11:40:54Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/vast-facts-dream.md",
+      "status": "added",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -0,0 +1,5 @@\n+---\n+\"@medusajs/medusa\": patch\n+---\n+\n+feat(medusa): enable index when querying products via promotion attribute values and enable sku search in products entrypoint"
+    },
+    {
+      "filename": "packages/medusa/src/api/admin/products/route.ts",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -84,6 +84,11 @@ async function getProductsWithIndexEngine(\n     delete filters.price_list_id\n   }\n \n+  // TODO: Remove once we implement search by relations in a similar way to query.graph\n+  if (isPresent(filters.q)) {\n+    filters[\"variants\"] ??= {}\n+  }\n+\n   const { data: products, metadata } = await query.index({\n     entity: \"product\",\n     fields: req.queryConfig.fields ?? [],"
+    },
+    {
+      "filename": "packages/medusa/src/api/admin/promotions/rule-value-options/[rule_type]/[rule_attribute_id]/route.ts",
+      "status": "modified",
+      "additions": 57,
+      "deletions": 15,
+      "changes": 72,
+      "patch": "@@ -5,7 +5,7 @@ import {\n import { HttpTypes } from \"@medusajs/framework/types\"\n import {\n   ContainerRegistrationKeys,\n-  remoteQueryObjectFromString,\n+  FeatureFlag,\n } from \"@medusajs/framework/utils\"\n import {\n   ruleQueryConfigurations,\n@@ -16,6 +16,17 @@ import {\n   ApplicationMethodTargetTypeValues,\n   RuleTypeValues,\n } from \"@medusajs/types\"\n+import IndexEngineFeatureFlag from \"../../../../../../feature-flags/index-engine\"\n+\n+/*\n+  Entry points that exist as top-level types in the Index module's default schema\n+  (packages/modules/index/src/utils/default-schema.ts). Only `product` qualifies\n+  today; the other entry points this endpoint may receive (product_category,\n+  product_collection, product_type, product_tag, region, currency, customer_group,\n+  country, sales_channel, shipping_option_type) are not top-level types in the\n+  index, so they keep using query.graph.\n+*/\n+const ENTITIES_SUPPORTED_BY_INDEX_ENGINE = [\"product\"]\n \n /*\n   This endpoint returns all the potential values for rules (promotion rules, target rules and buy rules)\n@@ -30,7 +41,6 @@ export const GET = async (\n ) => {\n   const { rule_type: ruleType, rule_attribute_id: ruleAttributeId } = req.params\n   const queryConfig = ruleQueryConfigurations[ruleAttributeId]\n-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)\n   const filterableFields = req.filterableFields\n \n   if (filterableFields.value) {\n@@ -55,26 +65,58 @@ export const GET = async (\n     delete filterableFields.application_method_target_type\n   }\n \n-  const { rows, metadata } = await remoteQuery(\n-    remoteQueryObjectFromString({\n-      entryPoint: queryConfig.entryPoint,\n-      variables: {\n-        filters: filterableFields,\n-        ...req.queryConfig.pagination,\n-      },\n-      fields: [queryConfig.labelAttr, queryConfig.valueAttr],\n+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)\n+  const fields = [queryConfig.labelAttr, queryConfig.valueAttr]\n+\n+  const useIndexEngine =\n+    FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&\n+    ENTITIES_SUPPORTED_BY_INDEX_ENGINE.includes(queryConfig.entryPoint)\n+\n+  if (useIndexEngine) {\n+    // TODO: Remove once we implement search by relations in a similar way to query.graph\n+    const filters = { ...filterableFields }\n+    if (!!filters.q) {\n+      filters.variants = filters.variants ?? {}\n+    }\n+\n+    const { data, metadata } = await query.index({\n+      entity: queryConfig.entryPoint,\n+      fields,\n+      filters,\n+      pagination: req.queryConfig.pagination,\n     })\n-  )\n \n-  const values = rows.map((r) => ({\n+    const values = data.map((r) => ({\n+      label: r[queryConfig.labelAttr],\n+      value: r[queryConfig.valueAttr],\n+    }))\n+\n+    res.json({\n+      values,\n+      count: metadata!.estimate_count,\n+      estimate_count: metadata!.estimate_count,\n+      offset: metadata!.skip,\n+      limit: metadata!.take,\n+    })\n+    return\n+  }\n+\n+  const { data, metadata } = await query.graph({\n+    entity: queryConfig.entryPoint,\n+    fields,\n+    filters: filterableFields,\n+    pagination: req.queryConfig.pagination,\n+  })\n+\n+  const values = data.map((r) => ({\n     label: r[queryConfig.labelAttr],\n     value: r[queryConfig.valueAttr],\n   }))\n \n   res.json({\n     values,\n-    count: metadata.count,\n-    offset: metadata.skip,\n-    limit: metadata.take,\n+    count: metadata!.count,\n+    offset: metadata!.skip,\n+    limit: metadata!.take,\n   })\n }"
+    },
+    {
+      "filename": "packages/medusa/src/api/store/products/route.ts",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -66,6 +66,11 @@ async function getProductsWithIndexEngine(\n     delete filters.sales_channel_id\n   }\n \n+  // TODO: Remove once we implement search by relations in a similar way to query.graph\n+  if (isPresent(filters.q)) {\n+    filters[\"variants\"] ??= {}\n+  }\n+\n   const { data: products = [], metadata } = await query.index(\n     {\n       entity: \"product\","
+    }
+  ]
+}

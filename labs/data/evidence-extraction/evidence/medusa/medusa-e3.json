@@ -1,0 +1,167 @@
+{
+  "pr": {
+    "number": 15264,
+    "title": "fix(core-flows): harden create payment sessions when customer has no account holders",
+    "body": "## What\r\n- Treat missing `customer.account_holders` as `[]` before calling `.find()` in `createPaymentSessionsWorkflow`.\r\n- Use optional chaining on the holder and workflow `input` in the find predicate so transform resolution cannot throw on `provider_id` (see issue follow-up).\r\n\r\n## Why\r\nLogged-in customers with no `account_holder` rows can get `account_holders === undefined` from the remote query; the workflow previously called `.find` on `undefined` and returned 500 on `POST /store/payment-collections/:id/payment-sessions`. A second failure mode on `provider_id` is described in the issue thread.\r\n\r\n## How\r\n`packages/core/core-flows/src/payment-collection/workflows/create-payment-session.ts`\r\n\r\n## Testing\r\n- [ ] Not run locally (integration env). CI / maintainers can run module integration tests if needed.\r\n- Regression context: `integration-tests/modules/__tests__/payment/payment-session.workflows.spec.ts` (comment references #15152).\r\n\r\nFixes #15152\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Medium Risk**\n> Touches the payment-session creation workflow; while the change is small and defensive, it affects a critical checkout path and could alter account-holder selection behavior if customer data is unexpectedly shaped.\n> \n> **Overview**\n> Fixes a regression in `createPaymentSessionsWorkflow` where the remote customer query can return `account_holders` as `undefined`, causing a runtime error when searching for an existing holder.\n> \n> The workflow now treats missing `account_holders` as an empty list and uses optional chaining in the `.find()` predicate; an integration test comment was updated to document the regression, and a patch changeset was added for `@medusajs/core-flows`.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 5ff5b75b24eea44d61e21c9be5060c6447acf71d. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+    "state": "closed",
+    "merged": true,
+    "user": "Suh0161",
+    "created_at": "2026-05-01T21:40:23Z",
+    "updated_at": "2026-05-21T09:28:22Z",
+    "base": "develop",
+    "head": "fix/payment-session-undefined-account-holders-15152",
+    "merge_commit_sha": "22fa3e373aa5377b79e7f80b006b69b33eac7434"
+  },
+  "issue_comments": [
+    {
+      "user": "changeset-bot[bot]",
+      "body": "###  🦋  Changeset detected\n\nLatest commit: 7b1ecf971a36386032d9baa15d06b79ccac5110e\n\n**The changes in this PR will be included in the next version bump.**\n\n<details><summary>This PR includes changesets to release 78 packages</summary>\n\n  | Name                               | Type  |\n| ---------------------------------- | ----- |\n| @medusajs/core-flows               | Patch |\n| @medusajs/medusa                   | Patch |\n| @medusajs/test-utils               | Patch |\n| integration-tests-http             | Patch |\n| @medusajs/medusa-oas-cli           | Patch |\n| @medusajs/analytics                | Patch |\n| @medusajs/api-key                  | Patch |\n| @medusajs/auth                     | Patch |\n| @medusajs/caching                  | Patch |\n| @medusajs/cart                     | Patch |\n| @medusajs/currency                 | Patch |\n| @medusajs/customer                 | Patch |\n| @medusajs/file                     | Patch |\n| @medusajs/fulfillment              | Patch |\n| @medusajs/index                    | Patch |\n| @medusajs/inventory                | Patch |\n| @medusajs/link-modules             | Patch |\n| @medusajs/locking                  | Patch |\n| @medusajs/notification             | Patch |\n| @medusajs/order                    | Patch |\n| @medusajs/payment                  | Patch |\n| @medusajs/pricing                  | Patch |\n| @medusajs/product                  | Patch |\n| @medusajs/promotion                | Patch |\n| @medusajs/rbac                     | Patch |\n| @medusajs/region                   | Patch |\n| @medusajs/sales-channel            | Patch |\n| @medusajs/settings                 | Patch |\n| @medusajs/stock-location           | Patch |\n| @medusajs/store                    | Patch |\n| @medusajs/tax                      | Patch |\n| @medusajs/translation              | Patch |\n| @medusajs/user                     | Patch |\n| @medusajs/workflow-engine-inmemory | Patch |\n| @medusajs/workflow-engine-redis    | Patch |\n| @medusajs/draft-order              | Patch |\n| @medusajs/loyalty-plugin           | Patch |\n| @medusajs/oas-github-ci            | Patch |\n| @medusajs/cache-inmemory           | Patch |\n| @medusajs/cache-redis              | Patch |\n| @medusajs/event-bus-local          | Patch |\n| @medusajs/event-bus-redis          | Patch |\n| @medusajs/analytics-local          | Patch |\n| @medusajs/analytics-posthog        | Patch |\n| @medusajs/auth-emailpass           | Patch |\n| @medusajs/auth-github              | Patch |\n| @medusajs/auth-google              | Patch |\n| @medusajs/caching-redis            | Patch |\n| @medusajs/file-local               | Patch |\n| @medusajs/file-s3                  | Patch |\n| @medusajs/fulfillment-manual       | Patch |\n| @medusajs/locking-postgres         | Patch |\n| @medusajs/locking-redis            | Patch |\n| @medusajs/notification-local       | Patch |\n| @medusajs/notification-sendgrid    | Patch |\n| @medusajs/payment-stripe           | Patch |\n| @medusajs/framework                | Patch |\n| @medusajs/js-sdk                   | Patch |\n| @medusajs/modules-sdk              | Patch |\n| @medusajs/orchestration            | Patch |\n| @medusajs/types                    | Patch |\n| @medusajs/utils                    | Patch |\n| @medusajs/workflows-sdk            | Patch |\n| @medusajs/http-types-generator     | Patch |\n| @medusajs/cli                      | Patch |\n| @medusajs/deps                     | Patch |\n| @medusajs/telemetry                | Patch |\n| @medusajs/admin-bundler            | Patch |\n| @medusajs/admin-sdk                | Patch |\n| @medusajs/admin-shared             | Patch |\n| @medusajs/admin-vite-plugin        | Patch |\n| @medusajs/dashboard                | Patch |\n| @medusajs/icons                    | Patch |\n| @medusajs/toolbox                  | Patch |\n| @medusajs/ui-preset                | Patch |\n| create-medusa-app                  | Patch |\n| medusa-dev-cli                     | Patch |\n| @medusajs/ui                       | Patch |\n\n</details>\n\nNot sure what this means? [Click here  to learn what changesets are](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md).\n\n[Click here if you're a maintainer who wants to add another changeset to this PR](https://github.com/Suh0161/medusa/new/fix/payment-session-undefined-account-holders-15152?filename=.changeset/cozy-teeth-hide.md&value=---%0A%22%40medusajs%2Fcore-flows%22%3A%20patch%0A%22integration-tests-modules%22%3A%20patch%0A---%0A%0Afix(core-flows)%3A%20harden%20create%20payment%20sessions%20when%20customer%20has%20no%20account%20holders%0A)\n\n",
+      "created_at": "2026-05-01T21:40:28Z"
+    },
+    {
+      "user": "vercel[bot]",
+      "body": "@Suh0161 is attempting to deploy a commit to the **medusajs** Team on [Vercel](https://vercel.com).\n\nA member of the Team first needs to [authorize it](https://vercel.com/git/authorize?team=medusajs&slug=medusajs&teamId=team_H9FqCbbGqSGhPs9oquyfg6Wt&type=github&job=%7B%22headInfo%22%3A%7B%22sha%22%3A%225ff5b75b24eea44d61e21c9be5060c6447acf71d%22%7D%2C%22id%22%3A%22QmcZYDkaaNKtn3j1W75gYHfUMW7sxkLdy3K6g1X8WCRFLR%22%2C%22org%22%3A%22medusajs%22%2C%22prId%22%3A15264%2C%22repo%22%3A%22medusa%22%7D).\n\n",
+      "created_at": "2026-05-01T21:40:33Z"
+    },
+    {
+      "user": "medusa-os-bot[bot]",
+      "body": "Thank you for your contribution, @Suh0161\\! 🎉\n\nAfter an initial review, this PR looks good to us. Here's a summary:\n\n✅ PR template is complete\n✅ Linked to a verified issue (#15152 — open, confirmed bug)\n✅ Follows contribution guidelines\n✅ Changeset included (`patch`, correct `fix()` message format)\n✅ Follows Medusa's conventions\n\nA team member will do a final review before this is merged. We appreciate your patience\\!\n\n**Notes:**\n\n- **Missing regression test case** — The test file change only adds a comment to an existing passing test. Ideally, a dedicated `it` block that creates a customer with no `account_holders` rows (or mocks the remote query to return `account_holders: undefined`) would directly guard against this regression. Not blocking for an initial approval, but a team member may request it.\n\n- **Unnecessary optional chaining on `data.input`** — In `create-payment-session.ts`, `data.input?.provider_id` uses optional chaining on `input`, but within a `transform()` callback the workflow input is always a defined object and `provider_id` is a required field on `CreatePaymentSessionsWorkflowInput`. Plain `data.input.provider_id` would be clearer and not suggest `input` can be `undefined`. The optional chain on `ac?.provider_id` is fine as a defensive guard on remote-query elements.\n\n_Triggered by: PR description updated_",
+      "created_at": "2026-05-01T21:43:19Z"
+    },
+    {
+      "user": "medusa-os-bot[bot]",
+      "body": "Thank you for your contribution, @Suh0161\\!\n\nAfter an initial review, this PR looks good to us. Here's a summary:\n\n✅ PR template is complete\n✅ Linked to a verified issue (#15152)\n✅ Changeset included with the correct format and bump type\n✅ Fix is correct — `?? []` properly guards against `undefined` returned by the remote query\n\n**Notes (non-blocking):**\n\n- **No dedicated regression test case.** The PR adds a comment to the existing test but doesn't add a new test case that specifically exercises the `account_holders === undefined` scenario (e.g., a customer with no linked account holder rows). This would guard against future regressions in a critical checkout path. It's not required for a trivial fix like this, but it would be preferred.\n\n- **Unnecessary optional chaining.** In the `transform` callback, `ac?.provider_id` is redundant — `ac` is always an `AccountHolderDTO` element of the (now guaranteed non-undefined) array. Similarly, `data.input?.provider_id` is defensive against something that cannot happen — `data.input` is the workflow's required input and is always defined. These are harmless, but they add noise that could mislead future readers into thinking these values can actually be absent.\n\nA team member will do a final review before this is merged. We appreciate your patience\\!\n\n_Triggered by: PR description updated_",
+      "created_at": "2026-05-01T21:43:49Z"
+    },
+    {
+      "user": "medusa-os-bot[bot]",
+      "body": "Test comment - please ignore",
+      "created_at": "2026-05-01T21:44:24Z"
+    },
+    {
+      "user": "cursor[bot]",
+      "body": "You have used all of your free Bugbot PR reviews.\n\nTo receive reviews on all of your PRs, visit the [Cursor dashboard](https://www.cursor.com/dashboard/bugbot) to activate Pro and start your 14-day free trial.",
+      "created_at": "2026-05-01T21:44:33Z"
+    },
+    {
+      "user": "medusa-os-bot[bot]",
+      "body": "Thank you for your contribution, @Suh0161\\! After an initial review, this PR looks good to us. PR template is complete, linked to verified open issue #15152, follows contribution guidelines, changeset included with correct patch bump, and follows Medusa conventions. A team member will do a final review before merging. Notes: (1) The test file change adds a comment to an existing test that covers the happy path (customer WITH account holders), not the actual failing case (customer with no account holder rows, so account_holders is undefined). Adding a dedicated test for this case would prevent future regressions - not blocking but strongly recommended. (2) data.input?.provider_id uses optional chaining on data.input, but input is WorkflowData<CreatePaymentSessionsWorkflowInput> where provider_id is required - data.input is never undefined in the resolved transform context. The ?? guard on account_holders is the meaningful fix; the ?. on data.input is superfluous and worth removing. _Triggered by: new PR opened_",
+      "created_at": "2026-05-01T21:45:21Z"
+    },
+    {
+      "user": "medusa-os-bot[bot]",
+      "body": "Thank you for your contribution, @Suh0161\\!\n\nAfter an initial review, this PR looks good to us. Here's a summary:\n\n✅ PR template is complete\n✅ Linked to a verified open issue (#15152)\n✅ Follows contribution guidelines\n✅ Changeset included (`patch` bump, correct `fix(core-flows):` format)\n✅ Fix is correct — `?? []` properly guards against `undefined` returned by the remote query\n✅ Previous concern about optional chaining on `data.input` has been resolved in this commit\n\nA team member will do a final review before this is merged. We appreciate your patience\\!\n\n**Notes (non-blocking):**\n\n- **No dedicated regression test case.** The test file adds a comment to the existing happy-path test (customer WITH account holders), not a new `it` block that exercises the failing case (customer with no linked account holder rows, so `account_holders` comes back as `undefined`). A dedicated test would directly guard against future regressions in this critical checkout path. Not required for a small defensive fix like this, but it would be preferred.\n\n_Triggered by: new commit pushed_",
+      "created_at": "2026-05-01T21:46:40Z"
+    },
+    {
+      "user": "medusa-os-bot[bot]",
+      "body": "Thank you for your contribution, @Suh0161\\! 🎉\n\nAfter an initial review, this PR looks good to us. Here's a summary:\n\n✅ PR template is complete\n✅ Linked to a verified open issue (#15152)\n✅ Follows contribution guidelines\n✅ Changeset included (`patch` bump, correct `fix(core-flows):` format)\n✅ Fix is correct — `?? []` properly guards against `undefined` returned by the remote query\n✅ Previously raised concerns have been resolved:\n  - Dedicated regression test case added (`it` block that explicitly verifies the workflow succeeds when the customer has no `account_holders`)\n  - `data.input?.provider_id` optional chaining removed (resolved in prior commit)\n\nA team member will do a final review before this is merged. We appreciate your patience\\!\n\n**Notes (non-blocking):**\n\n- **`ac?.provider_id` optional chaining** — In the `.find()` callback, `ac` is always an `AccountHolderDTO` element of the now-guaranteed-non-undefined array, so the `?.` guard on it is technically superfluous. This was flagged in prior reviews and is harmless — worth cleaning up if a team member requests it, but not blocking.\n\n_Triggered by: new commit pushed_",
+      "created_at": "2026-05-01T21:56:35Z"
+    },
+    {
+      "user": "gitguardian[bot]",
+      "body": "#### ⚠️ GitGuardian has uncovered 1 secret following the scan of your pull request.\n\nPlease consider investigating the findings and remediating the incidents. Failure to do so may lead to compromising the associated services or software components.\n\nSince your pull request originates from a forked repository, GitGuardian is not able to associate the secrets uncovered with secret incidents on your GitGuardian dashboard.\nSkipping this check run and merging your pull request will create secret incidents on your GitGuardian dashboard.\n\n<details>\n<summary>🔎 Detected hardcoded secret in your pull request</summary>\n<br>\n\n| GitGuardian id | GitGuardian status | Secret                         | Commit           | Filename        |                      |\n| -------------- | ------------------ | ------------------------------ | ---------------- | --------------- | -------------------- |\n| [32792319](https://dashboard.gitguardian.com/workspace/158035/incidents/32792319) | Triggered | Generic High Entropy Secret | 7b1ecf971a36386032d9baa15d06b79ccac5110e | packages/modules/auth/src/utils/__tests__/totp.spec.ts | [View secret](https://github.com/medusajs/medusa/commit/7b1ecf971a36386032d9baa15d06b79ccac5110e#diff-982a72eb609ad8b95ad7cfdeace125585e18bc6ab338fa135d2ae211e19c2b97R4) |\n\n\n\n</details>\n\n<details>\n<summary>🛠 Guidelines to remediate hardcoded secrets</summary>\n<br>\n\n1. Understand the implications of revoking this secret by investigating where it is used in your code.\n2. Replace and store your secret safely. [Learn here](https://blog.gitguardian.com/secrets-api-management?utm_source=product&amp;utm_medium=GitHub_checks&amp;utm_campaign=check_run_comment) the best practices.\n3. Revoke and [rotate this secret](https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/generics/generic_high_entropy_secret#revoke-the-secret?utm_source=product&amp;utm_medium=GitHub_checks&amp;utm_campaign=check_run_comment).\n4. If possible, [rewrite git history](https://blog.gitguardian.com/rewriting-git-history-cheatsheet?utm_source=product&amp;utm_medium=GitHub_checks&amp;utm_campaign=check_run_comment). Rewriting git history is not a trivial act. You might completely break other contributing developers' workflow and you risk accidentally deleting legitimate data.\n\nTo avoid such incidents in the future consider\n\n-   following these [best practices](https://blog.gitguardian.com/secrets-api-management/?utm_source=product&amp;utm_medium=GitHub_checks&amp;utm_campaign=check_run_comment) for managing and storing secrets including API keys and other credentials\n-   install [secret detection on pre-commit](https://docs.gitguardian.com/ggshield-docs/integrations/git-hooks/pre-commit?utm_source=product&amp;utm_medium=GitHub_checks&amp;utm_campaign=check_run_comment) to catch secret before it leaves your machine and ease remediation.\n\n\n</details>\n\n---\n\n<sup>🦉 [GitGuardian](https://dashboard.gitguardian.com/auth/login/?utm_medium=checkruns&amp;utm_source=github&amp;utm_campaign=cr1) detects secrets in your source code to help developers and security teams secure the modern development process. You are seeing this because you or someone else with access to this repository has authorized GitGuardian to scan your pull request.<br/></sup>",
+      "created_at": "2026-05-21T09:11:42Z"
+    }
+  ],
+  "review_comments": [
+    {
+      "user": "shahednasser",
+      "body": "```suggestion\n        it(\"should create payment sessions when customer has no account_holder links)\", async () => {\n```",
+      "path": "integration-tests/modules/__tests__/payment/payment-session.workflows.spec.ts",
+      "diff_hunk": "@@ -129,6 +129,55 @@ medusaIntegrationTestRunner({\n           )\n         })\n \n+        it(\"should create payment sessions when customer has no account_holder links (#15152)\", async () => {",
+      "line": null,
+      "created_at": "2026-05-12T11:55:38Z"
+    }
+  ],
+  "reviews": [
+    {
+      "user": "shahednasser",
+      "state": "CHANGES_REQUESTED",
+      "body": "Thank you for your contribution! Looks good, just a minor change needed.",
+      "submitted_at": "2026-05-12T11:56:32Z"
+    },
+    {
+      "user": "NicolasGorga",
+      "state": "APPROVED",
+      "body": "Other than Shahed's comment LGTM",
+      "submitted_at": "2026-05-14T17:54:18Z"
+    },
+    {
+      "user": "shahednasser",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-05-21T09:14:45Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "5ff5b75b24eea44d61e21c9be5060c6447acf71d",
+      "message": "fix(core-flows): handle undefined customer account_holders in payment sessions workflow\n\nUse [] when account_holders is missing, and optional chaining on holder and workflow input in the .find predicate so resolution cannot throw (#15152, including issue follow-up on provider_id).\n\nFixes #15152",
+      "author": "suh016",
+      "date": "2026-05-01T21:35:08Z"
+    },
+    {
+      "sha": "6faec9be640971a6b00bc7127ed278fdb9599b3a",
+      "message": "chore(core-flows): use non-optional input.provider_id in account holder find",
+      "author": "suh016",
+      "date": "2026-05-01T21:44:28Z"
+    },
+    {
+      "sha": "c957fe621fc3636fd347e6c361236049642d4ec9",
+      "message": "test(integration): cover #15152 customer with no account_holder links",
+      "author": "suh016",
+      "date": "2026-05-01T21:53:10Z"
+    },
+    {
+      "sha": "6e8cccff5dec4c28157707f52028e80e6d55c5e0",
+      "message": "Merge branch 'develop' into fix/payment-session-undefined-account-holders-15152",
+      "author": "Shahed Nasser",
+      "date": "2026-05-12T11:51:47Z"
+    },
+    {
+      "sha": "7b7f8347e95e060787c05232941ea639368c64fa",
+      "message": "Merge branch 'develop' into fix/payment-session-undefined-account-holders-15152",
+      "author": "Nicolas Gorga",
+      "date": "2026-05-14T17:54:32Z"
+    },
+    {
+      "sha": "6ad8409314c0e37b987e314e980b768b1925a8b4",
+      "message": "Apply suggestion from @shahednasser\n\nCo-authored-by: Shahed Nasser <shahednasser@gmail.com>",
+      "author": "Nicolas Gorga",
+      "date": "2026-05-20T02:45:12Z"
+    },
+    {
+      "sha": "7b1ecf971a36386032d9baa15d06b79ccac5110e",
+      "message": "Merge branch 'develop' into fix/payment-session-undefined-account-holders-15152",
+      "author": "Shahed Nasser",
+      "date": "2026-05-21T09:10:58Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/fix-payment-session-account-holders.md",
+      "status": "added",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -0,0 +1,5 @@\n+---\n+\"@medusajs/core-flows\": patch\n+---\n+\n+fix(core-flows): handle undefined customer account_holders in create payment sessions workflow"
+    },
+    {
+      "filename": "integration-tests/modules/__tests__/payment/payment-session.workflows.spec.ts",
+      "status": "modified",
+      "additions": 49,
+      "deletions": 0,
+      "changes": 49,
+      "patch": "@@ -129,6 +129,55 @@ medusaIntegrationTestRunner({\n           )\n         })\n \n+        it(\"should create payment sessions when customer has no account_holder links)\", async () => {\n+          const {\n+            data: [customerBefore],\n+          } = await query.graph({\n+            entity: \"customer\",\n+            filters: { id: customer.id },\n+            fields: [\"id\", \"account_holders.*\"],\n+          })\n+\n+          expect(\n+            customerBefore.account_holders === undefined ||\n+              customerBefore.account_holders?.length === 0\n+          ).toBe(true)\n+\n+          await createPaymentSessionsWorkflow(appContainer).run({\n+            input: {\n+              payment_collection_id: paymentCollection.id,\n+              provider_id: \"pp_system_default\",\n+              customer_id: customer.id,\n+            },\n+          })\n+\n+          const {\n+            data: [updatedPaymentCollection],\n+          } = await query.graph({\n+            entity: \"payment_collection\",\n+            filters: { id: paymentCollection.id },\n+            fields: [\"id\", \"payment_sessions.*\"],\n+          })\n+\n+          expect(updatedPaymentCollection.payment_sessions).toHaveLength(1)\n+\n+          const {\n+            data: [customerAfter],\n+          } = await query.graph({\n+            entity: \"customer\",\n+            filters: { id: customer.id },\n+            fields: [\"id\", \"account_holders.*\"],\n+          })\n+\n+          expect(customerAfter.account_holders).toEqual(\n+            expect.arrayContaining([\n+              expect.objectContaining({\n+                email: customer.email,\n+              }),\n+            ])\n+          )\n+        })\n+\n         it(\"should delete existing sessions when create payment sessions\", async () => {\n           await createPaymentSessionsWorkflow(appContainer).run({\n             input: {"
+    },
+    {
+      "filename": "packages/core/core-flows/src/payment-collection/workflows/create-payment-session.ts",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 3,
+      "changes": 6,
+      "patch": "@@ -89,7 +89,7 @@ export const createPaymentSessionsWorkflow = createWorkflow(\n         return !!data.input.customer_id\n       }\n     ).then(() => {\n-      const customer: CustomerDTO & { account_holders: AccountHolderDTO[] } =\n+      const customer: CustomerDTO & { account_holders?: AccountHolderDTO[] } =\n         useRemoteQueryStep({\n           entry_point: \"customer\",\n           fields: [\n@@ -117,8 +117,8 @@ export const createPaymentSessionsWorkflow = createWorkflow(\n       })\n \n       const existingAccountHolder = transform({ customer, input }, (data) => {\n-        return data.customer.account_holders.find(\n-          (ac) => ac.provider_id === data.input.provider_id\n+        return (data.customer.account_holders ?? []).find(\n+          (ac) => ac?.provider_id === data.input.provider_id\n         )\n       })\n "
+    }
+  ]
+}

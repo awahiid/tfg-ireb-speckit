@@ -1,0 +1,83 @@
+{
+  "pr": {
+    "number": 26965,
+    "title": "Use shorter tooltip delay for disabled elements",
+    "body": "## Scope\r\n\r\nWhat's changed:\r\n\r\n- Reduce tooltip delay for disabled elements from `500ms` to `125ms` to provide faster feedback when hovering over non-interactive controls\r\n- Add `isDisabled()` helper to detect disabled state via native `disabled` attribute, `aria-disabled=\"true\"`, or disabled descendants\r\n\r\n## Potential Risks / Drawbacks\r\n\r\n- The descendant check (`querySelector(':disabled, [aria-disabled=\"true\"]')`) could produce false positives if a tooltip is placed on a generic container that happens to contain an unrelated disabled input\r\n\r\n## Tested Scenarios\r\n\r\n- Hover over a disabled button and confirm the tooltip appears after ~125ms\r\n- Hover over an enabled button and confirm the tooltip still appears after the default 500ms delay\r\n\r\n\r\n## Review Notes / Questions\r\n\r\n- Pay attention to the `isDisabled` scope — it intentionally checks only direct children (`:scope >`) to avoid false positives from deeply nested disabled descendants\r\n\r\n## Checklist\r\n\r\n- [ ] Added or updated tests\r\n- [x] Documentation PR created [here](https://github.com/directus/docs) or not required\r\n- [x] OpenAPI package PR created [here](https://github.com/directus/openapi) or not required\r\n\r\n---\r\n\r\nFixes #[CMS-2050](https://linear.app/directus/issue/CMS-2050/reduce-tooltip-delay-for-disabled-elements)",
+    "state": "closed",
+    "merged": true,
+    "user": "HZooly",
+    "created_at": "2026-03-25T09:50:43Z",
+    "updated_at": "2026-05-25T03:46:13Z",
+    "base": "main",
+    "head": "hugo/cms-2050-reduce-tooltip-delay-for-disabled-elements",
+    "merge_commit_sha": "3cc766a85200c3c3de4a2578b1a3546623be0eff"
+  },
+  "issue_comments": [
+    {
+      "user": "linear[bot]",
+      "body": "<!-- linear-linkback -->\n<p><a href=\"https://linear.app/directus/issue/CMS-2050/reduce-tooltip-delay-for-disabled-elements\">CMS-2050 Reduce tooltip delay for disabled elements</a></p>",
+      "created_at": "2026-03-25T09:50:47Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "Nitwel",
+      "state": "APPROVED",
+      "body": "Tested and works. 👍 ",
+      "submitted_at": "2026-03-25T10:49:00Z"
+    },
+    {
+      "user": "AlexGaillard",
+      "state": "APPROVED",
+      "body": "![Image](https://github.com/user-attachments/assets/cfa0032f-fffe-486a-a9ce-f4c5ba02697a)",
+      "submitted_at": "2026-03-25T14:37:51Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "bba4424af25f4240610f8c7c51c7711e4d471da0",
+      "message": "use shorter tooltip delay for disabled elements",
+      "author": "HZooly",
+      "date": "2026-03-25T09:28:15Z"
+    },
+    {
+      "sha": "9181ddcac2700d3c555aa855a12ea01db827622c",
+      "message": "add changeset",
+      "author": "HZooly",
+      "date": "2026-03-25T09:28:56Z"
+    },
+    {
+      "sha": "1d132f60402042bdbafc0955b8989592e101adb0",
+      "message": "add tests",
+      "author": "HZooly",
+      "date": "2026-03-25T10:05:42Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": ".changeset/tender-boats-greet.md",
+      "status": "added",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5,
+      "patch": "@@ -0,0 +1,5 @@\n+---\n+'@directus/app': minor\n+---\n+\n+Used shorter tooltip delay for disabled elements"
+    },
+    {
+      "filename": "app/src/directives/tooltip.test.ts",
+      "status": "added",
+      "additions": 51,
+      "deletions": 0,
+      "changes": 51,
+      "patch": "@@ -0,0 +1,51 @@\n+import { describe, expect, it } from 'vitest';\n+import { isDisabled } from './tooltip';\n+\n+function createElement(html: string): HTMLElement {\n+\tconst div = document.createElement('div');\n+\tdiv.innerHTML = html;\n+\treturn div.firstElementChild as HTMLElement;\n+}\n+\n+describe('isDisabled', () => {\n+\tdescribe('when the element itself is disabled', () => {\n+\t\tit('returns true for disabled attribute', () => {\n+\t\t\tconst element = createElement('<button disabled>Click</button>');\n+\t\t\texpect(isDisabled(element)).toBe(true);\n+\t\t});\n+\n+\t\tit('returns true for aria-disabled=\"true\"', () => {\n+\t\t\tconst element = createElement('<div aria-disabled=\"true\">Click</div>');\n+\t\t\texpect(isDisabled(element)).toBe(true);\n+\t\t});\n+\t});\n+\n+\tdescribe('when a direct child is disabled', () => {\n+\t\tit('returns true for a direct child with disabled attribute', () => {\n+\t\t\tconst element = createElement('<span><button disabled>Click</button></span>');\n+\t\t\texpect(isDisabled(element)).toBe(true);\n+\t\t});\n+\n+\t\tit('returns true for a direct child with aria-disabled=\"true\"', () => {\n+\t\t\tconst element = createElement('<span><div aria-disabled=\"true\">Click</div></span>');\n+\t\t\texpect(isDisabled(element)).toBe(true);\n+\t\t});\n+\t});\n+\n+\tdescribe('when the element is not disabled', () => {\n+\t\tit('returns false for an enabled element', () => {\n+\t\t\tconst element = createElement('<button>Click</button>');\n+\t\t\texpect(isDisabled(element)).toBe(false);\n+\t\t});\n+\n+\t\tit('returns false when aria-disabled is not \"true\"', () => {\n+\t\t\tconst element = createElement('<div aria-disabled=\"false\">Click</div>');\n+\t\t\texpect(isDisabled(element)).toBe(false);\n+\t\t});\n+\n+\t\tit('returns false when only a deeply nested descendant is disabled', () => {\n+\t\t\tconst element = createElement('<span><span><button disabled>Click</button></span></span>');\n+\t\t\texpect(isDisabled(element)).toBe(false);\n+\t\t});\n+\t});\n+});"
+    },
+    {
+      "filename": "app/src/directives/tooltip.ts",
+      "status": "modified",
+      "additions": 19,
+      "deletions": 5,
+      "changes": 24,
+      "patch": "@@ -2,7 +2,18 @@ import { nanoid } from 'nanoid';\n import { Directive, DirectiveBinding } from 'vue';\n import { useUserStore } from '@/stores/user';\n \n-const tooltipDelay = 500;\n+const DELAYS = {\n+\ttooltip: 500,\n+\ttooltipDisabled: 125,\n+};\n+\n+export function isDisabled(element: HTMLElement): boolean {\n+\treturn (\n+\t\telement.hasAttribute('disabled') ||\n+\t\telement.getAttribute('aria-disabled') === 'true' ||\n+\t\telement.querySelector(':scope > :disabled, :scope > [aria-disabled=\"true\"]') !== null\n+\t);\n+}\n \n const handlers: Record<string, () => void> = {};\n \n@@ -53,10 +64,13 @@ export function createEnterHandler(element: HTMLElement, binding: DirectiveBindi\n \t\t} else {\n \t\t\tclearTimeout(tooltipTimer);\n \n-\t\t\ttooltipTimer = window.setTimeout(() => {\n-\t\t\t\tanimateIn(tooltip);\n-\t\t\t\tupdateTooltip(element, binding, tooltip);\n-\t\t\t}, tooltipDelay);\n+\t\t\ttooltipTimer = window.setTimeout(\n+\t\t\t\t() => {\n+\t\t\t\t\tanimateIn(tooltip);\n+\t\t\t\t\tupdateTooltip(element, binding, tooltip);\n+\t\t\t\t},\n+\t\t\t\tisDisabled(element) ? DELAYS.tooltipDisabled : DELAYS.tooltip,\n+\t\t\t);\n \t\t}\n \t};\n }"
+    }
+  ]
+}

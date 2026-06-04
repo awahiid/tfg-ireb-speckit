@@ -1,0 +1,64 @@
+{
+  "pr": {
+    "number": 22413,
+    "title": "enterprise/stages/mtls: freeze time for expired certs (cherry-pick #22411 to version-2025.12)",
+    "body": "Cherry-pick of #22411 to `version-2025.12` branch.\n\n**Original PR:** #22411\n**Original Author:** @BeryJu\n**Cherry-picked commit:** fdc1099fb429e214719486245f39dd7293d57858",
+    "state": "closed",
+    "merged": true,
+    "user": "authentik-automation[bot]",
+    "created_at": "2026-05-17T23:17:53Z",
+    "updated_at": "2026-05-18T00:10:03Z",
+    "base": "version-2025.12",
+    "head": "cherry-pick/22411-to-version-2025.12",
+    "merge_commit_sha": "176ebe81cc36288fd6b92024ee603d0835ac5f4b"
+  },
+  "issue_comments": [
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-integrations* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 835fe7a023d22ad5ab454c65a544708d3a56de52 |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/projects/authentik-integrations/deploys/6a0a4ca454e66200082556ef |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-22413--authentik-integrations.netlify.app](https://deploy-preview-22413--authentik-integrations.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTIyNDEzLS1hdXRoZW50aWstaW50ZWdyYXRpb25zLm5ldGxpZnkuYXBwIn0.-a11imNNi8jxAdnxBWD9nr7nA4WI6c75JyvdZZqfGms)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n<!-- [authentik-integrations Preview](https://deploy-preview-22413--authentik-integrations.netlify.app) -->\n_To edit notification comments on pull requests, go to your [Netlify project configuration](https://app.netlify.com/projects/authentik-integrations/configuration/notifications#deploy-notifications)._",
+      "created_at": "2026-05-17T23:19:12Z"
+    },
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-docs* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | 835fe7a023d22ad5ab454c65a544708d3a56de52 |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/projects/authentik-docs/deploys/6a0a4ca4a31bc80008a77fda |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-22413--authentik-docs.netlify.app](https://deploy-preview-22413--authentik-docs.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTIyNDEzLS1hdXRoZW50aWstZG9jcy5uZXRsaWZ5LmFwcCJ9.6nb_-au7qXRXx6yDbdHYNddFjME6SkvhQvvMsXgjmcc)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n<!-- [authentik-docs Preview](https://deploy-preview-22413--authentik-docs.netlify.app) -->\n_To edit notification comments on pull requests, go to your [Netlify project configuration](https://app.netlify.com/projects/authentik-docs/configuration/notifications#deploy-notifications)._",
+      "created_at": "2026-05-17T23:20:28Z"
+    },
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/goauthentik/authentik/pull/22413?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 93.37%. Comparing base ([`2b6db08`](https://app.codecov.io/gh/goauthentik/authentik/commit/2b6db08839b046ae76251bb13f09109d96993b05?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)) to head ([`835fe7a`](https://app.codecov.io/gh/goauthentik/authentik/commit/835fe7a023d22ad5ab454c65a544708d3a56de52?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)).\n:white_check_mark: All tests successful. No failed tests found.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n```diff\n@@               Coverage Diff                @@\n##           version-2025.12   #22413   +/-   ##\n================================================\n  Coverage            93.37%   93.37%           \n================================================\n  Files                  947      947           \n  Lines                53088    53090    +2     \n================================================\n+ Hits                 49569    49571    +2     \n  Misses                3519     3519           \n```\n\n| [Flag](https://app.codecov.io/gh/goauthentik/authentik/pull/22413/flags?src=pr&el=flags&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | Coverage Δ | |\n|---|---|---|\n| [e2e](https://app.codecov.io/gh/goauthentik/authentik/pull/22413/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `44.03% <0.00%> (+<0.01%)` | :arrow_up: |\n| [integration](https://app.codecov.io/gh/goauthentik/authentik/pull/22413/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `23.32% <0.00%> (+<0.01%)` | :arrow_up: |\n| [unit](https://app.codecov.io/gh/goauthentik/authentik/pull/22413/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.68% <100.00%> (+<0.01%)` | :arrow_up: |\n| [unit-migrate](https://app.codecov.io/gh/goauthentik/authentik/pull/22413/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.72% <100.00%> (+<0.01%)` | :arrow_up: |\n\nFlags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik#carryforward-flags-in-the-pull-request-comment) to find out more.\n</details>\n\n[:umbrella: View full report in Codecov by Sentry](https://app.codecov.io/gh/goauthentik/authentik/pull/22413?dropdown=coverage&src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).   \n:loudspeaker: Have feedback on the report? [Share it here](https://about.codecov.io/codecov-pr-comment-feedback/?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).",
+      "created_at": "2026-05-17T23:27:11Z"
+    },
+    {
+      "user": "github-actions[bot]",
+      "body": "authentik PR Installation instructions\n\n<details>\n  <summary>Instructions for docker-compose</summary>\n\n  Add the following block to your `.env` file:\n\n  ```shell\n  AUTHENTIK_IMAGE=ghcr.io/goauthentik/dev-server\n  AUTHENTIK_TAG=gh-835fe7a023d22ad5ab454c65a544708d3a56de52\n  AUTHENTIK_OUTPOSTS__CONTAINER_IMAGE_BASE=ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  ```\n\n  Afterwards, run the upgrade commands from the latest release notes.\n</details>\n<details>\n  <summary>Instructions for Kubernetes</summary>\n\n  Add the following block to your `values.yml` file:\n\n  ```yaml\n  authentik:\n      outposts:\n          container_image_base: ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s\n  global:\n      image:\n          repository: ghcr.io/goauthentik/dev-server\n          tag: gh-835fe7a023d22ad5ab454c65a544708d3a56de52\n  ```\n\n  Afterwards, run the upgrade commands from the latest release notes.\n</details>",
+      "created_at": "2026-05-18T00:00:31Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "BeryJu",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-05-17T23:22:56Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "835fe7a023d22ad5ab454c65a544708d3a56de52",
+      "message": "enterprise/stages/mtls: freeze time for expired certs (#22411)\n\nSigned-off-by: Jens Langhammer <jens@goauthentik.io>",
+      "author": "Jens L.",
+      "date": "2026-05-17T23:17:05Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "authentik/enterprise/stages/mtls/tests/test_stage.py",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "patch": "@@ -3,6 +3,7 @@\n from urllib.parse import quote_plus\n \n from django.urls import reverse\n+from freezegun import freeze_time\n \n from authentik.core.models import User\n from authentik.core.tests.utils import (\n@@ -28,6 +29,7 @@\n from authentik.stages.prompt.stage import PLAN_CONTEXT_PROMPT\n \n \n+@freeze_time(\"2026-05-10 12:38:46\")\n class MTLSStageTests(FlowTestCase):\n \n     def setUp(self):"
+    }
+  ]
+}

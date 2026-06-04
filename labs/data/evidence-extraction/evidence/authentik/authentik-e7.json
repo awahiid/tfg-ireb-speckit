@@ -1,0 +1,62 @@
+{
+  "pr": {
+    "number": 20513,
+    "title": "endpoints: fix infinite recursion in stage with unsupported connector (cherry-pick #20485 to version-2025.12)",
+    "body": "Cherry-pick of #20485 to `version-2025.12` branch.\n\n**Original PR:** #20485\n**Original Author:** @PeshekDotDev\n**Cherry-picked commit:** d2b234cf86ae83b48c6fb3e15cb1ea67bcfb1dd2",
+    "state": "closed",
+    "merged": true,
+    "user": "authentik-automation[bot]",
+    "created_at": "2026-02-24T12:02:15Z",
+    "updated_at": "2026-02-24T12:47:27Z",
+    "base": "version-2025.12",
+    "head": "cherry-pick/20485-to-version-2025.12",
+    "merge_commit_sha": "832c84a2264a1f337f930ded76d36b8afc384e76"
+  },
+  "issue_comments": [
+    {
+      "user": "netlify[bot]",
+      "body": "### <span aria-hidden=\"true\">✅</span> Deploy Preview for *authentik-integrations* ready!\n\n\n|  Name | Link |\n|:-:|------------------------|\n|<span aria-hidden=\"true\">🔨</span> Latest commit | d5f475181ba2566d513ba0be5bd72a4bbd4a9b60 |\n|<span aria-hidden=\"true\">🔍</span> Latest deploy log | https://app.netlify.com/projects/authentik-integrations/deploys/699d934b7f913b00084bf2ed |\n|<span aria-hidden=\"true\">😎</span> Deploy Preview | [https://deploy-preview-20513--authentik-integrations.netlify.app](https://deploy-preview-20513--authentik-integrations.netlify.app) |\n|<span aria-hidden=\"true\">📱</span> Preview on mobile | <details><summary> Toggle QR Code... </summary><br /><br />![QR Code](https://app.netlify.com/qr-code/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJodHRwczovL2RlcGxveS1wcmV2aWV3LTIwNTEzLS1hdXRoZW50aWstaW50ZWdyYXRpb25zLm5ldGxpZnkuYXBwIn0.IkKzIrYNMK9rqgTMX15uDrpCgS0VuSpXI1d-QRzgZAY)<br /><br />_Use your smartphone camera to open QR code link._</details> |\n---\n<!-- [authentik-integrations Preview](https://deploy-preview-20513--authentik-integrations.netlify.app) -->\n_To edit notification comments on pull requests, go to your [Netlify project configuration](https://app.netlify.com/projects/authentik-integrations/configuration/notifications#deploy-notifications)._",
+      "created_at": "2026-02-24T12:03:11Z"
+    },
+    {
+      "user": "codecov[bot]",
+      "body": "## [Codecov](https://app.codecov.io/gh/goauthentik/authentik/pull/20513?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 93.28%. Comparing base ([`1b922be`](https://app.codecov.io/gh/goauthentik/authentik/commit/1b922be0e562ef9034997df201a737e37b3b1f12?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)) to head ([`d5f4751`](https://app.codecov.io/gh/goauthentik/authentik/commit/d5f475181ba2566d513ba0be5bd72a4bbd4a9b60?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik)).\n:warning: Report is 2 commits behind head on version-2025.12.\n:white_check_mark: All tests successful. No failed tests found.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n```diff\n@@               Coverage Diff                @@\n##           version-2025.12   #20513   +/-   ##\n================================================\n  Coverage            93.27%   93.28%           \n================================================\n  Files                  947      947           \n  Lines                52619    52650   +31     \n================================================\n+ Hits                 49080    49113   +33     \n+ Misses                3539     3537    -2     \n```\n\n| [Flag](https://app.codecov.io/gh/goauthentik/authentik/pull/20513/flags?src=pr&el=flags&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | Coverage Δ | |\n|---|---|---|\n| [e2e](https://app.codecov.io/gh/goauthentik/authentik/pull/20513/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `44.34% <5.55%> (-0.03%)` | :arrow_down: |\n| [integration](https://app.codecov.io/gh/goauthentik/authentik/pull/20513/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `23.50% <5.55%> (-0.02%)` | :arrow_down: |\n| [unit](https://app.codecov.io/gh/goauthentik/authentik/pull/20513/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.58% <100.00%> (+<0.01%)` | :arrow_up: |\n| [unit-migrate](https://app.codecov.io/gh/goauthentik/authentik/pull/20513/flags?src=pr&el=flag&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik) | `91.62% <100.00%> (+<0.01%)` | :arrow_up: |\n\nFlags with carried forward coverage won't be shown. [Click here](https://docs.codecov.io/docs/carryforward-flags?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik#carryforward-flags-in-the-pull-request-comment) to find out more.\n</details>\n\n[:umbrella: View full report in Codecov by Sentry](https://app.codecov.io/gh/goauthentik/authentik/pull/20513?dropdown=coverage&src=pr&el=continue&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).   \n:loudspeaker: Have feedback on the report? [Share it here](https://about.codecov.io/codecov-pr-comment-feedback/?utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=goauthentik).",
+      "created_at": "2026-02-24T12:10:42Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "BeryJu",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-02-24T12:03:01Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "d5f475181ba2566d513ba0be5bd72a4bbd4a9b60",
+      "message": "endpoints: fix infinite recursion in stage with unsupported connector (#20485)\n\n* stages: fix infinite recursion\n\n* respect mode\n\nSigned-off-by: Jens Langhammer <jens@goauthentik.io>\n\n* add tests\n\nSigned-off-by: Jens Langhammer <jens@goauthentik.io>\n\n---------\n\nSigned-off-by: Jens Langhammer <jens@goauthentik.io>\nCo-authored-by: Jens Langhammer <jens@goauthentik.io>",
+      "author": "Connor Peshek",
+      "date": "2026-02-24T12:01:31Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "authentik/endpoints/connectors/agent/tests/test_stage.py",
+      "status": "modified",
+      "additions": 41,
+      "deletions": 0,
+      "changes": 41,
+      "patch": "@@ -1,5 +1,6 @@\n from hashlib import sha256\n from json import loads\n+from unittest.mock import PropertyMock, patch\n \n from django.urls import reverse\n from jwt import encode\n@@ -232,3 +233,43 @@ def test_endpoint_stage_ia_dth(self):\n         plan = plan()\n         self.assertNotIn(PLAN_CONTEXT_AGENT_ENDPOINT_CHALLENGE, plan.context)\n         self.assertEqual(plan.context[PLAN_CONTEXT_DEVICE], self.device)\n+\n+    def test_endpoint_stage_connector_no_stage_optional(self):\n+        flow = create_test_flow()\n+        stage = EndpointStage.objects.create(connector=self.connector, mode=StageMode.OPTIONAL)\n+        FlowStageBinding.objects.create(stage=stage, target=flow, order=0)\n+\n+        with patch(\n+            \"authentik.endpoints.connectors.agent.models.AgentConnector.stage\",\n+            PropertyMock(return_value=None),\n+        ):\n+            with self.assertFlowFinishes() as plan:\n+                res = self.client.get(\n+                    reverse(\"authentik_api:flow-executor\", kwargs={\"flow_slug\": flow.slug}),\n+                )\n+                self.assertStageRedirects(res, reverse(\"authentik_core:root-redirect\"))\n+            plan = plan()\n+            self.assertNotIn(PLAN_CONTEXT_AGENT_ENDPOINT_CHALLENGE, plan.context)\n+            self.assertNotIn(PLAN_CONTEXT_DEVICE, plan.context)\n+\n+    def test_endpoint_stage_connector_no_stage_required(self):\n+        flow = create_test_flow()\n+        stage = EndpointStage.objects.create(connector=self.connector, mode=StageMode.REQUIRED)\n+        FlowStageBinding.objects.create(stage=stage, target=flow, order=0)\n+\n+        with patch(\n+            \"authentik.endpoints.connectors.agent.models.AgentConnector.stage\",\n+            PropertyMock(return_value=None),\n+        ):\n+            with self.assertFlowFinishes() as plan:\n+                res = self.client.get(\n+                    reverse(\"authentik_api:flow-executor\", kwargs={\"flow_slug\": flow.slug}),\n+                )\n+                self.assertStageResponse(\n+                    res,\n+                    component=\"ak-stage-access-denied\",\n+                    error_message=\"Invalid stage configuration\",\n+                )\n+            plan = plan()\n+            self.assertNotIn(PLAN_CONTEXT_AGENT_ENDPOINT_CHALLENGE, plan.context)\n+            self.assertNotIn(PLAN_CONTEXT_DEVICE, plan.context)"
+    },
+    {
+      "filename": "authentik/endpoints/stage.py",
+      "status": "modified",
+      "additions": 14,
+      "deletions": 5,
+      "changes": 19,
+      "patch": "@@ -1,20 +1,29 @@\n-from authentik.endpoints.models import EndpointStage\n+from authentik.endpoints.models import EndpointStage, StageMode\n from authentik.flows.stage import StageView\n \n PLAN_CONTEXT_ENDPOINT_CONNECTOR = \"endpoint_connector\"\n \n \n class EndpointStageView(StageView):\n \n-    def _get_inner(self):\n+    def _get_inner(self) -> StageView | None:\n         stage: EndpointStage = self.executor.current_stage\n         inner_stage: type[StageView] | None = stage.connector.stage\n         if not inner_stage:\n-            return self.executor.stage_ok()\n+            return None\n         return inner_stage(self.executor, request=self.request)\n \n     def dispatch(self, request, *args, **kwargs):\n-        return self._get_inner().dispatch(request, *args, **kwargs)\n+        inner = self._get_inner()\n+        if inner is None:\n+            stage: EndpointStage = self.executor.current_stage\n+            if stage.mode == StageMode.OPTIONAL:\n+                return self.executor.stage_ok()\n+            else:\n+                return self.executor.stage_invalid(\"Invalid stage configuration\")\n+        return inner.dispatch(request, *args, **kwargs)\n \n     def cleanup(self):\n-        return self._get_inner().cleanup()\n+        inner = self._get_inner()\n+        if inner is not None:\n+            return inner.cleanup()"
+    }
+  ]
+}

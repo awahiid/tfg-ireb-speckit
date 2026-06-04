@@ -1,0 +1,83 @@
+{
+  "pr": {
+    "number": 26598,
+    "title": "fix(auth): block OAuth linking for unverified accounts",
+    "body": "## What does this PR do?\r\n\r\nHardens OAuth account linking by blocking unverified CAL accounts from linking to OAuth identity (Google/SAML). Users must verify their email before linking to OAuth, preventing account pre-hijacking attacks.\r\n\r\n### Changes\r\n\r\n| Layer | File(s) | Change |\r\n|-------|---------|--------|\r\n| Auth | `auth/lib/next-auth-options.ts` | Block OAuth linking for unverified CAL accounts |\r\n| Error | `auth/error/page.tsx` | Handle `unverified-email` error |\r\n| i18n | `locales/en/common.json` | Add user-friendly error message |\r\n\r\n### Behavior\r\n\r\n- **Unverified CAL account + OAuth login** → Blocked with error message\r\n- **Verified CAL account + OAuth login** → Normal linking flow\r\n- **Invited users (no password/username)** → Not affected (separate flow)\r\n- **Existing SAML/Google users** → Not affected\r\n\r\n### Recovery path for legitimate users\r\nUsers who created a CAL account but didn't verify can:\r\n1. Sign in with their password\r\n2. Resend verification email\r\n3. Verify email\r\n4. Then use OAuth login\r\n\r\n## How should this be tested?\r\n\r\n1. Enable `email-verification` feature flag\r\n2. Create CAL account with email X (do not verify)\r\n3. Try to login via Google OAuth with same email\r\n4. Verify error message appears with recovery instructions\r\n5. Login with password, verify email, then OAuth should work\r\n\r\n## Mandatory Tasks\r\n\r\n- [x] I have self-reviewed the code\r\n- [ ] **N/A** I have updated the developer docs\r\n- [ ] I confirm automated tests are in place",
+    "state": "closed",
+    "merged": true,
+    "user": "pedroccastro",
+    "created_at": "2026-01-08T19:36:53Z",
+    "updated_at": "2026-01-10T16:18:20Z",
+    "base": "main",
+    "head": "fix/oauth-account-linking-hardening",
+    "merge_commit_sha": "51639e38d73bbb9b833dec0efaa91ea43be1dda8"
+  },
+  "issue_comments": [
+    {
+      "user": "vercel[bot]",
+      "body": "[vc]: #j8wC3pNsnlkBsyP/gvZ5gJV/T3bk8WCRBt/F8MgHUPM=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJjYWwtY29tcGFuaW9uIiwicm9vdERpcmVjdG9yeSI6ImNvbXBhbmlvbiIsImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9jYWwtc3RhZ2luZy9jYWwtY29tcGFuaW9uL0N6aE5hN3k2Q0ZjRFBnWlpUWWZTamE4c1JEem4iLCJwcmV2aWV3VXJsIjoiY2FsLWNvbXBhbmlvbi1naXQtZml4LW9hdXRoLWFjY291bnQtbGlua2luZy0wZGVmYTQtY2FsLXN0YWdpbmcudmVyY2VsLmFwcCIsIm5leHRDb21taXRTdGF0dXMiOiJJR05PUkVEIiwibGl2ZUZlZWRiYWNrIjp7InJlc29sdmVkIjowLCJ1bnJlc29sdmVkIjowLCJ0b3RhbCI6MCwibGluayI6IiJ9fSx7Im5hbWUiOiJjYWwiLCJyb290RGlyZWN0b3J5IjoiYXBwcy93ZWIiLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoiIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9jYWwvY2FsL0RodjVqcUpUNFU1dDlWOVZyQkFNcEhoUE1wVUUiLCJuZXh0Q29tbWl0U3RhdHVzIjoiSUdOT1JFRCJ9LHsibmFtZSI6ImNhbC1ldSIsInJvb3REaXJlY3RvcnkiOiJhcHBzL3dlYiIsImxpdmVGZWVkYmFjayI6eyJyZXNvbHZlZCI6MCwidW5yZXNvbHZlZCI6MCwidG90YWwiOjAsImxpbmsiOiIifSwiaW5zcGVjdG9yVXJsIjoiaHR0cHM6Ly92ZXJjZWwuY29tL2NhbC9jYWwtZXUvN1ZIZTEzeHpxbXBOa3BCS21BaDN5N3dvQ1JONCIsIm5leHRDb21taXRTdGF0dXMiOiJJR05PUkVEIn0seyJuYW1lIjoiYXBpLXYyIiwicm9vdERpcmVjdG9yeSI6ImFwcHMvYXBpL3YyIiwiaW5zcGVjdG9yVXJsIjoiaHR0cHM6Ly92ZXJjZWwuY29tL2NhbC9hcGktdjIvNjRnMUJ5OUdWMU5WZWk5TDY0THUxREhvejN2diIsInByZXZpZXdVcmwiOiJhcGktdjItZ2l0LWZpeC1vYXV0aC1hY2NvdW50LWxpbmtpbmctaGFyZGVuaW5nLWNhbC52ZXJjZWwuYXBwIiwibmV4dENvbW1pdFN0YXR1cyI6IklHTk9SRUQiLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoiIn19XX0=\nThe latest updates on your projects. Learn more about [Vercel for GitHub](https://vercel.link/github-learn-more).\n\n\n<details><summary>4 Skipped Deployments</summary>\n\n| Project | Deployment | Review | Updated (UTC) |\n| :--- | :----- | :------ | :------ |\n| [api-v2](https://vercel.com/cal/api-v2) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/cal/api-v2/64g1By9GV1NVei9L64Lu1DHoz3vv) | [Preview](https://api-v2-git-fix-oauth-account-linking-hardening-cal.vercel.app) | Jan 10, 2026 4:18pm |\n| [cal](https://vercel.com/cal/cal) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/cal/cal/Dhv5jqJT4U5t9V9VrBAMpHhPMpUE) |  | Jan 10, 2026 4:18pm |\n| [cal-companion](https://vercel.com/cal-staging/cal-companion) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/cal-staging/cal-companion/CzhNa7y6CFcDPgZZTYfSja8sRDzn) | [Preview](https://cal-companion-git-fix-oauth-account-linking-0defa4-cal-staging.vercel.app) | Jan 10, 2026 4:18pm |\n| [cal-eu](https://vercel.com/cal/cal-eu) | ![Ignored](https://vercel.com/static/status/canceled.svg) [Ignored](https://vercel.com/cal/cal-eu/7VHe13xzqmpNkpBKmAh3y7woCRN4) |  | Jan 10, 2026 4:18pm |\n</details>\n\n\n\n\n",
+      "created_at": "2026-01-09T00:20:35Z"
+    }
+  ],
+  "review_comments": [],
+  "reviews": [
+    {
+      "user": "cubic-dev-ai[bot]",
+      "state": "COMMENTED",
+      "body": "**No issues found** across 3 files",
+      "submitted_at": "2026-01-08T19:50:54Z"
+    },
+    {
+      "user": "keithwillcode",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-01-09T10:40:01Z"
+    },
+    {
+      "user": "emrysal",
+      "state": "APPROVED",
+      "body": "",
+      "submitted_at": "2026-01-09T11:04:26Z"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "5992bcb804fdee11ed31d3ea002a9270cf65ca82",
+      "message": "fix(auth): sanitize unverified accounts during OAuth linking\n\n- Add AccountSanitizationService for secure account cleanup\n- Clear webhooks, API keys, credentials, and sessions for unverified accounts\n- Reset password and 2FA settings during OAuth conversion\n- Nullify redirect URLs on event types\n\nOnly affects accounts that never completed email verification",
+      "author": "Pedro Castro",
+      "date": "2026-01-08T19:21:10Z"
+    },
+    {
+      "sha": "933f010cd129c7daf7dff49447ac4fd6b1c2c28c",
+      "message": "fix(auth): block OAuth linking for unverified accounts\n\n  Replace sanitization with simpler blocking approach:\n  - Unverified CAL accounts cannot link to OAuth (Google/SAML)\n  - Add user-friendly error message with recovery path\n  - Remove AccountSanitizationService (no data loss risk)",
+      "author": "Pedro Castro",
+      "date": "2026-01-09T00:20:13Z"
+    }
+  ],
+  "files": [
+    {
+      "filename": "apps/web/app/(use-page-wrapper)/auth/error/page.tsx",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0,
+      "changes": 2,
+      "patch": "@@ -49,6 +49,8 @@ const ServerPage = async ({ searchParams }: PageProps) => {\n       return t(\"account_managed_by_identity_provider_error\", { provider: providerName });\n     } else if (error === \"saml-idp-not-authoritative\") {\n       return t(\"saml_idp_not_authoritative_error\");\n+    } else if (error === \"unverified-email\") {\n+      return t(\"unverified_email_oauth_error\");\n     }\n     return t(\"error_during_login\") + (error ? ` Error code: ${error}` : \"\");\n   };"
+    },
+    {
+      "filename": "apps/web/public/static/locales/en/common.json",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "patch": "@@ -4186,5 +4186,6 @@\n   \"audit_logs_permission_denied\": \"You do not have permission to view audit logs for this booking.\",\n   \"audit_logs_permission_check_error\": \"An error occurred while checking permissions.\",\n   \"account_already_exists_please_login\": \"An account with this email already exists. Please log in to accept the invitation.\",\n+  \"unverified_email_oauth_error\": \"Please verify your email address before signing in with Google or SAML. Sign in with your password to resend the verification email.\",\n   \"ADD_NEW_STRINGS_ABOVE_THIS_LINE_TO_PREVENT_MERGE_CONFLICTS\": \"↑↑↑↑↑↑↑↑↑↑↑↑↑ Add your new strings above here ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\"\n }"
+    },
+    {
+      "filename": "packages/features/auth/lib/next-auth-options.ts",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 1,
+      "changes": 6,
+      "patch": "@@ -1075,6 +1075,11 @@ export const getOptions = ({\n             existingUserWithEmail.identityProvider === IdentityProvider.CAL &&\n             (idP === IdentityProvider.GOOGLE || idP === IdentityProvider.SAML)\n           ) {\n+            // Prevent account pre-hijacking: block OAuth linking for unverified accounts\n+            if (!existingUserWithEmail.emailVerified) {\n+              return \"/auth/error?error=unverified-email\";\n+            }\n+\n             // Verify SAML IdP is authoritative before converting account\n             if (idP === IdentityProvider.SAML) {\n               const samlTenant = getSamlTenant();\n@@ -1086,7 +1091,6 @@ export const getOptions = ({\n \n             await prisma.user.update({\n               where: { email: existingUserWithEmail.email },\n-              // also update email to the IdP email\n               data: {\n                 email: user.email.toLowerCase(),\n                 identityProvider: idP,"
+    }
+  ]
+}
