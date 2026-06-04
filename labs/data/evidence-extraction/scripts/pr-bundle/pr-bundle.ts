@@ -1,21 +1,36 @@
 import { Octokit } from "@octokit/rest";
 import fs from "fs";
+import path from "path";
 
 const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
 });
 
 type Dataset = {
+    meta: {
+        repo: string;
+    };
     entries: {
         id: string;
         pr_number: number;
     }[];
 };
 
-const owner = "goauthentik";
-const repo = "authentik";
+const DATASETS_DIR = path.resolve(
+    "../../evidence"
+);
 
-async function getPRBundle(pr_number: number) {
+const OUTPUT_BASE = path.resolve(
+    "../../evidence"
+);
+
+function ensureDir(dir: string) {
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+}
+
+async function getPRBundle(owner: string, repo: string, pr_number: number) {
     const { data: pr } = await octokit.pulls.get({
         owner,
         repo,
@@ -107,22 +122,51 @@ async function getPRBundle(pr_number: number) {
     };
 }
 
-async function run(dataset: Dataset) {
-    const out: Record<string, any> = {};
+async function savePR(repo: string, entryId: string, data: any) {
+    const repoDir = path.join(OUTPUT_BASE, repo);
+    ensureDir(repoDir);
+
+    const filePath = path.join(repoDir, `${entryId}.json`);
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+}
+
+function loadDatasets(dir: string): string[] {
+    return fs
+        .readdirSync(dir)
+        .filter(f => f.endsWith(".json"))
+        .map(f => path.join(dir, f));
+}
+
+async function runDataset(filePath: string) {
+    const dataset: Dataset = JSON.parse(
+        fs.readFileSync(filePath, "utf-8")
+    );
+
+    const repoFull = dataset.meta.repo; // goauthentik/authentik
+    const [owner, repo] = repoFull.split("/");
 
     for (const entry of dataset.entries) {
         try {
-            out[entry.id] = await getPRBundle(entry.pr_number);
+            const bundle = await getPRBundle(owner, repo, entry.pr_number);
+
+            await savePR(repo, entry.id, bundle);
+
             await new Promise(r => setTimeout(r, 300));
         } catch (e: any) {
-            out[entry.id] = { error: e.message };
+            await savePR(repo, entry.id, {
+                error: e.message,
+                pr_number: entry.pr_number,
+            });
         }
     }
-
-    fs.writeFileSync("pr_dump.json", JSON.stringify(out, null, 2));
 }
 
-// load dataset
-const dataset = JSON.parse(fs.readFileSync("dataset.json", "utf-8"));
+async function run() {
+    const datasets = loadDatasets(DATASETS_DIR);
 
-run(dataset);
+    for (const file of datasets) {
+        await runDataset(file);
+    }
+}
+
+run();
