@@ -138,7 +138,7 @@ async function savePR(repo: string, entryId: string, data: any) {
 function loadDatasets(dir: string): string[] {
     return fs
         .readdirSync(dir)
-        .filter(f => f.endsWith(".json"))
+        .filter(f => f.endsWith(".json") && !f.includes("template"))
         .map(f => path.join(dir, f));
 }
 

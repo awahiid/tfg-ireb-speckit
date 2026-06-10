@@ -1,0 +1,224 @@
+{
+  "meta": {
+    "project": "Appwrite evidence extraction",
+    "repo": "appwrite/appwrite",
+    "generated": "2026-06-10",
+    "schema_version": "1.0-evidence-only",
+    "literal_only": true,
+    "no_requirement_redaction": true,
+    "undetermined_value": null,
+    "selection_policy": "recent-first, sufficient-threshold"
+  },
+  "entries": [
+    {
+      "id": "appwrite-e1",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "MongoDB support (#11312).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/11312",
+      "pr_number": 11312,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": [],
+        "surface_terms": ["MongoDB", "database support", "adapter"],
+        "critical_terms": ["database", "storage"]
+      }
+    },
+    {
+      "id": "appwrite-e2",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "String types — New varchar, text, mediumtext, and longtext attribute types (#11174).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/11174",
+      "pr_number": 11174,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": [],
+        "surface_terms": ["varchar", "text", "mediumtext", "longtext", "attribute types"],
+        "critical_terms": ["schema", "string", "database"]
+      }
+    },
+    {
+      "id": "appwrite-e3",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "Cached document lists — Document list queries can be cached with configurable TTL (#10832).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/10832",
+      "pr_number": 10832,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": ["GET"],
+        "paths": ["/databases/{databaseId}/collections/{collectionId}/documents"],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["configurable TTL"],
+        "surface_terms": ["document list queries", "cache", "TTL"],
+        "critical_terms": ["performance", "caching", "api"]
+      }
+    },
+    {
+      "id": "appwrite-e4",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "Webhooks API — First-class webhooks management endpoints for creating, listing, and managing webhook configurations (#11033, #11566).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/11033",
+      "pr_number": 11033,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": ["#11566"],
+      "literal_features": {
+        "http_methods": ["POST", "GET", "PUT", "DELETE"],
+        "paths": ["/webhooks"],
+        "cli_commands": [],
+        "actors": ["admins"],
+        "conditions": [],
+        "surface_terms": ["webhooks", "management endpoints", "webhook configurations"],
+        "critical_terms": ["api", "webhooks", "events"]
+      }
+    },
+    {
+      "id": "appwrite-e5",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "User impersonation — Admins can now impersonate users for debugging and support (#11533).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/11533",
+      "pr_number": 11533,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": ["POST"],
+        "paths": [],
+        "cli_commands": [],
+        "actors": ["admins", "users"],
+        "conditions": ["for debugging and support"],
+        "surface_terms": ["impersonation", "impersonate users"],
+        "critical_terms": ["auth", "security", "admin"]
+      }
+    },
+    {
+      "id": "appwrite-e6",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "Query subscriptions — Subscribe to realtime channels with query filters for targeted updates (#11202, #11237).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/11202",
+      "pr_number": 11202,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": ["#11237"],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["with query filters"],
+        "surface_terms": ["realtime channels", "query subscriptions", "targeted updates"],
+        "critical_terms": ["realtime", "websocket", "subscription"]
+      }
+    },
+    {
+      "id": "appwrite-e7",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "Custom JWT duration — Configure JWT expiration time when creating tokens (#11009).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/11009",
+      "pr_number": 11009,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": ["POST"],
+        "paths": [],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["when creating tokens"],
+        "surface_terms": ["JWT duration", "JWT expiration time", "tokens"],
+        "critical_terms": ["auth", "JWT", "security"]
+      }
+    },
+    {
+      "id": "appwrite-e8",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "OAuth email verification — Enforce email verification when linking OAuth2 providers (#10986).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/10986",
+      "pr_number": 10986,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": [],
+        "paths": [],
+        "cli_commands": [],
+        "actors": ["users"],
+        "conditions": ["when linking OAuth2 providers"],
+        "surface_terms": ["OAuth email verification", "OAuth2 providers", "email verification"],
+        "critical_terms": ["auth", "OAuth", "security"]
+      }
+    },
+    {
+      "id": "appwrite-e9",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "File encryption/compression parameters — Configure per-file encryption and compression (#11135).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/11135",
+      "pr_number": 11135,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": ["POST", "PUT"],
+        "paths": ["/storage/buckets/{bucketId}/files"],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["per-file"],
+        "surface_terms": ["file encryption", "compression parameters", "per-file"],
+        "critical_terms": ["storage", "encryption", "security"]
+      }
+    },
+    {
+      "id": "appwrite-e10",
+      "release_tag": "1.9.0",
+      "release_url": "https://github.com/appwrite/appwrite/releases/tag/1.9.0",
+      "entry_text": "Sparse document updates — updateDocument() sends only changed attributes (#11465).",
+      "pr_url": "https://github.com/appwrite/appwrite/pull/11465",
+      "pr_number": 11465,
+      "pr_url_valid": true,
+      "pr_merged": null,
+      "entry_text_in_release": true,
+      "extra_trace_ids": [],
+      "literal_features": {
+        "http_methods": ["PATCH"],
+        "paths": ["/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"],
+        "cli_commands": [],
+        "actors": [],
+        "conditions": ["only changed attributes"],
+        "surface_terms": ["sparse document updates", "updateDocument()", "changed attributes"],
+        "critical_terms": ["performance", "api", "database"]
+      }
+    }
+  ]
+}

@@ -42,6 +42,22 @@ Los repositorios seleccionados deben cumplir los siguientes criterios:
 - **Calidad de trazabilidad**: los changelogs deben referenciar PRs o commits con diff localizable y verificable.
 - **Sencillez relativa del dominio**: los cambios deben ser comprensibles sin conocimiento altamente especializado, de forma que la derivación de requisitos sea razonable y evaluable.
 
+Los repositorios no se escogen al azar. Cada uno representa un tipo distinto de problema dentro del espectro del desarrollo de software, cubriendo de forma equilibrada los dominios que dominan las taxonomías empíricas de la ingeniería de software (construcción, diseño, requisitos, mantenimiento). La clasificación se basa en la naturaleza del sistema, no en el dominio de negocio, siguiendo la premisa de que el software se divide por tipo de problema a resolver, no por sector. Los seis tipos seleccionados y su asignación son:
+
+1. **Transactional systems** (sistemas transaccionales): SaaS, CRUD, REST APIs, aplicaciones de negocio. Representado por **Appwrite**, un backend-as-a-service que expone APIs REST transaccionales para datos, autenticación, almacenamiento y funciones.
+
+2. **Financial / state consistency systems** (sistemas financieros y de consistencia de estado): e-commerce, sistemas de facturación, pedidos, pagos. Representado por **Medusa**, plataforma de comercio electrónico con gestión de órdenes, pagos y control de estado transaccional.
+
+3. **Identity & security systems** (sistemas de identidad y seguridad): autenticación, RBAC, sesiones, flujos de autorización. Representado por **Authentik**, proveedor de identidad open source con soporte para múltiples protocolos y control de acceso basado en roles.
+
+4. **Collaboration systems** (sistemas colaborativos): estado multiusuario, manejo de concurrencia, notificaciones, workflows compartidos. Representado por **Cal.com**, plataforma de scheduling colaborativo con gestión de disponibilidad y notificaciones entre múltiples actores.
+
+5. **Data / content systems** (sistemas de datos y contenido): CMS, esquemas dinámicos, flujos editoriales, pipelines de contenido. Representado por **Directus**, headless CMS con esquemas dinámicos, API autogenerada y flujos de contenido configurables.
+
+6. **Integration / service composition systems** (sistemas de integración y composición de servicios): agregación de APIs, webhooks, sistemas guiados por eventos, orquestación de servicios. Representado por **n8n**, plataforma de automatización de workflows con composición visual de servicios y webhooks.
+
+Esta clasificación garantiza que el corpus cubra un espectro amplio de tipos de sistemas software, lo que refuerza la validez externa del estudio al no limitar la evaluación a un único tipo de aplicación. Cada repositorio aporta cambios característicos de su categoría: reglas de negocio transaccionales en Medusa, flujos de autorización en Authentik, sincronización de estado multiusuario en Cal.com, transformaciones de contenido en Directus y composición dirigida por eventos en n8n. Appwrite añade el patrón de API transaccional CRUD que subyace a la mayoría de aplicaciones SaaS modernas.
+
 ### 1.2 Rúbrica de selección de cambios
 
 Para la selección de cambios individuales se definió una rúbrica pragmática orientada a evidencia candidata, organizada en cuatro dimensiones:
