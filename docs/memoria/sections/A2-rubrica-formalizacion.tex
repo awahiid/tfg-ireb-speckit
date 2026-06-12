@@ -1,0 +1,45 @@
+\section{R\'ubrica de validaci\'on de formalizaci\'on}
+\label{sec:anexo-rubrica}
+
+La r\'ubrica opera como \emph{quality gate} sobre los requisitos derivados. Cada criterio se eval\'ua de forma binaria (1 punto si cumple, 0 si no).
+
+\subsection*{Bloque A. Identificaci\'on y gesti\'on}
+
+\begin{itemize}
+    \item \textbf{R1. Identificador \'unico}: formato \texttt{REQ-[DOMINIO]-[NNN]}.
+    \item \textbf{R2. Clasificaci\'on v\'alida}: uno de Funcional, Calidad o Restricci\'on.
+    \item \textbf{R3. Fuente trazable}: URL de \emph{release} o referencia a PR.
+    \item \textbf{R4. Prioridad asignada}: Alta, Media o Baja.
+    \item \textbf{R4b. Dependencias documentadas}: IDs con formato \texttt{REQ-[DOMINIO]-[NNN]}.
+    \item \textbf{R4c. M\'odulo asignado}: referencia al subsistema o componente.
+\end{itemize}
+
+\subsection*{Bloque B. Redacci\'on y verificabilidad}
+
+\begin{itemize}
+    \item \textbf{R5. Estructura formal}: ``El sistema deber\'a [verbo] [objeto] [condici\'on]''.
+    \item \textbf{R6. Obligaci\'on \'unica}: un \'unico comportamiento principal.
+    \item \textbf{R7. Verbo observable}: \emph{generar}, \emph{registrar}, \emph{rechazar}, \emph{devolver}.
+    \item \textbf{R8. Ausencia de ambig\"uedad cr\'itica}: sin t\'erminos subjetivos.
+    \item \textbf{R9. Verificabilidad observable}: criterio de verificaci\'on expl\'icito.
+\end{itemize}
+
+\subsection*{Bloque C. Completitud contextual}
+
+\begin{itemize}
+    \item \textbf{R10. Autosuficiencia}: comprensible sin consultar otros requisitos.
+\end{itemize}
+
+\subsection*{Puntuaci\'on y umbral de aceptaci\'on}
+
+M\'aximo 12 puntos.
+
+\begin{itemize}
+    \item \textbf{11--12}: Aceptado.
+    \item \textbf{9--10}: Revisi\'on menor (salvo que afecte a R5, R7, R8 o R9).
+    \item $\leq$ \textbf{8}: Rechazado.
+\end{itemize}
+
+\subsection*{Criterios bloqueantes}
+
+Independientemente de la puntuaci\'on total, un requisito se rechaza autom\'aticamente si incumple R5 (estructura formal ausente), R7 (verbo no observable) o R9 (sin verificabilidad).

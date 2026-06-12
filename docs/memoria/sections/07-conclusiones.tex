@@ -1,0 +1,28 @@
+\section{Conclusiones}
+\label{sec:conclusiones}
+
+\subsection{Contribuciones del trabajo}
+
+Este trabajo ha realizado un mapeo sistem\'atico del flujo de trabajo de \speckit{} contra un flujo profesional de ingenier\'ia de requisitos basado en normas IREB, ISO 29148 e INCOSE. Las principales contribuciones son:
+
+\begin{enumerate}
+    \item \textbf{Caracterizaci\'on documentada del flujo SDD de SpecKit}: se ha documentado el flujo completo de \speckit{} (v0.10.2) a partir de sus fuentes oficiales, incluyendo comandos \emph{core} y opcionales, artefactos generados, mecanismos de calidad y arquitectura extensible.
+    
+    \item \textbf{Mapa de alineaci\'on IREB--SpecKit}: se ha producido un mapa detallado que contrasta cada actividad IREB (elicitaci\'on, documentaci\'on, validaci\'on, gesti\'on) y cada criterio de calidad de ISO 29148 con los comandos y artefactos de \speckit{}, identificando el nivel de cobertura (alineado, parcial, no cubierto).
+    
+    \item \textbf{Corpus de requisitos reales formalizados}: se ha construido un corpus de 52 requisitos extra\'idos de \emph{changelogs} de 6 proyectos \emph{open source} representativos, formalizados siguiendo una plantilla con 12 atributos basados en IREB y validados mediante una r\'ubrica de 12 criterios.
+    
+    \item \textbf{Identificaci\'on de brechas y \'areas grises}: se han identificado las principales diferencias entre el enfoque SDD y el normativo, destacando la ausencia de elicitaci\'on sistem\'atica, la falta de clasificaci\'on por tipos de requisito, la validaci\'on exclusivamente interna y la ausencia de gesti\'on de cambios.
+\end{enumerate}
+
+\subsection{Conclusiones principales}
+
+\textbf{SpecKit no es una herramienta IREB-compliant, pero no necesita serlo.} Su cobertura global de las actividades IREB se estima en aproximadamente 2.5/10, pero esta valoraci\'on no constituye una cr\'itica, sino una constataci\'on de que ambas herramientas operan en niveles diferentes de abstracci\'on: IREB define \emph{qu\'e} debe hacerse en ingenier\'ia de requisitos; \speckit{} define \emph{c\'omo} generar c\'odigo a partir de descripciones.
+
+\textbf{La integraci\'on es posible y deseable.} La separaci\'on de responsabilidades es clara: el ingeniero de requisitos realiza la elicitaci\'on y formalizaci\'on siguiendo IREB; \speckit{} transforma los requisitos formalizados en implementaciones. Esta divisi\'on es precisamente la que valida la metodolog\'ia propuesta: un proceso IREB aplicado manualmente puede alimentar a \speckit{} con requisitos de calidad suficiente para generar implementaciones.
+
+\textbf{SDD e IREB son complementarios, no sustitutivos.} El valor de \speckit{} reside en la generaci\'on autom\'atica de c\'odigo, no en la gesti\'on del ciclo de vida de los requisitos. Las herramientas profesionales (DOORS, Jama, Polarion) gestionan requisitos pero no generan c\'odigo. La complementariedad es evidente y el presente mapeo proporciona una base para explorar integraciones pr\'acticas.
+
+\subsection{Reflexi\'on final}
+
+La irrupci\'on de herramientas de IA para la generaci\'on de c\'odigo no hace obsoleta la ingenier\'ia de requisitos, sino que la hace m\'as necesaria que nunca. Como se\~nal\'o el Dr. Kim Lauenroth en la conferencia AIDE\#26 (2026): ``AI amplifies what we put in --- good and bad. Methodological maturity decides the outcome''. Este trabajo contribuye a entender, desde una perspectiva basada en normas, qu\'e lugar ocupa una herramienta como \speckit{} en el ecosistema de la ingenier\'ia de requisitos y c\'omo puede integrarse de forma efectiva en un flujo profesional.

@@ -1,0 +1,30 @@
+\section{Introducci\'on}
+\label{sec:introduccion}
+
+\subsection{Motivaci\'on}
+
+La ingenier\'ia de requisitos es una disciplina fundamental en el desarrollo de software. Como se\~nala el \ireb{} CPRE Foundation Level Handbook, un enfoque sistem\'atico y disciplinado para la especificaci\'on y gesti\'on de requisitos reduce el riesgo de entregar un sistema que no satisface las necesidades de sus \emph{stakeholders} \cite[pp.~10--11]{cpre}.
+
+En paralelo, la irrupci\'on de herramientas de inteligencia artificial para la generaci\'on de c\'odigo ha transformado el panorama del desarrollo de software. Entre ellas, \speckit{} ---un \emph{toolkit} de c\'odigo abierto desarrollado por GitHub--- propone un flujo de trabajo estructurado denominado \sdd{}, en el que las especificaciones se convierten en el artefacto principal del que se derivan implementaciones \cite{speckit_repo,speckit_sdd}.
+
+Sin embargo, \speckit{} no se presenta como una herramienta de ingenier\'ia de requisitos, sino como un generador de c\'odigo asistido por IA que utiliza un pipeline estructurado. Surge entonces la pregunta de hasta qu\'e punto su flujo de trabajo se alinea con las pr\'acticas establecidas por la ingenier\'ia de requisitos profesional basada en normas.
+
+\subsection{Objetivo y pregunta de investigaci\'on}
+
+El objetivo de este trabajo es \textbf{mapear sistem\'aticamente el flujo de trabajo de \speckit{} contra un flujo profesional de ingenier\'ia de requisitos basado en normas}, tomando como referencia el \ireb{} CPRE Foundation Level \cite{cpre}, la norma ISO/IEC/IEEE 29148 \cite{iso29148} y la gu\'ia INCOSE para la redacci\'on de requisitos \cite{incose}.
+
+La pregunta central que gu\'ia el estudio es:
+
+\begin{quote}
+\emph{¿En qu\'e medida se alinea el pipeline de \sdd{} de \speckit{} con las actividades, criterios de calidad y artefactos definidos por un flujo de ingenier\'ia de requisitos profesional basado en normas?}
+\end{quote}
+
+Esta pregunta tiene dos dimensiones complementarias:
+\begin{itemize}
+    \item \textbf{Descriptiva}: documentar el flujo real de \speckit{} (comandos, artefactos, mecanismos de calidad) tal como est\'a definido en su documentaci\'on oficial.
+    \item \textbf{Comparativa}: contrastar ese flujo con el marco normativo, identificando alineaciones, brechas y \'areas grises.
+\end{itemize}
+
+\subsection{Estructura del documento}
+
+El resto de la memoria se organiza de la siguiente manera. El cap\'itulo~\ref{sec:marco-ireb} presenta el marco te\'orico de referencia basado en IREB, ISO 29148 e INCOSE. El cap\'itulo~\ref{sec:speckit} describe el flujo de trabajo de \speckit{} y la filosof\'ia \sdd. El cap\'itulo~\ref{sec:metodologia} detalla la metodolog\'ia empleada para el mapeo. El cap\'itulo~\ref{sec:resultados} presenta los resultados del an\'alisis. El cap\'itulo~\ref{sec:discusion} discute las implicaciones y limitaciones. Finalmente, el cap\'itulo~\ref{sec:conclusiones} recoge las conclusiones y el trabajo futuro.

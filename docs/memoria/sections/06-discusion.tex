@@ -1,0 +1,37 @@
+\section{Discusi\'on}
+\label{sec:discusion}
+
+\subsection{Interpretaci\'on de los resultados}
+
+El mapeo realizado revela que \speckit{} no es, ni pretende ser, una herramienta de ingenier\'ia de requisitos conforme a IREB. Su cobertura de las actividades fundamentales es desigual: fuerte en documentaci\'on estructurada (5/10), d\'ebil en validaci\'on (2/10) y ausente en elicitaci\'on (1/10) y gesti\'on de requisitos (2/10). Esta distribuci\'on no es una deficiencia, sino una consecuencia de su prop\'osito: \speckit{} est\'a dise\~nado para la generaci\'on de c\'odigo, no para la gesti\'on del ciclo de vida de los requisitos.
+
+Sin embargo, el an\'alisis revela que la brecha no es insalvable. La arquitectura de \speckit{} ---basada en plantillas, comandos extensibles, presets y \emph{workflows}--- ofrece puntos de entrada claros para incorporar pr\'acticas IREB. Un ``preset IREB'' podr\'ia modificar las plantillas de especificaci\'on para incluir atributos como tipo, fuente, \emph{rationale} y prioridad, mientras que una extensi\'on podr\'ia a\~nadir verificaci\'on de consistencia con criterios ISO 29148.
+
+\subsection{Implicaciones para la pr\'actica}
+
+Los resultados sugieren que \speckit{} puede utilizarse dentro de un flujo IREB siempre que la elicitaci\'on y la formalizaci\'on de requisitos se realicen previamente de forma manual o con otras herramientas. El pipeline SDD funciona como un ``generador de \'ultima milla'' que transforma requisitos ya formalizados en implementaciones, pero no debe esperarse que realice las tareas de descubrimiento y an\'alisis que corresponden al ingeniero de requisitos.
+
+Esta separaci\'on de responsabilidades es coherente con la visi\'on de IREB: la herramienta de generaci\'on de c\'odigo no reemplaza al ingeniero de requisitos, sino que automatiza la parte mec\'anica de la transformaci\'on especificaci\'on--implementaci\'on.
+
+\subsection{Limitaciones del estudio}
+
+El presente trabajo tiene varias limitaciones que deben considerarse al interpretar sus resultados:
+
+\begin{itemize}
+    \item \textbf{Corpus limitado}: 52 requisitos de 6 proyectos, aunque representativos de distintos tipos de sistema, no constituyen una muestra estad\'isticamente significativa.
+    \item \textbf{Fuentes de elicitaci\'on acotadas}: los \emph{changelogs} son la fuente principal. No se incluyeron sistem\'aticamente \emph{issues}, \emph{diffs} completos ni revisiones de c\'odigo como fuentes complementarias.
+    \item \textbf{Ejecuci\'on de SpecKit pendiente}: los resultados del mapeo din\'amico (c\'omo responde \speckit{} a los requisitos) est\'an pendientes de la ejecuci\'on del pipeline.
+    \item \textbf{Sin validaci\'on externa}: la r\'ubrica SRCI es aplicada por un \'unico evaluador. No hay inter- evaluador que permita calibrar la consistencia de las clasificaciones.
+    \item \textbf{Alcance exploratorio}: el trabajo se enmarca como estudio de caso exploratorio, no como experimento controlado. Los patrones identificados son cualitativos y no generalizables estad\'isticamente.
+\end{itemize}
+
+\subsection{Trabajo futuro}
+
+Las siguientes l\'ineas de trabajo podr\'ian extender los resultados obtenidos:
+
+\begin{enumerate}
+    \item \textbf{Preset IREB para SpecKit}: desarrollar y evaluar un \emph{preset} que modifique las plantillas de \speckit{} para incluir atributos IREB (tipo, fuente, \emph{rationale}, prioridad) y \emph{checklists} basados en ISO 29148.
+    \item \textbf{Extensi\'on de elicitaci\'on}: implementar un comando \texttt{/speckit.elicit} que asista en la identificaci\'on de \emph{stakeholders}, fuentes y contexto del sistema.
+    \item \textbf{Evaluaci\'on con m\'ultiples evaluadores}: replicar el an\'alisis SRCI con varios evaluadores para calibrar la consistencia de la r\'ubrica.
+    \item \textbf{Ampliaci\'on del corpus}: incorporar proyectos de otros dominios (sistemas cr\'iticos, IoT, tiempo real) para evaluar la generalidad del mapeo.
+\end{enumerate}

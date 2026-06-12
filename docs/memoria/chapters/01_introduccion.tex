@@ -1,0 +1,61 @@
+\chapter{\introductionname}
+\label{chap:introduccion}
+
+\section{Motivaci\'on}
+
+La ingenier\'ia de requisitos es una disciplina fundamental en el desarrollo de software. Como se\~nala el IREB CPRE Foundation Level Handbook, un enfoque sistem\'atico y disciplinado para la especificaci\'on y gesti\'on de requisitos reduce el riesgo de entregar un sistema que no satisface las necesidades de sus \emph{stakeholders}~\cite{cpre}.
+
+En paralelo, la irrupci\'on de herramientas de inteligencia artificial para la generaci\'on de c\'odigo ha transformado el panorama del desarrollo de software. Entre ellas, \textsc{SpecKit} ---un \emph{toolkit} de c\'odigo abierto desarrollado por GitHub--- propone un flujo de trabajo estructurado denominado \emph{Spec-Driven Development} (SDD), en el que las especificaciones se convierten en el artefacto principal del que se derivan implementaciones~\cite{speckit_repo,speckit_sdd}.
+
+Sin embargo, \textsc{SpecKit} no se presenta como una herramienta de ingenier\'ia de requisitos, sino como un generador de c\'odigo asistido por IA que utiliza un pipeline estructurado. Surge entonces la pregunta de hasta qu\'e punto su flujo de trabajo se alinea con las pr\'acticas establecidas por la ingenier\'ia de requisitos profesional basada en normas.
+
+\section{Problema y pregunta de investigaci\'on}
+
+El problema que aborda este trabajo es la ausencia de un an\'alisis sistem\'atico que documente en qu\'e medida los pipelines SDD implementados con herramientas como \textsc{SpecKit} se alinean con las actividades, criterios de calidad y artefactos definidos por un flujo RE profesional basado en normas.
+
+La pregunta central que gu\'ia el estudio es:
+
+\begin{quote}
+\emph{¿En qu\'e medida se alinea el pipeline de SDD de \textsc{SpecKit} con las actividades, criterios de calidad y artefactos definidos por un flujo de ingenier\'ia de requisitos profesional basado en normas?}
+\end{quote}
+
+Esta pregunta tiene dos dimensiones complementarias:
+\begin{itemize}
+    \item \textbf{Dimensi\'on descriptiva}: documentar el flujo real de \textsc{SpecKit} ---sus comandos, artefactos y mecanismos de calidad--- tal como est\'a definido en su documentaci\'on oficial.
+    \item \textbf{Dimensi\'on comparativa}: contrastar ese flujo con el marco normativo de RE profesional, identificando alineaciones, brechas y \'areas grises.
+\end{itemize}
+
+\section{Objetivos}
+
+El objetivo principal de este trabajo es construir un mapa de alineaci\'on entre el pipeline SDD de \textsc{SpecKit} y el flujo RE normativo. Los objetivos espec\'ificos son:
+
+\begin{enumerate}
+    \item Construir un corpus de requisitos derivados de proyectos \emph{Open Source} representativos.
+    \item Formalizar el corpus siguiendo la plantilla IREB con atributos de calidad ISO 29148.
+    \item Ejecutar el pipeline ampliado de \textsc{SpecKit} sobre el corpus y registrar los artefactos generados.
+    \item Aplicar la r\'ubrica SRCI para categorizar cada caso de mapeo.
+    \item Identificar patrones de alineaci\'on y desviaci\'on por tipo de requisito y tipo de sistema.
+    \item Derivar implicaciones para la adopci\'on de SDD en entornos con requisitos de calidad RE.
+\end{enumerate}
+
+\section{Alcance y limitaciones}
+
+El estudio se enmarca como an\'alisis cualitativo-exploratorio, no como experimento estad\'istico. El corpus se limita a proyectos \emph{Open Source} con \emph{changelogs} trazables. \textsc{SpecKit} es una herramienta en desarrollo activo (v0.10.2, junio 2026), por lo que los resultados son v\'alidos para la versi\'on analizada. El mapeo eval\'ua el requisito formalizado tal como se deriv\'o, no necesariamente el comportamiento completo del \emph{diff} original.
+
+\section{Estructura del documento}
+
+El cap\'itulo~\ref{chap:marco-ireb} presenta el marco te\'orico de referencia basado en IREB, ISO 29148 e INCOSE. El cap\'itulo~\ref{chap:speckit} describe \textsc{SpecKit} y la filosof\'ia SDD. El cap\'itulo~\ref{chap:metodologia} detalla la metodolog\'ia de mapeo. El cap\'itulo~\ref{chap:corpus} presenta el corpus de requisitos. El cap\'itulo~\ref{chap:resultados} expone los resultados del an\'alisis. El cap\'itulo~\ref{chap:discusion} discute las implicaciones. Finalmente, el cap\'itulo~\ref{chap:conclusiones} recoge las conclusiones y el trabajo futuro.
+\label{fig:logoEpcc}
+\end{figure}
+
+\section{Código}
+El código se puede insertar así: 
+% linenos indica si se muestra el número de línea
+\begin{minted}[linenos=false]{bash}
+echo "Este es un ejemplo de cómo se inserta código con la plantilla de Trabajo Fin de Estudios de la Escuela Politécnica de Cáceres"
+\end{minted}
+
+También se puede seleccionar desde un fichero, por ejemplo:
+\inputminted[firstline=1,lastline=7]{cpp}{code/example.cpp}
+
+Los lenguajes reconocidos para marcar se pueden consultar en \url{https://pygments.org/docs/lexers/}. Aunque depende del tipo de trabajo, se recomienda incluir código sólo en anexos.

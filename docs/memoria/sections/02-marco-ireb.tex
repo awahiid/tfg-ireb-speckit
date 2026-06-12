@@ -1,0 +1,78 @@
+\section{Marco te\'orico: IREB e ingenier\'ia de requisitos basada en normas}
+\label{sec:marco-ireb}
+
+\subsection{El CPRE Foundation Level Handbook}
+
+El \ireb{} (International Requirements Engineering Board) define un marco de referencia para la ingenier\'ia de requisitos a trav\'es de su programa de certificaci\'on CPRE (Certified Professional for Requirements Engineering). El \textit{Foundation Level Handbook} \cite{cpre} establece los fundamentos conceptuales y las buenas pr\'acticas de la disciplina.
+
+El handbook define \textbf{requisito} desde tres puntos de vista complementarios: como una necesidad percibida por un \emph{stakeholder}, como una capacidad o propiedad que el sistema debe tener, y como la representaci\'on documentada de esa necesidad o capacidad \cite[p.~10]{cpre}. Define \textbf{Requirements Engineering} como el enfoque sistem\'atico y disciplinado para especificar y gestionar requisitos con el objetivo de entender los deseos y necesidades de los \emph{stakeholders} y reducir el riesgo de entregar un sistema inadecuado \cite[pp.~10--11]{cpre}.
+
+\subsection{Las tres actividades fundamentales}
+
+IREB distingue tres actividades fundamentales en ingenier\'ia de requisitos \cite[pp.~16--28]{cpre}:
+
+\begin{enumerate}
+    \item \textbf{Elicitaci\'on}: el proceso de buscar, capturar y consolidar requisitos desde fuentes disponibles, incluyendo la posible reconstrucci\'on o creaci\'on de requisitos. Las fuentes t\'ipicas incluyen \emph{stakeholders}, documentos, sistemas existentes y observaciones.
+    \item \textbf{Documentaci\'on}: la especificaci\'on estructurada de requisitos siguiendo criterios de calidad. IREB recomienda el uso de plantillas (\emph{phrase templates}, \emph{form templates}, \emph{document templates}) y atributos (ID, nombre, fuente, prioridad, \emph{rationale}, estado, versi\'on).
+    \item \textbf{Validaci\'on}: el proceso de confirmar que los requisitos documentados reflejan las necesidades reales de los \emph{stakeholders}. T\'ecnicas como la inspecci\'on formal, las revisiones estructuradas y el prototipado se emplean para este fin.
+\end{enumerate}
+
+A estas tres actividades se a\~nade una transversal de \textbf{gesti\'on de requisitos}, que abarca el almacenamiento, versionado, trazabilidad y control de cambios de los requisitos durante todo su ciclo de vida.
+
+\subsection{Los nueve principios fundamentales}
+
+El handbook establece nueve principios fundamentales \cite[pp.~16--18]{cpre} que constituyen la base metodol\'ogica de la disciplina:
+
+\begin{enumerate}[leftmargin=1.2em]
+    \item \textbf{Orientaci\'on al valor.} Los requisitos son un medio para obtener resultados, no un fin documental.
+    \item \textbf{Implicaci\'on de \emph{stakeholders}.} RE busca satisfacer deseos y necesidades de las partes interesadas.
+    \item \textbf{Entendimiento compartido.} Sin base com\'un entre actores, el desarrollo falla.
+    \item \textbf{Contexto del sistema.} El sistema no se entiende aislado de su entorno.
+    \item \textbf{Problema-requisito-soluci\'on.} Tr\'iada fuertemente entrelazada que gu\'ia el an\'alisis.
+    \item \textbf{Validaci\'on.} Un requisito no validado no aporta valor real.
+    \item \textbf{Evoluci\'on.} El cambio de requisitos es normal, no excepcional.
+    \item \textbf{Innovaci\'on.} Repetir lo mismo no basta en muchos contextos.
+    \item \textbf{Trabajo sistem\'atico y disciplinado.} Imprescindible para mantener calidad y control.
+\end{enumerate}
+
+\subsection{ISO/IEC/IEEE 29148 y criterios de calidad}
+
+La norma ISO/IEC/IEEE 29148 \cite{iso29148} define los criterios de calidad que debe cumplir un requisito bien formado. Los m\'as relevantes para este trabajo son:
+
+\begin{itemize}
+    \item \textbf{Necesario}: el requisito debe ser esencial para el sistema.
+    \item \textbf{Singular}: debe expresar una \'unica obligaci\'on.
+    \item \textbf{Completo}: debe contener toda la informaci\'on necesaria.
+    \item \textbf{Realizable}: debe ser t\'ecnicamente factible.
+    \item \textbf{Verificable}: debe poder comprobarse su cumplimiento mediante prueba, an\'alisis, inspecci\'on o demostraci\'on.
+    \item \textbf{No ambiguo}: debe admitir una \'unica interpretaci\'on.
+    \item \textbf{Consistente}: no debe contradecir otros requisitos.
+    \item \textbf{Trazable}: debe poder seguirse hacia sus fuentes y hacia su implementaci\'on.
+\end{itemize}
+
+\subsection{INCOSE Guide for Writing Requirements}
+
+La \textit{INCOSE Guide for Writing Requirements} \cite{incose} complementa las normas anteriores con recomendaciones pr\'acticas para la redacci\'on. Establece que todo requisito debe:
+
+\begin{itemize}
+    \item Usar la estructura ``El sistema deber\'a [verbo] [objeto] [condici\'on]''.
+    \item Emplear verbos observables y medibles (\emph{generar}, \emph{registrar}, \emph{rechazar}, \emph{devolver}).
+    \item Evitar t\'erminos subjetivos (\emph{r\'apido}, \emph{eficiente}, \emph{intuitivo}).
+    \item Incluir condiciones cuantificables cuando sea posible.
+    \item Ser comprensible sin necesidad de interpretar otros requisitos.
+\end{itemize}
+
+\subsection{Ciclo de vida de los requisitos}
+
+IREB trata los requisitos como entidades vivas que evolucionan. Su ciclo de vida incluye creaci\'on, elaboraci\'on, validaci\'on, consolidaci\'on, implementaci\'on, uso, cambio, mantenimiento y retiro \cite[pp.~130--140]{cpre}. Para gestionar este ciclo, IREB enfatiza:
+
+\begin{itemize}
+    \item Estados y transiciones expl\'icita.
+    \item Control de versiones y configuraciones (\emph{baselines}).
+    \item Atributos de requisito (ID, tipo, fuente, prioridad, estado, versi\'on).
+    \item Trazabilidad bidireccional (hacia fuentes y hacia implementaci\'on y pruebas).
+\end{itemize}
+
+\subsection{Sistemas profesionales de gesti\'on de requisitos}
+
+Herramientas como IBM DOORS, Jama Connect o Siemens Polarion son el est\'andar industrial para la gesti\'on de requisitos. Comparten un modelo de datos com\'un: requisitos con atributos personalizables, trazabilidad bidireccional, \emph{baselines}, workflows de aprobaci\'on y control de cambios. Sin embargo, ninguna de ellas integra generaci\'on de c\'odigo asistida por IA, que es precisamente el valor diferencial de \speckit. Esta complementariedad entre herramientas de gesti\'on y herramientas de generaci\'on motiva el presente mapeo.

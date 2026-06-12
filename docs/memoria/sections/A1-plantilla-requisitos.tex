@@ -1,0 +1,48 @@
+\section{Plantilla de formalizaci\'on de requisitos}
+\label{sec:anexo-plantilla}
+
+La siguiente plantilla se utiliz\'o para formalizar todos los requisitos del corpus.
+
+\begin{lstlisting}[language=,caption={Plantilla de requisitos},label=lst:plantilla]
+ID:
+REQ-[DOMINIO]-[NUMERO]
+
+Nombre:
+
+Tipo:
+[Funcional | Calidad | Restriccion]
+
+Descripcion formal:
+El sistema debera [accion] [objeto] [condicion]
+
+Fuente:
+
+Rationale:
+
+Prioridad:
+[Alta | Media | Baja]
+
+Verificacion:
+
+Estado:
+[Borrador | Elaborado | Validado | Implementado | Archivado]
+
+Version:
+
+Dependencias:
+
+Modulo:
+\end{lstlisting}
+
+\subsection*{Reglas obligatorias para la descripci\'on formal}
+
+\begin{enumerate}
+    \item Debe expresar una \'unica obligaci\'on.
+    \item Debe comenzar por la f\'ormula ``El sistema deber\'a...''.
+    \item Debe contener un verbo observable y verificable.
+    \item Debe evitar t\'erminos subjetivos o ambiguos.
+    \item Debe incluir condiciones cuantificables cuando sea posible.
+    \item Debe poder verificarse mediante prueba, an\'alisis, inspecci\'on o demostraci\'on.
+    \item Debe ser comprensible sin necesidad de interpretar otros requisitos.
+    \item No debe describir detalles de implementaci\'on salvo que se trate de una restricci\'on expl\'icita.
+\end{enumerate}

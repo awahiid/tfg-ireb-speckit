@@ -1,0 +1,54 @@
+\chapter{Corpus de requisitos}
+\label{chap:corpus}
+
+\section{Descripci\'on del corpus}
+
+Se extrajeron un total de 56 entradas de \emph{changelogs} de los seis repositorios, de las cuales 52 fueron formalizadas como requisitos tras pasar la r\'ubrica de calidad (tasa de aceptaci\'on del 92.9\,\%). La tabla~\ref{tab:corpus} muestra la distribuci\'on por repositorio.
+
+\begin{table}[h]
+\centering
+\caption{Distribuci\'on del corpus de requisitos}
+\label{tab:corpus}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Repositorio} & \textbf{Entradas} & \textbf{Requisitos} \\
+\midrule
+Appwrite & 10 & 10 \\
+Authentik & 9 & 9 \\
+Cal.com & 10 & 10 \\
+Directus & 9 & 9 \\
+Medusa & 5 & 5 \\
+n8n & 9 & 9 \\
+\midrule
+\textbf{Total} & \textbf{52} & \textbf{52} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Todos los requisitos superaron el umbral de aceptaci\'on, con una media de 10.8 puntos (sobre 12) y una desviaci\'on t\'ipica de 0.9. La distribuci\'on por tipo fue: 38 funcionales (73\,\%), 8 de calidad (15\,\%) y 6 restricciones (12\,\%). Por prioridad: 27 Altas (52\,\%), 18 Medias (35\,\%) y 7 Bajas (13\,\%).
+
+\section{An\'alisis por repositorio}
+
+\subsection{Appwrite (sistemas transaccionales)}
+
+Los 10 requisitos de Appwrite cubren principalmente aspectos de autenticaci\'on, gesti\'on de usuarios y control de acceso. Predominan los requisitos funcionales (8), con 1 de calidad y 1 restricci\'on. La mayor\'ia se clasificaron como prioridad Alta. Ejemplo representativo: ``El sistema deber\'a impedir la creaci\'on de cuentas de usuario cuando la direcci\'on de correo electr\'onico no haya sido verificada'' (REQ-APPWRITE-10986).
+
+\subsection{Authentik (identidad y seguridad)}
+
+Los 9 requisitos de Authentik se centran en protocolos de autenticaci\'on, gesti\'on de sesiones y pol\'iticas de acceso. Incluyen 2 requisitos de calidad relacionados con rendimiento de autenticaci\'on. Las condiciones de activaci\'on son especialmente relevantes en este repositorio (verificaci\'on de tokens, expiraci\'on de sesiones).
+
+\subsection{Cal.com (sistemas colaborativos)}
+
+Los 10 requisitos de Cal.com abarcan sincronizaci\'on de calendarios, gesti\'on de disponibilidad y notificaciones. Destacan por incluir condiciones de activaci\'on complejas con m\'ultiples actores y estados compartidos. Por ejemplo: ``El sistema deber\'a notificar a todos los participantes de una reuni\'on cuando el organizador cambie la hora'' implica actores, condiciones y reglas de negocio.
+
+\subsection{Directus (datos y contenido)}
+
+Los 9 requisitos de Directus cubren transformaciones de contenido, esquemas din\'amicos y permisos a nivel de campo. Incluyen 3 restricciones relacionadas con rendimiento de consultas y l\'imites de paginaci\'on. Es el repositorio con mayor proporci\'on de requisitos no funcionales.
+
+\subsection{Medusa (e-commerce)}
+
+Los 5 requisitos de Medusa se centran en reglas de negocio transaccionales: c\'alculos de impuestos, gesti\'on de inventario y procesos de pago. Es el repositorio con menor n\'umero de requisitos (5 frente a 9--10 del resto), lo que constituye una limitaci\'on del corpus para este tipo de sistema.
+
+\subsection{n8n (integraci\'on)}
+
+Los 9 requisitos de n8n abarcan automatizaci\'on de flujos, manejo de errores en pipelines y composici\'on de servicios mediante webhooks. Incluyen restricciones sobre l\'imites de recursos por plan y umbrales de ejecuci\'on. La naturaleza de integraci\'on hace que muchos requisitos involucren m\'ultiples servicios externos como condiciones de contexto.

@@ -1,0 +1,74 @@
+\section{SpecKit y Spec-Driven Development}
+\label{sec:speckit}
+
+\subsection{¿Qu\'e es SpecKit?}
+
+\speckit{} es un \emph{toolkit} de c\'odigo abierto (licencia MIT) desarrollado por GitHub para practicar \sdd{}. Su repositorio oficial \cite{speckit_repo} cuenta con m\'as de 112\,000 estrellas, 229 contribuyentes y 162 \emph{releases} (v0.10.2, junio 2026). Est\'a escrito principalmente en Python (94.7\,\%) con scripts auxiliares en Shell y PowerShell.
+
+Seg\'un su \texttt{README} oficial:
+
+\begin{quote}
+\emph{``Spec-Driven Development flips the script on traditional software development. [...] Specifications become executable, directly generating working implementations rather than just guiding them.''} \cite{speckit_repo}
+\end{quote}
+
+\speckit{} no es una herramienta de ingenier\'ia de requisitos: es un generador de c\'odigo asistido por IA que utiliza un pipeline estructurado de especificaciones para producir implementaciones. Su prop\'osito es eliminar la brecha entre especificaci\'on e implementaci\'on mediante generaci\'on autom\'atica.
+
+\subsection{Flujo de trabajo completo}
+
+El flujo de trabajo de \speckit{} se organiza en torno a comandos slash que se ejecutan en el chat del agente de IA (Copilot, Claude, Gemini, etc.). El pipeline b\'asico consta de cinco pasos \cite{speckit_repo,speckit_sdd}:
+
+\begin{enumerate}
+    \item \texttt{/speckit.constitution}: define las reglas de gobierno del proyecto. Produce \texttt{memory/constitution.md}.
+    \item \texttt{/speckit.specify}: convierte una descripci\'on de funcionalidad en una especificaci\'on estructurada (\texttt{spec.md}). La regla clave es: ``Focus on WHAT users need and WHY --- avoid HOW to implement''.
+    \item \texttt{/speckit.plan}: traduce la especificaci\'on a un plan t\'ecnico (\texttt{plan.md}), generando adem\'as \texttt{research.md}, \texttt{data-model.md}, \texttt{contracts/} y \texttt{quickstart.md}.
+    \item \texttt{/speckit.tasks}: descompone el plan en tareas ejecutables (\texttt{tasks.md}) con grafo de dependencias.
+    \item \texttt{/speckit.implement}: ejecuta las tareas y genera la implementaci\'on completa.
+\end{enumerate}
+
+Adicionalmente, \speckit{} ofrece comandos opcionales de calidad:
+
+\begin{itemize}
+    \item \texttt{/speckit.clarify}: identifica \'areas subespecificadas y genera preguntas de clarificaci\'on.
+    \item \texttt{/speckit.checklist}: genera \emph{checklists} de calidad personalizados.
+    \item \texttt{/speckit.analyze}: analiza la consistencia cruzada entre especificaci\'on, plan y tareas.
+\end{itemize}
+
+El flujo completo recomendado para producci\'on \cite{speckit_docs} es:
+
+\[
+\texttt{constitution} \rightarrow \texttt{specify} \rightarrow \texttt{clarify} \rightarrow \texttt{checklist} \rightarrow \texttt{plan} \rightarrow \texttt{tasks} \rightarrow \texttt{analyze} \rightarrow \texttt{implement} \rightarrow \texttt{analyze}
+\]
+
+\subsection{Mecanismos de calidad incorporados}
+
+\speckit{} incorpora varios mecanismos para asegurar la calidad de sus artefactos \cite{speckit_sdd}:
+
+\begin{itemize}
+    \item \textbf{Marcadores de incertidumbre}: las plantillas fuerzan el uso de \texttt{[NEEDS CLARIFICATION: pregunta]} para marcar ambig\"uedades, con un l\'imite de 3 marcadores por especificaci\'on.
+    \item \textbf{Checklists en plantillas}: verificaci\'on autom\'atica de completitud (``No [NEEDS CLARIFICATION] markers remain'', ``Requirements are testable and unambiguous'').
+    \item \textbf{Constitutional Gates}: el plan incluye compuertas pre-implementaci\'on (\emph{Simplicity Gate}, \emph{Anti-Abstraction Gate}, \emph{Integration-First Gate}).
+    \item \textbf{Test-First Thinking}: la plantilla de implementaci\'on impone crear contratos primero, luego tests y finalmente c\'odigo.
+\end{itemize}
+
+\subsection{Arquitectura extensible}
+
+\speckit{} permite personalizar el flujo mediante tres mecanismos:
+
+\begin{itemize}
+    \item \textbf{Presets} (22 comunitarios): sobreescriben las plantillas \emph{core} para adaptar la terminolog\'ia y estructura.
+    \item \textbf{Extensions} (105 comunitarias): a\~naden nuevos comandos y capacidades (integraci\'on Jira, \emph{CI Guard}, \emph{Architecture Guard}).
+    \item \textbf{Workflows}: pipelines multi-paso definidos en YAML con compuertas de revisi\'on humana y control de flujo.
+\end{itemize}
+
+\subsection{Filosof\'ia subyacente: SDD}
+
+La filosof\'ia \sdd{} se fundamenta en seis principios \cite{speckit_sdd}:
+
+\begin{enumerate}
+    \item \textbf{Specifications as Lingua Franca}: la especificaci\'on es el artefacto primario; el c\'odigo es su expresi\'on.
+    \item \textbf{Executable Specifications}: precisas, completas y no ambiguas para generar sistemas funcionales.
+    \item \textbf{Continuous Refinement}: validaci\'on de consistencia continua, no como compuerta \'unica.
+    \item \textbf{Research-Driven Context}: agentes de investigaci\'on recogen contexto t\'ecnico.
+    \item \textbf{Bidirectional Feedback}: la realidad operativa realimenta la especificaci\'on.
+    \item \textbf{Branching for Exploration}: m\'ultiples implementaciones desde una misma especificaci\'on.
+\end{enumerate}

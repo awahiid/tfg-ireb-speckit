@@ -1,0 +1,148 @@
+\documentclass[minitoc, hidelinks, headlogo, framedcover]{tfeEPCC}
+\usepackage[spanish, es-tabla]{babel} % Comentar si se va a realizar en inglés
+%\usepackage{parskip} % Quitar comentario si se quieren distinguir los párrafos con saltos y quitar las sangrías
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+% Rellenar con los datos del estudiante y el trabajo
+\estudiante{[Nombre del autor]}{Grado en Ingeniería Informática en Ingeniería del Software}{Mapeo de SpecKit contra flujos profesionales de ingeniería de requisitos basados en normas}
+\title{Mapeo de SpecKit contra flujos profesionales de ingeniería de requisitos basados en normas}
+\keywords{Ingeniería de requisitos\and IREB\and SpecKit\and Spec-Driven Development\and ISO 29148\and mapeo de procesos}
+
+\begin{document}
+\sloppy 
+\pagebreak 
+
+%%%%%%%%%%%%% PORTADA %%%%%%%%%%%%%
+% Poner convocatoria y año de presentación
+\portadaTFE{Convocatoria, Año}
+
+\pagestyle{empty}
+
+
+%%%%%%%%%% CONTRAPORTADA %%%%%%%%%%
+% Campos, separar con comas si se ponen varios: {
+% studentGender
+% tutor (obligatorio)
+% tutorGender
+% cotutor
+% cotutorGender }
+% Especificar un co-tutor lo añade a la contraportada
+% Poner la letra f en cualquier campo de género añade una 'a' al título correspondiente (por ejemplo, studentGender = f hace que se muestre Autora)
+\contraportadaTFE{tutor = Tutor}
+
+%%%% CAPÍTULOS INTRODUCTORIOS %%%%
+\pagenumbering{gobble}
+%\chapter*{Agradecimientos} % Apartado opcional, descomentar si se quiere añadir
+% Dedicatorias del trabajo, pueden ser en español o inglés dependiendo de lo que se considere más apropiado
+
+\chapter*{Resumen}
+Este trabajo presenta un mapeo sistem\'atico del flujo de trabajo de \textsc{SpecKit}, un \emph{toolkit} de c\'odigo abierto para \emph{Spec-Driven Development} (SDD) desarrollado por GitHub, contra un flujo profesional de ingenier\'ia de requisitos basado en normas (IREB CPRE Foundation Level, ISO/IEC/IEEE 29148 e INCOSE Guide for Writing Requirements). Se documenta el flujo real de \textsc{SpecKit} a partir de sus fuentes oficiales y se contrasta con las actividades fundamentales de RE. Para fundamentar el mapeo con evidencia emp\'irica, se construye un corpus de 52 requisitos extra\'idos de \emph{changelogs} de seis proyectos \emph{Open Source}, formalizados con atributos IREB. El resultado principal es un mapa de alineaci\'on que identifica la cobertura de cada actividad y criterio normativo por parte de \textsc{SpecKit}.
+
+\noindent\textbf{Palabras clave}: \printkeywords.
+
+\chapter*{Abstract}
+This work presents a systematic mapping of \textsc{SpecKit}'s workflow ---an open-source toolkit for Spec-Driven Development (SDD) developed by GitHub--- against a professional norm-based requirements engineering workflow (IREB CPRE Foundation Level, ISO/IEC/IEEE 29148, and INCOSE Guide for Writing Requirements). The actual \textsc{SpecKit} flow is documented from official sources and contrasted with fundamental RE activities. To support the mapping with empirical evidence, a corpus of 52 requirements is built from \emph{changelogs} of six \emph{Open Source} projects, formalized with IREB attributes. The main result is an alignment map identifying the coverage of each normative activity and criterion by \textsc{SpecKit}.
+
+\noindent\textbf{Keywords}: Requirements engineering, IREB, SpecKit, Spec-Driven Development, ISO 29148, process mapping.
+
+% Índices con enlaces de las secciones, tablas y figuras
+\newpage
+\pagestyle{plain}
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\tableofcontents
+%\pagebreak
+\newpage
+\listoftables
+\newpage
+\listoffigures
+\newpage
+
+
+%%%%%%% ESTRUCTURA DEL TFG %%%%%%%%%%%%%%
+% A.PORTADA (según la estructura indicada a continuación) 
+% B.CONTRAPORTADA (según la estructura indicada a continuación) 
+% C.ÍNDICE GENERAL DE CONTENIDOS  
+% D.ÍNDICE DE TABLAS  
+% E.ÍNDICE DE FIGURAS 
+% F.RESUMEN (Podrá incluirse también en inglés, si así lo indica el Tutor1) 
+% G.CUERPO DEL TRABAJO (según la estr
+% uctura indicada a continuación) 
+% H.REFERENCIAS BIBLIOGRÁFICAS 
+% (Según norma ISO690)
+% I.ANEXOS, si los hubiera
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Cuerpo del trabajo
+% 1.INTRODUCCIÓN 
+% 2.OBJETIVOS 
+% 3.ANTECEDENTES / ESTADO DEL ARTE 
+% 4.MÉTODOLOGÍA 
+% 5.IMPLEMENTACIÓN Y DESARROLLO (Cuando proceda) 
+% 6.RESULTADOS Y DISCUSIÓN 
+% 7.CONCLUSIONES 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tamaño: Normalizado UNE A-4, salvo planos. 
+% Tipo y tamaño de letra del texto: Times New Roman 12 pt, Arial 12 pt o similar. 
+% Interlineado del texto: 1,5 líneas. 
+% Márgenes del texto: Superior, Inferior y Derecha, 2,5 cm; Izquierda, 4 cm. 
+% Numeración de páginas en margen inferior derecha y tamaño 8 pt. 
+% Las  figuras  serán  numeradas  y  tituladas  debajo  de  las  mismas  (indicando  su  fuente  si  no  son  de  elaboración  
+% propia). 
+% Las  tablas  serán  numeradas  y  tituladas  encima  de  las  mismas  (indicando  su  fuente  si  no  son  de  elaboración  
+% propia). 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\pagenumbering{arabic}
+\pagestyle{fancy}
+\setcounter{page}{1}
+
+%%%%%%%% INTRODUCCIÓN %%%%%%%%
+\import{chapters}{01_introduccion.tex}
+
+%%%%%%%% OBJETIVOS %%%%%%%%
+\import{chapters}{02_objetivos.tex}
+
+%%%%%%%% ESTADO DEL ARTE %%%%%%%%
+\import{chapters}{03_estado_del_arte.tex}
+
+%%%%%%%% METODOLOGÍA %%%%%%%%
+\import{chapters}{04_metodologia.tex}
+
+%%%%%%%% IMPLEMENTACIÓN Y DESARROLLO %%%%%%%%
+\import{chapters}{05_implementacion_y_desarrollo.tex}
+
+%%%%%%%% RESULTADOS %%%%%%%%
+\import{chapters}{06_resultados.tex}
+
+%%%%%%%% CONCLUSIONES Y TRABAJOS FUTUROS %%%%%%%%
+\import{chapters}{07_conclusiones_y_trabajos_futuros.tex}
+
+
+% Si no se van a incorporar anexos, comentar el comando '\startappendices' junto a todos los imports de la carpeta 'appendices'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\startappendices
+
+%%%%%%%% ANEXO 1 %%%%%%%%
+\import{appendices}{01_ejemplo_de_anexo.tex}
+
+\pagebreak
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% AL FINAL %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+%%%% https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management
+%%%% https://www.bibtex.com
+%%%%%%%% BIBLIOGRAFÍA %%%%%%%%
+% Se puede cambiar el estilo de la bibliografía, por defecto es 'unsrturl'
+% Por ejemplo: \makebibliography{alphaurl}
+\makebibliography
+\end{document}

@@ -1,0 +1,123 @@
+\section{Metodolog\'ia}
+\label{sec:metodologia}
+
+\subsection{Dise\~no general}
+
+El mapeo se estructura en cuatro fases, cada una vinculada a un marco normativo de referencia:
+
+\begin{table}[h]
+\centering
+\caption{Las cuatro fases de la metodolog\'ia}
+\label{tab:fases}
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Fase} & \textbf{Prop\'osito en el mapeo} & \textbf{Marco de referencia} \\
+\midrule
+Fase 1. Extracci\'on de evidencia & Obtener requisitos del mundo real & IREB Elicitaci\'on \\
+Fase 2. Formalizaci\'on & Producir requisitos con atributos normativos & IREB Doc. + ISO 29148 + INCOSE \\
+Fase 3. Ejecuci\'on de SpecKit & Observar el comportamiento del pipeline SDD & SpecKit SDD \\
+Fase 4. An\'alisis del mapeo & Contrastar el flujo observado con el normativo & IREB + ISO 29148 + INCOSE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Fase 1: Extracci\'on de evidencia candidata}
+
+La primera fase corresponde a la actividad de elicitaci\'on en el marco IREB. Su objetivo es construir un corpus de cambios reales sobre los que observar el comportamiento de \speckit.
+
+Se seleccionaron seis repositorios \emph{open source} que cumplen los criterios de representatividad industrial, actividad de mantenimiento, calidad de trazabilidad y sencillez relativa del dominio. Cada uno representa un tipo distinto de sistema software:
+
+\begin{itemize}
+    \item \textbf{Appwrite}: sistemas transaccionales (backend-as-a-service con APIs REST).
+    \item \textbf{Medusa}: sistemas financieros y de consistencia de estado (e-commerce).
+    \item \textbf{Authentik}: sistemas de identidad y seguridad (proveedor de identidad).
+    \item \textbf{Cal.com}: sistemas colaborativos (\emph{scheduling} multiusuario).
+    \item \textbf{Directus}: sistemas de datos y contenido (headless CMS).
+    \item \textbf{n8n}: sistemas de integraci\'on y composici\'on de servicios (automatizaci\'on de flujos).
+\end{itemize}
+
+Para la selecci\'on de cambios individuales se defini\'o una r\'ubrica pragm\'atica con cuatro dimensiones: trazabilidad, se\~nales estructurales, utilidad para derivaci\'on y defendibilidad.
+
+Se almacenan \'unicamente textos literales de cambios con su trazabilidad m\'inima (versi\'on, URL de \emph{release}, referencia a PR, commit asociado), sin redactar requisitos en esta fase. La conservaci\'on del texto literal separa la observaci\'on de la formalizaci\'on y mejora la auditabilidad, en l\'inea con la distinci\'on IREB entre elicitaci\'on y documentaci\'on.
+
+\subsection{Fase 2: Formalizaci\'on de requisitos}
+
+La segunda fase corresponde a la documentaci\'on y tiene como objetivo producir requisitos con atributos y criterios de calidad normativos. La evidencia extra\'ida en la fase anterior se transforma en requisitos siguiendo la plantilla definida para el trabajo.
+
+La plantilla incluye 12 atributos basados en IREB, ISO 29148 e INCOSE:
+
+\begin{table}[h]
+\centering
+\caption{Atributos de la plantilla de formalizaci\'on}
+\label{tab:atributos}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atributo} & \textbf{Descripci\'on} \\
+\midrule
+ID & Identificador \'unico \texttt{REQ-[DOMINIO]-[N]} \\
+Nombre & T\'itulo breve (2--8 palabras) \\
+Tipo & Funcional, Calidad o Restricci\'on \\
+Descripci\'on formal & ``El sistema deber\'a [verbo] [objeto] [condici\'on]'' \\
+Fuente & Origen documentado (URL de \emph{release}, PR) \\
+Rationale & Justificaci\'on del requisito \\
+Prioridad & Alta, Media o Baja \\
+Verificaci\'on & Criterio observable de cumplimiento \\
+Estado & Borrador, Elaborado, Validado, Implementado, Archivado \\
+Versi\'on & Control de revisiones (Mayor.Menor) \\
+Dependencias & IDs de requisitos relacionados \\
+M\'odulo & Subsistema o componente funcional \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Cada requisito debe superar un \emph{quality gate} definido por una r\'ubrica de 12 criterios (v\'ease anexo~\ref{sec:anexo-rubrica}) que eval\'ua identificaci\'on y gesti\'on (R1--R4c), redacci\'on y verificabilidad (R5--R9), y completitud contextual (R10). Los criterios R5 (estructura formal), R7 (verbo observable) y R9 (verificabilidad) son bloqueantes.
+
+\subsection{Fase 3: Ejecuci\'on de SpecKit (observaci\'on del flujo SDD)}
+
+En esta fase se ejecuta \speckit{} sobre cada caso para observar y registrar c\'omo el pipeline SDD procesa requisitos formalizados. Para cada requisito, el repositorio se instancia en la versi\'on inmediatamente anterior al \emph{commit} que introduce el cambio de referencia.
+
+El protocolo de ejecuci\'on es:
+
+\begin{enumerate}
+    \item \emph{Checkout} del repositorio en el \emph{commit} inmediatamente anterior al cambio de referencia.
+    \item Verificaci\'on de que el entorno compila y los tests existentes pasan.
+    \item Ejecuci\'on de \speckit{} con el requisito como entrada:
+    \[
+    \texttt{constitution} \rightarrow \texttt{specify} \rightarrow \texttt{plan} \rightarrow \texttt{tasks} \rightarrow \texttt{implement}
+    \]
+    \item Registro del resultado: diff generado, tests a\~nadidos, \emph{snapshot} completo.
+\end{enumerate}
+
+Se realiza una \'unica ejecuci\'on por requisito para evitar que la intervenci\'on humana enmascare el comportamiento nativo del pipeline. Si el agente no produce una implementaci\'on, el caso se registra como fallo de generaci\'on.
+
+\subsection{Fase 4: An\'alisis del mapeo}
+
+La fase 4 constituye el n\'ucleo anal\'itico del trabajo. Se contrasta el flujo observado de \speckit{} con el flujo normativo de referencia mediante la r\'ubrica SRCI (\emph{Structured Requirement Conformance Inspection}), que eval\'ua seis dimensiones:
+
+\begin{itemize}
+    \item \textbf{C1. Cobertura de intenci\'on principal}: la implementaci\'on cubre la acci\'on central del requisito.
+    \item \textbf{C2. Satisfacci\'on de condici\'on de activaci\'on}: se implementan correctamente las restricciones o contexto.
+    \item \textbf{C3. Resultado observable consistente}: el sistema produce el resultado esperado.
+    \item \textbf{C4. Correspondencia tests--intenci\'on}: los tests verifican la intenci\'on funcional.
+    \item \textbf{C5. Ausencia de desviaci\'on funcional}: no hay comportamientos no solicitados.
+    \item \textbf{C6. Trazabilidad completa}: la cadena requisito--implementaci\'on--evidencia es reconstruible.
+\end{itemize}
+
+Cada criterio se eval\'ua como \textbf{S\'i}, \textbf{Parcial} o \textbf{No}, dando lugar a tres categor\'ias de alineaci\'on:
+
+\begin{table}[h]
+\centering
+\caption{Categor\'ias del mapeo}
+\label{tab:categorias}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Categor\'ia} & \textbf{Condici\'on} \\
+\midrule
+Alineado & C1=S\'i, C3=S\'i, C5=S\'i, C6=S\'i \\
+Alineaci\'on parcial & C1=S\'i, C3=S\'i, m\'aximo un criterio en No \\
+Desviado & C1=No, C3=No, o dos o m\'as criterios en No \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+El resultado del an\'alisis no es una nota de aprobado para \speckit, sino un \textbf{mapa de alineaci\'on} que documenta, para cada elemento del flujo normativo, si \speckit{} lo cubre, lo cubre parcialmente o no lo cubre.

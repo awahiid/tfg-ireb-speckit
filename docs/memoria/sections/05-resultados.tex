@@ -1,0 +1,108 @@
+\section{Resultados}
+\label{sec:resultados}
+
+\subsection{Corpus de requisitos}
+
+Se extrajeron un total de 56 entradas de \emph{changelogs} de los seis repositorios, de las cuales 52 fueron formalizadas como requisitos tras pasar la r\'ubrica de calidad (tasa de aceptaci\'on del 92.9\,\%). La distribuci\'on por repositorio se muestra en la tabla~\ref{tab:corpus}.
+
+\begin{table}[h]
+\centering
+\caption{Distribuci\'on del corpus de requisitos}
+\label{tab:corpus}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Repositorio} & \textbf{Entradas extra\'idas} & \textbf{Requisitos formalizados} \\
+\midrule
+Appwrite & 10 & 10 \\
+Authentik & 9 & 9 \\
+Cal.com & 10 & 10 \\
+Directus & 9 & 9 \\
+Medusa & 5 & 5 \\
+n8n & 9 & 9 \\
+\midrule
+\textbf{Total} & \textbf{52} & \textbf{52} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Todos los requisitos formalizados superaron el umbral de aceptaci\'on (puntuaci\'on $\geq$ 9/12 en la r\'ubrica de formalizaci\'on), con una media de 10.8 puntos y una desviaci\'on t\'ipica de 0.9.
+
+\subsection{Ejecuci\'on de SpecKit}
+
+Pendiente de completar. Los resultados esperados incluyen:
+
+\begin{itemize}
+    \item N\'umero de implementaciones generadas correctamente frente a fallos de generaci\'on.
+    \item Tiempo medio de generaci\'on por caso.
+    \item Variabilidad entre repositorios y tipos de requisito.
+\end{itemize}
+
+\subsection{Mapa de alineaci\'on agregado}
+
+El an\'alisis comparativo entre el flujo de \speckit{} y el flujo normativo de referencia se resume en la tabla~\ref{tab:mapa-agregado}.
+
+\begin{table}[h]
+\centering
+\caption{Mapa de alineaci\'on agregado: actividades IREB vs. SpecKit}
+\label{tab:mapa-agregado}
+\begin{tabularx}{\textwidth}{lccc}
+\toprule
+\textbf{Actividad IREB} & \textbf{Cobertura} & \textbf{Comandos/artefactos relacionados} & \textbf{Observaciones} \\
+\midrule
+Elicitaci\'on & $\bigcirc$ No cubierto & --- & \speckit{} no ofrece t\'ecnicas de elicitaci\'on \\
+Documentaci\'on & $\bullet$ Parcial & \texttt{specify}, \texttt{plan}, \texttt{tasks} & Falta clasificaci\'on por tipo y atributos formales \\
+Validaci\'on & $\bullet$ Parcial & \texttt{clarify}, \texttt{checklist}, \texttt{analyze} & Solo consistencia interna, no validaci\'on externa \\
+Gesti\'on de requisitos & $\bigcirc$ No cubierto & --- & Sin trazabilidad bidireccional, \emph{baselines} ni CCB \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\newpage
+\subsection{An\'alisis por criterio de calidad}
+
+La tabla~\ref{tab:calidad} presenta el mapeo detallado contra los criterios de calidad de ISO 29148.
+
+\begin{table}[h]
+\centering
+\caption{Alineaci\'on con criterios de calidad ISO 29148}
+\label{tab:calidad}
+\begin{tabularx}{\textwidth}{lXc}
+\toprule
+\textbf{Criterio} & \textbf{C\'omo lo cubre (o no) SpecKit} & \textbf{Nivel} \\
+\midrule
+Necesario & No distingue requisitos esenciales de deseables & $\bigcirc$ \\
+Singular & Las \emph{user stories} pueden contener m\'ultiples comportamientos & $\bullet$ \\
+Completo & No hay verificaci\'on sistem\'atica de completitud & $\bigcirc$ \\
+Realizable & No hay estudio de viabilidad & $\bigcirc$ \\
+Verificable & \emph{Quickstart} con escenarios, pero sin verificabilidad formal & $\bullet$ \\
+No ambiguo & \texttt{[NEEDS CLARIFICATION]} ayuda, pero no es sistem\'atico & $\bullet$ \\
+Consistente & \texttt{analyze} revisa consistencia cruzada, limitado & $\bullet$ \\
+Trazable & Trazabilidad forward spec$\rightarrow$plan$\rightarrow$tasks$\rightarrow$code & $\blacksquare$ \\
+Comprensible & Plantillas estructuradas en Markdown, lenguaje natural & $\blacksquare$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Leyenda: $\blacksquare$ = Alineado, $\bullet$ = Parcial, $\bigcirc$ = No cubierto.
+
+\subsection{Mapa de alineaci\'on detallado: comandos SpecKit vs. actividades IREB}
+
+\begin{table}[h]
+\centering
+\caption{Mapeo detallado de comandos SpecKit contra actividades IREB}
+\label{tab:mapa-detallado}
+\begin{tabularx}{\textwidth}{lXc}
+\toprule
+\textbf{Comando SpecKit} & \textbf{Funci\'on} & \textbf{Actividad IREB relacionada} \\
+\midrule
+\texttt{constitution} & Define principios rectores del proyecto & Documentaci\'on (restricciones) \\
+\texttt{specify} & Genera especificaci\'on funcional & Documentaci\'on \\
+\texttt{clarify} & Identifica \'areas subespecificadas & Validaci\'on (detecci\'on de ambig\"uedad) \\
+\texttt{checklist} & Genera \emph{checklists} de calidad & Validaci\'on \\
+\texttt{plan} & Plan t\'ecnico de implementaci\'on & Documentaci\'on (dise\~no) \\
+\texttt{tasks} & Descompone en tareas ejecutables & Gesti\'on (planificaci\'on) \\
+\texttt{analyze} & Verifica consistencia cruzada & Validaci\'on (verificaci\'on) \\
+\texttt{implement} & Genera la implementaci\'on & --- (actividad de desarrollo) \\
+\bottomrule
+\end{tabularx}
+\end{table}

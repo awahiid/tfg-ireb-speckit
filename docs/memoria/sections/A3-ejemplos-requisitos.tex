@@ -1,0 +1,89 @@
+\section{Ejemplos de requisitos formalizados}
+\label{sec:anexo-ejemplos}
+
+A continuaci\'on se muestran dos ejemplos representativos de requisitos formalizados durante el trabajo.
+
+\subsection{Ejemplo 1: Appwrite (funcional)}
+
+\begin{lstlisting}[language=,caption={Ejemplo de requisito funcional --- Appwrite},label=lst:req-appwrite]
+ID:
+REQ-APPWRITE-10986
+
+Nombre:
+Bloqueo de creacion de usuarios sin verificacion
+
+Tipo:
+Funcional
+
+Descripcion formal:
+El sistema debera impedir la creacion de cuentas de usuario
+cuando la direccion de correo electronico proporcionada no
+haya sido verificada.
+
+Fuente:
+Release v6.0.0, PR #10986
+
+Rationale:
+Evitar la creacion de cuentas fraudulentas con correos no
+verificados.
+
+Prioridad:
+Alta
+
+Verificacion:
+Intentar registrar un usuario con un correo no verificado
+y comprobar que la API devuelve un error 403.
+
+Estado:
+Validado
+
+Version:
+1.0
+
+Dependencias:
+
+Modulo:
+Auth / Users
+\end{lstlisting}
+
+\subsection{Ejemplo 2: n8n (restricci\'on)}
+
+\begin{lstlisting}[language=,caption={Ejemplo de restricci\'on --- n8n},label=lst:req-n8n]
+ID:
+REQ-N8N-31371
+
+Nombre:
+Limite de nodos en workflows gratuitos
+
+Tipo:
+Restriccion
+
+Descripcion formal:
+El sistema debera limitar el numero maximo de nodos por
+workflow a 10 para cuentas del plan gratuito.
+
+Fuente:
+Release v1.80.0, PR #31371
+
+Rationale:
+Control de recursos en el plan gratuito para garantizar
+rendimiento del servicio.
+
+Prioridad:
+Alta
+
+Verificacion:
+Crear un workflow con 11 nodos desde una cuenta gratuita
+y comprobar que el sistema rechaza la operacion.
+
+Estado:
+Validado
+
+Version:
+1.0
+
+Dependencias:
+
+Modulo:
+Workflows / Plans
+\end{lstlisting}
