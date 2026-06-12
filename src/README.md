@@ -15,7 +15,7 @@ src/
 │   └── plantilla.json / .md        ← Plantillas
 │
 ├── 2-requisitos/                   ← FASE 2: Requisitos formalizados
-│   ├── <repo>/REQ-*-NNNNN.md      ← Requisitos por repositorio
+│   ├── <repo>/REQ-*-NNNNN.md       ← Requisitos por repositorio
 │   ├── plantilla.md                ← Plantilla IREB/ISO 29148
 │   └── rubrica.md                  ← Rúbrica de formalización
 │

@@ -16,7 +16,7 @@ Este ajuste de interpretación no rebaja el rigor de la rúbrica, sino que lo ad
 
 ## Criterios de evaluación
 
-La rúbrica organiza sus diez criterios en tres bloques funcionales: **Identificación y gestión**, **Redacción y verificabilidad** y **Completitud contextual**. Esta organización facilita la localización de deficiencias por tipo y es coherente con la estructura de atributos de IREB.
+La rúbrica organiza sus doce criterios en tres bloques funcionales: **Identificación y gestión**, **Redacción y verificabilidad** y **Completitud contextual**. Esta organización facilita la localización de deficiencias por tipo y es coherente con la estructura de atributos de IREB.
 
 Cada criterio se evalúa de forma binaria:
 
@@ -33,6 +33,8 @@ Cada criterio se evalúa de forma binaria:
 | **R2** | **Clasificación válida** | El atributo Tipo contiene exactamente uno de los valores: Funcional, Calidad o Restricción. | IREB distingue estas tres categorías para facilitar análisis, priorización y validación diferenciada. | ✔ `Funcional` ✘ `Importante` o campo vacío |
 | **R3** | **Fuente trazable** | Se documenta el origen del requisito de forma que permita localizar la evidencia. En contexto de changelogs: versión, URL de release o referencia a PR. No se exige stakeholder humano. | IREB define Source como atributo para soportar trazabilidad hacia el origen. ISO 29148 contempla fuentes documentales como origen válido. | ✔ `Changelog v3.2.1, PR #1042` ✘ Campo vacío o `varias fuentes` |
 | **R4** | **Prioridad asignada** | El atributo Prioridad contiene uno de los valores: Alta, Media o Baja. | IREB incorpora la prioridad para apoyar negociación y gestión del alcance. | ✔ `Media` ✘ Campo vacío o valor no estándar |
+| **R4b** | **Dependencias documentadas** | Si el requisito tiene dependencias funcionales de otros requisitos, estas se documentan en el campo Dependencias con formato `REQ-[DOMINIO]-[NNN]`. Si no tiene dependencias, el campo puede estar vacío. | IREB define la trazabilidad entre requisitos como atributo para gestionar dependencias. | ✔ `REQ-CALCOM-26801` o vacío ✘ `varios` o referencia a requisito inexistente |
+| **R4c** | **Módulo asignado** | El atributo Módulo contiene una referencia al subsistema o componente funcional. Se acepta cualquier valor descriptivo coherente con el dominio del repositorio. | La organización por módulos facilita el análisis por área y es práctica estándar en ISO 29148. | ✔ `Auth / OAuth` o `API Core` ✘ Campo vacío sin justificación |
 
 ---
 
@@ -58,13 +60,13 @@ Cada criterio se evalúa de forma binaria:
 
 ## Puntuación y umbral de aceptación
 
-La puntuación total es la suma directa de criterios cumplidos, sobre un máximo de 10 puntos.
+La puntuación total es la suma directa de criterios cumplidos, sobre un máximo de **12 puntos**.
 
 | Puntuación | Resultado | Acción |
 |---|---|---|
-| **9–10** | **Aceptado** | El requisito es válido como entrada para la fase de evaluación. |
-| **7–8** | **Revisión menor** | El requisito puede aceptarse condicionalmente si las deficiencias no afectan a R5, R7, R8 o R9. En caso contrario requiere corrección. |
-| **≤ 6** | **Rechazado** | El requisito no alcanza el nivel mínimo de calidad y debe reformularse antes de continuar. |
+| **11–12** | **Aceptado** | El requisito es válido como entrada para la fase de evaluación. |
+| **9–10** | **Revisión menor** | El requisito puede aceptarse condicionalmente si las deficiencias no afectan a R5, R7, R8 o R9. En caso contrario requiere corrección. |
+| **≤ 8** | **Rechazado** | El requisito no alcanza el nivel mínimo de calidad y debe reformularse antes de continuar. |
 
 ### Criterios bloqueantes
 
