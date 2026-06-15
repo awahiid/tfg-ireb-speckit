@@ -1,0 +1,79 @@
+# IREB Preset for SpecKit
+# Overrides SpecKit core templates to enforce IREB-compliant
+# requirements engineering practices throughout the SDD pipeline.
+#
+# Based on: IREB CPRE Foundation Level Handbook [1],
+# ISO/IEC/IEEE 29148:2018 [2], INCOSE Guide for Writing Requirements [3].
+#
+# Installation:
+#   specify preset add ireb --from ./preset-ireb.yml
+#   OR: copy this directory to .specify/presets/ireb/
+
+schema_version: "1.0"
+
+preset:
+  id: "ireb"
+  name: "IREB Requirements Engineering"
+  version: "1.0.0"
+  author: "TFG IREB-SpecKit"
+  description: >
+    Enforces IREB-compliant requirements engineering practices in the SpecKit
+    SDD pipeline. Overrides the spec-template, plan-template, and
+    constitution to include verifiability, traceability, type classification,
+    and anti-ambiguity gates. Adds an IREB quality checklist and a full
+    pipeline workflow with review gates at every stage.
+
+requires:
+  speckit_version: ">=0.7.2"
+
+provides:
+  templates:
+    - type: template
+      name: "spec-template"
+      description: >
+        IREB-compliant specification template with 12 attributes
+        (ID, Name, Type, Formal Description, Source, Rationale,
+        Priority, Verification, Status, Version, Dependencies, Module).
+        Enforces observable verbs, verification criteria, and source
+        documentation for every requirement.
+      file: spec-template-ireb.md
+
+    - type: template
+      name: "plan-template"
+      description: >
+        IREB-compliant implementation plan template. Replaces default
+        constitutional gates (Simplicity, Anti-Abstraction) with IREB
+        gates (Verifiability, Anti-Ambiguity, Traceability, Classification).
+        Enforces test-first ordering and requirement-to-task traceability.
+      file: plan-template-ireb.md
+
+    - type: template
+      name: "checklist-template"
+      description: >
+        Quality checklist based on ISO/IEC/IEEE 29148 §6.2.2.
+        Evaluates 12 criteria: R1 (ID), R2 (Type), R3 (Source),
+        R4 (Priority), R4b (Dependencies), R4c (Module), R5 (Structure),
+        R6 (Singularity), R7 (Observable verb), R8 (No ambiguity),
+        R9 (Verifiability), R10 (Self-sufficiency).
+      file: checklist-ireb.md
+
+  constitution:
+    - file: constitution.md
+
+  workflows:
+    - file: workflow-ireb.yml
+
+  metadata:
+    keywords:
+      - ireb
+      - requirements-engineering
+      - iso29148
+      - incose
+      - verification
+      - traceability
+      - quality
+    license: MIT
+    categories:
+      - requirements-engineering
+      - quality-gates
+      - compliance

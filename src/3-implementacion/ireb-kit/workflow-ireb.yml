@@ -1,0 +1,213 @@
+# IREB SpecKit Workflow
+# Full SDD pipeline with IREB quality gates.
+# Based on: IREB CPRE Foundation Level [1], ISO/IEC/IEEE 29148 [2],
+# INCOSE Guide for Writing Requirements [3].
+#
+# Usage: specify workflow run ireb -i spec="[REQ description]"
+
+schema_version: "1.0"
+
+workflow:
+  id: "ireb"
+  name: "IREB Requirements Engineering Pipeline"
+  version: "1.0.0"
+  author: "TFG IREB-SpecKit"
+  description: "Runs the full SDD cycle with IREB quality gates at every stage"
+  integration: copilot
+
+requires:
+  speckit_version: ">=0.7.2"
+  integrations:
+    any: ["copilot", "claude", "gemini"]
+
+inputs:
+  spec:
+    type: string
+    required: true
+    prompt: "Describe the requirement (use IREB 12-attribute template)"
+  integration:
+    type: string
+    default: "copilot"
+    prompt: "Integration to use (copilot, claude, gemini)"
+  scope:
+    type: string
+    default: "full"
+    enum: ["full", "spec-only", "spec-and-plan"]
+    prompt: "How far to run the pipeline"
+
+steps:
+  # ---- Phase 1: Constitution ----
+  - id: constitution
+    command: speckit.constitution
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        This project follows IREB Requirements Engineering principles:
+        1. Verifiability Mandate (Article I): every requirement must include
+           an observable verification criterion (ISO 29148 §6.2.2).
+        2. Functional Minimality (Article II): implement exactly what is
+           specified, no speculative features (IREB Principle 1).
+        3. Complete Traceability (Article III): requirement → intent →
+           implementation → evidence must be reconstructible (ISO 29148).
+        4. Type Classification (Article IV): distinguish Functional,
+           Quality, and Constraint (IREB §Requirements Types).
+        5. No Ambiguity (Article V): avoid subjective terms; use concrete
+           metrics (INCOSE §Unambiguous).
+        6. Single Obligation (Article VI): one behavior per requirement
+           (INCOSE §Singular).
+        7. Source Documentation (Article VII): every requirement must
+           document its origin (IREB §Source attribute).
+        8. Rationale Requirement (Article VIII): every requirement must
+           explain why it exists (IREB §Rationale).
+        9. Continuous Quality (Article IX): quality validation throughout
+           the pipeline, not just at the end (IREB Principle 9).
+
+  # ---- Phase 2: Specification Review Gate ----
+  - id: review-constitution
+    type: gate
+    message: |
+      Review the constitution. Does it include IREB principles
+      (verifiability, traceability, type classification, no ambiguity)?
+    options: [approve, reject]
+    on_reject: abort
+
+  # ---- Phase 3: Specification ----
+  - id: specify
+    command: speckit.specify
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        Use the IREB formalization template (12 attributes: ID, Name,
+        Type, Description, Source, Rationale, Priority, Verification,
+        Status, Version, Dependencies, Module). Classify each requirement
+        as Functional, Quality, or Constraint. Include verification
+        criteria as observable behavior.
+
+        {{ inputs.spec }}
+
+  # ---- Phase 4: Clarification ----
+  - id: clarify
+    command: speckit.clarify
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        Identify underspecified areas in the specification. Focus on
+        missing verification criteria, ambiguous terms (fast, efficient,
+        robust), unclassified requirement types, missing sources, and
+        missing rationale. Flag but do not resolve.
+
+  # ---- Phase 5: Quality Checklist ----
+  - id: checklist
+    command: speckit.checklist
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        Generate a quality checklist based on ISO/IEC/IEEE 29148 §6.2.2.
+        Verify: verifiability (R9), no ambiguity (R8), observable verb
+        (R7), formal structure (R5), single obligation (R6), unique
+        identifier (R1), valid classification (R2), traceable source (R3).
+
+  # ---- Phase 6: Specification Quality Gate ----
+  - id: review-spec
+    type: gate
+    message: |
+      Review the generated specification before planning.
+      Does it include verification criteria for every requirement?
+      Are all requirements classified by type?
+      Are sources and rationales documented?
+      Are there unresolved ambiguities?
+    options: [approve, reject, revise]
+    on_reject: abort
+
+  # ---- Phase 7: Planning ----
+  - id: plan
+    command: speckit.plan
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        Generate a technical plan. Before implementation, verify:
+        - Verifiability Gate: every requirement has verification criteria
+        - Traceability Gate: every decision links to a requirement
+        - Anti-Ambiguity Gate: no subjective terms remain
+        - Classification Gate: types are correctly assigned
+        Document any gate violations in Complexity Tracking.
+
+        {{ inputs.spec }}
+
+  # ---- Phase 8: Plan Review Gate ----
+  - id: review-plan
+    type: gate
+    message: |
+      Review the implementation plan. Are all decisions traceable to
+      requirements? Are verification strategies aligned with the
+      requirement's Verification field? Is the test-first order followed?
+    options: [approve, reject]
+    on_reject: abort
+
+  # ---- Phase 9: Task Generation ----
+  - id: tasks
+    command: speckit.tasks
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        Generate tasks organized by requirement. Each task must be
+        traceable to exactly one REQ-ID. Group tasks by user story
+        priority. Mark independent tasks [P].
+
+        {{ inputs.spec }}
+
+  # ---- Phase 10: Cross-Artifact Analysis ----
+  - id: analyze
+    command: speckit.analyze
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        Analyze spec ↔ plan ↔ tasks consistency. Verify:
+        - All requirements are covered by tasks
+        - All plan decisions trace back to requirements
+        - No orphan tasks without requirement traceability
+        Report gaps before implementation.
+
+  # ---- Phase 11: Analysis Gate ----
+  - id: review-analysis
+    type: gate
+    message: |
+      Review the cross-artifact analysis. Are there gaps that need
+      addressing before implementation? Is traceability complete?
+    options: [approve, reject]
+    on_reject: abort
+
+  # ---- Phase 12: Implementation ----
+  - id: implement
+    command: speckit.implement
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        Implement following the test-first order defined in plan.md:
+        1. Create contracts with API specifications
+        2. Write contract tests → integration tests → unit tests
+        3. Implement source files to make tests pass
+        Every implementation change must be traceable to a REQ-ID.
+
+  # ---- Phase 13: Post-Implementation Verification ----
+  - id: post-analyze
+    command: speckit.analyze
+    integration: "{{ inputs.integration }}"
+    input:
+      args: |
+        Post-implementation cross-artifact consistency check.
+        Verify the traceability chain is complete:
+        REQ → spec → plan → task → test → code.
+        Report any broken links or orphan code.
+
+  # ---- Phase 14: Final Verification Gate ----
+  - id: review-final
+    type: gate
+    message: |
+      Final review before acceptance:
+      - Do all tests pass?
+      - Is the traceability chain complete?
+      - Are there any regressions in existing tests?
+      - Does the implementation match the verification criteria?
+    options: [approve, reject]
+    on_reject: abort
