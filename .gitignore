@@ -1,0 +1,42 @@
+# IDE
+.idea/
+
+# Local sync config
+.megaignore
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/
+
+# LaTeX generated artifacts
+docs/**/*.aux
+docs/**/*.bbl
+docs/**/*.blg
+docs/**/*.fdb_latexmk
+docs/**/*.fls
+docs/**/*.lof
+docs/**/*.log
+docs/**/*.lot
+docs/**/*.out
+docs/**/*.toc
+docs/**/*.synctex*
+docs/**/*.mtc*
+docs/**/*.maf
+docs/**/_minted-main/
+
+# Generated PDFs
+docs/**/*.pdf
+
+# Heavy / reproducible artifacts
+src/3-implementacion/.bare/
+src/3-implementacion/repos/
+src/3-implementacion/resultados/
+
+# Archives
+*.zip
+*.tar.gz
+*.tar
