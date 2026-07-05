@@ -48,6 +48,19 @@ planning begins.
 ### Classification Gate (Article IV)
 
 - [ ] Every requirement has a Type: Functional, Quality, or Constraint
+
+### Minimality Gate (Article II) ← NUEVO
+
+- [ ] Plan covers ONLY the files and components needed for the requirement
+- [ ] No architectural changes, refactors, or dependency additions are planned
+- [ ] No feature additions beyond the requirement scope
+- [ ] Each planned file maps to exactly one REQ-ID
+- [ ] No "while we're here" improvements or opportunistic refactoring
+
+> *Reference*: Article II (Functional Minimality). "Systems shall not implement
+> functionality beyond the minimum necessary to satisfy the requirement."
+> Scope creep in the plan phase is the primary cause of oversized diffs and
+> hallucinated features.
 - [ ] Quality requirements include numeric targets
 - [ ] Constraints are distinguished from functional requirements
 

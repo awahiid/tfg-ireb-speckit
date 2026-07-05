@@ -19,6 +19,12 @@ src/
 │   ├── plantilla.md                ← Plantilla IREB/ISO 29148
 │   └── rubrica.md                  ← Rúbrica de formalización
 │
+├── 2.5-prompts/                    ← FASE 2.5: Derivación MRS
+│   ├── instrucciones.md            ← Instrucciones para el agente derivador
+│   ├── README.md                   ← Documentación de la fase
+│   ├── generate_mrs.py             ← Script de generación automatizada
+│   └── mrs-prompts.md              ← Salida: 52 MRS generados
+│
 ├── 3-implementacion/               ← FASE 3: Pipeline SpecKit
 │   ├── scripts/                    ← Automatización del pipeline
 │   │   ├── preparar-caso.sh        ← Prepara un caso (clone + checkout)

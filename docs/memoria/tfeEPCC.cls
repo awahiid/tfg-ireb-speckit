@@ -390,13 +390,13 @@
 
 % Command for printing the bibliography
 % It takes the style of the bibliography as a parameter, using 'unsrturl' if not specified or empty
-\providecommand{\makebibliography}[1][unsrturl]{
+\providecommand{\makebibliography}[1][unsrt]{
     \phantomsection
     \begingroup
         \let\ps@plain\ps@empty
         \addcontentsline{toc}{chapter}{\bibliographyname}
         \IfStrEq{#1}{}{
-            \bibliographystyle{unsrturl}
+            \bibliographystyle{unsrt}
         }
         {
             \bibliographystyle{#1}

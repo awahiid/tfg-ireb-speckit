@@ -1,5 +1,12 @@
 # Plantilla formal de especificación de requisitos
 
+> **Esta plantilla forma parte del IREB Kit para SpecKit**
+> (`src/3-implementacion/ireb-kit/`). La versión para SpecKit
+> (`spec-template-ireb.md`) incluye además instrucciones para el agente.
+>
+> **Uso**: Úsala para formalizar cualquier requisito antes de introducirlo
+> en SpecKit. Cada atributo está justificado con bibliografía normativa.
+
 La presente plantilla define un conjunto mínimo de atributos para documentar requisitos de forma consistente, verificable y trazable. Su diseño se basa en las recomendaciones de la norma ISO/IEC/IEEE 29148, el *IREB CPRE Foundation Level Handbook* y las guías de redacción de *INCOSE Guide for Writing Requirements*. Se han seleccionado únicamente aquellos atributos que contribuyen directamente a la identificación, comprensión, validación y gestión del requisito durante su ciclo de vida.
 
 | Atributo               | Descripción formal reproducible                                                                                                                                                                                                                                                                                                                                                                         | Ejemplo                                                                                                                                                                                                 | Justificación bibliográfica                                                                                                                                                                                                                                                                                             |

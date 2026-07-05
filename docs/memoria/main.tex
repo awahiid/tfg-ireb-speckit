@@ -2,6 +2,8 @@
 \usepackage[spanish, es-tabla]{babel} % Comentar si se va a realizar en inglés
 %\usepackage{parskip} % Quitar comentario si se quieren distinguir los párrafos con saltos y quitar las sangrías
 
+\usepackage{amssymb}
+\usepackage{lipsum}
 \usepackage{tabularx}
 \usepackage{booktabs}
 
@@ -38,14 +40,24 @@
 % Dedicatorias del trabajo, pueden ser en español o inglés dependiendo de lo que se considere más apropiado
 
 \chapter*{Resumen}
-Este trabajo presenta un mapeo sistem\'atico del flujo de trabajo de \textsc{SpecKit}, un \emph{toolkit} de c\'odigo abierto para \emph{Spec-Driven Development} (SDD) desarrollado por GitHub, contra un flujo profesional de ingenier\'ia de requisitos basado en normas (IREB CPRE Foundation Level, ISO/IEC/IEEE 29148 e INCOSE Guide for Writing Requirements). Se documenta el flujo real de \textsc{SpecKit} a partir de sus fuentes oficiales y se contrasta con las actividades fundamentales de RE. Para fundamentar el mapeo con evidencia emp\'irica, se construye un corpus de 52 requisitos extra\'idos de \emph{changelogs} de seis proyectos \emph{Open Source}, formalizados con atributos IREB. El resultado principal es un mapa de alineaci\'on que identifica la cobertura de cada actividad y criterio normativo por parte de \textsc{SpecKit}.
+
+Este trabajo tiene dos objetivos: mapear el flujo de trabajo de \textsc{SpecKit} ---un \emph{toolkit} de c\'odigo abierto para \emph{Spec-Driven Development} (SDD) de GitHub--- contra las actividades y criterios de calidad de un flujo profesional de ingenier\'ia de requisitos (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, INCOSE); y evaluar si los resultados cambian cuando se alimenta a \textsc{SpecKit} con requisitos formalizados seg\'un IREB en lugar de con texto libre.
+
+El trabajo produce tres artefactos de referencia: una plantilla de formalizaci\'on con 12~atributos (ID, nombre, tipo, descripci\'on formal, fuente, rationale, prioridad, verificaci\'on, estado, versi\'on, dependencias, m\'odulo); una constituci\'on personalizada con nueve principios IREB para el pipeline SDD; y una r\'ubrica de conformidad (SRCI) con seis criterios para evaluar las implementaciones generadas. Estos artefactos se agrupan en un preset instalable denominado \emph{IREB Kit for SpecKit}.
+
+Para validar el trabajo, se construye un corpus de 52~requisitos derivados de \emph{changelogs} de seis proyectos \emph{Open Source} (Appwrite, Authentik, Cal.com, Directus, Medusa, n8n). Cada caso del subconjunto de evaluaci\'on se ejecuta en dos flujos paralelos ---sin y con el kit IREB--- y los resultados se comparan mediante cuatro m\'etricas: generaci\'on exitosa, compilaci\'on, superaci\'on de tests y puntuaci\'on SRCI.
 
 \noindent\textbf{Palabras clave}: \printkeywords.
 
 \chapter*{Abstract}
-This work presents a systematic mapping of \textsc{SpecKit}'s workflow ---an open-source toolkit for Spec-Driven Development (SDD) developed by GitHub--- against a professional norm-based requirements engineering workflow (IREB CPRE Foundation Level, ISO/IEC/IEEE 29148, and INCOSE Guide for Writing Requirements). The actual \textsc{SpecKit} flow is documented from official sources and contrasted with fundamental RE activities. To support the mapping with empirical evidence, a corpus of 52 requirements is built from \emph{changelogs} of six \emph{Open Source} projects, formalized with IREB attributes. The main result is an alignment map identifying the coverage of each normative activity and criterion by \textsc{SpecKit}.
 
-\noindent\textbf{Keywords}: Requirements engineering, IREB, SpecKit, Spec-Driven Development, ISO 29148, process mapping.
+This work pursues two goals: to map \textsc{SpecKit}'s pipeline ---an open-source Spec-Driven Development toolkit by GitHub--- against the activities and quality criteria of a norm-based requirements engineering workflow (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, INCOSE); and to evaluate whether the generated output improves when \textsc{SpecKit} receives IREB-formalized requirements instead of raw text.
+
+The work produces three reference artefacts: a 12-attribute formalization template (ID, name, type, formal description, source, rationale, priority, verification, status, version, dependencies, module); a custom constitution with nine IREB principles for the SDD pipeline; and a conformance rubric (SRCI) with six criteria to assess generated implementations. These artefacts are packaged as an installable preset called \emph{IREB Kit for SpecKit}.
+
+For validation, a corpus of 52 requirements is derived from the changelogs of six Open Source projects (Appwrite, Authentik, Cal.com, Directus, Medusa, n8n). Each case in the evaluation subset is run under two parallel flows ---without and with the IREB kit--- and results are compared using four metrics: successful generation, successful build, passing tests, and SRCI score.
+
+\noindent\textbf{Keywords}: Requirements engineering, IREB, SpecKit, Spec-Driven Development, ISO~29148, process mapping, code generation.
 
 % Índices con enlaces de las secciones, tablas y figuras
 \newpage
@@ -143,6 +155,5 @@ This work presents a systematic mapping of \textsc{SpecKit}'s workflow ---an ope
 %%%% https://www.bibtex.com
 %%%%%%%% BIBLIOGRAFÍA %%%%%%%%
 % Se puede cambiar el estilo de la bibliografía, por defecto es 'unsrturl'
-% Por ejemplo: \makebibliography{alphaurl}
 \makebibliography
 \end{document}

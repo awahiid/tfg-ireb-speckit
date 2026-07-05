@@ -1,30 +1,40 @@
 \section{Introducci\'on}
 \label{sec:introduccion}
 
-\subsection{Motivaci\'on}
+\subsection{Contexto y problema}
 
-La ingenier\'ia de requisitos es una disciplina fundamental en el desarrollo de software. Como se\~nala el \ireb{} CPRE Foundation Level Handbook, un enfoque sistem\'atico y disciplinado para la especificaci\'on y gesti\'on de requisitos reduce el riesgo de entregar un sistema que no satisface las necesidades de sus \emph{stakeholders} \cite[pp.~10--11]{cpre}.
+Escribir requisitos de calidad lleva d\'ecadas siendo uno de los problemas m\'as costosos del desarrollo de software. Los marcos normativos actuales ---IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, gu\'ia INCOSE--- definen con precisi\'on qu\'e atributos debe tener un requisito bien formado, c\'omo debe verificarse y c\'omo debe trazarse a lo largo del ciclo de vida del sistema \cite{cpre,iso29148,incose}. Herramientas industriales como IBM DOORS, Jama Connect o Siemens Polarion implementan ese modelo: atributos configurables, trazabilidad bidireccional, \emph{baselines} y workflows de aprobaci\'on.
 
-En paralelo, la irrupci\'on de herramientas de inteligencia artificial para la generaci\'on de c\'odigo ha transformado el panorama del desarrollo de software. Entre ellas, \speckit{} ---un \emph{toolkit} de c\'odigo abierto desarrollado por GitHub--- propone un flujo de trabajo estructurado denominado \sdd{}, en el que las especificaciones se convierten en el artefacto principal del que se derivan implementaciones \cite{speckit_repo,speckit_sdd}.
+\textsc{SpecKit} \cite{speckit_repo} parte de un principio diferente. Publicado por GitHub, propone un flujo denominado \emph{Spec-Driven Development} (SDD) \cite{speckit_sdd}: la especificaci\'on es el artefacto primario y el c\'odigo es su expresi\'on directa. El desarrollador describe qu\'e quiere construir; la herramienta genera la implementaci\'on. Con m\'as de 112\,000 estrellas en GitHub, \textsc{SpecKit} tiene una adopci\'on real fuera del laboratorio.
 
-Sin embargo, \speckit{} no se presenta como una herramienta de ingenier\'ia de requisitos, sino como un generador de c\'odigo asistido por IA que utiliza un pipeline estructurado. Surge entonces la pregunta de hasta qu\'e punto su flujo de trabajo se alinea con las pr\'acticas establecidas por la ingenier\'ia de requisitos profesional basada en normas.
+El problema que abre este trabajo es concreto: \textsc{SpecKit} no es una herramienta de ingenier\'ia de requisitos. Sus plantillas no piden fuente, ni rationale, ni tipo, ni criterio de verificaci\'on. Su constituci\'on por defecto se ocupa de principios de dise\~no de librer\'ias ---Library-First, Anti-Abstraction, TDD--- sin mencionar las propiedades normativas de los requisitos. Y sin embargo, el pipeline SDD arranca exactamente donde arranca la ingenier\'ia de requisitos: con una descripci\'on de lo que el sistema debe hacer. Qu\'e pasa entre ese arranque y la implementaci\'on generada, y si el gap se puede cerrar parcialmente con los propios mecanismos de extensi\'on de \textsc{SpecKit}, es lo que este trabajo investiga.
 
-\subsection{Objetivo y pregunta de investigaci\'on}
+\subsection{Objetivos y preguntas de investigaci\'on}
 
-El objetivo de este trabajo es \textbf{mapear sistem\'aticamente el flujo de trabajo de \speckit{} contra un flujo profesional de ingenier\'ia de requisitos basado en normas}, tomando como referencia el \ireb{} CPRE Foundation Level \cite{cpre}, la norma ISO/IEC/IEEE 29148 \cite{iso29148} y la gu\'ia INCOSE para la redacci\'on de requisitos \cite{incose}.
+El trabajo persigue dos objetivos complementarios.
 
-La pregunta central que gu\'ia el estudio es:
+\textbf{Objetivo~1 (mapeo)}: determinar en qu\'e medida el pipeline SDD de \textsc{SpecKit} cubre las actividades, criterios de calidad y artefactos que un flujo profesional de RE basado en normas exige.
 
-\begin{quote}
-\emph{¿En qu\'e medida se alinea el pipeline de \sdd{} de \speckit{} con las actividades, criterios de calidad y artefactos definidos por un flujo de ingenier\'ia de requisitos profesional basado en normas?}
-\end{quote}
+\textbf{Objetivo~2 (evaluaci\'on)}: determinar si alimentar a \textsc{SpecKit} con requisitos formalizados seg\'un IREB produce implementaciones de mayor calidad que usar texto libre del \emph{changelog}.
 
-Esta pregunta tiene dos dimensiones complementarias:
-\begin{itemize}
-    \item \textbf{Descriptiva}: documentar el flujo real de \speckit{} (comandos, artefactos, mecanismos de calidad) tal como est\'a definido en su documentaci\'on oficial.
-    \item \textbf{Comparativa}: contrastar ese flujo con el marco normativo, identificando alineaciones, brechas y \'areas grises.
-\end{itemize}
+Estos objetivos se concretan en dos preguntas de investigaci\'on:
+
+\begin{description}
+    \item[P1.] \textit{¿Qu\'e actividades, criterios de calidad y artefactos del flujo RE normativo cubre \textsc{SpecKit} por defecto, cubre parcialmente o no cubre?}
+    \item[P2.] \textit{¿Mejoran los resultados generados por \textsc{SpecKit} cuando los requisitos de entrada siguen la plantilla IREB y se usa una constituci\'on personalizada?}
+\end{description}
+
+\subsection{Contribuciones}
+
+El trabajo produce cuatro resultados concretos:
+
+\begin{enumerate}
+    \item Un \textbf{mapa de alineaci\'on} que documenta, actividad por actividad y criterio por criterio, qu\'e cubre \textsc{SpecKit} seg\'un el marco normativo.
+    \item Un \textbf{corpus de 52 requisitos} derivados de \emph{changelogs} de seis proyectos \emph{Open Source} ---Appwrite, Authentik, Cal.com, Directus, Medusa, n8n---, formalizados con 12 atributos IREB y con una puntuaci\'on media de calidad de 10{,}8/12.
+    \item El \textbf{IREB Kit for SpecKit}: un preset instalable que incluye una plantilla de especificaci\'on con 12 atributos, una constituci\'on con nueve principios RE, una r\'ubrica de conformidad (SRCI) con seis criterios, un workflow YAML de 14 pasos con cuatro compuertas de revisi\'on humana y un prompt de formalizaci\'on para LLMs.
+    \item Una \textbf{evaluaci\'on comparativa} (Flow~A contra Flow~B) sobre seis casos representativos, midiendo generaci\'on exitosa, compilaci\'on, superaci\'on de tests y puntuaci\'on SRCI.
+\end{enumerate}
 
 \subsection{Estructura del documento}
 
-El resto de la memoria se organiza de la siguiente manera. El cap\'itulo~\ref{sec:marco-ireb} presenta el marco te\'orico de referencia basado en IREB, ISO 29148 e INCOSE. El cap\'itulo~\ref{sec:speckit} describe el flujo de trabajo de \speckit{} y la filosof\'ia \sdd. El cap\'itulo~\ref{sec:metodologia} detalla la metodolog\'ia empleada para el mapeo. El cap\'itulo~\ref{sec:resultados} presenta los resultados del an\'alisis. El cap\'itulo~\ref{sec:discusion} discute las implicaciones y limitaciones. Finalmente, el cap\'itulo~\ref{sec:conclusiones} recoge las conclusiones y el trabajo futuro.
+El cap\'itulo~\ref{sec:marco-ireb} describe el marco normativo de referencia: IREB, ISO/IEC/IEEE~29148 e INCOSE. El cap\'itulo~\ref{sec:speckit} caracteriza \textsc{SpecKit} y la filosof\'ia SDD. El cap\'itulo~\ref{sec:metodologia} explica el dise\~no metodol\'ogico y los dos flujos de evaluaci\'on. El cap\'itulo~\ref{sec:resultados} presenta el mapa de alineaci\'on, el corpus y los resultados comparativos. El cap\'itulo~\ref{sec:discusion} discute las implicaciones y las limitaciones. El cap\'itulo~\ref{sec:conclusiones} recoge las conclusiones.

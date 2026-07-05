@@ -1,0 +1,9 @@
+### REQ-MEDUSA-13930 — Búsqueda de productos por SKU de variante en la API de administración
+
+**MRS:**
+
+> Como administrador del sistema,
+quiero que el sistema permita la búsqueda de productos a través del endpoint de administración (`GET /admin/products`) utilizando el identificador de mantenimiento de existencias (SKU) de cualquiera de sus variantes. Al utilizar el parámetro de consulta de búsqueda libre (`q`), el sistema deberá: 1. **Búsqueda transversal**: Extender el alcance de la búsqueda de...,
+a traves de `GET /admin/products`,
+para en versiones anteriores (v2), la búsqueda de productos en la API de administración no consideraba el SKU de las variantes del producto, una funcionalidad crítica presente en la versión 1.
+Fuente: PR #13930

@@ -1,11 +1,28 @@
 # Fase 4 — Análisis del mapeo SpecKit ↔ flujo normativo
 
-Pendiente de completar tras ejecutar SpecKit.
+> **Estado**: ✅ COMPLETADO. Evaluación SRCI v2 con rúbrica IREB/ISO 29148.
 
-## Productos esperados
+## Productos
 
-1. **Mapa de alineación agregado**: tablas contrastando cada actividad IREB y criterio de calidad contra los comandos y artefactos de SpecKit (✅ alineado, ⚠️ parcial, ❌ no cubierto).
+| # | Producto | Archivo | Estado |
+|---|----------|---------|--------|
+| 1 | Mapa de alineación IREB ↔ SpecKit | `01-mapa-alineacion.md` | ✅ |
+| 2 | Patrones de comportamiento SDD | `02-patrones-comportamiento.md` | ✅ |
+| 3 | Recomendaciones | `03-recomendaciones.md` | ✅ |
+| 4 | Comparación empírica (3 flujos) | `04-comparacion-flows.md` | ✅ |
+| 5 | Rúbrica SRCI v2 (IREB + ISO) | `rubrica-srci-v2.md` | ✅ |
+| 6 | **Evaluación final SRCI (6 casos)** | `05-evaluacion-srci-final.md` | ✅ |
 
-2. **Patrones de comportamiento del pipeline SDD**: identificación de condiciones en las que SpecKit se alinea mejor o peor con el flujo normativo.
+## Resultado final (rúbrica IREB/ISO, 20 puntos)
 
-3. **Recomendaciones**: cómo aproximar SpecKit a un flujo normativo y qué limitaciones son inherentes al enfoque SDD.
+| Caso | Flow A | Flow B v2 | Ganador |
+|------|--------|-----------|---------|
+| appwrite-e3 | 11.0 ⚠️ | 14.0 ⚠️ | v2 |
+| authentik-e1 | 11.5 ⚠️ | **16.0** ✅ | v2 |
+| cal-e1 | 11.5 ⚠️ | 15.5 ⚠️ | v2 |
+| directus-e9 | 11.5 ⚠️ | 15.0 ⚠️ | v2 |
+| medusa-e5 | 11.0 ⚠️ | **16.5** ✅ | v2 |
+| n8n-e5 | 11.5 ⚠️ | 15.5 ⚠️ | v2 |
+| **Media** | **11.3** | **15.4** | **v2 6-0** |
+
+**Kit v2 gana 6-0.** La documentación IREB (Bloque D) es el diferenciador.

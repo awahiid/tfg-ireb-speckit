@@ -164,13 +164,39 @@ accepted.
 
 ---
 
+## Block D — Contextual Integrity (Anti-Hallucination)
+
+### R13. No Hallucinated Context ← BLOQUEANTE
+The Source, Rationale, and stakeholder information in the requirement
+MUST be limited to what appears in the original input document. No
+stakeholders, business objectives, issue numbers, or regulatory
+references shall be invented.
+
+> *Reference*: IREB defines Source as a traceability attribute [1, Glossary].
+> ISO 29148 requires traceability to origin [2, §6.3.1]. Article 0 of this
+> constitution establishes contextual integrity as a binding principle.
+> Invented context corrupts the traceability chain and introduces
+> fictional requirements.
+
+- [ ] Source references only documents/URLs present in the original input
+- [ ] Rationale derives only from explicit statements in the input
+- [ ] No invented stakeholders ("equipo de seguridad", "departamento de...")
+- [ ] No invented objectives or business metrics
+- [ ] No invented issue/PR numbers or regulatory references
+
+> ⚠️  R13 is BLOCKING: if it fails, the requirement MUST be rewritten
+> regardless of all other scores. Hallucinated context invalidates the
+> entire traceability chain.
+
+---
+
 ## Quality Gate Decision Rule
 
 | Score | Result | Action |
 |---|---|---|
-| 11-12 | **PASS** | Proceed to `/speckit.plan` |
-| 9-10 | **MINOR REVISION** | Proceed if deficiencies do not affect R5, R7, R8, R9 |
-| ≤ 8 | **REJECT** | Reformulate before continuing |
+| 12-13 | **PASS** | Proceed to `/speckit.plan` |
+| 10-11 | **MINOR REVISION** | Proceed if deficiencies do not affect R5, R7, R8, R9, R13 |
+| ≤ 9  | **REJECT** | Reformulate before continuing |
 
 **Blocking criteria (automatic reject regardless of total score):**
 - R5 (no formal structure): the obligation cannot be identified

@@ -43,7 +43,23 @@ Para cada requisito se sigue este protocolo:
 
 ---
 
-## Scripts disponibles
+## IREB Kit para SpecKit
+
+El directorio `ireb-kit/` contiene todos los productos personalizados para ejecutar
+el flujo IREB-enhanced (Flow B):
+
+```
+ireb-kit/
+├── constitution.md          ← Pegar en /speckit.constitution
+├── spec-template-ireb.md    ← Plantilla de spec con 12 atributos IREB
+├── plan-template-ireb.md    ← Plantilla de plan con gates IREB
+├── checklist-ireb.md        ← Checklist de calidad ISO 29148
+├── workflow-ireb.yml        ← Pipeline YAML con gates de revisión
+├── preset-ireb.yml          ← Preset instalable (specify preset add ireb)
+├── prompt-template.md       ← Prompt para generar requisitos con LLM
+├── tutorial.md              ← Tutorial paso a paso para el usuario final
+└── README.md
+```
 
 ### `preparar-caso.sh <repo> <case-id> <merge-commit> [requirement]`
 

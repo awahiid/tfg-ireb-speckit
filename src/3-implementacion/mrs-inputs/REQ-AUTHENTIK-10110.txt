@@ -1,0 +1,6 @@
+
+Como administrador del sistema,
+quiero que el sistema exponga el estado de compatibilidad FIPS mediante el atributo `openssl_fips_enabled` en la API de información de runtime, manteniendo coherencia con el esquema OpenAPI y la interfaz de administración,
+a traves de `openssl_fips_enabled`,
+para evitar inconsistencias entre backend, esquema OpenAPI y frontend en la representación del estado FIPS, garantizando consistencia del contrato de datos del sistema.
+Fuente: PR #10110

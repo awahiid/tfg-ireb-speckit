@@ -2,20 +2,28 @@
 
 ## Introducción y anclaje metodológico
 
-### Objetivo y pregunta central
+### Objetivos y preguntas centrales
 
-El objetivo de este trabajo es **mapear sistemáticamente el flujo de trabajo de GitHub SpecKit contra un flujo profesional de ingeniería de requisitos basado en normas** (IREB CPRE Foundation Level, ISO/IEC/IEEE 29148 e INCOSE Guide for Writing Requirements). La pregunta central que guía el diseño metodológico es: ¿en qué medida se alinea el pipeline de Spec-Driven Development (SDD) de SpecKit con las actividades, criterios de calidad y artefactos definidos por un flujo RE profesional basado en normas?
+Este trabajo persigue **dos objetivos complementarios**:
 
-Esta pregunta tiene dos dimensiones complementarias. La primera es **descriptiva**: documentar el flujo real de SpecKit (sus comandos, artefactos y mecanismos de calidad) tal como está definido en su documentación oficial. La segunda es **comparativa**: contrastar ese flujo con el marco normativo de RE profesional, identificando alineaciones, brechas y áreas grises.
+**Objetivo 1 — Mapear**: mapear sistemáticamente el flujo de trabajo de SpecKit (SDD) contra un flujo profesional de ingeniería de requisitos basado en normas (IREB, ISO/IEC/IEEE 29148, INCOSE), identificando alineaciones, brechas y áreas grises entre ambos.
 
-El marco normativo de referencia es IREB (International Requirements Engineering Board), complementado con ISO/IEC/IEEE 29148 para criterios de calidad de requisitos y con INCOSE Guide for Writing Requirements para buenas prácticas de redacción. IREB distingue tres actividades fundamentales en ingeniería de requisitos —elicitación, documentación y validación— más una actividad transversal de gestión de requisitos. Las cuatro fases de la metodología se estructuran para producir el mapeo de la siguiente manera:
+**Objetivo 2 — Evaluar**: evaluar si las diferencias identificadas en el mapeo se traducen en resultados medibles, comparando la implementación que genera SpecKit cuando recibe un requisito formalizado con IREB frente a cuando recibe el mismo requisito sin tratar.
 
-| Fase | Propósito en el mapeo | Marco de referencia |
+Las preguntas que guían el diseño metodológico son:
+
+1. *¿En qué medida se alinea el pipeline SDD de SpecKit con las actividades, criterios de calidad y artefactos definidos por un flujo RE profesional basado en normas?*
+2. *¿Mejora la calidad de la implementación generada por SpecKit cuando los requisitos de entrada se formalizan siguiendo un proceso IREB, en comparación con usar la entrada sin tratar?*
+
+El marco normativo de referencia es IREB (International Requirements Engineering Board), complementado con ISO/IEC/IEEE 29148 para criterios de calidad de requisitos y con INCOSE Guide for Writing Requirements para buenas prácticas de redacción. Las cuatro fases de la metodología se estructuran de la siguiente manera:
+
+| Fase | Propósito | Marco de referencia |
 |---|---|---|
-| Fase 1. Extracción de evidencia | Obtener requisitos del mundo real sobre los que aplicar el mapeo | IREB Elicitación (fuentes documentales) |
+| Fase 1. Extracción de evidencia | Obtener requisitos del mundo real sobre los que aplicar el mapeo y la comparación | IREB Elicitación (fuentes documentales) |
 | Fase 2. Formalización | Producir requisitos con atributos y criterios de calidad normativos | IREB Documentación + ISO 29148 + INCOSE |
-| Fase 3. Ejecución de SpecKit | Observar y registrar el comportamiento del pipeline SDD frente a requisitos formalizados | SpecKit SDD (flujo real documentado) |
-| Fase 4. Análisis del mapeo | Contrastar el flujo observado de SpecKit con el flujo normativo de referencia | IREB + ISO 29148 + INCOSE |
+| Fase 2.5. Derivación MRS | Transformar requisitos formalizados en prompts MRS replicables para SpecKit | IREB Elicitación (problem framing) + ISO 29148 |
+| Fase 3. Ejecución comparativa | Ejecutar cada caso con dos flujos: A (sin marco IREB) y B (con marco IREB) | SpecKit SDD |
+| Fase 4. Análisis del mapeo y comparación | Contrastar el flujo observado de SpecKit con el normativo (mapa de alineación) y comparar los resultados de ambos flujos (evaluación) | IREB + ISO 29148 + INCOSE + rúbrica SRCI |
 
 Se optó por IREB como norma principal frente a IEEE 830 porque IREB proporciona un marco más abstracto y adaptable, mientras que IEEE 830 prescribe una plantilla de especificación concreta que presupone un proceso de elicitación deliberado con stakeholders. ISO 29148 e INCOSE se incorporan como complementos para criterios de calidad de requisitos y buenas prácticas de redacción, respectivamente.
 
@@ -112,23 +120,86 @@ Se descartó una formalización mediante lenguaje controlado o notación formal 
 
 ---
 
-## Fase 3. Ejecución de SpecKit (observación del flujo SDD)
+## Fase 2.5. Derivación de Prompts MRS (Minimal Requirement Seed)
 
-En esta fase se ejecuta GitHub SpecKit sobre cada caso del corpus para **observar y registrar cómo el pipeline SDD procesa requisitos formalizados**. Para cada requisito, el repositorio se instancia en la versión inmediatamente anterior al commit que introduce el cambio de referencia, obteniendo un entorno sin la implementación que se quiere generar. SpecKit recibe el requisito formalizado como entrada y produce una implementación en forma de pull request sobre ese entorno. Esta ejecución no persigue una "evaluación" del agente, sino la **observación sistemática** de qué artefactos genera, qué comandos ejecuta y cómo se comporta frente a requisitos con propiedades IREB.
+La Fase 2.5 es un paso intermedio entre la formalización (Fase 2) y la ejecución del pipeline SpecKit (Fase 3). Su objetivo es **transformar cada requisito formalizado IREB/ISO 29148 en un *Minimal Requirement Seed* (MRS)**: un prompt mínimo, replicable y académicamente justificable que un usuario convencional necesitaría formular para que el pipeline IREB/SpecKit derive de forma autónoma el requisito formal equivalente.
 
-### 3.1 Protocolo de ejecución
+### 2.5.1 Justificación
 
-Cada requisito se introduce en SpecKit en su forma textual final obtenida en la fase 2, sin reformulación ni adaptación adicional. Se realiza una única ejecución por requisito. Esta decisión evita que la intervención humana enmascare el comportamiento nativo del pipeline, permitiendo un análisis más limpio del mapeo entre el flujo SDD y el flujo normativo.
+La Fase 2.5 surge de una necesidad metodológica concreta: el Flow B de la Fase 3 (IREB-enhanced) requiere que el agente SpecKit reciba como entrada un requisito formalizado siguiendo la plantilla IREB. Sin embargo, SpecKit es una herramienta diseñada para recibir descripciones en lenguaje natural, no documentos estructurados con doce atributos. El MRS actúa como **puente**: es una semilla de lenguaje natural que contiene la información estrictamente necesaria para que SpecKit (o cualquier LLM) infiera el requisito formal completo, pero no sobredetermina la solución.
 
-El entorno de ejecución para cada caso se construye de la siguiente manera:
+### 2.5.2 Propiedades de un MRS válido
+
+Un MRS es válido si y solo si satisface tres propiedades, justificadas normativamente:
+
+| Propiedad | Definición operacional | Fundamento |
+|---|---|---|
+| **Suficiencia** | Contiene toda la información necesaria para inferir los campos obligatorios de la plantilla (Descripción formal, Verificación, Rationale, Tipo) | ISO 29148 §5.2: un requisito debe ser necesario, no ambiguo, factible y verificable |
+| **Minimalidad** | No contiene información que el agente deba inferir por sí mismo (no sobredetermina la solución) | IREB CPRE: la elicitación por *problem framing* produce requisitos más estables que la elicitación por solución propuesta |
+| **Replicabilidad** | Dos agentes independientes que lean el MRS y la plantilla producen requisitos formales equivalentes | Reynolds & McDonell (2021), Wei et al. (2022): prompts con estructura `role + goal + constraint` maximizan la consistencia |
+
+### 2.5.3 Estructura canónica
+
+Todo MRS sigue una plantilla de tres líneas obligatorias y dos opcionales:
+
+```
+Como [ROL/ACTOR],
+quiero que el sistema [COMPORTAMIENTO OBSERVABLE]
+[a través de / cuando] [CONTEXTO_TÉCNICO],
+para [MOTIVACIÓN — estado indeseable actual o riesgo evitado].
+
+[Restricción: RESTRICCIÓN_CONOCIDA]
+[Fuente: REFERENCIA_TRAZABLE]
+```
+
+### 2.5.4 Procedimiento de derivación
+
+Para cada `REQ-*.md` generado en la Fase 2:
+
+1. **Validar la entrada**: verificar que el REQ contiene los campos bloqueantes (Descripción formal, Verificación). Los requisitos incompletos se registran como omitidos.
+2. **Identificar el comportamiento observable**: localizar el verbo principal (el que sigue a "El sistema deberá") y verificar que es observable según la rúbrica de formalización (R7).
+3. **Construir el MRS**: aplicar la plantilla canónica extrayendo el actor más específico posible del Módulo y la Descripción formal, parafraseando en voz activa, y nombrando exactamente un artefacto concreto (variable de entorno, endpoint, componente) como contexto.
+4. **Verificar suficiencia**: comprobar que un agente que solo lea el MRS y la plantilla podría inferir el Tipo, la Descripción formal, al menos un criterio de Verificación y el Rationale.
+5. **Emitir la salida**: generar `mrs-prompts.md` con un bloque por requisito, vinculando cada MRS con su `REQ-*.md` de origen a través del ID.
+
+Las instrucciones completas para el agente derivador, incluyendo ejemplos de referencia y reglas de extracción por campo, se documentan en `src/2.5-prompts/instrucciones.md`.
+
+### 2.5.5 Producto
+
+El producto de esta fase es un único archivo `mrs-prompts.md` que contiene los 52 MRS derivados de los 52 requisitos formalizados, organizados por repositorio. Cada bloque MRS es directamente utilizable como valor del parámetro `--input spec=` en el script `run-ireb.sh` de la Fase 3.
+
+### 2.5.6 Limitaciones
+
+La derivación de MRS introduce un paso adicional de transformación que puede alterar sutilmente el significado del requisito original. Para mitigarlo, cada MRS conserva la trazabilidad hacia el `REQ-*.md` de origen mediante el ID, y el script de generación aplica reglas deterministas documentadas en `instrucciones.md`. Adicionalmente, el campo `Notas de derivación` documenta cualquier decisión no trivial (rationale inferido, verbo subsidiario, omisión de contexto).
+
+---
+
+## Fase 3. Ejecución comparativa: Flow A vs Flow B
+
+En esta fase cada caso del corpus se ejecuta **dos veces** sobre el mismo repositorio (en el mismo commit pre-PR), cambiando únicamente el tratamiento del requisito de entrada y la configuración de SpecKit. Esto permite aislar el efecto del marco IREB: el resto de variables (repositorio, commit, entorno) permanecen constantes.
+
+### 3.1 Protocolo general
+
+Para cada caso:
 
 1. Checkout del repositorio en el commit inmediatamente anterior al cambio de referencia.
-2. Verificación de que el entorno compila y los tests existentes pasan, descartando el caso si el estado base está roto.
-3. Ejecución de SpecKit con el requisito como entrada, siguiendo el pipeline ampliado:
+2. Verificación de que el entorno compila y los tests existentes pasan.
+3. Dos ejecuciones de SpecKit sobre ese mismo entorno:
 
+   **Flow A (baseline) — SpecKit sin marco IREB:**
    ```
-   /speckit.constitution       (con principios RE personalizados)
-   → /speckit.specify          (pegando el REQ-*.md)
+   /speckit.specify          (pegando el texto LITERAL del changelog)
+   → /speckit.plan
+   → /speckit.tasks
+   → /speckit.implement
+   ```
+   En este flujo no se ejecuta `/speckit.constitution` (se usa el que venga por defecto), ni se usan `clarify`, `checklist` ni `analyze`. La entrada es el texto del changelog sin ningún tratamiento.
+
+   **Flow B (IREB-enhanced) — SpecKit con marco IREB:**
+   ```
+   /speckit.constitution       (con principios RE personalizados:
+                                 verificabilidad, minimalidad, trazabilidad)
+   → /speckit.specify          (pegando el REQ-*.md formalizado)
    → /speckit.clarify          (detección de ambigüedades)
    → /speckit.checklist        (checklist de calidad)
    → /speckit.plan
@@ -138,23 +209,25 @@ El entorno de ejecución para cada caso se construye de la siguiente manera:
    → /speckit.analyze          (consistencia post)
    ```
 
-   La inclusión de los comandos `clarify`, `checklist` y `analyze` (pre y post) responde a la necesidad de explorar el flujo completo que SpecKit ofrece, no solo el subconjunto mínimo. El constitution se personaliza con principios de verificabilidad, minimalidad y trazabilidad para alinearlo con valores RE, en lugar de usar los valores genéricos por defecto (Library-First, TDD).
+4. Registro del resultado de cada flujo por separado.
 
-4. Registro del resultado: PR generada o fallo de generación.
+### 3.2 Selección de casos para la comparación
 
-Si el agente no produce una PR, el caso se registra como fallo de generación. En cualquier caso, la entrada proporcionada, el estado del repositorio y la salida generada (o la ausencia de ella) se almacenan para su análisis en la fase 4.
+No todos los 52 casos del corpus se ejecutan en ambos flujos. Se selecciona un subconjunto representativo de **6 casos (2 por repositorio) de los 3 repositorios con preparación más eficiente** (n8n, Cal.com, Directus), priorizando aquellos con dependencias Node.js que permiten un setup rápido y reproducible. Esta reducción es necesaria porque cada caso requiere dos ejecuciones manuales en Copilot Chat, y ejecutar los 52 casos en ambos flujos sería inviable en el plazo del trabajo. Los 46 casos restantes se formalizan y documentan como corpus, pero no se ejecutan comparativamente.
 
-### 3.2 Limitaciones
+### 3.3 Limitaciones
 
-La principal limitación es la propagación de errores desde fases previas: el agente no corrige ambigüedades ni errores de especificación, sino que los materializa. Esto es relevante para el mapeo porque revela cómo responde el flujo SDD a entradas de calidad variable. Se descartó la ejecución iterativa con refinamiento del input porque introduciría intervención humana que ocultaría el comportamiento nativo del pipeline.
+La principal limitación es que SpecKit se ejecuta en Copilot Chat sin API headless, lo que obliga a la intervención manual para introducir cada comando. La ejecución única por flujo evita que la intervención humana enmascare el comportamiento nativo del pipeline, pero el tamaño de la muestra (6 casos) limita la generalización de los resultados.
 
 ---
 
-## Fase 4. Análisis del mapeo SpecKit al flujo normativo
+## Fase 4. Análisis del mapeo y comparación de flujos
 
-La fase 4 constituye el núcleo analítico del trabajo: **contrastar el flujo observado de SpecKit (Fase 3) y los artefactos que genera con el flujo normativo de referencia** definido por IREB, ISO/IEC/IEEE 29148 e INCOSE. Este análisis se estructura en dos pasos: un filtro técnico de calidad y un mapeo estructurado mediante la rúbrica SRCI. El ground truth (diff original del cambio) se utiliza como referencia interpretativa, no como criterio de comparación directa.
+La fase 4 constituye el núcleo analítico del trabajo e integra **los dos objetivos**: (a) contrastar el flujo de SpecKit con el flujo normativo de referencia (mapa de alineación) y (b) comparar los resultados de Flow A y Flow B para evaluar si el marco IREB produce diferencias medibles. El marco normativo de referencia es IREB, ISO/IEC/IEEE 29148 e INCOSE.
 
-El resultado del análisis no es una "nota de aprobado" para SpecKit, sino un **mapa de alineación** que documenta, para cada elemento del flujo normativo, si SpecKit lo cubre, lo cubre parcialmente o no lo cubre, y con qué evidencias.
+**Producto 1 — Mapa de alineación.** Se contrasta el flujo observado de SpecKit (comandos, artefactos, mecanismos de calidad) con cada actividad IREB y cada criterio de calidad ISO 29148, documentando la cobertura como alineado, parcial o no cubierto. El ground truth se utiliza como referencia interpretativa. El resultado no es una "nota de aprobado", sino un mapa que permite identificar dónde encaja SpecKit respecto a un flujo RE profesional.
+
+**Producto 2 — Comparación de flujos.** Para cada caso ejecutado en ambos flujos, se comparan las métricas M1-M4: generación exitosa, compilación, tests, y conformidad SRCI. La comparación permite determinar si el marco IREB mejora los resultados y en qué dimensiones.
 
 ### 4.1 Filtro técnico (quality gate)
 
@@ -204,13 +277,15 @@ Detecta comportamientos no solicitados o efectos secundarios no contemplados en 
 **C6. Trazabilidad completa**
 Permite reconstruir la cadena requisito → intención → implementación → evidencia. Base: ISO/IEC/IEEE 29148.
 
-### 4.5 Categorización del mapeo
+### 4.5 Categorización del mapeo y comparación
 
-| Categoría | Condición | Significado en el mapeo |
+La rúbrica SRCI se aplica tanto a Flow A como a Flow B, permitiendo comparar la conformidad de cada flujo. Las categorías son las siguientes:
+
+| Categoría | Condición | Significado |
 |---|---|---|
-| **Alineado** | C1=Sí, C3=Sí, C5=Sí, C6=Sí; y no se da C2=No y C4=No simultáneamente | El flujo SDD de SpecKit produce resultados consistentes con el flujo normativo para este caso |
-| **Alineación parcial** | C1=Sí y C3=Sí; al menos uno de C5 o C6 en Parcial; máximo un criterio en No | El flujo SDD se aproxima al normativo pero con desviaciones en algún aspecto |
-| **Desviado** | C1=No o C3=No; o dos o más criterios en No | El flujo SDD no logra alinearse con el normativo para este caso |
+| **Alineado** | C1=Sí, C3=Sí, C5=Sí, C6=Sí; y no se da C2=No y C4=No simultáneamente | La implementación es conforme con el requisito |
+| **Alineación parcial** | C1=Sí y C3=Sí; al menos uno de C5 o C6 en Parcial; máximo un criterio en No | La implementación se aproxima pero con desviaciones |
+| **Desviado** | C1=No o C3=No; o dos o más criterios en No | La implementación no es conforme |
 
 La categoría de alineación parcial reconoce que la transformación de requisitos formalizados a implementación mediante un pipeline SDD raramente satisface todos los criterios con igual solidez. Una escala binaria habría concentrado los resultados en el polo negativo, reduciendo la granularidad analítica y dificultando la identificación de patrones de desviación parcial.
 
@@ -220,11 +295,13 @@ Se re-analiza un subconjunto de tres a cinco casos en un segundo momento aplican
 
 ### 4.7 Productos del análisis
 
-El análisis produce dos tipos de resultados:
+El análisis produce tres tipos de resultados:
 
 1. **Mapa de alineación agregado**: tablas que contrastan cada actividad IREB y cada criterio de calidad contra los comandos y artefactos de SpecKit, indicando cobertura (✅, ⚠️, ❌) con evidencia de los casos.
 
-2. **Patrones de comportamiento del pipeline SDD**: identificación de en qué condiciones SpecKit se alinea mejor con el flujo normativo (por tipo de requisito, por complejidad, por repositorio).
+2. **Comparación de flujos (Flow A vs Flow B)**: tablas que contrastan los resultados de cada flujo para las métricas M1-M4, permitiendo identificar si el marco IREB mejora la generación, compilación, tests o conformidad.
+
+3. **Patrones de comportamiento del pipeline SDD**: identificación de en qué condiciones SpecKit se alinea mejor con el flujo normativo (por tipo de requisito, por complejidad, por repositorio).
 
 Estos resultados no pretenden ser una evaluación estadística, sino un **análisis cualitativo estructurado** que permita entender las fortalezas y limitaciones del enfoque SDD desde la perspectiva de la ingeniería de requisitos basada en normas.
 

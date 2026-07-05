@@ -4,37 +4,47 @@
 
 ## Objetivo General
 
-Este proyecto **mapea sistemáticamente el flujo de trabajo de GitHub SpecKit (Spec-Driven Development) contra un flujo profesional de ingeniería de requisitos basado en normas** (IREB CPRE Foundation Level, ISO/IEC/IEEE 29148 e INCOSE Guide for Writing Requirements), con el propósito de identificar alineaciones, brechas y áreas grises entre ambos.
+Este proyecto persigue **dos objetivos complementarios**:
 
-## Objetivo Específico
+1. **Mapear** sistemáticamente el flujo de trabajo de SpecKit (SDD) contra un flujo profesional
+   de ingeniería de requisitos basado en normas (IREB CPRE Foundation Level, ISO/IEC/IEEE 29148,
+   INCOSE Guide for Writing Requirements).
+2. **Evaluar** si las diferencias identificadas se traducen en resultados medibles, comparando
+   la implementación que genera SpecKit con y sin un marco IREB de entrada (Flow A vs Flow B).
 
-Producir un mapa de alineación que documente, para cada actividad, criterio de calidad y artefacto del flujo normativo, si SpecKit lo cubre, lo cubre parcialmente o no lo cubre, respaldado por evidencia obtenida de casos de estudio reales.
+## Productos del trabajo
 
-## Descripción del Trabajo
+### Análisis (`src/0-analisis/`)
 
-### Enfoque y Metodología
+| Documento | Contenido |
+|---|---|
+| `01-flujo-speckit.md` | Caracterización del flujo SDD de SpecKit v0.10.2 |
+| `02-mapeo-ireb-speckit.md` | Mapeo sistemático IREB ↔ SpecKit por actividad y criterio |
+| `03-deficiencias-grises.md` | Deficiencias y áreas grises de SpecKit frente a IREB |
+| `04-plantillas-elicitacion.md` | Plantillas, elicitación, rúbricas y fuentes |
+| `05-sistemas-profesionales.md` | Comparativa con herramientas RE profesionales |
+| `06-propuesta-integracion.md` | Propuesta de integración IREB + SpecKit |
+| `07-gaps-metodologia.md` | Gaps y funciones de SpecKit no utilizadas |
+| `08-partes-personalizables.md` | Partes personalizables de SpecKit y productos faltantes |
+| `09-divergencias-puntos-encuentro.md` | Divergencias y puntos de encuentro entre RE estandarizado y SpecKit |
 
-El análisis se fundamenta en:
+### IREB Kit (`src/3-implementacion/ireb-kit/`)
 
-- **IREB Foundation Level Handbook + ISO/IEC/IEEE 29148 + INCOSE Guide**: Marco normativo de referencia para ingeniería de requisitos profesional
-- **SpecKit (v0.10.2)**: Documentación oficial, repositorio, spec-driven.md y observación del pipeline SDD frente a requisitos reales
+| Producto | Descripción |
+|---|---|
+| `constitution.md` | 9 artículos IREB para SpecKit (verificabilidad, minimalidad, trazabilidad...) |
+| `spec-template-ireb.md` | Plantilla de especificación con 12 atributos IREB |
+| `plan-template-ireb.md` | Plantilla de plan con gates IREB |
+| `checklist-ireb.md` | Checklist de calidad basado en ISO 29148 (12 criterios) |
+| `workflow-ireb.yml` | Pipeline YAML con gates de revisión IREB |
+| `preset-ireb.yml` | Preset instalable con `specify preset add ireb` |
+| `prompt-template.md` | Prompt para generar requisitos IREB con LLM |
+| `tutorial.md` | Tutorial paso a paso para el usuario final |
 
-### Componentes Principales
+### Metodología y datos (`src/`)
 
-1. **Definición del flujo normativo de referencia**
-   - Actividades IREB: elicitación, documentación, validación, gestión
-   - Criterios de calidad ISO 29148
-   - Buenas prácticas INCOSE
-
-2. **Caracterización del flujo SpecKit**
-   - Comandos, artefactos, mecanismos de calidad
-   - Pipeline SDD: constitution → specify → clarify → checklist → plan → tasks → analyze → implement
-
-3. **Mapeo sistemático SpecKit ↔ normas**
-   - Tablas de cobertura por actividad y criterio
-   - Evidencia de casos de estudio reales (6 repositorios Open Source)
-   - Identificación de brechas y áreas grises
-
-4. **Recomendaciones de alineación**
-   - Cómo aproximar el flujo SpecKit a un flujo normativo
-   - Limitaciones inherentes del enfoque SDD
+- `src/metodologia.md` — Diseño metodológico completo (4 fases, Flow A vs Flow B)
+- `src/1-evidencia/` — Corpus de 56 entradas extraídas de changelogs
+- `src/2-requisitos/` — 52 requisitos formalizados con plantilla IREB
+- `src/3-implementacion/` — Scripts de preparación y ejecución
+- `src/4-evaluacion/` — Rúbrica SRCI para evaluación de conformidad

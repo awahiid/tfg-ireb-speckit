@@ -25,38 +25,38 @@ Leyenda: $\blacksquare$ = Alineado, $\bullet$ = Parcial, $\bigcirc$ = No cubiert
 
 \subsection{An\'alisis detallado por actividad}
 
-\\textbf{Elicitaci\'on (1/10):} \\textsc{SpecKit} asume que el usuario describe la funcionalidad directamente. No ofrece identificaci\'on de \\emph{stakeholders}, an\'alisis de fuentes, t\\'ecnicas de elicitaci\'on ni modelado de contexto del sistema. El riesgo de ``construir lo incorrecto'' recae enteramente en la calidad del prompt inicial.
+\textbf{Elicitaci\'on (1/10):} \textsc{SpecKit} asume que el usuario describe la funcionalidad directamente. No ofrece identificaci\'on de \emph{stakeholders}, an\'alisis de fuentes, t\'ecnicas de elicitaci\'on ni modelado de contexto del sistema. El riesgo de ``construir lo incorrecto'' recae enteramente en la calidad del prompt inicial.
 
-\\textbf{Documentaci\'on (5/10):} Es el punto m\\'as fuerte de \\textsc{SpecKit}. Sus plantillas fuerzan la separaci\\'on entre ``qu\\'e'' y ``c\\'omo'', y los \\emph{checklists} ayudan a mantener consistencia interna. Sin embargo, carece de clasificaci\\'on por tipo de requisito (funcional, calidad, restricci\\'on), de atributos formales (fuente, \\emph{rationale}, prioridad) y de modelado gr\\'afico (UML, ER, diagramas de contexto).
+\textbf{Documentaci\'on (5/10):} Es el punto m\'as fuerte de \textsc{SpecKit}. Sus plantillas fuerzan la separaci\'on entre ``qu\'e'' y ``c\'omo'', y los \emph{checklists} ayudan a mantener consistencia interna. Sin embargo, carece de clasificaci\'on por tipo de requisito (funcional, calidad, restricci\'on), de atributos formales (fuente, \emph{rationale}, prioridad) y de modelado gr\'afico (UML, ER, diagramas de contexto).
 
-\\textbf{Validaci\'on (2/10):} Los comandos \\texttt{clarify}, \\texttt{checklist} y \\texttt{analyze} operan \\'unicamente sobre los artefactos internos del pipeline. No hay validaci\\'on contra necesidades externas de \\emph{stakeholders}, prototipado, inspecci\\'on formal ni revisi\\'on por pares estructurada.
+\textbf{Validaci\'on (2/10):} Los comandos \texttt{clarify}, \texttt{checklist} y \texttt{analyze} operan \'unicamente sobre los artefactos internos del pipeline. No hay validaci\'on contra necesidades externas de \emph{stakeholders}, prototipado, inspecci\'on formal ni revisi\'on por pares estructurada.
 
-\\textbf{Gesti\'on de requisitos (2/10):} La trazabilidad es lineal y forward (spec$\\rightarrow$plan$\\rightarrow$tasks$\\rightarrow$code), pero no bidireccional ni hacia fuentes externas. No hay versionado individual de requisitos, \\emph{baselines}, gesti\\'on de cambios ni \\emph{change control board}.
+\textbf{Gesti\'on de requisitos (2/10):} La trazabilidad es lineal y forward (spec$\rightarrow$plan$\rightarrow$tasks$\rightarrow$code), pero no bidireccional ni hacia fuentes externas. No hay versionado individual de requisitos, \emph{baselines}, gesti\'on de cambios ni \emph{change control board}.
 
 \subsection{Mapeo contra los 9 principios fundamentales IREB}
 
-La tabla~\\ref{tab:9principios} presenta el mapeo contra los principios del \\emph{Foundation Level Handbook}~\\cite{cpre}.
+La tabla~\ref{tab:9principios} presenta el mapeo contra los principios del \emph{Foundation Level Handbook}~\cite{cpre}.
 
-\\begin{table}[h]
-\\centering
-\\caption{Alineaci\\'on con los 9 principios IREB}
-\\label{tab:9principios}
-\\begin{tabularx}{\\textwidth}{lXc}
-\\toprule
-\\textbf{Principio IREB} & \\textbf{Observaci\\'on} & \\textbf{Nivel} \\\\
-\\midrule
-Valor orientado al negocio & SDD pone la especificaci\\'on como centro del valor & $\\blacksquare$ \\\\
-Implicaci\\'on de stakeholders & No hay concepto de stakeholder en el flujo & $\\bigcirc$ \\\\
-Entendimiento compartido & Plantillas ayudan, pero sin validaci\\'on externa & $\\bullet$ \\\\
-Problema antes que soluci\\'on & ``Focus on WHAT, not HOW'' es pilar de SDD & $\\blacksquare$ \\\\
-Lenguaje com\\'un & Markdown accesible, pero sin glosario de t\\'erminos & $\\bullet$ \\\\
-Contexto del sistema & No hay modelado de contexto ni diagramas & $\\bigcirc$ \\\\
-Tipos de requisitos & No clasifica requisitos (funcional/calidad/restricci\\'on) & $\\bigcirc$ \\\\
-Priorizaci\\'on & No hay priorizaci\\'on formal de requisitos & $\\bigcirc$ \\\\
-Aseguramiento de calidad & Checklists y gates, pero no basados en est\\'andares RE & $\\bullet$ \\\\
-\\bottomrule
-\\end{tabularx}
-\\end{table}
+\begin{table}[h]
+\centering
+\caption{Alineaci\'on con los 9 principios IREB}
+\label{tab:9principios}
+\begin{tabularx}{\textwidth}{lXc}
+\toprule
+\textbf{Principio IREB} & \textbf{Observaci\'on} & \textbf{Nivel} \\
+\midrule
+Valor orientado al negocio & SDD pone la especificaci\'on como centro del valor & $\blacksquare$ \\
+Implicaci\'on de stakeholders & No hay concepto de stakeholder en el flujo & $\bigcirc$ \\
+Entendimiento compartido & Plantillas ayudan, pero sin validaci\'on externa & $\bullet$ \\
+Problema antes que soluci\'on & ``Focus on WHAT, not HOW'' es pilar de SDD & $\blacksquare$ \\
+Lenguaje com\'un & Markdown accesible, pero sin glosario de t\'erminos & $\bullet$ \\
+Contexto del sistema & No hay modelado de contexto ni diagramas & $\bigcirc$ \\
+Tipos de requisitos & No clasifica requisitos (funcional/calidad/restricci\'on) & $\bigcirc$ \\
+Priorizaci\'on & No hay priorizaci\'on formal de requisitos & $\bigcirc$ \\
+Aseguramiento de calidad & Checklists y gates, pero no basados en est\'andares RE & $\bullet$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \section{An\'alisis por criterio de calidad ISO 29148}
 

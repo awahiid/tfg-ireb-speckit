@@ -7,6 +7,25 @@
 
 ---
 
+## Article 0 — Contextual Integrity (No Hallucination)
+
+All requirements MUST derive their Source, Rationale, and stakeholder
+information exclusively from the input document provided. No stakeholder,
+business objective, issue reference, regulatory requirement, or origin
+story shall be invented, inferred, or fabricated. If the input does not
+contain sufficient information for a field, the field shall state
+"sin fuente adicional documentada" or "No documentado en la fuente original".
+
+**Justification**: IREB defines Source as a fundamental traceability attribute
+[1, Glossary]. ISO 29148 requires that requirements be traceable to their
+origin [2, §6.3.1]. Inventing sources, stakeholders, or motivations that do
+not exist in the original input corrupts the traceability chain and introduces
+fictional requirements that cannot be validated. The model MAY expand
+implementation details (how), but MUST NEVER invent organizational context
+(why, who, from where).
+
+---
+
 ## Article I — Verifiability Mandate
 
 All requirements MUST include an observable verification criterion.

@@ -43,30 +43,48 @@ n8n & Integraci\'on y composici\'on de servicios \\
 \end{tabularx}
 \end{table}
 
-Para la selecci\'on de cambios se define una r\'ubrica con cuatro dimensiones (v\'ease tabla~\ref{tab:rubrica-seleccion}). Se descart\'o una r\'ubrica basada en IEEE 830 porque su aplicaci\'on sobre \\emph{changelogs} generaba un rechazo pr\'acticamente universal de entradas, incluso aquellas con alto valor de trazabilidad.\n\n\\begin{table}[h]\n\\centering\n\\caption{R\\'ubrica de selecci\\'on de cambios (Fase 1)}\n\\label{tab:rubrica-seleccion}\n\\begin{tabularx}{\\textwidth}{lX}\n\\toprule\n\\textbf{Dimensi\\'on} & \\textbf{Descripci\\'on} \\\\\n\\midrule\nTrazabilidad & La entrada referencia una PR o commit concreto con diff localizable \\\\\nSe\\'nales estructurales & Menciona superficie t\\'ecnica, condici\\'on o actor relevante \\\\\nUtilidad para derivaci\\'on & Describe comportamiento formalizable como requisito verificable \\\\\nDefendibilidad & La inclusi\\'on puede justificarse con razonamiento expl\\'icito \\\\\n\\bottomrule\n\\end{tabularx}\n\\end{table}\n\nSe almacenan \\'unicamente textos literales con trazabilidad m\\'inima (versi\\'on, URL, PR, commit, se\\'nales expl\\'icitas), sin redactar requisitos en esta fase. La conservaci\\'on del texto literal separa la observaci\\'on de la formalizaci\\'on y mejora la auditabilidad, en l\\'inea con la distinci\\'on IREB entre elicitaci\\'on y documentaci\\'on.
+Para la selecci\'on de cambios se define una r\'ubrica con cuatro dimensiones (v\'ease tabla~\ref{tab:rubrica-seleccion}). Se descart\'o una r\'ubrica basada en IEEE 830 porque su aplicaci\'on sobre \emph{changelogs} generaba un rechazo pr\'acticamente universal de entradas, incluso aquellas con alto valor de trazabilidad.
+
+\begin{table}[h]
+\centering
+\caption{R\'ubrica de selecci\'on de cambios (Fase 1)}
+\label{tab:rubrica-seleccion}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Dimensi\'on} & \textbf{Descripci\'on} \\
+\midrule
+Trazabilidad & La entrada referencia una PR o commit concreto con diff localizable \\
+Se\'nales estructurales & Menciona superficie t\'ecnica, condici\'on o actor relevante \\
+Utilidad para derivaci\'on & Describe comportamiento formalizable como requisito verificable \\
+Defendibilidad & La inclusi\'on puede justificarse con razonamiento expl\'icito \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Se almacenan \'unicamente textos literales con trazabilidad m\'inima (versi\'on, URL, PR, commit, se\'nales expl\'icitas), sin redactar requisitos en esta fase. La conservaci\'on del texto literal separa la observaci\'on de la formalizaci\'on y mejora la auditabilidad, en l\'inea con la distinci\'on IREB entre elicitaci\'on y documentaci\'on.
 
 \section{Fase 2: Formalizaci\'on de requisitos}
 
 La evidencia se transforma en requisitos siguiendo una plantilla con 12 atributos basados en IREB, ISO 29148 e INCOSE: ID, Nombre, Tipo, Descripci\'on formal, Fuente, Rationale, Prioridad, Verificaci\'on, Estado, Versi\'on, Dependencias y M\'odulo.
 
-La descripci\'on formal debe cumplir ocho reglas obligatorias: expresar una \\'unica obligaci\'on, comenzar por la f\\'ormula ``El sistema deber\\'a...'', contener un verbo observable, evitar t\\'erminos subjetivos, incluir condiciones cuantificables, ser verificable, ser autosuficiente y no describir detalles de implementaci\\'on.
+La descripci\'on formal debe cumplir ocho reglas obligatorias: expresar una \'unica obligaci\'on, comenzar por la f\'ormula ``El sistema deber\'a...'', contener un verbo observable, evitar t\'erminos subjetivos, incluir condiciones cuantificables, ser verificable, ser autosuficiente y no describir detalles de implementaci\'on.
 
-Cada requisito debe superar un \\emph{quality gate} de 12 criterios organizados en tres bloques:
+Cada requisito debe superar un \emph{quality gate} de 12 criterios organizados en tres bloques:
 
-\\begin{description}
-    \\item[Bloque A. Identificaci\\'on y gesti\\'on (R1--R4c):] R1 (identificador \\'unico), R2 (clasificaci\\'on v\\'alida), R3 (fuente trazable), R4 (prioridad asignada), R4b (dependencias documentadas), R4c (m\\'odulo asignado).
-    \\item[Bloque B. Redacci\\'on y verificabilidad (R5--R9):] R5 (estructura formal ``El sistema deber\\'a...''), R6 (obligaci\\'on \\'unica), R7 (verbo observable), R8 (ausencia de ambig\\"uedad cr\\'itica), R9 (verificabilidad observable).
-    \\item[Bloque C. Completitud contextual (R10):] R10 (autosuficiencia del requisito).
-\\end{description}
+\begin{description}
+    \item[Bloque A. Identificaci\'on y gesti\'on (R1--R4c):] R1 (identificador \'unico), R2 (clasificaci\'on v\'alida), R3 (fuente trazable), R4 (prioridad asignada), R4b (dependencias documentadas), R4c (m\'odulo asignado).
+    \item[Bloque B. Redacci\'on y verificabilidad (R5--R9):] R5 (estructura formal ``El sistema deber\'a...''), R6 (obligaci\'on \'unica), R7 (verbo observable), R8 (ausencia de ambig\"uedad cr\'itica), R9 (verificabilidad observable).
+    \item[Bloque C. Completitud contextual (R10):] R10 (autosuficiencia del requisito).
+\end{description}
 
-La puntuaci\\'on total es la suma directa de criterios cumplidos (m\\'aximo 12). Los umbrales son:
-\\begin{itemize}
-    \\item \\textbf{11--12}: Aceptado.
-    \\item \\textbf{9--10}: Revisi\\'on menor (salvo que afecte a R5, R7, R8 o R9).
-    \\item $\\leq$ \\textbf{8}: Rechazado.
-\\end{itemize}
+La puntuaci\'on total es la suma directa de criterios cumplidos (m\'aximo 12). Los umbrales son:
+\begin{itemize}
+    \item \textbf{11--12}: Aceptado.
+    \item \textbf{9--10}: Revisi\'on menor (salvo que afecte a R5, R7, R8 o R9).
+    \item $\leq$ \textbf{8}: Rechazado.
+\end{itemize}
 
-Tres criterios son \\textbf{bloqueantes}: R5 (estructura formal ausente), R7 (verbo no observable) y R9 (sin verificabilidad). Su incumplimiento provoca rechazo autom\\'atico independientemente de la puntuaci\\'on total, siguiendo la pr\\'actica de \\emph{quality gates} donde ciertas propiedades son condici\\'on necesaria y no compensable.
+Tres criterios son \textbf{bloqueantes}: R5 (estructura formal ausente), R7 (verbo no observable) y R9 (sin verificabilidad). Su incumplimiento provoca rechazo autom\'atico independientemente de la puntuaci\'on total, siguiendo la pr\'actica de \emph{quality gates} donde ciertas propiedades son condici\'on necesaria y no compensable.
 
 \section{Fase 3: Ejecuci\'on de SpecKit}
 
@@ -88,34 +106,34 @@ Se realiza una \'unica ejecuci\'on por requisito para evitar que la intervenci\'
 
 Se contrasta el flujo observado con el normativo mediante la r\'ubrica SRCI (\emph{Structured Requirement Conformance Inspection}), que eval\'ua seis dimensiones con base normativa expl\'icita:
 
-\\begin{itemize}
-    \\item \\textbf{C1. Cobertura de intenci\\'on principal} --- ISO/IEC/IEEE 29148. Verifica si la implementaci\\'on cubre la acci\\'on central del requisito.
-    \\item \\textbf{C2. Satisfacci\\'on de condici\\'on de activaci\\'on} --- INCOSE Handbook. Eval\\'ua si se implementan correctamente las restricciones o contexto del requisito.
-    \\item \\textbf{C3. Resultado observable consistente} --- ISO 29148. Comprueba si el sistema produce el resultado esperado de forma verificable.
-    \\item \\textbf{C4. Correspondencia tests--intenci\\'on} --- Fagan inspections. Eval\\'ua si los tests verifican directamente la intenci\\'on funcional.
-    \\item \\textbf{C5. Ausencia de desviaci\\'on funcional} --- Consistencia en RE. Detecta comportamientos no solicitados o efectos secundarios.
-    \\item \\textbf{C6. Trazabilidad completa} --- ISO/IEC/IEEE 29148. Reconstruye la cadena requisito $\\rightarrow$ intenci\\'on $\\rightarrow$ implementaci\\'on $\\rightarrow$ evidencia.
-\\end{itemize}
+\begin{itemize}
+    \item \textbf{C1. Cobertura de intenci\'on principal} --- ISO/IEC/IEEE 29148. Verifica si la implementaci\'on cubre la acci\'on central del requisito.
+    \item \textbf{C2. Satisfacci\'on de condici\'on de activaci\'on} --- INCOSE Handbook. Eval\'ua si se implementan correctamente las restricciones o contexto del requisito.
+    \item \textbf{C3. Resultado observable consistente} --- ISO 29148. Comprueba si el sistema produce el resultado esperado de forma verificable.
+    \item \textbf{C4. Correspondencia tests--intenci\'on} --- Fagan inspections. Eval\'ua si los tests verifican directamente la intenci\'on funcional.
+    \item \textbf{C5. Ausencia de desviaci\'on funcional} --- Consistencia en RE. Detecta comportamientos no solicitados o efectos secundarios.
+    \item \textbf{C6. Trazabilidad completa} --- ISO/IEC/IEEE 29148. Reconstruye la cadena requisito $\rightarrow$ intenci\'on $\rightarrow$ implementaci\'on $\rightarrow$ evidencia.
+\end{itemize}
 
-Cada criterio se eval\\'ua como \\textbf{S\\'i}, \\textbf{Parcial} o \\textbf{No}. La tabla~\\ref{tab:categorias} define las categor\\'ias resultantes.
+Cada criterio se eval\'ua como \textbf{S\'i}, \textbf{Parcial} o \textbf{No}. La tabla~\ref{tab:categorias} define las categor\'ias resultantes.
 
-\\begin{table}[h]
-\\centering
-\\caption{Categor\\'ias del mapeo SRCI}
-\\label{tab:categorias}
-\\begin{tabularx}{\\textwidth}{lX}
-\\toprule
-\\textbf{Categor\\'ia} & \\textbf{Condici\\'on} \\\\
-\\midrule
-Alineado & C1=S\\'i, C3=S\\'i, C5=S\\'i, C6=S\\'i; y no C2=No y C4=No simult\\'aneamente \\\\
-Alineaci\\'on parcial & C1=S\\'i y C3=S\\'i; m\\'aximo un criterio en No \\\\
-Desviado & C1=No o C3=No; o dos o m\\'as criterios en No \\\\
-\\bottomrule
-\\end{tabularx}
-\\end{table}
+\begin{table}[h]
+\centering
+\caption{Categor\'ias del mapeo SRCI}
+\label{tab:categorias}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Categor\'ia} & \textbf{Condici\'on} \\
+\midrule
+Alineado & C1=S\'i, C3=S\'i, C5=S\'i, C6=S\'i; y no C2=No y C4=No simult\'aneamente \\
+Alineaci\'on parcial & C1=S\'i y C3=S\'i; m\'aximo un criterio en No \\
+Desviado & C1=No o C3=No; o dos o m\'as criterios en No \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-La categor\\'ia de alineaci\\'on parcial reconoce que la transformaci\\'on de requisitos formalizados a implementaci\\'on mediante un pipeline SDD raramente satisface todos los criterios con igual solidez. Una escala binaria habr\\'ia concentrado los resultados en el polo negativo, reduciendo la granularidad anal\\'itica.
+La categor\'ia de alineaci\'on parcial reconoce que la transformaci\'on de requisitos formalizados a implementaci\'on mediante un pipeline SDD raramente satisface todos los criterios con igual solidez. Una escala binaria habr\'ia concentrado los resultados en el polo negativo, reduciendo la granularidad anal\'itica.
 
-Para controlar la consistencia interna, se re-analiza un subconjunto de 3--5 casos en un segundo momento aplicando la misma r\\'ubrica. Las discrepancias se registran cualitativamente, identificando qu\\'e criterios presentan mayor ambig\\"uedad de aplicaci\\'on.
+Para controlar la consistencia interna, se re-analiza un subconjunto de 3--5 casos en un segundo momento aplicando la misma r\'ubrica. Las discrepancias se registran cualitativamente, identificando qu\'e criterios presentan mayor ambig\"uedad de aplicaci\'on.
 
-El resultado del an\\'alisis no es una ``nota'' para \\textsc{SpecKit}, sino un \\textbf{mapa de alineaci\\'on} que documenta, para cada elemento del flujo normativo, si \\textsc{SpecKit} lo cubre ($\\blacksquare$), lo cubre parcialmente ($\\bullet$) o no lo cubre ($\\bigcirc$), respaldado por evidencia de los casos de estudio.
+El resultado del an\'alisis no es una ``nota'' para \textsc{SpecKit}, sino un \textbf{mapa de alineaci\'on} que documenta, para cada elemento del flujo normativo, si \textsc{SpecKit} lo cubre ($\blacksquare$), lo cubre parcialmente ($\bullet$) o no lo cubre ($\bigcirc$), respaldado por evidencia de los casos de estudio.
