@@ -3,37 +3,44 @@
 
 \section{Contribuciones del trabajo}
 
-Este trabajo ha realizado un mapeo sistem\'atico del flujo de trabajo de \textsc{SpecKit} contra un flujo profesional de ingenier\'ia de requisitos basado en normas IREB, ISO 29148 e INCOSE. Las contribuciones principales son:
+Este trabajo ha realizado un mapeo sistem\'atico y una evaluaci\'on emp\'irica del flujo de trabajo de \textsc{SpecKit} contra un flujo profesional de ingenier\'ia de requisitos basado en normas IREB, ISO 29148 e INCOSE. Las contribuciones principales son:
 
 \begin{enumerate}
-    \item \textbf{Caracterizaci\'on documentada del flujo SDD de SpecKit}: se ha documentado el flujo completo (v0.10.2) a partir de fuentes oficiales, incluyendo comandos, artefactos, mecanismos de calidad y arquitectura extensible.
+    \item \textbf{IREB Kit for SpecKit}: un conjunto de 10 artefactos (constitution con 9 art\'iculos, plantilla de spec con 12 atributos, checklist ISO 29148 de 13 criterios, AGENTS.md con 5 reglas universales, scope contract, y plantillas de plan, tasks, clarify y analyze) que transforman el pipeline nativo de \textsc{SpecKit} en un flujo alineado con pr\'acticas normativas de RE.
 
-    \item \textbf{Mapa de alineaci\'on IREB--SpecKit}: se ha producido un mapa detallado que contrasta cada actividad IREB y cada criterio de calidad con los comandos y artefactos de \textsc{SpecKit}.
+    \item \textbf{Corpus de 52 requisitos formalizados}: extra\'idos de \emph{changelogs} de 6 proyectos \emph{Open Source} representativos de distintos tipos de sistema, formalizados con 12 atributos IREB y validados mediante r\'ubrica de calidad. Complementado con 52 MRS (\emph{Minimal Requirement Seeds}) derivados para replicabilidad.
 
-    \item \textbf{Corpus de requisitos reales formalizados}: 52 requisitos extra\'idos de \emph{changelogs} de 6 proyectos \emph{Open Source}, formalizados con 12 atributos IREB y validados mediante r\'ubrica.
+    \item \textbf{R\'ubrica SRCI v3}: 24 criterios organizados en 4 bloques (preservaci\'on del requisito, conformidad de la implementaci\'on, verificaci\'on y testing, trazabilidad del pipeline) con trazabilidad normativa expl\'icita, dise\~nada para ser reproducible y pragm\'atica.
 
-    \item \textbf{Identificaci\'on de brechas y \'areas grises}: se han identificado las principales diferencias entre SDD y el enfoque normativo.
+    \item \textbf{Evaluaci\'on emp\'irica de 3 flujos sobre 6 casos}: 18 ejecuciones del pipeline que demuestran que el IREB Kit v2 mejora la puntuaci\'on SRCI de 5.3 a 9.2 (escala 0--10), gana 6--0 frente al baseline, y supera los 4 criterios cr\'iticos en el 100\% de los casos.
+
+    \item \textbf{Mapa de alineaci\'on IREB--SpecKit}: contraste detallado de cada actividad IREB (7), cada criterio ISO 29148 (8) y cada principio IREB (9) contra los comandos y artefactos de \textsc{SpecKit}, con y sin el IREB Kit.
 \end{enumerate}
 
 \section{Conclusiones principales}
 
-\textbf{SpecKit no es una herramienta IREB-compliant, pero no necesita serlo.} Su cobertura global de las actividades IREB se estima en aproximadamente 2.5/10, pero esta valoraci\'on no es una cr\'itica sino una constataci\'on: IREB define \emph{qu\'e} debe hacerse en RE; \textsc{SpecKit} define \emph{c\'omo} generar c\'odigo a partir de descripciones.
+\textbf{1. El IREB Kit mejora los resultados de forma consistente y medible.} Kit v2 gana 6--0 con +3.9 puntos de ventaja sobre Sin-Kit (9.2 vs. 5.3). La mejora no est\'a en la capacidad de implementar (SpecKit implementa bien en ambos flujos), sino en la preservaci\'on de la calidad del requisito (Bloque A: 10.2 vs. 2.0) y en la trazabilidad del pipeline (Bloque D: 4.0 vs. 1.5).
 
-\textbf{La integraci\'on es posible y deseable.} La separaci\'on de responsabilidades es clara: el ingeniero de requisitos realiza la elicitaci\'on y formalizaci\'on siguiendo IREB; \textsc{SpecKit} transforma los requisitos formalizados en implementaciones.
+\textbf{2. El scope contract es el hallazgo m\'as relevante para la pr\'actica.} Reduce los diffs en un factor de 2--19$\times$ sin p\'erdida de cobertura funcional. n8n-e5 pas\'o de 4238 l\'ineas (Kit v1, sin scope contract) a 222 l\'ineas (Kit v2, con scope contract). Este mecanismo es directamente transferible a cualquier uso de \textsc{SpecKit}, con o sin IREB.
 
-\textbf{SDD e IREB son complementarios, no sustitutivos.} El valor de \textsc{SpecKit} reside en la generaci\'on autom\'atica de c\'odigo; las herramientas profesionales (DOORS, Jama, Polarion) gestionan requisitos pero no generan c\'odigo. El mapeo proporciona una base para explorar integraciones pr\'acticas.
+\textbf{3. A\~nadir pasos sin robustez es contraproducente.} Kit v1 (3.4/10) fue peor que Sin-Kit (5.3/10) en la mitad de los casos. La lecci\'on es clara: un pipeline m\'as largo no implica mejor resultado si los pasos no se completan de forma fiable. La arquitectura del Kit v2 (AGENTS.md + scope contract + pipeline estable) corrige este problema.
+
+\textbf{4. SDD e IREB son complementarios, no sustitutivos.} \textsc{SpecKit} no es una herramienta IREB-compliant, pero con el Kit v2 se aproxima significativamente. La separaci\'on de responsabilidades es clara: el ingeniero de requisitos realiza la elicitaci\'on y formalizaci\'on siguiendo IREB; \textsc{SpecKit} transforma los requisitos formalizados en implementaciones trazables y verificables.
+
+\textbf{5. La alucinaci\'on de contexto es prevenible.} El art\'iculo 0 de la constituci\'on (no inventar stakeholders, fuentes ni objetivos) y el checklist R13 del Kit v2 eliminaron las alucinaciones de contexto en el 100\% de los casos (6/6). La combinaci\'on de AGENTS.md + constitution + checklist es efectiva como mecanismo de prevenci\'on.
 
 \section{Trabajo futuro}
 
 Las siguientes l\'ineas podr\'ian extender los resultados:
 
 \begin{enumerate}
-    \item \textbf{Preset IREB para SpecKit}: desarrollar un \emph{preset} que modifique las plantillas para incluir atributos IREB y \emph{checklists} basados en ISO 29148.
-    \item \textbf{Extensi\'on de elicitaci\'on}: implementar un comando \texttt{/speckit.elicit} para asistir en la identificaci\'on de \emph{stakeholders} y fuentes.
-    \item \textbf{Evaluaci\'on multi-evaluador}: replicar el an\'alisis SRCI con varios evaluadores para calibrar la r\'ubrica.
-    \item \textbf{Ampliaci\'on del corpus}: incorporar proyectos de otros dominios (sistemas cr\'iticos, IoT, tiempo real).
+    \item \textbf{Ampliaci\'on del corpus de evaluaci\'on}: ejecutar los 46 casos restantes del corpus (actualmente solo formalizados) en el flujo Kit v2 para aumentar el tama\~no de la muestra de 6 a 52.
+    \item \textbf{Evaluaci\'on multi-evaluador}: replicar el an\'alisis SRCI con varios evaluadores independientes para calibrar la reproducibilidad de la r\'ubrica.
+    \item \textbf{Automatizaci\'on del pipeline}: el \texttt{pipeline.sh} del IREB Kit es un prototipo. Una integraci\'on nativa con la API de \textsc{SpecKit} (cuando est\'e disponible) permitir\'ia ejecuciones completamente automatizadas.
+    \item \textbf{Extensi\'on a otros dominios}: incorporar proyectos de dominios no representados en el corpus actual (sistemas cr\'iticos, IoT, tiempo real, sistemas embebidos).
+    \item \textbf{Estudio longitudinal}: evaluar si las mejoras introducidas por el IREB Kit se mantienen a lo largo de m\'ultiples iteraciones de desarrollo sobre el mismo c\'odigo base.
 \end{enumerate}
 
 \section{Reflexi\'on final}
 
-La irrupci\'on de herramientas de IA para la generaci\'on de c\'odigo no hace obsoleta la ingenier\'ia de requisitos, sino que la hace m\'as necesaria. Como se\~nal\'o Kim Lauenroth en AIDE\#26 (2026): ``AI amplifies what we put in --- good and bad. Methodological maturity decides the outcome''. Este trabajo contribuye a entender, desde una perspectiva basada en normas, qu\'e lugar ocupa \textsc{SpecKit} en el ecosistema de la ingenier\'ia de requisitos.
+La irrupci\'on de herramientas de IA para la generaci\'on de c\'odigo no hace obsoleta la ingenier\'ia de requisitos, sino que la hace m\'as necesaria. Como se\~nal\'o Kim Lauenroth en AIDE\#26 (2026): ``AI amplifies what we put in --- good and bad. Methodological maturity decides the outcome''. Este trabajo demuestra emp\'iricamente que la madurez metodol\'ogica ---en forma de requisitos formalizados seg\'un normas, constituci\'on con principios RE, y mecanismos de control de alcance--- produce resultados mediblemente mejores. La ingenier\'ia de requisitos no compite con SDD: lo potencia.

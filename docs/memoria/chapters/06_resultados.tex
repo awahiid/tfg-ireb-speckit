@@ -1,6 +1,85 @@
 \chapter{\resultsname}
 \label{chap:resultados}
 
+\section{Evaluaci\'on comparativa: Sin-Kit vs. Kit v1 vs. Kit v2}
+
+Se evaluaron los tres flujos del pipeline ---Sin-Kit (Flow A, baseline), Kit v1 (IREB-enhanced inicial) y Kit v2 (IREB-enhanced con scope contract)--- aplicando la r\'ubrica SRCI v3 de 24 criterios sobre los 6 casos del subconjunto de evaluaci\'on. La tabla~\ref{tab:resultados-final} presenta los resultados agregados.
+
+\begin{table}[h]
+\centering
+\caption{Resultados comparativos: nota /10 por caso y flujo}
+\label{tab:resultados-final}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Caso} & \textbf{Sin-Kit} & \textbf{Kit v1} & \textbf{Kit v2} \\
+\midrule
+appwrite-e3 (Cache TTL) & 5.7 & 3.4 & \textbf{9.7} \\
+authentik-e1 (FIPS API) & 5.0 & 0.0 & \textbf{9.4} \\
+cal-e1 (Opt-In Scope)   & 5.7 & 5.2 & \textbf{8.5} \\
+directus-e9 (MIME client) & 4.4 & 5.5 & \textbf{9.2} \\
+medusa-e5 (SKU search)  & 5.7 & 4.5 & \textbf{8.8} \\
+n8n-e5 (IMAP trigger)   & 5.2 & 2.0 & \textbf{9.7} \\
+\midrule
+\textbf{Media}           & \textbf{5.3} & \textbf{3.4} & \textbf{9.2} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Kit v2 gana 6-0} con una diferencia media de +3.9 puntos sobre Sin-Kit (9.2 vs. 5.3). Kit v1 fue peor que Sin-Kit en 3 de 6 casos (3.4 vs. 5.3), lo que demuestra que a\~nadir pasos al pipeline sin garantizar su completitud es contraproducente.
+
+\subsection{Distribuci\'on por categor\'ia}
+
+\begin{table}[h]
+\centering
+\caption{Categor\'ias SRCI por flujo (6 casos cada uno)}
+\label{tab:categorias-flujos}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Categor\'ia} & \textbf{Sin-Kit} & \textbf{Kit v1} & \textbf{Kit v2} \\
+\midrule
+Conforme ($\geq 8.0$) & 0 & 0 & \textbf{6} \\
+Parcialmente conforme (6.0--7.9) & 0 & 0 & 0 \\
+Conformidad baja (4.0--5.9) & \textbf{6} & 3 & 0 \\
+No conforme ($<4.0$) & 0 & \textbf{3} & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{An\'alisis por bloque de la r\'ubrica}
+
+\subsection{Bloque A --- Preservaci\'on del requisito (35\%)}
+
+La tabla~\ref{tab:bloque-a} muestra la puntuaci\'on media en el Bloque A (12 criterios, m\'aximo 12 puntos).
+
+\begin{table}[h]
+\centering
+\caption{Puntuaci\'on media Bloque A: preservaci\'on del requisito}
+\label{tab:bloque-a}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Flujo} & \textbf{Media A (/12)} & \textbf{Observaci\'on} \\
+\midrule
+Sin-Kit & 2.0 & Spec libre sin atributos IREB. El agente no recibe plantilla. \\
+Kit v1  & 2.7 & Solo 1 de 6 casos (medusa-e5) preserva atributos. Pipeline incompleto en 3 casos. \\
+Kit v2  & \textbf{10.2} & Todos los casos preservan $\geq 9$ atributos. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Sin plantilla IREB, \textsc{SpecKit} genera especificaciones en prosa libre sin estructura formal. La plantilla de 12 atributos del Kit v2 es el factor determinante. El Kit v1 fracas\'o por inestabilidad del pipeline (3/6 casos no completaron el paso \texttt{specify}).
+
+\subsection{Bloque B --- Conformidad de la implementaci\'on (30\%)}
+
+Los tres flujos implementan correctamente la intenci\'on principal cuando el pipeline completa. La diferencia est\'a en la \textbf{proporcionalidad}: Kit v2 con scope contract genera diffs significativamente m\'as contenidos. El caso m\'as ilustrativo es n8n-e5, donde el diff pas\'o de 4238 l\'ineas (Kit v1, sin scope contract) a 222 l\'ineas (Kit v2, con scope contract), una reducci\'on de 19$\times$ sin p\'erdida de cobertura funcional.
+
+\subsection{Bloque C --- Verificaci\'on y testing (20\%)}
+
+Kit v2 alcanza puntuaci\'on perfecta en verificaci\'on (3.0/3). La presencia de criterios de verificaci\'on expl\'icitos en el \texttt{spec.md} permite que los tests generados los cubran directamente. Sin spec formal (Sin-Kit), los tests existen pero sin garant\'ia de que verifiquen exactamente lo requerido.
+
+\subsection{Bloque D --- Documentaci\'on del pipeline (15\%)}
+
+Kit v2 es el \'unico flujo que alcanza puntuaci\'on completa en trazabilidad (4.0/4), generando plan, tasks, checklist y scope contract para los 6 casos. Sin-Kit produce plan y tasks pero sin vinculaci\'on formal al requisito. Kit v1 es inconsistente (3 casos con documentaci\'on completa, 3 sin nada).
+
 \section{Mapa de alineaci\'on agregado}
 
 El an\'alisis comparativo entre el flujo de \textsc{SpecKit} y el flujo normativo de referencia se resume en la tabla~\ref{tab:mapa-agregado}.
@@ -14,28 +93,42 @@ El an\'alisis comparativo entre el flujo de \textsc{SpecKit} y el flujo normativ
 \textbf{Actividad IREB} & \textbf{Cobertura} & \textbf{Comandos relacionados} & \textbf{Observaciones} \\
 \midrule
 Elicitaci\'on & $\bigcirc$ & --- & \textsc{SpecKit} no ofrece elicitaci\'on \\
-Documentaci\'on & $\bullet$ & \texttt{specify}, \texttt{plan}, \texttt{tasks} & Falta clasificaci\'on por tipo \\
+Documentaci\'on & $\bullet$ & \texttt{specify}, \texttt{plan}, \texttt{tasks} & Con Kit v2 alcanza $\blacksquare$ (12 atributos) \\
 Validaci\'on & $\bullet$ & \texttt{clarify}, \texttt{checklist}, \texttt{analyze} & Solo consistencia interna \\
+Negociaci\'on & $\bigcirc$ & --- & Sin mecanismo de resoluci\'on de conflictos \\
 Gesti\'on de req. & $\bigcirc$ & --- & Sin trazabilidad bidireccional \\
+Verificaci\'on & $\bullet$ & \texttt{analyze} (pre/post) & Con Kit v2: verificaci\'on trazable a criterios \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 Leyenda: $\blacksquare$ = Alineado, $\bullet$ = Parcial, $\bigcirc$ = No cubierto.
 
-\subsection{An\'alisis detallado por actividad}
+\section{Mapa de alineaci\'on contra est\'andares de calidad}
 
-\textbf{Elicitaci\'on (1/10):} \textsc{SpecKit} asume que el usuario describe la funcionalidad directamente. No ofrece identificaci\'on de \emph{stakeholders}, an\'alisis de fuentes, t\'ecnicas de elicitaci\'on ni modelado de contexto del sistema. El riesgo de ``construir lo incorrecto'' recae enteramente en la calidad del prompt inicial.
+\subsection{Criterios ISO/IEC/IEEE 29148}
 
-\textbf{Documentaci\'on (5/10):} Es el punto m\'as fuerte de \textsc{SpecKit}. Sus plantillas fuerzan la separaci\'on entre ``qu\'e'' y ``c\'omo'', y los \emph{checklists} ayudan a mantener consistencia interna. Sin embargo, carece de clasificaci\'on por tipo de requisito (funcional, calidad, restricci\'on), de atributos formales (fuente, \emph{rationale}, prioridad) y de modelado gr\'afico (UML, ER, diagramas de contexto).
+\begin{table}[h]
+\centering
+\caption{Alineaci\'on con criterios ISO 29148 (con y sin IREB Kit)}
+\label{tab:calidad}
+\begin{tabularx}{\textwidth}{lXcc}
+\toprule
+\textbf{Criterio} & \textbf{Efecto del Kit v2} & \textbf{Sin-Kit} & \textbf{Kit v2} \\
+\midrule
+Necesario & Sin cambio & $\bigcirc$ & $\bigcirc$ \\
+No ambiguo & Mejora con checklist R8 & $\bullet$ & $\blacksquare$ \\
+Verificable & Mejora con criterios expl\'icitos & $\bullet$ & $\blacksquare$ \\
+Singular & Mejora con plantilla (R6) & $\bigcirc$ & $\blacksquare$ \\
+Trazable & Mejora con 12 atributos & $\bullet$ & $\blacksquare$ \\
+Consistente & Sin cambio (un requisito por ejecuci\'on) & $\bigcirc$ & $\bigcirc$ \\
+Completo & Mejora con atributos obligatorios & $\bullet$ & $\bullet$ \\
+Factible & Mejora con scope contract & $\bullet$ & $\blacksquare$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\textbf{Validaci\'on (2/10):} Los comandos \texttt{clarify}, \texttt{checklist} y \texttt{analyze} operan \'unicamente sobre los artefactos internos del pipeline. No hay validaci\'on contra necesidades externas de \emph{stakeholders}, prototipado, inspecci\'on formal ni revisi\'on por pares estructurada.
-
-\textbf{Gesti\'on de requisitos (2/10):} La trazabilidad es lineal y forward (spec$\rightarrow$plan$\rightarrow$tasks$\rightarrow$code), pero no bidireccional ni hacia fuentes externas. No hay versionado individual de requisitos, \emph{baselines}, gesti\'on de cambios ni \emph{change control board}.
-
-\subsection{Mapeo contra los 9 principios fundamentales IREB}
-
-La tabla~\ref{tab:9principios} presenta el mapeo contra los principios del \emph{Foundation Level Handbook}~\cite{cpre}.
+\subsection{Principios IREB}
 
 \begin{table}[h]
 \centering
@@ -49,58 +142,47 @@ Valor orientado al negocio & SDD pone la especificaci\'on como centro del valor 
 Implicaci\'on de stakeholders & No hay concepto de stakeholder en el flujo & $\bigcirc$ \\
 Entendimiento compartido & Plantillas ayudan, pero sin validaci\'on externa & $\bullet$ \\
 Problema antes que soluci\'on & ``Focus on WHAT, not HOW'' es pilar de SDD & $\blacksquare$ \\
-Lenguaje com\'un & Markdown accesible, pero sin glosario de t\'erminos & $\bullet$ \\
+Lenguaje com\'un & Markdown accesible, glosario en Kit v2 & $\bullet$ \\
 Contexto del sistema & No hay modelado de contexto ni diagramas & $\bigcirc$ \\
-Tipos de requisitos & No clasifica requisitos (funcional/calidad/restricci\'on) & $\bigcirc$ \\
-Priorizaci\'on & No hay priorizaci\'on formal de requisitos & $\bigcirc$ \\
-Aseguramiento de calidad & Checklists y gates, pero no basados en est\'andares RE & $\bullet$ \\
+Tipos de requisitos & Kit v2 clasifica (Funcional/Calidad/Restricci\'on) & $\blacksquare$ \\
+Priorizaci\'on & Kit v2 incluye Prioridad (Alta/Media/Baja) & $\blacksquare$ \\
+Aseguramiento de calidad & Checklist ISO 29148 en Kit v2 & $\blacksquare$ \\
 \bottomrule
 \end{tabularx}
 \end{table}
-
-\section{An\'alisis por criterio de calidad ISO 29148}
-
-La tabla~\ref{tab:calidad} presenta el mapeo detallado contra los criterios de calidad.
-
-\begin{table}[h]
-\centering
-\caption{Alineaci\'on con criterios ISO 29148}
-\label{tab:calidad}
-\begin{tabularx}{\textwidth}{lXc}
-\toprule
-\textbf{Criterio} & \textbf{Cobertura de SpecKit} & \textbf{Nivel} \\
-\midrule
-Necesario & No distingue esenciales de deseables & $\bigcirc$ \\
-Singular & User stories pueden mezclar comportamientos & $\bullet$ \\
-Completo & Sin verificaci\'on sistem\'atica de completitud & $\bigcirc$ \\
-Verificable & Quickstart con escenarios, sin verificabilidad formal & $\bullet$ \\
-No ambiguo & \texttt{[NEEDS CLARIFICATION]} no sistem\'atico & $\bullet$ \\
-Consistente & \texttt{analyze} limitado & $\bullet$ \\
-Trazable & Trazabilidad forward spec$\rightarrow$code & $\blacksquare$ \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\section{Resultados de la ejecuci\'on de SpecKit}
-
-Pendiente de completar tras la ejecuci\'on de los casos. Los resultados reportar\'an:
-
-\begin{itemize}
-    \item N\'umero de implementaciones generadas frente a fallos de generaci\'on.
-    \item Distribuci\'on de categor\'ias SRCI por repositorio y tipo de requisito.
-    \item Patrones de comportamiento identificados.
-\end{itemize}
 
 \section{Patrones de comportamiento identificados}
 
-El an\'alisis cualitativo de los artefactos generados por \textsc{SpecKit} y de su documentaci\'on oficial revela los siguientes patrones:
+El an\'alisis cualitativo de los 18 casos-ejecuci\'on (6 casos $\times$ 3 flujos) revela los siguientes patrones:
 
 \begin{description}
-    \item[Fortalaza en documentaci\'on estructurada:] \textsc{SpecKit} destaca en la generaci\'on de especificaciones bien estructuradas. Sus plantillas fuerzan la separaci\'on entre ``qu\'e'' y ``c\'omo'', y los \emph{checklists} ayudan a mantener consistencia interna.
+    \item[Fortalaza en documentaci\'on estructurada (con Kit v2):] Con la plantilla IREB, \textsc{SpecKit} genera especificaciones que preservan consistentemente los 12 atributos normativos (10.2/12 de media en Bloque A). Sin plantilla, genera prosa libre sin estructura formal.
     
-    \item[Debilidad en trazabilidad de fuentes:] \textsc{SpecKit} no registra el origen de los requisitos. La trazabilidad que ofrece es interna al pipeline (spec$\rightarrow$plan$\rightarrow$tasks$\rightarrow$code), pero no hacia las fuentes originales.
+    \item[El scope contract como factor cr\'itico de proporcionalidad:] El scope contract del Kit v2 reduce los diffs en un factor de 2--19$\times$ sin p\'erdida de cobertura funcional. n8n-e5 pas\'o de 4238 l\'ineas (Kit v1, sin scope contract) a 222 l\'ineas (Kit v2, con scope contract).
     
-    \item[Ambig\"uedad no resuelta sistem\'aticamente:] El mecanismo \texttt{[NEEDS CLARIFICATION]} es \'util pero limitado a 3 marcadores. No hay un proceso sistem\'atico de resoluci\'on de ambig\"uedades antes de implementar.
+    \item[La estabilidad del pipeline es condici\'on necesaria:] Kit v1 tuvo 3/6 casos con pipeline incompleto (3.4/10 de media). A\~nadir pasos sin garantizar su completitud es contraproducente: Kit v1 fue peor que Sin-Kit en la mitad de los casos.
     
-    \item[Validaci\'on puramente interna:] Los comandos \texttt{clarify}, \texttt{checklist} y \texttt{analyze} operan sobre los artefactos del pipeline, pero no validan contra necesidades externas (\emph{stakeholders}, contexto real).
+    \item[La prevenci\'on de alucinaciones funciona:] El art\'iculo 0 de la constituci\'on (no inventar stakeholders, fuentes ni objetivos) y el checklist R13 del Kit v2 eliminaron las alucinaciones de contexto en los 6 casos (A11=$\checkmark$ en 6/6).
 \end{description}
+
+\section{Criterios cr\'iticos (no compensables)}
+
+La verificaci\'on de los 4 criterios cr\'iticos muestra que Kit v2 es el \'unico flujo que los supera en el 100\% de los casos:
+
+\begin{table}[h]
+\centering
+\caption{Superaci\'on de criterios cr\'iticos por flujo}
+\label{tab:criticos}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Criterio cr\'itico} & \textbf{Sin-Kit} & \textbf{Kit v1} & \textbf{Kit v2} \\
+\midrule
+A11 (no alucinaci\'on) & 6/6 & 3/6 & \textbf{6/6} \\
+B1 (intenci\'on principal) & 6/6 & 3/6 & \textbf{6/6} \\
+B3 (no regresi\'on) & 6/6 & 3/6 & \textbf{6/6} \\
+C1 (presencia de tests) & 5/6 & 3/6 & \textbf{6/6} \\
+\midrule
+\textbf{Superan todos} & \textbf{5/6} & \textbf{2/6} & \textbf{6/6} \\
+\bottomrule
+\end{tabular}
+\end{table}

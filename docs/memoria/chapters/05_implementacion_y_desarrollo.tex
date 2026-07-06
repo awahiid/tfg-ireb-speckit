@@ -1,7 +1,46 @@
-\chapter{Corpus de requisitos}
-\label{chap:corpus}
+\chapter{Implementaci\'on y desarrollo}
+\label{chap:implementacion}
 
-\section{Descripci\'on del corpus}
+\section{IREB Kit for SpecKit}
+
+El IREB Kit es el producto central de este trabajo. Se compone de 10 artefactos que se inyectan en un repositorio con \textsc{SpecKit} para aplicar ingenier\'ia de requisitos profesional. La tabla~\ref{tab:ireb-kit} resume su composici\'on.
+
+\begin{table}[h]
+\centering
+\caption{Componentes del IREB Kit for SpecKit}
+\label{tab:ireb-kit}
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Artefacto} & \textbf{Prop\'osito} & \textbf{Comando} \\
+\midrule
+\texttt{AGENTS.md} & 5 reglas universales (R0--R4) & Todos \\
+\texttt{constitution.md} & 9 art\'iculos IREB + ISO 29148 + INCOSE & \texttt{/speckit.constitution} \\
+\texttt{spec.template.md} & 12 atributos IREB & \texttt{/speckit.specify} \\
+\texttt{clarify.template.md} & Detector de ambig\"uedades y alucinaciones & \texttt{/speckit.clarify} \\
+\texttt{checklist.template.md} & 13 criterios ISO 29148 (R13 bloqueante) & \texttt{/speckit.checklist} \\
+\texttt{plan.template.md} & Gates IREB pre-planificaci\'on & \texttt{/speckit.plan} \\
+\texttt{tasks.template.md} & Trazabilidad obligatoria [REQ-ID] por tarea & \texttt{/speckit.tasks} \\
+\texttt{analyze.template.md} & Matriz de trazabilidad spec$\rightarrow$plan$\rightarrow$tasks$\rightarrow$code$\rightarrow$tests & \texttt{/speckit.analyze} \\
+\texttt{prompt.template.md} & Prompt para generar REQ desde changelogs & Manual \\
+\texttt{pipeline.sh} & Pipeline automatizado con scope contract & Autom\'atico \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Los 6 hilos conductores}
+
+Cada componente del kit ataca un fallo concreto del flujo sin IREB. Estos 6 principios garantizan que el flujo con kit mejore sistem\'aticamente al baseline:
+
+\begin{description}
+    \item[\textbf{H1 --- No alucinar contexto}:] Regla R0 bloqueante en \texttt{AGENTS.md}: Source y Rationale solo del input original. Si no hay $\rightarrow$ ``sin fuente documentada''. Verificado por \texttt{clarify} y \texttt{checklist} (R13).
+    \item[\textbf{H2 --- Scope contract}:] Antes de \texttt{implement}, se define exactamente qu\'e archivos tocar, cu\'ales NO tocar, y qu\'e comportamiento implementar. Evita que el agente borre 2554 l\'ineas (medusa-e5) o genere 4238 l\'ineas para un cambio simple (n8n-e5).
+    \item[\textbf{H3 --- Trazabilidad obligatoria}:] Cada artefacto (spec, plan, tarea, c\'odigo, test) debe enlazar a un REQ-ID. Sin trazabilidad $\rightarrow$ no se genera.
+    \item[\textbf{H4 --- Verificaci\'on observable}:] Todo requisito debe tener al menos un criterio de verificaci\'on concreto (respuesta HTTP, cambio de estado, evento).
+    \item[\textbf{H5 --- Minimalidad}:] ``Solo lo necesario para satisfacer el requisito''. Proh\'ibe refactorizar, a\~nadir dependencias o modificar configuraciones globales.
+    \item[\textbf{H6 --- Contexto destilado}:] El paso \texttt{implement} recibe solo spec + scope contract + tasks ($\sim$3K tokens). El resto de la documentaci\'on IREB se genera pero no se inyecta en el prompt de c\'odigo.
+\end{description}
+
+\section{Corpus de requisitos}
 
 Se extrajeron un total de 56 entradas de \emph{changelogs} de los seis repositorios, de las cuales 52 fueron formalizadas como requisitos tras pasar la r\'ubrica de calidad (tasa de aceptaci\'on del 92.9\,\%). La tabla~\ref{tab:corpus} muestra la distribuci\'on por repositorio.
 
@@ -27,28 +66,54 @@ n8n & 9 & 9 \\
 
 Todos los requisitos superaron el umbral de aceptaci\'on, con una media de 10.8 puntos (sobre 12) y una desviaci\'on t\'ipica de 0.9. La distribuci\'on por tipo fue: 38 funcionales (73\,\%), 8 de calidad (15\,\%) y 6 restricciones (12\,\%). Por prioridad: 27 Altas (52\,\%), 18 Medias (35\,\%) y 7 Bajas (13\,\%).
 
-\section{An\'alisis por repositorio}
+\subsection{Derivaci\'on de MRS}
 
-\subsection{Appwrite (sistemas transaccionales)}
+A partir de los 52 requisitos formalizados se derivaron 52 \emph{Minimal Requirement Seeds} (MRS) utilizando un script asistido por LLM. Cada MRS es un prompt m\'inimo de 3--5 l\'ineas con estructura can\'onica ``Como [ROL], quiero que el sistema [COMPORTAMIENTO] [contexto], para [MOTIVACI\'ON]''. Los MRS act\'uan como entrada replicable para el pipeline \textsc{SpecKit} en el Flow B.
 
-Los 10 requisitos de Appwrite cubren principalmente aspectos de autenticaci\'on, gesti\'on de usuarios y control de acceso. Predominan los requisitos funcionales (8), con 1 de calidad y 1 restricci\'on. La mayor\'ia se clasificaron como prioridad Alta. Ejemplo representativo: ``El sistema deber\'a impedir la creaci\'on de cuentas de usuario cuando la direcci\'on de correo electr\'onico no haya sido verificada'' (REQ-APPWRITE-10986).
+\section{Ejecuci\'on del pipeline}
 
-\subsection{Authentik (identidad y seguridad)}
+\subsection{Preparaci\'on del entorno}
 
-Los 9 requisitos de Authentik se centran en protocolos de autenticaci\'on, gesti\'on de sesiones y pol\'iticas de acceso. Incluyen 2 requisitos de calidad relacionados con rendimiento de autenticaci\'on. Las condiciones de activaci\'on son especialmente relevantes en este repositorio (verificaci\'on de tokens, expiraci\'on de sesiones).
+Para cada caso, el script \texttt{preparar-caso.sh} automatiza:
+\begin{enumerate}
+    \item Clone del repositorio en el commit padre del merge commit (c\'odigo ANTES de la PR original).
+    \item Instalaci\'on de dependencias y verificaci\'on de tests existentes.
+    \item Ejecuci\'on de \texttt{specify init} para inicializar la estructura de \textsc{SpecKit}.
+    \item Copia del REQ formalizado a \texttt{.specify/memory/} para el paso \texttt{specify}.
+\end{enumerate}
 
-\subsection{Cal.com (sistemas colaborativos)}
+\subsection{Ejecuci\'on manual en VS Code Copilot Chat}
 
-Los 10 requisitos de Cal.com abarcan sincronizaci\'on de calendarios, gesti\'on de disponibilidad y notificaciones. Destacan por incluir condiciones de activaci\'on complejas con m\'ultiples actores y estados compartidos. Por ejemplo: ``El sistema deber\'a notificar a todos los participantes de una reuni\'on cuando el organizador cambie la hora'' implica actores, condiciones y reglas de negocio.
+Cada caso se ejecuta manualmente en Copilot Chat Agent, introduciendo los comandos \texttt{/speckit.*} en secuencia. Tras la ejecuci\'on, el script \texttt{capturar-resultado.sh} genera:
+\begin{itemize}
+    \item \texttt{diff.patch}: diff completo de los cambios introducidos.
+    \item \texttt{summary.json}: metadata del caso (commit, l\'ineas, archivos).
+    \item \texttt{full-snapshot.zip}: repositorio completo sin dependencias.
+\end{itemize}
 
-\subsection{Directus (datos y contenido)}
+\subsection{Comparaci\'on de versiones del kit}
 
-Los 9 requisitos de Directus cubren transformaciones de contenido, esquemas din\'amicos y permisos a nivel de campo. Incluyen 3 restricciones relacionadas con rendimiento de consultas y l\'imites de paginaci\'on. Es el repositorio con mayor proporci\'on de requisitos no funcionales.
+El Kit v1 y el Kit v2 comparten la misma base de plantillas IREB. La diferencia cr\'itica es que el Kit v2 a\~nade \texttt{AGENTS.md} con reglas universales y un paso de \textbf{scope contract} (07.5) antes de \texttt{implement}. Este scope contract lista expl\'icitamente los archivos a modificar y los archivos a no tocar, acotando el alcance de la implementaci\'on.
 
-\subsection{Medusa (e-commerce)}
+La tabla~\ref{tab:artefactos-flujos} compara los artefactos disponibles en cada flujo.
 
-Los 5 requisitos de Medusa se centran en reglas de negocio transaccionales: c\'alculos de impuestos, gesti\'on de inventario y procesos de pago. Es el repositorio con menor n\'umero de requisitos (5 frente a 9--10 del resto), lo que constituye una limitaci\'on del corpus para este tipo de sistema.
-
-\subsection{n8n (integraci\'on)}
-
-Los 9 requisitos de n8n abarcan automatizaci\'on de flujos, manejo de errores en pipelines y composici\'on de servicios mediante webhooks. Incluyen restricciones sobre l\'imites de recursos por plan y umbrales de ejecuci\'on. La naturaleza de integraci\'on hace que muchos requisitos involucren m\'ultiples servicios externos como condiciones de contexto.
+\begin{table}[h]
+\centering
+\caption{Artefactos generados por flujo (6 casos cada uno)}
+\label{tab:artefactos-flujos}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Artefacto} & \textbf{Sin-Kit} & \textbf{Kit v1} & \textbf{Kit v2} \\
+\midrule
+spec.md & 6/6 & 3/6 & \textbf{6/6} \\
+constitution & 0/6 & 3/6 & \textbf{6/6} \\
+clarify & 0/6 & 3/6 & \textbf{6/6} \\
+checklist & 0/6 & 3/6 & \textbf{6/6} \\
+plan.md & 6/6 & 3/6 & \textbf{6/6} \\
+tasks.md & 6/6 & 3/6 & \textbf{6/6} \\
+analyze (pre/post) & 0/6 & 3/6 & \textbf{6/6} \\
+scope contract & 0/6 & 0/6 & \textbf{6/6} \\
+diff.patch & 6/6 & 5/6 & \textbf{6/6} \\
+\bottomrule
+\end{tabular}
+\end{table}

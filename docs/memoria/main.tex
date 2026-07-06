@@ -41,11 +41,13 @@
 
 \chapter*{Resumen}
 
-Este trabajo tiene dos objetivos: mapear el flujo de trabajo de \textsc{SpecKit} ---un \emph{toolkit} de c\'odigo abierto para \emph{Spec-Driven Development} (SDD) de GitHub--- contra las actividades y criterios de calidad de un flujo profesional de ingenier\'ia de requisitos (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, INCOSE); y evaluar si los resultados cambian cuando se alimenta a \textsc{SpecKit} con requisitos formalizados seg\'un IREB en lugar de con texto libre.
+Este trabajo tiene dos objetivos: mapear el flujo de trabajo de \textsc{SpecKit} ---un \emph{toolkit} de c\'odigo abierto para \emph{Spec-Driven Development} (SDD) de GitHub--- contra las actividades y criterios de calidad de un flujo profesional de ingenier\'ia de requisitos (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, INCOSE); y evaluar si los resultados mejoran cuando se alimenta a \textsc{SpecKit} con requisitos formalizados seg\'un IREB en lugar de con texto libre.
 
-El trabajo produce tres artefactos de referencia: una plantilla de formalizaci\'on con 12~atributos (ID, nombre, tipo, descripci\'on formal, fuente, rationale, prioridad, verificaci\'on, estado, versi\'on, dependencias, m\'odulo); una constituci\'on personalizada con nueve principios IREB para el pipeline SDD; y una r\'ubrica de conformidad (SRCI) con seis criterios para evaluar las implementaciones generadas. Estos artefactos se agrupan en un preset instalable denominado \emph{IREB Kit for SpecKit}.
+El trabajo produce el \emph{IREB Kit for SpecKit}: un conjunto de 10 artefactos que incluyen una constituci\'on con 9 principios IREB, una plantilla de especificaci\'on con 12 atributos, un checklist de calidad ISO~29148 con 13 criterios, y un mecanismo de scope contract para controlar el alcance de la implementaci\'on.
 
-Para validar el trabajo, se construye un corpus de 52~requisitos derivados de \emph{changelogs} de seis proyectos \emph{Open Source} (Appwrite, Authentik, Cal.com, Directus, Medusa, n8n). Cada caso del subconjunto de evaluaci\'on se ejecuta en dos flujos paralelos ---sin y con el kit IREB--- y los resultados se comparan mediante cuatro m\'etricas: generaci\'on exitosa, compilaci\'on, superaci\'on de tests y puntuaci\'on SRCI.
+Para la evaluaci\'on se construye un corpus de 52 requisitos derivados de \emph{changelogs} de seis proyectos \emph{Open Source} (Appwrite, Authentik, Cal.com, Directus, Medusa, n8n) y se derivan 52 \emph{Minimal Requirement Seeds} (MRS). Seis casos del subconjunto de evaluaci\'on se ejecutan en tres flujos paralelos ---Sin-Kit (baseline), Kit v1 (IREB-enhanced inicial) y Kit v2 (IREB-enhanced con scope contract)--- y se eval\'uan mediante una r\'ubrica SRCI de 24 criterios.
+
+Los resultados muestran que \textbf{Kit v2 gana 6--0} con una diferencia media de +3.9 puntos sobre Sin-Kit (9.2 vs. 5.3 en escala 0--10). El scope contract reduce los diffs en un factor de hasta 19$\times$ sin p\'erdida de cobertura funcional. Kit v1 fue peor que Sin-Kit (3.4 vs. 5.3), demostrando que a\~nadir pasos al pipeline sin robustez es contraproducente.
 
 \noindent\textbf{Palabras clave}: \printkeywords.
 
@@ -53,9 +55,11 @@ Para validar el trabajo, se construye un corpus de 52~requisitos derivados de \e
 
 This work pursues two goals: to map \textsc{SpecKit}'s pipeline ---an open-source Spec-Driven Development toolkit by GitHub--- against the activities and quality criteria of a norm-based requirements engineering workflow (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, INCOSE); and to evaluate whether the generated output improves when \textsc{SpecKit} receives IREB-formalized requirements instead of raw text.
 
-The work produces three reference artefacts: a 12-attribute formalization template (ID, name, type, formal description, source, rationale, priority, verification, status, version, dependencies, module); a custom constitution with nine IREB principles for the SDD pipeline; and a conformance rubric (SRCI) with six criteria to assess generated implementations. These artefacts are packaged as an installable preset called \emph{IREB Kit for SpecKit}.
+The work produces the \emph{IREB Kit for SpecKit}: a 10-artifact toolkit including a constitution with 9 IREB principles, a specification template with 12 attributes, an ISO~29148 quality checklist with 13 criteria, and a scope contract mechanism to control implementation scope.
 
-For validation, a corpus of 52 requirements is derived from the changelogs of six Open Source projects (Appwrite, Authentik, Cal.com, Directus, Medusa, n8n). Each case in the evaluation subset is run under two parallel flows ---without and with the IREB kit--- and results are compared using four metrics: successful generation, successful build, passing tests, and SRCI score.
+For evaluation, a corpus of 52 requirements is derived from the changelogs of six Open Source projects (Appwrite, Authentik, Cal.com, Directus, Medusa, n8n), and 52 Minimal Requirement Seeds (MRS) are derived for replicability. Six cases from the evaluation subset are executed under three parallel flows ---No-Kit (baseline), Kit v1 (initial IREB-enhanced), and Kit v2 (IREB-enhanced with scope contract)--- and evaluated using a 24-criteria SRCI rubric.
+
+Results show that \textbf{Kit v2 wins 6--0} with an average margin of +3.9 points over No-Kit (9.2 vs. 5.3 on a 0--10 scale). The scope contract reduces diffs by up to 19$\times$ without loss of functional coverage. Kit v1 was worse than No-Kit (3.4 vs. 5.3), demonstrating that adding pipeline steps without robustness is counterproductive.
 
 \noindent\textbf{Keywords}: Requirements engineering, IREB, SpecKit, Spec-Driven Development, ISO~29148, process mapping, code generation.
 

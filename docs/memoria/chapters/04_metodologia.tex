@@ -69,7 +69,7 @@ La evidencia se transforma en requisitos siguiendo una plantilla con 12 atributo
 
 La descripci\'on formal debe cumplir ocho reglas obligatorias: expresar una \'unica obligaci\'on, comenzar por la f\'ormula ``El sistema deber\'a...'', contener un verbo observable, evitar t\'erminos subjetivos, incluir condiciones cuantificables, ser verificable, ser autosuficiente y no describir detalles de implementaci\'on.
 
-Cada requisito debe superar un \emph{quality gate} de 12 criterios organizados en tres bloques:
+Cada requisito debe superar un \emph{quality gate} de 12 criterios organizados en tres bloques (v\'ease Anexo~\ref{anexo:rubrica}):
 
 \begin{description}
     \item[Bloque A. Identificaci\'on y gesti\'on (R1--R4c):] R1 (identificador \'unico), R2 (clasificaci\'on v\'alida), R3 (fuente trazable), R4 (prioridad asignada), R4b (dependencias documentadas), R4c (m\'odulo asignado).
@@ -77,63 +77,52 @@ Cada requisito debe superar un \emph{quality gate} de 12 criterios organizados e
     \item[Bloque C. Completitud contextual (R10):] R10 (autosuficiencia del requisito).
 \end{description}
 
-La puntuaci\'on total es la suma directa de criterios cumplidos (m\'aximo 12). Los umbrales son:
-\begin{itemize}
-    \item \textbf{11--12}: Aceptado.
-    \item \textbf{9--10}: Revisi\'on menor (salvo que afecte a R5, R7, R8 o R9).
-    \item $\leq$ \textbf{8}: Rechazado.
-\end{itemize}
+Tres criterios son \textbf{bloqueantes}: R5 (estructura formal ausente), R7 (verbo no observable) y R9 (sin verificabilidad). Su incumplimiento provoca rechazo autom\'atico independientemente de la puntuaci\'on total.
 
-Tres criterios son \textbf{bloqueantes}: R5 (estructura formal ausente), R7 (verbo no observable) y R9 (sin verificabilidad). Su incumplimiento provoca rechazo autom\'atico independientemente de la puntuaci\'on total, siguiendo la pr\'actica de \emph{quality gates} donde ciertas propiedades son condici\'on necesaria y no compensable.
+\section{Fase 2.5: Derivaci\'on de MRS (Minimal Requirement Seeds)}
 
-\section{Fase 3: Ejecuci\'on de SpecKit}
+La Fase 2.5 introduce un paso intermedio entre la formalizaci\'on y la ejecuci\'on del pipeline. Su objetivo es transformar cada requisito formalizado IREB en un \emph{Minimal Requirement Seed} (MRS): un prompt m\'inimo y replicable que un usuario de \textsc{SpecKit} necesitar\'ia formular para que el agente derive de forma aut\'onoma el requisito formal equivalente.
 
-Para cada requisito, el repositorio se instancia en el \emph{commit} anterior al cambio de referencia. El protocolo es:
+Un MRS debe satisfacer tres propiedades: \textbf{suficiencia} (contiene toda la informaci\'on necesaria para inferir los campos obligatorios de la plantilla), \textbf{minimalidad} (no sobredetermina la soluci\'on) y \textbf{replicabilidad} (dos agentes independientes producen requisitos equivalentes al leer el mismo MRS). La estructura can\'onica sigue el formato:
 
-\begin{enumerate}
-    \item \emph{Checkout} en el \emph{commit} pre-PR.
-    \item Verificaci\'on de compilaci\'on y tests.
-    \item Ejecuci\'on del pipeline:
-    \[
-    \texttt{constitution} \rightarrow \texttt{specify} \rightarrow \texttt{clarify} \rightarrow \texttt{checklist} \rightarrow \texttt{plan} \rightarrow \texttt{tasks} \rightarrow \texttt{analyze} \rightarrow \texttt{implement}
-    \]
-    \item Registro de resultados.
-\end{enumerate}
+\begin{quote}
+\textit{Como [ROL], quiero que el sistema [COMPORTAMIENTO OBSERVABLE] [contexto], para [MOTIVACI\'ON].}
+\end{quote}
 
-Se realiza una \'unica ejecuci\'on por requisito para evitar que la intervenci\'on humana enmascare el comportamiento nativo del pipeline.
+Se derivaron 52 MRS a partir de los 52 requisitos formalizados, utilizando un script asistido por LLM con reglas deterministas documentadas. Cada MRS conserva la trazabilidad hacia su \texttt{REQ-*.md} de origen mediante el ID.
 
-\section{Fase 4: An\'alisis del mapeo}
+\section{Fase 3: Ejecuci\'on comparativa de SpecKit}
 
-Se contrasta el flujo observado con el normativo mediante la r\'ubrica SRCI (\emph{Structured Requirement Conformance Inspection}), que eval\'ua seis dimensiones con base normativa expl\'icita:
+La Fase 3 constituye el n\'ucleo experimental del trabajo. Para cada caso del corpus se ejecutan dos flujos paralelos sobre el mismo repositorio en el \emph{commit} inmediatamente anterior al cambio de referencia, cambiando \'unicamente el tratamiento del requisito de entrada:
 
-\begin{itemize}
-    \item \textbf{C1. Cobertura de intenci\'on principal} --- ISO/IEC/IEEE 29148. Verifica si la implementaci\'on cubre la acci\'on central del requisito.
-    \item \textbf{C2. Satisfacci\'on de condici\'on de activaci\'on} --- INCOSE Handbook. Eval\'ua si se implementan correctamente las restricciones o contexto del requisito.
-    \item \textbf{C3. Resultado observable consistente} --- ISO 29148. Comprueba si el sistema produce el resultado esperado de forma verificable.
-    \item \textbf{C4. Correspondencia tests--intenci\'on} --- Fagan inspections. Eval\'ua si los tests verifican directamente la intenci\'on funcional.
-    \item \textbf{C5. Ausencia de desviaci\'on funcional} --- Consistencia en RE. Detecta comportamientos no solicitados o efectos secundarios.
-    \item \textbf{C6. Trazabilidad completa} --- ISO/IEC/IEEE 29148. Reconstruye la cadena requisito $\rightarrow$ intenci\'on $\rightarrow$ implementaci\'on $\rightarrow$ evidencia.
-\end{itemize}
+\subsection{Flow A (baseline) --- SpecKit sin marco IREB}
 
-Cada criterio se eval\'ua como \textbf{S\'i}, \textbf{Parcial} o \textbf{No}. La tabla~\ref{tab:categorias} define las categor\'ias resultantes.
+Pipeline m\'inimo de 4 pasos: \texttt{/speckit.specify} (recibiendo el texto literal del \emph{changelog}) $\rightarrow$ \texttt{/speckit.plan} $\rightarrow$ \texttt{/speckit.tasks} $\rightarrow$ \texttt{/speckit.implement}. Sin \texttt{constitution} personalizado, sin \texttt{clarify}, sin \texttt{checklist}, sin \texttt{analyze}.
 
-\begin{table}[h]
-\centering
-\caption{Categor\'ias del mapeo SRCI}
-\label{tab:categorias}
-\begin{tabularx}{\textwidth}{lX}
-\toprule
-\textbf{Categor\'ia} & \textbf{Condici\'on} \\
-\midrule
-Alineado & C1=S\'i, C3=S\'i, C5=S\'i, C6=S\'i; y no C2=No y C4=No simult\'aneamente \\
-Alineaci\'on parcial & C1=S\'i y C3=S\'i; m\'aximo un criterio en No \\
-Desviado & C1=No o C3=No; o dos o m\'as criterios en No \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\subsection{Flow B (IREB-enhanced) --- SpecKit con IREB Kit}
 
-La categor\'ia de alineaci\'on parcial reconoce que la transformaci\'on de requisitos formalizados a implementaci\'on mediante un pipeline SDD raramente satisface todos los criterios con igual solidez. Una escala binaria habr\'ia concentrado los resultados en el polo negativo, reduciendo la granularidad anal\'itica.
+Pipeline ampliado de 9 pasos: \texttt{/speckit.constitution} (con 9 principios IREB personalizados) $\rightarrow$ \texttt{/speckit.specify} (recibiendo el REQ formalizado con 12 atributos) $\rightarrow$ \texttt{/speckit.clarify} $\rightarrow$ \texttt{/speckit.checklist} $\rightarrow$ \texttt{/speckit.plan} $\rightarrow$ \texttt{/speckit.tasks} $\rightarrow$ \texttt{/speckit.analyze} (pre-implementaci\'on) $\rightarrow$ \texttt{/speckit.implement} $\rightarrow$ \texttt{/speckit.analyze} (post-implementaci\'on).
 
-Para controlar la consistencia interna, se re-analiza un subconjunto de 3--5 casos en un segundo momento aplicando la misma r\'ubrica. Las discrepancias se registran cualitativamente, identificando qu\'e criterios presentan mayor ambig\"uedad de aplicaci\'on.
+Se desarrollaron dos versiones del IREB Kit:
 
-El resultado del an\'alisis no es una ``nota'' para \textsc{SpecKit}, sino un \textbf{mapa de alineaci\'on} que documenta, para cada elemento del flujo normativo, si \textsc{SpecKit} lo cubre ($\blacksquare$), lo cubre parcialmente ($\bullet$) o no lo cubre ($\bigcirc$), respaldado por evidencia de los casos de estudio.
+\begin{description}
+    \item[Kit v1:] Constitution + plantillas de spec, plan, checklist, clarify y analyze. Pipeline de 9 pasos sin mecanismo de control de alcance en la implementaci\'on.
+    \item[Kit v2:] A\~nade \texttt{AGENTS.md} con 5 reglas universales (R0: no alucinar contexto, R1: trazabilidad, R2: verificabilidad, R3: minimalidad, R4: no ambig\"uedad) y un \textbf{scope contract} pre-implementaci\'on que acota expl\'icitamente los archivos a modificar. Este scope contract se genera antes del paso \texttt{implement} para prevenir \emph{scope creep}.
+\end{description}
+
+De los 52 casos del corpus, se seleccionaron 6 (2 por repositorio) de los 3 repositorios con preparaci\'on m\'as eficiente (n8n, Cal.com, Directus) para la ejecuci\'on comparativa en ambos flujos. Esta reducci\'on fue necesaria porque cada caso requiere dos ejecuciones manuales en Copilot Chat.
+
+\section{Fase 4: Evaluaci\'on con r\'ubrica SRCI v3}
+
+La Fase 4 aplica la r\'ubrica SRCI v3 (\emph{Structured Requirement Conformance Inspection}) sobre los artefactos generados por cada flujo. La r\'ubrica organiza 24 criterios en cuatro bloques que siguen el flujo del pipeline (v\'ease Anexo~\ref{anexo:rubrica-eval}):
+
+\begin{description}
+    \item[Bloque A (12 criterios, 35\%).] Preservaci\'on del requisito en \texttt{spec.md}. Eval\'ua si \textsc{SpecKit} conserva los 12 atributos IREB del requisito de entrada o los degrada. Aplica la misma r\'ubrica de validaci\'on de la Fase 2.
+    \item[Bloque B (5 criterios, 30\%).] Conformidad de la implementaci\'on. Eval\'ua cobertura de la intenci\'on principal, proporcionalidad del cambio, ausencia de regresiones, correspondencia con el dominio t\'ecnico y evidencia de intenci\'on en el c\'odigo.
+    \item[Bloque C (3 criterios, 20\%).] Verificaci\'on y testing. Eval\'ua presencia de tests, cobertura de los criterios de verificaci\'on y adecuaci\'on del tipo de test.
+    \item[Bloque D (4 criterios, 15\%).] Trazabilidad del pipeline. Eval\'ua si los artefactos intermedios (\texttt{plan.md}, \texttt{tasks.md}, \texttt{checklist.md}) soportan la trazabilidad requisito $\rightarrow$ implementaci\'on.
+\end{description}
+
+Cuatro criterios son \textbf{no compensables} (su incumplimiento provoca clasificaci\'on autom\'atica como No conforme): A11 (alucinaci\'on de contexto), B1 (no cubre la intenci\'on principal), B3 (regresi\'on evidente) y C1 (sin tests).
+
+La puntuaci\'on se calcula como suma ponderada de los cuatro bloques, normalizada a escala 0--10. Las categor\'ias finales son: Conforme ($\geq 8.0$), Parcialmente conforme (6.0--7.9), Conformidad baja (4.0--5.9) y No conforme ($<4.0$).
