@@ -184,10 +184,46 @@ Esto crea `resultados/appwrite-e8/diff.patch`, `summary.json`, `full-snapshot.zi
 
 ```
 src/3-implementacion/
-├── scripts/
-│   ├── preparar-caso.sh
-│   ├── capturar-resultado.sh
-│   └── preparar-lote.sh
-├── repos/                   ← Repos clonados (uno por caso)
-├── resultados/                 ← Snapshots de implementación
+├── README.md
+├── constitution.md           ← En ireb-kit/ (9 artículos IREB + Art. 0 anti-alucinación)
+├── ireb-kit/                 ← Templates y herramientas para personalizar SpecKit
+│   ├── AGENTS.md             ← Reglas R0-R4 para el agente
+│   ├── constitution.md       ← Principios IREB (9 artículos)
+│   ├── spec.template.md      ← Plantilla de spec con 12 atributos
+│   ├── plan.template.md      ← Plantilla de plan con gates IREB
+│   ├── tasks.template.md     ← Plantilla de tasks con trazabilidad
+│   ├── checklist.template.md ← Checklist ISO 29148 (13 criterios)
+│   ├── clarify.template.md   ← Detector de ambigüedades
+│   ├── analyze.template.md   ← Matriz de trazabilidad
+│   ├── prompt.template.md    ← Prompt para generar REQ desde changelogs
+│   ├── pipeline.sh           ← Pipeline automatizado alternativo
+│   └── README.md
+├── casos-mrs/                ← MRS (Minimal Requirement Seeds) por caso
+│   ├── REQ-APPWRITE-10832.txt
+│   ├── REQ-AUTHENTIK-10110.txt
+│   ├── REQ-CALCOM-26801.txt
+│   ├── REQ-DIRECTUS-26646.txt
+│   ├── REQ-MEDUSA-13930.txt
+│   └── REQ-N8N-30375.txt
+├── docs/                     ← Documentación generada por el pipeline
+│   ├── trazabilidad.md       ← Matriz de trazabilidad global
+│   ├── tasks-template.md     ← Plantilla de descomposición de tareas
+│   └── casos/                ← Artefactos por caso (plan, tasks, req)
+│       ├── appwrite-10832/
+│       ├── authentik-10110/
+│       ├── calcom-optin/
+│       ├── directus-26646/
+│       ├── n8n-30375/
+│       └── sku-search-001/
+├── scripts/                  ← Scripts de preparación y captura
+│   ├── preparar-caso.sh      ← Prepara un caso (clone, checkout, init)
+│   ├── preparar-lote.sh      ← Prepara todos los casos de un repo
+│   ├── pipeline-flow-a.sh    ← Pipeline Flow A (sin IREB)
+│   ├── capturar-resultado.sh ← Captura diff, snapshot y summary
+│   └── _archive/             ← Scripts batch/experimentales (no activos)
+├── repos/                    ← Repos clonados (infraestructura, no commitear)
+└── resultados/               ← Snapshots de implementación
+    ├── flujo-kit-v1/         ← Flow B v1 (IREB-enhanced)
+    ├── flujo-kit-v2/         ← Flow B v2 (IREB-enhanced mejorado)
+    └── flujo-sin-kit/        ← Flow A (baseline, sin IREB)
 ```

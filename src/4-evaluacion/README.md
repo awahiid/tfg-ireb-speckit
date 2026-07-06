@@ -10,7 +10,7 @@
 | 2 | Patrones de comportamiento SDD | `02-patrones-comportamiento.md` | ✅ |
 | 3 | Recomendaciones | `03-recomendaciones.md` | ✅ |
 | 4 | Comparación empírica (3 flujos) | `04-comparacion-flows.md` | ✅ |
-| 5 | Rúbrica SRCI v2 (IREB + ISO) | `rubrica-srci-v2.md` | ✅ |
+| 5 | Rúbrica de evaluación (IREB + ISO 29148 + INCOSE) | `rubrica-evaluacion.md` | ✅ |
 | 6 | **Evaluación final SRCI (6 casos)** | `05-evaluacion-srci-final.md` | ✅ |
 
 ## Resultado final (rúbrica IREB/ISO, 20 puntos)
