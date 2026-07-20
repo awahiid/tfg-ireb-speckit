@@ -1,6 +1,0 @@
-
-Como usuario del sistema,
-quiero que el sistema permita que las consultas de listado de documentos se sirvan desde caché cuando se especifique un TTL de caché en la petición, devolviendo resultados cacheados dentro del periodo de validez y renovando la caché cuando el TTL expire,
-para reducir la latencia y la carga sobre la base de datos en consultas de listado repetitivas, especialmente en escenarios de alta concurrencia de lectura.
-Fuente: PR #10832
-

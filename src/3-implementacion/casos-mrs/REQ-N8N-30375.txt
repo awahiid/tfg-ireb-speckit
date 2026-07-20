@@ -1,6 +1,0 @@
-
-Como usuario del sistema de integracion,
-quiero que el sistema mejore la fiabilidad del nodo "Email Trigger (IMAP)" para asegurar un procesamiento de correos correcto, aplicando las siguientes reglas: 1. **Marcar como leído selectivamente**: Cuando la opción de post-procesamiento sea "marcar como leído" (`read`), el sistema deberá aplicar el indicador `\\SEEN` únicamente a los correos que han sido...,
-a traves de `read`,
-para la implementación anterior presentaba varios errores críticos: marcaba correos como leídos incluso si no activaban el flujo de trabajo (por ejemplo, si ya habían sido procesados), lo que llevaba a la pérdida de activaciones.
-Fuente: PR #30375

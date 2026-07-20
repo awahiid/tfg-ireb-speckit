@@ -1,6 +1,0 @@
-
-Como usuario del modulo de archivos,
-quiero que el sistema restrinja la selección de archivos en la interfaz de subida del sistema basándose en la lista de tipos MIME permitidos configurada en el servidor (a través de la variable de entorno correspondiente, como `FILES_MIME_TYPE_ALLOW_LIST`),
-a traves de `FILES_MIME_TYPE_ALLOW_LIST`,
-para anteriormente, la restricción de tipos MIME solo se aplicaba y verificaba en el lado del servidor (API).
-Fuente: PR #26646

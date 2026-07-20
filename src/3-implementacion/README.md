@@ -17,16 +17,12 @@
 Cada flujo ejecuta sobre su **propio worktree Git**, clonado desde un bare repo. Esto permite re-ejecutar pipelines en paralelo sin que se pisen ni contaminen el historial.
 
 ```
-.bare/appwrite.git/          ← Bare repo (clon único, sin working tree)
+.bare/appwrite.git/          ← Bare repo (clon único)
 repos/
-├── appwrite-e3-C0/          ← Worktree para C0 (SpecKit vanilla)
-├── appwrite-e3-C1/          ← Worktree para C1 (SpecKit + IREB v1)
-├── appwrite-e3-C2/          ← Worktree para C2 (SpecKit + IREB v2)
-└── appwrite-e3-C3/          ← Worktree para C3 (vibe coding)
+└── appwrite-e3/             ← Único working tree
 ```
 
-Cada worktree arranca desde el commit pre-PR (`8368a28ff5~1` = `a71f3555ae`).
-Antes de cada re-ejecución, se limpia con `git checkout . && git clean -fd`.
+Cada pipeline usa el mismo repo. Antes de ejecutar, se resetea al commit pre-PR (`a71f3555ae`) con `git checkout` + `git clean -fd`. Así cada ejecución parte del mismo estado limpio.
 
 ### Aislamiento de opencode por pipeline
 
@@ -61,65 +57,62 @@ La DB de sesiones se almacena en `/tmp/opencode-XXXXXX/opencode/opencode.db` y s
 
 ## Uso
 
-### Ejecución correcta (worktrees aislados, paralelo seguro)
+Cada pipeline usa el mismo repo (`repos/appwrite-e3`). Antes de ejecutar, se resetea al commit pre-PR.
+
+### Ejecución secuencial (recomendada)
 
 ```bash
 BASE="/home/awahiid/cloud/mega/proyectos/tfg/src/3-implementacion"
-PRE_PR="a71f3555ae"   # commit pre-PR #10832
+REPO="$BASE/repos/appwrite-e3"
+PRE_PR="a71f3555ae"
 CHANGELOG="Cached document lists — Document list queries can be cached with configurable TTL (#10832)."
 REQ="../2-requisitos/appwrite/REQ-APPWRITE-10832.md"
 MODEL="deepseek/deepseek-v4-flash"
+TIMEOUT=900
 
-# 1. Limpiar cada worktree a commit pre-PR
-for f in C0 C1 C2 C3; do
-  git -C "$BASE/repos/appwrite-e3-$f" checkout "$PRE_PR" 2>/dev/null
-  git -C "$BASE/repos/appwrite-e3-$f" clean -fd 2>/dev/null
-  rm -rf "$BASE/repos/appwrite-e3-$f/.specify" \
-         "$BASE/repos/appwrite-e3-$f/.github" \
-         "$BASE/repos/appwrite-e3-$f/specs"
-done
+reset_repo() {
+  git -C "$REPO" checkout "$PRE_PR" 2>/dev/null
+  git -C "$REPO" clean -fd 2>/dev/null
+  rm -rf "$REPO/.specify" "$REPO/.github" "$REPO/specs"
+}
 
-# 2. Lanzar los 4 pipelines en paralelo
-OPENCODE_MODEL="$MODEL" PIPELINE_TIMEOUT=900 \
-  bash "$BASE/scripts/pipeline-c0.sh" "$BASE/repos/appwrite-e3-C0" \
-    "$CHANGELOG" appwrite-e3 "$BASE/resultados/C0/appwrite-e3" > /tmp/c0.log 2>&1 &
+# C0 — SpecKit vanilla
+reset_repo
+OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
+  bash "$BASE/scripts/pipeline-c0.sh" "$REPO" "$CHANGELOG" appwrite-e3 "$BASE/resultados/C0/appwrite-e3"
 
-OPENCODE_MODEL="$MODEL" PIPELINE_TIMEOUT=900 \
-  bash "$BASE/scripts/pipeline-c1.sh" "$BASE/repos/appwrite-e3-C1" \
-    "$REQ" appwrite-e3 "$BASE/resultados/C1/appwrite-e3" > /tmp/c1.log 2>&1 &
+# C1 — SpecKit + IREB v1
+reset_repo
+OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
+  bash "$BASE/scripts/pipeline-c1.sh" "$REPO" "$REQ" appwrite-e3 "$BASE/resultados/C1/appwrite-e3"
 
-OPENCODE_MODEL="$MODEL" PIPELINE_TIMEOUT=900 \
-  bash "$BASE/scripts/pipeline-c2.sh" "$BASE/repos/appwrite-e3-C2" \
-    "$REQ" appwrite-e3 "$BASE/resultados/C2/appwrite-e3" > /tmp/c2.log 2>&1 &
+# C2 — SpecKit + IREB v2
+reset_repo
+OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
+  bash "$BASE/scripts/pipeline-c2.sh" "$REPO" "$REQ" appwrite-e3 "$BASE/resultados/C2/appwrite-e3"
 
-OPENCODE_MODEL="$MODEL" PIPELINE_TIMEOUT=900 \
-  bash "$BASE/scripts/pipeline-c3.sh" "$BASE/repos/appwrite-e3-C3" \
-    appwrite-e3 "$BASE/resultados/C3/appwrite-e3" > /tmp/c3.log 2>&1 &
-
-echo "PIDs: C0=$!, C1=$!, C2=$!, C3=$!"
-
-# 3. Monitorizar progreso
-tail -f /tmp/c0.log /tmp/c1.log /tmp/c2.log /tmp/c3.log
+# C3 — Vibe coding
+reset_repo
+OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
+  bash "$BASE/scripts/pipeline-c3.sh" "$REPO" appwrite-e3 "$BASE/resultados/C3/appwrite-e3"
 ```
 
-### Re-ejecución de un solo flujo
+### Pipeline individual
 
 ```bash
-# Limpiar y re-lanzar solo C0, por ejemplo:
-git -C repos/appwrite-e3-C0 checkout a71f3555ae
-git -C repos/appwrite-e3-C0 clean -fd
-rm -rf repos/appwrite-e3-C0/.specify repos/appwrite-e3-C0/.github repos/appwrite-e3-C0/specs
+REPO=repos/appwrite-e3
+git -C "$REPO" checkout a71f3555ae
+git -C "$REPO" clean -fd
+rm -rf "$REPO/.specify" "$REPO/.github" "$REPO/specs"
 
 OPENCODE_MODEL=deepseek/deepseek-v4-flash PIPELINE_TIMEOUT=900 \
-  bash scripts/pipeline-c0.sh repos/appwrite-e3-C0 \
+  bash scripts/pipeline-c0.sh "$REPO" \
     "Cached document lists — ..." appwrite-e3 resultados/C0/appwrite-e3
 ```
 
-### Test secuencial (un mismo worktree, solo para pruebas rápidas)
+### Ejecución en paralelo (solo si las sesiones opencode no se solapan)
 
-```bash
-bash scripts/test.sh   # ⚠️  NO usar para ejecuciones definitivas
-```
+> ⚠️ Las sesiones opencode son globales, no por pipeline. Para paralelo real haría falta un `XDG_DATA_HOME` aislado por flujo (véase lib.sh). Ejecución secuencial es más fiable.
 
 ## Métricas
 

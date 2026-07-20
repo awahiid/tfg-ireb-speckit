@@ -1,6 +1,0 @@
-
-Como usuario del sistema,
-quiero que el sistema permita la configuración de un ámbito (`scope`) opcional para cada funcionalidad de "opt-in" (`OptInFeatureConfig`). El ámbito puede incluir los valores `org`, `team` y/o `user`,
-a traves de `scope`,
-para algunas funcionalidades "opt-in" solo son relevantes para ciertos niveles de la jerarquía del sistema (por ejemplo, solo para administradores de organización o solo para usuarios individuales).
-Fuente: PR #26801
