@@ -1,229 +1,137 @@
-# Fase 3 — Pipeline de ejecución de SpecKit (observación del flujo SDD)
+# Fase 3 — Ejecución de pipelines
 
-## ¿Qué es SpecKit y cómo funciona?
+## Flujos (4 condiciones experimentales)
 
-SpecKit es un agente de GitHub que opera **dentro de VS Code Copilot Chat**. Su flujo completo recomendado (incluyendo comandos opcionales de calidad) es:
+| Flujo | Script | Entrada | Fuente del prompt |
+|---|---|---|---|
+| **C3** — Vibe Coding puro | `scripts/pipeline-c3.sh` | MRS desde 2.5-prompts | `../../2.5-prompts/<repo>/REQ-*.md` |
+| **C0** — SpecKit baseline | `scripts/pipeline-c0.sh` | Changelog literal | Changelogs reales de cada proyecto |
+| **C1** — IREB Kit v1 | `scripts/pipeline-c1.sh` | Requisito IREB | `../2-requisitos/<repo>/REQ-*.md` |
+| **C2** — IREB Kit v2 | `scripts/pipeline-c2.sh` | Requisito IREB | `../2-requisitos/<repo>/REQ-*.md` |
 
-```
-specify init
-  → /speckit.constitution        (principios rectores)
-  → /speckit.specify             (qué construir)
-  → /speckit.clarify             (detectar ambigüedades) ← NUEVO
-  → /speckit.checklist           (checklist de calidad)  ← NUEVO
-  → /speckit.plan                (plan técnico)
-  → /speckit.tasks               (descomposición)
-  → /speckit.analyze             (consistencia cruzada)  ← NUEVO
-  → /speckit.implement           (generación de código)
-  → /speckit.analyze             (revisión post)         ← NUEVO
-```
+**Ningún pipeline inventa prompts.** Todos leen de ficheros generados en fases anteriores.
+**C3 ya NO depende de `casos-mrs/`** — extrae el MRS directamente de `2.5-prompts/`.
 
-Cada comando `/speckit.*` es un **comando de chat** que se escribe en la ventana de Copilot Chat Agent. No es una CLI tradicional. Esto significa que la Fase 3 tiene una parte automatizable (preparación del entorno) y una parte interactiva necesaria (ejecución del agente).
+## Modelo de ejecución: worktrees aislados
 
----
-
-## Diseño del pipeline
-
-Para cada requisito se sigue este protocolo:
+Cada flujo ejecuta sobre su **propio worktree Git**, clonado desde un bare repo. Esto permite re-ejecutar pipelines en paralelo sin que se pisen ni contaminen el historial.
 
 ```
-  [Automático]                  [Manual en VS Code]                 [Automático]
-  ┌──────────────────┐    ┌─────────────────────────────────┐    ┌──────────────────┐
-  │ 1. Clone repo    │    │ 4. /speckit.constitution        │    │ 10. git diff     │
-  │ 2. Checkout pre- │────│ 5. /speckit.specify             │────│ 11. snapshot.zip │
-  │    PR commit     │    │ 6. /speckit.clarify             │    │ 12. summary.json │
-  │ 3. Install deps  │    │ 7. /speckit.checklist           │    │                  │
-  │    + verify tests│    │    /speckit.plan                │    │                  │
-  └──────────────────┘    │    /speckit.tasks               │    │                  │
-                          │ 8. /speckit.analyze             │    │                  │
-                          │    /speckit.implement           │    │                  │
-                          │ 9. /speckit.analyze             │    │                  │
-                          └─────────────────────────────────┘    └──────────────────┘
-         preparar-caso.sh            Tú en VS Code                 capturar-resultado.sh
+.bare/appwrite.git/          ← Bare repo (clon único, sin working tree)
+repos/
+├── appwrite-e3-C0/          ← Worktree para C0 (SpecKit vanilla)
+├── appwrite-e3-C1/          ← Worktree para C1 (SpecKit + IREB v1)
+├── appwrite-e3-C2/          ← Worktree para C2 (SpecKit + IREB v2)
+└── appwrite-e3-C3/          ← Worktree para C3 (vibe coding)
 ```
 
----
+Cada worktree arranca desde el commit pre-PR (`8368a28ff5~1` = `a71f3555ae`).
+Antes de cada re-ejecución, se limpia con `git checkout . && git clean -fd`.
 
-## IREB Kit para SpecKit
+### Aislamiento de opencode por pipeline
 
-El directorio `ireb-kit/` contiene todos los productos personalizados para ejecutar
-el flujo IREB-enhanced (Flow B):
-
-```
-ireb-kit/
-├── constitution.md          ← Pegar en /speckit.constitution
-├── spec-template-ireb.md    ← Plantilla de spec con 12 atributos IREB
-├── plan-template-ireb.md    ← Plantilla de plan con gates IREB
-├── checklist-ireb.md        ← Checklist de calidad ISO 29148
-├── workflow-ireb.yml        ← Pipeline YAML con gates de revisión
-├── preset-ireb.yml          ← Preset instalable (specify preset add ireb)
-├── prompt-template.md       ← Prompt para generar requisitos con LLM
-├── tutorial.md              ← Tutorial paso a paso para el usuario final
-└── README.md
-```
-
-### `preparar-caso.sh <repo> <case-id> <merge-commit> [requirement]`
-
-Prepara un caso individual. Hace:
-
-1. **Clone + checkout**: clona el repo y hace checkout en el commit **padre del merge commit** (es decir, el código ANTES de que se mergeara la PR original). Esto es el "punto de partida" limpio.
-2. **Instalar dependencias**: corre `composer install`, `pip install -r requirements.txt`, etc. según el repo.
-3. **Verificar tests**: ejecuta la suite de tests existente para confirmar que el entorno base no está roto.
-4. **SpecKit init**: ejecuta `specify init` para preparar la estructura de SpecKit.
-5. **Pre-popular spec**: copia el REQ-*.md a `.specify/memory/` para tenerlo a mano al ejecutar `/speckit.specify`.
-
-### `capturar-resultado.sh <case-id>`
-
-Captura el resultado de la implementación de SpecKit. Genera:
-
-| Archivo | Contenido |
-|---|---|
-| `diff.patch` | Git diff de todos los cambios introducidos |
-| `changed-files.txt` | Listado de archivos modificados/creados |
-| `summary.json` | Metadata del caso (commit, líneas, archivos) |
-| `full-snapshot.zip` | Repositorio completo (sin .git, vendor, node_modules) |
-
-### `preparar-lote.sh <repo>`
-
-Prepara **todos los casos** de un repo de una sola vez. Lee los datos-pr JSON extraídos en la Fase 1 y ejecuta `preparar-caso.sh` para cada uno.
-
----
-
-## Cómo ejecutar un caso (paso a paso)
-
-### 1. Preparar el entorno
+Cada pipeline ejecuta con su propia instancia aislada de opencode mediante `XDG_DATA_HOME`:
 
 ```bash
-cd src/3-implementacion
-
-# Para un caso individual:
-./scripts/preparar-caso.sh appwrite appwrite-e8 d9ac4f2f2dbd1e24218a627b890358714ff50af7 \
-    ../2-requisitos/appwrite/REQ-APPWRITE-10986.md
-
-# O para todos los casos de Appwrite de golpe:
-./scripts/preparar-lote.sh appwrite
+export XDG_DATA_HOME=$(mktemp -d /tmp/opencode-XXXXXX)
 ```
 
-### 2. Ejecutar SpecKit (manual — en VS Code)
+Esto hace que `opencode session list`, `opencode export` y `opencode stats` solo vean las sesiones de ESE pipeline. **Sin carreras, sin contaminación cruzada de métricas** entre flujos concurrentes.
+
+La DB de sesiones se almacena en `/tmp/opencode-XXXXXX/opencode/opencode.db` y se destruye al reiniciar.
+
+## Estructura
+
+```
+├── scripts/
+│   ├── lib.sh                ← Helpers compartidos (oc_run, oc_extract_code, etc.)
+│   ├── pipeline-c3.sh        ← C3: 1 prompt (sin SpecKit)
+│   ├── pipeline-c0.sh        ← C0: 4 pasos (specify→plan→tasks→implement)
+│   ├── pipeline-c1.sh        ← C1: 9 pasos (SpecKit + IREB v1)
+│   ├── pipeline-c2.sh        ← C2: 10 pasos (SpecKit + IREB v2 + scope contract)
+│   ├── preparar-caso.sh      ← Clona repo en commit pre-PR
+│   ├── capturar-metricas.sh  ← Extrae tokens/coste de sesiones opencode
+│   └── test.sh               ← Test secuencial (1 caso × 4 flujos)
+├── ireb-kit-v1/              ← Kit IREB v1 (templates + constitution)
+├── ireb-kit-v2/              ← Kit IREB v2 (templates + constitution)
+├── repos/                    ← Worktrees Git aislados
+└── resultados/
+    ├── C0/  C1/  C2/  C3/    ← Resultados por flujo
+```
+
+## Uso
+
+### Ejecución correcta (worktrees aislados, paralelo seguro)
 
 ```bash
-cd src/3-implementation/repos/appwrite-e8
-code .
+BASE="/home/awahiid/cloud/mega/proyectos/tfg/src/3-implementacion"
+PRE_PR="a71f3555ae"   # commit pre-PR #10832
+CHANGELOG="Cached document lists — Document list queries can be cached with configurable TTL (#10832)."
+REQ="../2-requisitos/appwrite/REQ-APPWRITE-10832.md"
+MODEL="deepseek/deepseek-v4-flash"
+
+# 1. Limpiar cada worktree a commit pre-PR
+for f in C0 C1 C2 C3; do
+  git -C "$BASE/repos/appwrite-e3-$f" checkout "$PRE_PR" 2>/dev/null
+  git -C "$BASE/repos/appwrite-e3-$f" clean -fd 2>/dev/null
+  rm -rf "$BASE/repos/appwrite-e3-$f/.specify" \
+         "$BASE/repos/appwrite-e3-$f/.github" \
+         "$BASE/repos/appwrite-e3-$f/specs"
+done
+
+# 2. Lanzar los 4 pipelines en paralelo
+OPENCODE_MODEL="$MODEL" PIPELINE_TIMEOUT=900 \
+  bash "$BASE/scripts/pipeline-c0.sh" "$BASE/repos/appwrite-e3-C0" \
+    "$CHANGELOG" appwrite-e3 "$BASE/resultados/C0/appwrite-e3" > /tmp/c0.log 2>&1 &
+
+OPENCODE_MODEL="$MODEL" PIPELINE_TIMEOUT=900 \
+  bash "$BASE/scripts/pipeline-c1.sh" "$BASE/repos/appwrite-e3-C1" \
+    "$REQ" appwrite-e3 "$BASE/resultados/C1/appwrite-e3" > /tmp/c1.log 2>&1 &
+
+OPENCODE_MODEL="$MODEL" PIPELINE_TIMEOUT=900 \
+  bash "$BASE/scripts/pipeline-c2.sh" "$BASE/repos/appwrite-e3-C2" \
+    "$REQ" appwrite-e3 "$BASE/resultados/C2/appwrite-e3" > /tmp/c2.log 2>&1 &
+
+OPENCODE_MODEL="$MODEL" PIPELINE_TIMEOUT=900 \
+  bash "$BASE/scripts/pipeline-c3.sh" "$BASE/repos/appwrite-e3-C3" \
+    appwrite-e3 "$BASE/resultados/C3/appwrite-e3" > /tmp/c3.log 2>&1 &
+
+echo "PIDs: C0=$!, C1=$!, C2=$!, C3=$!"
+
+# 3. Monitorizar progreso
+tail -f /tmp/c0.log /tmp/c1.log /tmp/c2.log /tmp/c3.log
 ```
 
-En VS Code:
-1. Abre **Copilot Chat** y selecciona el **agente** (no el chat normal)
-2. Escribe los comandos en orden:
-
-```
-/speckit.constitution
-```
-→ Proporciona principios alineados con RE, por ejemplo:
-  'Verificabilidad obligatoria, minimalidad
-   (implementar exactamente lo especificado),
-   trazabilidad spec→code'
-
-```
-/speckit.specify
-```
-→ Pega el contenido del archivo `REQ-APPWRITE-10986.md` (está en `.specify/memory/requirement-input.md` y originalmente en `src/2-requisitos/appwrite/REQ-APPWRITE-10986.md`)
-
-```
-/speckit.clarify           ← NUEVO: identifica ambigüedades en la spec
-```
-
-```
-/speckit.checklist         ← NUEVO: genera checklist de calidad
-```
-
-```
-/speckit.plan
-```
-
-```
-/speckit.tasks
-```
-
-```
-/speckit.analyze           ← NUEVO: verifica consistencia spec↔plan↔tasks
-```
-
-```
-/speckit.implement
-```
-
-```
-/speckit.analyze           ← NUEVO: revisión post-implementación
-```
-
-3. Espera a que SpecKit termine en cada paso (puede tomar varios minutos la implementación).
-
-### 3. Capturar el resultado
+### Re-ejecución de un solo flujo
 
 ```bash
-./scripts/capturar-resultado.sh appwrite-e8
+# Limpiar y re-lanzar solo C0, por ejemplo:
+git -C repos/appwrite-e3-C0 checkout a71f3555ae
+git -C repos/appwrite-e3-C0 clean -fd
+rm -rf repos/appwrite-e3-C0/.specify repos/appwrite-e3-C0/.github repos/appwrite-e3-C0/specs
+
+OPENCODE_MODEL=deepseek/deepseek-v4-flash PIPELINE_TIMEOUT=900 \
+  bash scripts/pipeline-c0.sh repos/appwrite-e3-C0 \
+    "Cached document lists — ..." appwrite-e3 resultados/C0/appwrite-e3
 ```
 
-Esto crea `resultados/appwrite-e8/diff.patch`, `summary.json`, `full-snapshot.zip`.
+### Test secuencial (un mismo worktree, solo para pruebas rápidas)
 
----
-
-## ¿Por qué este diseño?
-
-| Decisión | Justificación |
-|---|---|
-| **Checkout pre-PR** | El commit `MERGE_COMMIT~1` es el estado del repo antes de que se introdujera el cambio. SpecKit parte de ahí sin conocer la solución. |
-| **SpecKit via chat** | SpecKit no tiene API headless. Su interfaz es Copilot Chat Agent. Es la herramienta cuyo flujo SDD estamos observando. |
-| **Pipeline ampliado (clarify, checklist, analyze)** | Se añaden los comandos de calidad de SpecKit (clarify, checklist, analyze) para observar el flujo completo que SpecKit ofrece, no solo el subconjunto mínimo. Esto permite un mapeo más completo contra las prácticas IREB. |
-| **Constitution personalizado con principios RE** | Se proporcionan principios de verificabilidad, minimalidad y trazabilidad para que el constitution refleje valores de RE en lugar de valores genéricos de desarrollo de librerías (Library-First, TDD). |
-| **Snapshot post-ejecución** | El diff generado por SpecKit + el zip completo es el artefacto que se analizará en la Fase 4 para el mapeo. |
-| **Sin iteración** | Sólo una ejecución por requisito. Si falla, se registra como fallo. Esto evita que la intervención humana enmascare el comportamiento nativo del pipeline SDD. |
-
----
-
-## Estructura de directorios
-
+```bash
+bash scripts/test.sh   # ⚠️  NO usar para ejecuciones definitivas
 ```
-src/3-implementacion/
-├── README.md
-├── constitution.md           ← En ireb-kit/ (9 artículos IREB + Art. 0 anti-alucinación)
-├── ireb-kit/                 ← Templates y herramientas para personalizar SpecKit
-│   ├── AGENTS.md             ← Reglas R0-R4 para el agente
-│   ├── constitution.md       ← Principios IREB (9 artículos)
-│   ├── spec.template.md      ← Plantilla de spec con 12 atributos
-│   ├── plan.template.md      ← Plantilla de plan con gates IREB
-│   ├── tasks.template.md     ← Plantilla de tasks con trazabilidad
-│   ├── checklist.template.md ← Checklist ISO 29148 (13 criterios)
-│   ├── clarify.template.md   ← Detector de ambigüedades
-│   ├── analyze.template.md   ← Matriz de trazabilidad
-│   ├── prompt.template.md    ← Prompt para generar REQ desde changelogs
-│   ├── pipeline.sh           ← Pipeline automatizado alternativo
-│   └── README.md
-├── casos-mrs/                ← MRS (Minimal Requirement Seeds) por caso
-│   ├── REQ-APPWRITE-10832.txt
-│   ├── REQ-AUTHENTIK-10110.txt
-│   ├── REQ-CALCOM-26801.txt
-│   ├── REQ-DIRECTUS-26646.txt
-│   ├── REQ-MEDUSA-13930.txt
-│   └── REQ-N8N-30375.txt
-├── docs/                     ← Documentación generada por el pipeline
-│   ├── trazabilidad.md       ← Matriz de trazabilidad global
-│   ├── tasks-template.md     ← Plantilla de descomposición de tareas
-│   └── casos/                ← Artefactos por caso (plan, tasks, req)
-│       ├── appwrite-10832/
-│       ├── authentik-10110/
-│       ├── calcom-optin/
-│       ├── directus-26646/
-│       ├── n8n-30375/
-│       └── sku-search-001/
-├── scripts/                  ← Scripts de preparación y captura
-│   ├── preparar-caso.sh      ← Prepara un caso (clone, checkout, init)
-│   ├── preparar-lote.sh      ← Prepara todos los casos de un repo
-│   ├── pipeline-flow-a.sh    ← Pipeline Flow A (sin IREB)
-│   ├── capturar-resultado.sh ← Captura diff, snapshot y summary
-│   └── _archive/             ← Scripts batch/experimentales (no activos)
-├── repos/                    ← Repos clonados (infraestructura, no commitear)
-└── resultados/               ← Snapshots de implementación
-    ├── flujo-kit-v1/         ← Flow B v1 (IREB-enhanced)
-    ├── flujo-kit-v2/         ← Flow B v2 (IREB-enhanced mejorado)
-    └── flujo-sin-kit/        ← Flow A (baseline, sin IREB)
-```
+
+## Métricas
+
+Cada ejecución produce: `summary.json`, `diff.patch`, `changed-files.txt`, artefactos `0X-*.md`, prompts `0X-prompt.txt`, `session-ids.txt`.
+
+## lib.sh — Helpers compartidos
+
+Todos los pipelines usan `scripts/lib.sh`:
+- `oc_run` — ejecuta opencode `--pure`, captura stderr, extrae session IDs
+- `oc_extract_code` — extrae bloques de código (stdout limpio: solo el número)
+- `oc_capture_diff` — `git add -A && git diff --cached` (incluye archivos nuevos)
+- `oc_extract_mrs` — extrae MRS de ficheros `2.5-prompts/*.md`
+- `oc_capture_metrics` — tokens/coste desde sesiones opencode
+- `oc_summary` — genera `summary.json` + `README.md`
+- **Sin `set -e`**: cada paso decide si un fallo es crítico o no.
