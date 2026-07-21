@@ -36,6 +36,7 @@ init_pipeline
 
 # Crear worktree aislado
 WORKTREE=$(oc_create_worktree "$REPO_NAME" "$PRE_PR" "$OUTPUT_DIR/repo")
+trap "oc_remove_worktree '$WORKTREE'" EXIT
 REPO_DIR="$WORKTREE"
 START_TIME=$(date +%s)
 CONTEXT=""
