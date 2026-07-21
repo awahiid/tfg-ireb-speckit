@@ -1,21 +1,42 @@
 #!/usr/bin/env bash
 # ===========================================================================
 # pipeline-c0.sh — C0: SpecKit vanilla (specify → plan → tasks → implement)
+#
+# Uso: ./pipeline-c0.sh <repo> <req-id>
+#   repo   = nombre del directorio en repos/ (ej: appwrite)
+#   req-id = número del requisito (ej: 10832)
 # ===========================================================================
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/lib.sh"
 
-[[ $# -lt 3 ]] && { echo "Uso: $0 <repo-dir> <changelog-text> <case-id> [output-dir]"; exit 1; }
+[[ $# -lt 2 ]] && { echo "Uso: $0 <repo> <req-id>"; exit 1; }
 
-REPO_DIR="$(cd "$1" && pwd)"
-CHANGELOG_TEXT="$2"
-CASE_ID="$3"
-OUTPUT_DIR="${4:-$REPO_DIR/.specify/memory/c0-output}"
-[[ "$OUTPUT_DIR" != /* ]] && OUTPUT_DIR="$PWD/$OUTPUT_DIR"
+REPO_NAME="$1"
+REQ_ID="$2"
+CASES_FILE="$SCRIPT_DIR/../casos.json"
+
+# ── Leer casos.json ──
+CASE_DATA=$(python3 -c "
+import json, sys
+with open('$CASES_FILE') as f:
+    d = json.load(f)
+paths = d['_paths']
+case = d['$REPO_NAME']['reqs']['$REQ_ID']
+print(f\"{case['pre_pr']}|{case['summary']}|{paths['repos']}|{paths['prompts']}|{paths['requisitos']}\")
+")
+IFS='|' read -r PRE_PR SUMMARY REPOS_BASE PROMPTS_BASE REQS_BASE <<< "$CASE_DATA"
+
+REPO_DIR="$SCRIPT_DIR/../$REPOS_BASE/$REPO_NAME"
+CASE_ID="${REPO_NAME}-${REQ_ID}"
+OUTPUT_DIR="$SCRIPT_DIR/../resultados/C0/$CASE_ID"
 OUTPUT_DIR=$(init_output_dir "$OUTPUT_DIR")
 
 init_pipeline
+
+# Crear worktree aislado
+WORKTREE=$(oc_create_worktree "$REPO_NAME" "$PRE_PR" "$OUTPUT_DIR/repo")
+REPO_DIR="$WORKTREE"
 START_TIME=$(date +%s)
 CONTEXT=""
 
@@ -24,14 +45,17 @@ echo "=============================================="
 echo "  🚀 C0 — SPECKIT VANILLA"
 echo "=============================================="
 echo "  Caso:      $CASE_ID"
-echo "  Changelog: $CHANGELOG_TEXT"
+echo "  Resumen:   $SUMMARY"
+echo "  Pre-PR:    $PRE_PR"
 echo "  Modelo:    $MODEL"
 echo ""
 
-echo "$CHANGELOG_TEXT" > "$OUTPUT_DIR/00-input-changelog.txt"
-oc_clean_repo "$REPO_DIR"
+echo "$SUMMARY" > "$OUTPUT_DIR/00-input-changelog.txt"
+oc_clean_repo "$REPO_DIR" "$PRE_PR"
 step "Setup — specify init"
 oc_speckit_init "$REPO_DIR" || { error "No se pudo inicializar SpecKit"; exit 1; }
+
+FILES_CREATED=0
 
 # ── Helper: ejecuta un paso SpecKit y recolecta artefactos ──
 run_speckit_step() {
@@ -39,11 +63,7 @@ run_speckit_step() {
     step "$step_label"
     local prompt
     prompt=$(oc_load_agent_prompt "$REPO_DIR" "$command" "$args")
-    if oc_run "$step_id" "$prompt" "$CONTEXT" "$OUTPUT_DIR" "$REPO_DIR"; then
-        CONTEXT="$CONTEXT
-=== $step_id ===
-$(cat "$OUTPUT_DIR/$step_id.md")"
-        # Recolectar artefactos generados por el agente
+    if oc_run "$step_id" "$prompt" "" "$OUTPUT_DIR" "$REPO_DIR"; then
         oc_collect_speckit_artifacts "$REPO_DIR" "$OUTPUT_DIR" "$step_id"
     else
         warn "$command falló"
@@ -56,12 +76,7 @@ run_speckit_step "2/4 — /speckit.plan"     "02-plan"    "plan"    "$CHANGELOG_
 run_speckit_step "3/4 — /speckit.tasks"    "03-tasks"   "tasks"   ""
 run_speckit_step "4/4 — /speckit.implement" "04-implement" "implement" ""
 
-# ── Extraer ──
-step "Extrayendo código"
-FILES_CREATED=$(oc_extract_code "$OUTPUT_DIR/04-implement.md" "$REPO_DIR")
-[[ "$FILES_CREATED" =~ ^[0-9]+$ ]] || FILES_CREATED=0
-[[ "$FILES_CREATED" -gt 0 ]] && ok "Archivos: $FILES_CREATED" || warn "0 archivos"
-
+# ── Diff + Métricas ──
 step "Diff"; oc_capture_diff "$REPO_DIR" "$OUTPUT_DIR" || true
 oc_capture_metrics "$OUTPUT_DIR"
 

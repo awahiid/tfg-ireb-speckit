@@ -1,122 +1,148 @@
 # Fase 3 — Ejecución de pipelines
 
-## Flujos (4 condiciones experimentales)
+## Objetivo del experimento
 
-| Flujo | Script | Entrada | Fuente del prompt |
+Evaluar 4 condiciones experimentales para la implementación de requisitos
+software con agentes IA. Cada pipeline recibe un requisito real de un proyecto
+open-source y pide a un agente (opencode + DeepSeek) que lo implemente.
+
+## Flujos experimentales
+
+| Flujo | Script | Prompt | Descripción |
 |---|---|---|---|
-| **C3** — Vibe Coding puro | `scripts/pipeline-c3.sh` | MRS desde 2.5-prompts | `../../2.5-prompts/<repo>/REQ-*.md` |
-| **C0** — SpecKit baseline | `scripts/pipeline-c0.sh` | Changelog literal | Changelogs reales de cada proyecto |
-| **C1** — IREB Kit v1 | `scripts/pipeline-c1.sh` | Requisito IREB | `../2-requisitos/<repo>/REQ-*.md` |
-| **C2** — IREB Kit v2 | `scripts/pipeline-c2.sh` | Requisito IREB | `../2-requisitos/<repo>/REQ-*.md` |
+| **C0** | `pipeline-c0.sh` | SpecKit vanilla | El agente sigue el flujo SpecKit estándar (specify → plan → tasks → implement) |
+| **C1** | `pipeline-c1.sh` | SpecKit + IREB v1 | SpecKit con plantillas y constitución basadas en IREB CPRE (9 pasos) |
+| **C2** | `pipeline-c2.sh` | SpecKit + IREB v2 | Igual que C1 + contrato de alcance anti-scope-creep (10 pasos) |
+| **C3** | `pipeline-c3.sh` | MRS directo | Sin SpecKit. Se pasa el MRS (especificación en lenguaje natural) directamente |
 
-**Ningún pipeline inventa prompts.** Todos leen de ficheros generados en fases anteriores.
-**C3 ya NO depende de `casos-mrs/`** — extrae el MRS directamente de `2.5-prompts/`.
+Los prompts se leen de `casos.json` y los ficheros generados en fases anteriores
+(`2.5-prompts/` para MRS, `2-requisitos/` para los requisitos IREB).
 
-## Modelo de ejecución: worktrees aislados
-
-Cada flujo ejecuta sobre su **propio worktree Git**, clonado desde un bare repo. Esto permite re-ejecutar pipelines en paralelo sin que se pisen ni contaminen el historial.
+## Estructura del proyecto
 
 ```
-.bare/appwrite.git/          ← Bare repo (clon único)
-repos/
-└── appwrite-e3/             ← Único working tree
-```
-
-Cada pipeline usa el mismo repo. Antes de ejecutar, se resetea al commit pre-PR (`a71f3555ae`) con `git checkout` + `git clean -fd`. Así cada ejecución parte del mismo estado limpio.
-
-### Aislamiento de opencode por pipeline
-
-Cada pipeline ejecuta con su propia instancia aislada de opencode mediante `XDG_DATA_HOME`:
-
-```bash
-export XDG_DATA_HOME=$(mktemp -d /tmp/opencode-XXXXXX)
-```
-
-Esto hace que `opencode session list`, `opencode export` y `opencode stats` solo vean las sesiones de ESE pipeline. **Sin carreras, sin contaminación cruzada de métricas** entre flujos concurrentes.
-
-La DB de sesiones se almacena en `/tmp/opencode-XXXXXX/opencode/opencode.db` y se destruye al reiniciar.
-
-## Estructura
-
-```
+src/3-implementacion/
 ├── scripts/
-│   ├── lib.sh                ← Helpers compartidos (oc_run, oc_extract_code, etc.)
-│   ├── pipeline-c3.sh        ← C3: 1 prompt (sin SpecKit)
-│   ├── pipeline-c0.sh        ← C0: 4 pasos (specify→plan→tasks→implement)
-│   ├── pipeline-c1.sh        ← C1: 9 pasos (SpecKit + IREB v1)
-│   ├── pipeline-c2.sh        ← C2: 10 pasos (SpecKit + IREB v2 + scope contract)
-│   ├── preparar-caso.sh      ← Clona repo en commit pre-PR
-│   ├── capturar-metricas.sh  ← Extrae tokens/coste de sesiones opencode
-│   └── test.sh               ← Test secuencial (1 caso × 4 flujos)
-├── ireb-kit-v1/              ← Kit IREB v1 (templates + constitution)
-├── ireb-kit-v2/              ← Kit IREB v2 (templates + constitution)
-├── repos/                    ← Worktrees Git aislados
-└── resultados/
-    ├── C0/  C1/  C2/  C3/    ← Resultados por flujo
+│   ├── lib.sh                ← Funciones compartidas
+│   ├── pipeline-c0.sh        ← C0: SpecKit vanilla (4 pasos)
+│   ├── pipeline-c1.sh        ← C1: SpecKit + IREB v1 (9 pasos)
+│   ├── pipeline-c2.sh        ← C2: SpecKit + IREB v2 (10 pasos)
+│   ├── pipeline-c3.sh        ← C3: Vibe coding puro (1 prompt)
+│   └── capturar-metricas.sh  ← Extrae tokens/coste de opencode
+├── ireb-kit-v1/              ← Plantillas y constitución IREB v1
+├── ireb-kit-v2/              ← Plantillas y constitución IREB v2
+├── repos/                    ← Repositorios clonados de proyectos open-source
+├── resultados/               ← Resultados de ejecución (ver abajo)
+└── casos.json                ← Registro de casos (repo, commit pre-PR, resumen)
 ```
+
+## Registro de casos (`casos.json`)
+
+Cada caso experimental se define en `casos.json` con la estructura:
+
+```json
+{
+  "appwrite": {
+    "reqs": {
+      "10832": {
+        "summary": "Resumen del PR o requisito",
+        "pre_pr": "a71f3555ae"
+      }
+    }
+  }
+}
+```
+
+- **Clave raíz**: nombre del repo (`appwrite`, `authentik`, etc.)
+- **`reqs`**: map de ID de requisito → datos del caso
+- **`summary`**: texto descriptivo que se usa como changelog en C0
+- **`pre_pr`**: commit padre del merge (punto de partida limpio para el pipeline)
+
+Los pipelines resuelven automáticamente:
+- Ruta al repo: `repos/<repo>/`
+- Ruta al MRS: `2.5-prompts/<repo>/REQ-<REPO>-<ID>.md`
+- Ruta al requisito IREB: `2-requisitos/<repo>/REQ-<REPO>-<ID>.md`
+
+## Aislamiento: `env/`
+
+Cada ejecución crea un directorio `env/` que actúa como `$HOME` temporal para
+opencode. Todas las sesiones, DBs y conversaciones se almacenan ahí:
+
+```
+resultados/C3/appwrite-10832/2026-07-21/123456/
+├── env/                          ← HOME aislado
+│   └── .local/share/opencode/
+│       ├── opencode.db           ← solo sesiones de esta ejecución
+│       └── auth.json             ← copia del API key
+├── trace/                        ← traza completa de la ejecución
+│   ├── terminal.log              ← stdout+stderr combinado
+│   └── transcript.json           ← mensajes, tokens y costes por sesión
+├── metrics/                      ← costs.csv, metrics.json
+├── diff.patch                    ← cambios en el código generados
+├── summary.json                  ← resumen agregado
+└── changed-files.txt             ← lista de archivos modificados
+```
+
+Ventajas del aislamiento:
+- **Reproducible**: cada ejecución es autocontenida
+- **Inspectable**: abres la carpeta y ves todo lo que pasó
+- **Portable**: puedes llevarte la carpeta a otra máquina
 
 ## Uso
 
-Cada pipeline usa el mismo repo (`repos/appwrite-e3`). Antes de ejecutar, se resetea al commit pre-PR.
+Cada pipeline acepta dos argumentos: repo e ID de requisito.
+Los pipelines buscan el resto en `casos.json` y resetean el repo automáticamente.
 
-### Ejecución secuencial (recomendada)
+### Ejecución individual
 
 ```bash
-BASE="/home/awahiid/cloud/mega/proyectos/tfg/src/3-implementacion"
-REPO="$BASE/repos/appwrite-e3"
-PRE_PR="a71f3555ae"
-CHANGELOG="Cached document lists — Document list queries can be cached with configurable TTL (#10832)."
-REQ="../2-requisitos/appwrite/REQ-APPWRITE-10832.md"
-MODEL="deepseek/deepseek-v4-flash"
-TIMEOUT=900
-
-reset_repo() {
-  git -C "$REPO" checkout "$PRE_PR" 2>/dev/null
-  git -C "$REPO" clean -fd 2>/dev/null
-  rm -rf "$REPO/.specify" "$REPO/.github" "$REPO/specs"
-}
+# C3 — Vibe coding (más rápido, 1 solo prompt)
+./scripts/pipeline-c3.sh appwrite 10832
 
 # C0 — SpecKit vanilla
-reset_repo
-OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
-  bash "$BASE/scripts/pipeline-c0.sh" "$REPO" "$CHANGELOG" appwrite-e3 "$BASE/resultados/C0/appwrite-e3"
+./scripts/pipeline-c0.sh appwrite 10832
 
 # C1 — SpecKit + IREB v1
-reset_repo
-OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
-  bash "$BASE/scripts/pipeline-c1.sh" "$REPO" "$REQ" appwrite-e3 "$BASE/resultados/C1/appwrite-e3"
+./scripts/pipeline-c1.sh appwrite 10832
 
 # C2 — SpecKit + IREB v2
-reset_repo
-OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
-  bash "$BASE/scripts/pipeline-c2.sh" "$REPO" "$REQ" appwrite-e3 "$BASE/resultados/C2/appwrite-e3"
-
-# C3 — Vibe coding
-reset_repo
-OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
-  bash "$BASE/scripts/pipeline-c3.sh" "$REPO" appwrite-e3 "$BASE/resultados/C3/appwrite-e3"
+./scripts/pipeline-c2.sh appwrite 10832
 ```
 
-### Pipeline individual
+### Ejecución secuencial completa
 
 ```bash
-REPO=repos/appwrite-e3
-git -C "$REPO" checkout a71f3555ae
-git -C "$REPO" clean -fd
-rm -rf "$REPO/.specify" "$REPO/.github" "$REPO/specs"
-
-OPENCODE_MODEL=deepseek/deepseek-v4-flash PIPELINE_TIMEOUT=900 \
-  bash scripts/pipeline-c0.sh "$REPO" \
-    "Cached document lists — ..." appwrite-e3 resultados/C0/appwrite-e3
+MODEL=deepseek/deepseek-v4-flash
+TIMEOUT=900
+for flow in c3 c0 c1 c2; do
+  OPENCODE_MODEL=$MODEL PIPELINE_TIMEOUT=$TIMEOUT \
+    bash scripts/pipeline-$flow.sh appwrite 10832
+done
 ```
 
-### Ejecución en paralelo (solo si las sesiones opencode no se solapan)
+### Variables de entorno
 
-> ⚠️ Las sesiones opencode son globales, no por pipeline. Para paralelo real haría falta un `XDG_DATA_HOME` aislado por flujo (véase lib.sh). Ejecución secuencial es más fiable.
+| Variable | Defecto | Descripción |
+|---|---|---|
+| `OPENCODE_MODEL` | `deepseek/deepseek-v4-flash` | Modelo para opencode |
+| `PIPELINE_TIMEOUT` | `900` | Timeout por paso (segundos) |
 
-## Métricas
+## Salida de cada ejecución
 
-Cada ejecución produce: `summary.json`, `diff.patch`, `changed-files.txt`, artefactos `0X-*.md`, prompts `0X-prompt.txt`, `session-ids.txt`.
+```
+resultados/<flujo>/<repo-id>/YYYY-MM-DD/HHMMSS/
+├── env/                   ← opencode aislado (DB, auth, sesiones)
+├── trace/
+│   ├── terminal.log       ← stdout+stderr completo
+│   └── transcript.json    ← mensajes, tokens, costes
+├── metrics/
+│   ├── costs.csv          ← coste por sesión
+│   └── metrics.json       ← métricas agregadas
+├── diff.patch             ← diff del código generado
+├── changed-files.txt      ← git diff --stat
+├── summary.json           ← resumen: tiempo, tokens, coste
+└── README.md              ← resumen legible
+```
 
 ## lib.sh — Helpers compartidos
 

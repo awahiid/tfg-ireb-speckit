@@ -2,26 +2,26 @@
 
 ## Estructura
 
-Cada ejecución crea una carpeta con timestamp bajo `<flujo>/<caso>/`:
+Cada ejecución crea una carpeta con timestamp bajo `<flujo>/<repo-id>/`:
 
 ```
 resultados/
-├── C0/{caso}/
-│   └── 2026-07-19/173000/    ← timestamp: YYYY-MM-DD/HHMMSS
-│       ├── summary.json
-│       ├── metrics.json
-│       ├── diff.patch
+├── C0/appwrite-10832/
+│   └── 2026-07-21/123456/        ← YYYY-MM-DD/HHMMSS
+│       ├── env/                   ← opencode aislado (DB, auth)
+│       ├── trace/
+│       │   ├── terminal.log       ← stdout+stderr completo
+│       │   └── transcript.json    ← mensajes, tokens, costes
+│       ├── metrics/
+│       │   ├── costs.csv          
+│       │   └── metrics.json       
+│       ├── diff.patch             ← cambios en el código
 │       ├── changed-files.txt
-│       ├── README.md
-│       ├── 00-input-changelog.txt
-│       ├── 01-specify.md          (y prompt)
-│       ├── 02-plan.md             (y prompt)
-│       ├── 03-tasks.md            (y prompt)
-│       ├── 04-implement.md        (y prompt)
-│       └── session-ids.txt
-├── C1/{caso}/YYYY-MM-DD/HHMMSS/
-├── C2/{caso}/YYYY-MM-DD/HHMMSS/
-└── C3/{caso}/YYYY-MM-DD/HHMMSS/
+│       ├── summary.json           ← resumen agregado
+│       └── README.md
+├── C1/appwrite-10832/...
+├── C2/appwrite-10832/...
+└── C3/appwrite-10832/...
 ```
 
 Las re-ejecuciones no sobreescriben: cada una crea su propia subcarpeta con timestamp.

@@ -1,0 +1,16 @@
+{
+  "_comment": "Registro de casos para los pipelines. Los pipelines leen de aquí el repositorio, el commit pre-PR y el resumen de cada caso. Uso: ./pipeline-c0.sh appwrite 10832. Ejemplo:",
+  "_paths": {
+    "repos": "repos",
+    "prompts": "../../2.5-prompts",
+    "requisitos": "../../2-requisitos"
+  },
+  "appwrite": {
+    "reqs": {
+      "10832": {
+        "summary": "Cached document lists — Document list queries can be cached with configurable TTL (#10832)",
+        "pre_pr": "a71f3555ae"
+      }
+    }
+  }
+}

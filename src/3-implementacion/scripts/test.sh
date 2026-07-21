@@ -2,7 +2,7 @@
 # Test: 1 caso × 4 flujos — ejecuta secuencial, continúa tras fallos
 cd "$(dirname "$0")/.."
 
-REPO="repos/appwrite-e3"
+REPO="repos/appwrite"
 CHANGELOG="Cached document lists — Document list queries can be cached with configurable TTL (#10832)."
 REQ="../2-requisitos/appwrite/REQ-APPWRITE-10832.md"
 CASE="appwrite-e3"
