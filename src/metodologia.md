@@ -8,22 +8,48 @@ Este trabajo persigue **dos objetivos complementarios**:
 
 **Objetivo 1 — Mapear**: mapear sistemáticamente el flujo de trabajo de SpecKit (SDD) contra un flujo profesional de ingeniería de requisitos basado en normas (IREB, ISO/IEC/IEEE 29148, INCOSE), identificando alineaciones, brechas y áreas grises entre ambos.
 
-**Objetivo 2 — Evaluar**: evaluar si las diferencias identificadas en el mapeo se traducen en resultados medibles, comparando la implementación que genera SpecKit cuando recibe un requisito formalizado con IREB frente a cuando recibe el mismo requisito sin tratar.
+**Objetivo 2 — Evaluar**: evaluar si las diferencias identificadas en el mapeo se traducen en resultados medibles, comparando cuatro condiciones experimentales (C0–C3) que cubren el espectro desde "sin metodología" (Vibe Coding) hasta "IREB completo con scope contract".
 
 Las preguntas que guían el diseño metodológico son:
 
 1. *¿En qué medida se alinea el pipeline SDD de SpecKit con las actividades, criterios de calidad y artefactos definidos por un flujo RE profesional basado en normas?*
-2. *¿Mejora la calidad de la implementación generada por SpecKit cuando los requisitos de entrada se formalizan siguiendo un proceso IREB, en comparación con usar la entrada sin tratar?*
+2. *¿Mejora la calidad de la implementación generada cuando los requisitos de entrada se formalizan siguiendo IREB y se añaden mecanismos de robustez (AGENTS.md, scope contract), en comparación con usar la entrada sin tratar o sin pipeline?*
 
-El marco normativo de referencia es IREB (International Requirements Engineering Board), complementado con ISO/IEC/IEEE 29148 para criterios de calidad de requisitos y con INCOSE Guide for Writing Requirements para buenas prácticas de redacción. Las cuatro fases de la metodología se estructuran de la siguiente manera:
+El marco normativo de referencia es IREB, complementado con ISO/IEC/IEEE 29148 e INCOSE. Las fases de la metodología se estructuran así:
 
 | Fase | Propósito | Marco de referencia |
 |---|---|---|
-| Fase 1. Extracción de evidencia | Obtener requisitos del mundo real sobre los que aplicar el mapeo y la comparación | IREB Elicitación (fuentes documentales) |
-| Fase 2. Formalización | Producir requisitos con atributos y criterios de calidad normativos | IREB Documentación + ISO 29148 + INCOSE |
-| Fase 2.5. Derivación MRS | Transformar requisitos formalizados en prompts MRS replicables para SpecKit | IREB Elicitación (problem framing) + ISO 29148 |
-| Fase 3. Ejecución comparativa | Ejecutar cada caso con dos flujos: A (sin marco IREB) y B (con marco IREB) | SpecKit SDD |
-| Fase 4. Análisis del mapeo y comparación | Contrastar el flujo observado de SpecKit con el normativo (mapa de alineación) y comparar los resultados de ambos flujos (evaluación) | IREB + ISO 29148 + INCOSE + rúbrica SRCI |
+| Fase 1. Extracción de evidencia | Obtener requisitos del mundo real | IREB Elicitación |
+| Fase 2. Formalización | Producir requisitos con atributos normativos | IREB Documentación + ISO 29148 |
+| Fase 2.5. Derivación MRS | Transformar requisitos en prompts replicables | IREB Elicitación (problem framing) |
+| Fase 3. Ejecución comparativa | Ejecutar 4 flujos (C0–C3) sobre 6 casos | SpecKit SDD + opencode |
+| Fase 4. Evaluación | Doble metodología: automática (linters) + manual (SRCI v3) | IREB + ISO 29148 + ISO 25010 |
+
+### Diseño experimental: 4 condiciones (C0–C3)
+
+| Flujo | Pipeline | Entrada | Pasos |
+|---|---|---|---|
+| **C0** — SpecKit vanilla | `pipeline-c0.sh` | Changelog literal | 4 (specify → plan → tasks → implement) |
+| **C1** — IREB v1 | `pipeline-c1.sh` | REQ formalizado (12 attr.) + constitución IREB | 9 (sin AGENTS.md ni scope contract) |
+| **C2** — IREB v2 | `pipeline-c2.sh` | REQ + constitución + AGENTS.md + scope contract | 10 |
+| **C3** — Vibe Coding | `pipeline-c3.sh` | MRS (3–5 líneas, sin SpecKit) | 1 |
+
+### Evaluación en dos fases
+
+**Fase 4a — Automática**: semgrep, eslint, phpcs, shellcheck, pyflakes, cloc sobre los 24 artefactos generados.
+
+**Fase 4b — Manual**: rúbrica SRCI v3 con 5 bloques (A: Preservación 25%, B: Conformidad 20%, C: Verificación 12%, D: Trazabilidad, E: TSR 43%).
+
+### Resultados clave
+
+| Métrica | C0 | C1 | C2 | C3 |
+|---|---|---|---|---|
+| SRCI (/10) | 6.3 | 6.8 | **7.2** | 2.8 |
+| TSR | 92% | **100%** | **100%** | 17% |
+| Tests | 1/6 | 3/6 | **6/6** | 0/6 |
+| Coste | $0.041 | $0.061 | $0.070 | **$0.012** |
+
+**Conclusión**: cada incremento en madurez metodológica añade valor medible. C3 → C0 (+3.5 puntos) demuestra que el pipeline mínimo es necesario. C0 → C1 (+0.5) muestra el valor de la formalización IREB. C1 → C2 (+0.4) muestra el valor de la robustez (AGENTS.md + scope contract).
 
 Se optó por IREB como norma principal frente a IEEE 830 porque IREB proporciona un marco más abstracto y adaptable, mientras que IEEE 830 prescribe una plantilla de especificación concreta que presupone un proceso de elicitación deliberado con stakeholders. ISO 29148 e INCOSE se incorporan como complementos para criterios de calidad de requisitos y buenas prácticas de redacción, respectivamente.
 

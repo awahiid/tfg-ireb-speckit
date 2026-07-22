@@ -25,16 +25,26 @@ src/
 │   ├── generate_mrs.py             ← Script de generación automatizada
 │   └── mrs-prompts.md              ← Salida: 52 MRS generados
 │
-├── 3-implementacion/               ← FASE 3: Pipeline SpecKit
+├── 3-implementacion/               ← FASE 3: Pipeline SpecKit (4 flujos)
 │   ├── scripts/                    ← Automatización del pipeline
-│   │   ├── preparar-caso.sh        ← Prepara un caso (clone + checkout)
-│   │   ├── capturar-resultado.sh   ← Captura diff post-SpecKit
-│   │   └── preparar-lote.sh        ← Prepara todos los casos de un repo
-│   ├── repos/                      ← Git clones (auto-generado)
-│   └── resultados/                 ← Snapshots de implementación
+│   │   ├── lib.sh                  ← Funciones compartidas
+│   │   ├── pipeline-c0.sh          ← C0: SpecKit vanilla (4 pasos)
+│   │   ├── pipeline-c1.sh          ← C1: SpecKit + IREB v1 (9 pasos)
+│   │   ├── pipeline-c2.sh          ← C2: SpecKit + IREB v2 (10 pasos)
+│   │   ├── pipeline-c3.sh          ← C3: MRS directo (1 paso)
+│   │   └── capturar-metricas.sh    ← Extrae tokens/coste
+│   ├── ireb-kit-v1/                ← Plantillas IREB v1
+│   ├── ireb-kit-v2/                ← Plantillas IREB v2 + AGENTS.md
+│   ├── .bare/                      ← Bare repos para worktrees
+│   ├── resultados/                 ← Snapshots C0-C3
+│   ├── .env                        ← Configuración (modelo, API key)
+│   └── reqs.json                   ← Registro de casos
 │
-├── 4-evaluacion/                   ← FASE 4: Evaluación SRCI
-│   └── (pendiente de completar)
+├── 4-evaluacion/                   ← FASE 4: Evaluación en dos fases
+│   ├── rubrica-evaluacion.md       ← Rúbrica SRCI v3 (5 bloques)
+│   ├── scripts/
+│   │   └── analisis-automatico/    ← aauto.py, atodo.py, linters
+│   └── evaluaciones/               ← Informes C0-C3
 │
 └── _original/                      ← Archivos originales sin modificar
     ├── scripts/pr-bundle/          ← Script de extracción de PRs
