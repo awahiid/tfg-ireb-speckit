@@ -1,0 +1,251 @@
+{
+  "_comment": "Registro de casos experimentales.",
+  "appwrite": {
+    "reqs": {
+      "11312": {
+        "summary": "Add mongo adapter",
+        "pre_pr": "aa7dfd0bd15a~1"
+      },
+      "11465": {
+        "summary": "perf: optimize updateDocument() calls to use sparse documents",
+        "pre_pr": "0d3d14d9e139~1"
+      },
+      "11174": {
+        "summary": "Add string types",
+        "pre_pr": "6ccc8b9261fe~1"
+      },
+      "10832": {
+        "summary": "cached documents list",
+        "pre_pr": "8368a28ff5de~1"
+      },
+      "11033": {
+        "summary": "add functionsEvents and webhooksEvents",
+        "pre_pr": "8124b07860e3~1"
+      },
+      "11533": {
+        "summary": "Add impersonation feature for user management",
+        "pre_pr": "875637bf35e8~1"
+      },
+      "11202": {
+        "summary": "Added query per subscription and queryKeys along with the messages",
+        "pre_pr": "952f209a448a~1"
+      },
+      "11009": {
+        "summary": "feat: allow custom jwt duration",
+        "pre_pr": "4df8157d746e~1"
+      },
+      "10986": {
+        "summary": "fix: allow linking identities with verified emails",
+        "pre_pr": "d9ac4f2f2dbd~1"
+      },
+      "11135": {
+        "summary": "Feat: Add more file params",
+        "pre_pr": "b73abf69d06f~1"
+      }
+    }
+  },
+  "authentik": {
+    "reqs": {
+      "10110": {
+        "summary": "admin: system api: fix FIPS status schema",
+        "pre_pr": "c0521762bc96~1"
+      },
+      "21803": {
+        "summary": "providers/oauth2: device code flow client id via auth header (cherry-pick #20457 to version-2025.12)",
+        "pre_pr": "ad02dc6b9242~1"
+      },
+      "10124": {
+        "summary": "policies/reputation: fix existing reputation update",
+        "pre_pr": "49e7c5b8734b~1"
+      },
+      "20712": {
+        "summary": "web/flows: continuous login (cherry-pick #19862 to version-2026.2)",
+        "pre_pr": "de4afc732200~1"
+      },
+      "20744": {
+        "summary": "lifecycle: make gunicorn --max-requests configurable (cherry-pick #20736 to version-2026.2)",
+        "pre_pr": "093e60c75355~1"
+      },
+      "22413": {
+        "summary": "enterprise/stages/mtls: freeze time for expired certs (cherry-pick #22411 to version-2025.12)",
+        "pre_pr": "176ebe81cc36~1"
+      },
+      "22503": {
+        "summary": "outposts: fix stale version in OutpostState (cherry-pick #22487 to version-2025.12)",
+        "pre_pr": "64ba2c8b83ac~1"
+      },
+      "20513": {
+        "summary": "endpoints: fix infinite recursion in stage with unsupported connector (cherry-pick #20485 to version",
+        "pre_pr": "832c84a2264a~1"
+      },
+      "20692": {
+        "summary": "providers/proxy: move search path to query instead of runtime parameter (cherry-pick #20662 to versi",
+        "pre_pr": "3625a8fa855e~1"
+      },
+      "21749": {
+        "summary": "providers/oauth2: don't auto-set redirect_uri (cherry-pick #21746 to version-2025.12)",
+        "pre_pr": "8b8ad4d7e15a~1"
+      }
+    }
+  },
+  "calcom": {
+    "reqs": {
+      "26812": {
+        "summary": "fix(api): use cal.com for bookingUrl in platform organizations",
+        "pre_pr": "821dce6a040f~1"
+      },
+      "25640": {
+        "summary": "feat: auto skip consent screen for trusted oauth clients",
+        "pre_pr": "5fe3714edd34~1"
+      },
+      "26826": {
+        "summary": "fix(api): return empty bookingUrl for managed users in API v2",
+        "pre_pr": "c0017114efae~1"
+      },
+      "26801": {
+        "summary": "feat: add scope configuration for feature opt-in",
+        "pre_pr": "4b99072bcc01~1"
+      },
+      "26737": {
+        "summary": "feat: added the API v2 Imports section to your AGENTS.md",
+        "pre_pr": "ec87eee90019~1"
+      },
+      "26598": {
+        "summary": "fix(auth): block OAuth linking for unverified accounts",
+        "pre_pr": "51639e38d73b~1"
+      },
+      "25039": {
+        "summary": "feat: system admin blocklist table",
+        "pre_pr": "0330d14210f2~1"
+      },
+      "26286": {
+        "summary": "fix: validate owner email on platform org creation",
+        "pre_pr": "01be9f1ef230~1"
+      },
+      "26428": {
+        "summary": "fix(auth): enhance SAML login handling by introducing userId field and updating JWT token structure",
+        "pre_pr": "897c9d65f045~1"
+      },
+      "24889": {
+        "summary": "feat: queue or cancel payment reminder flow",
+        "pre_pr": "87cf3210dc9e~1"
+      }
+    }
+  },
+  "directus": {
+    "reqs": {
+      "26976": {
+        "summary": "Add keyboard navigation to the cards layout",
+        "pre_pr": "b49f3fc7be7b~1"
+      },
+      "26638": {
+        "summary": "Add activity logging for explicit user logout",
+        "pre_pr": "e95d6df6f7ee~1"
+      },
+      "26836": {
+        "summary": "Add Tabs group interface",
+        "pre_pr": "c5d64ad902ef~1"
+      },
+      "26886": {
+        "summary": "Add bulk folder deletion from the files grid",
+        "pre_pr": "a3d0f3cf01c0~1"
+      },
+      "26965": {
+        "summary": "Use shorter tooltip delay for disabled elements",
+        "pre_pr": "3cc766a85200~1"
+      },
+      "26772": {
+        "summary": "Implement global draft version and version support for visual editing",
+        "pre_pr": "3ee3f5ac42af~1"
+      },
+      "26669": {
+        "summary": "Fix translation interface disable logic",
+        "pre_pr": "65377415645a~1"
+      },
+      "26668": {
+        "summary": "Fix item comparison failing when special characters are present in manual primary keys",
+        "pre_pr": "a70222b2c57d~1"
+      },
+      "26676": {
+        "summary": "Fix non-editable state for relational fields with custom permissions",
+        "pre_pr": "0d5cfd6b7c4d~1"
+      },
+      "26646": {
+        "summary": "Add MIME type restriction to system upload interface",
+        "pre_pr": "9e600c00d45a~1"
+      }
+    }
+  },
+  "medusa": {
+    "reqs": {
+      "15396": {
+        "summary": "feat(core-flows,medusa,types): surface skipped promo codes due to budget/promotion limits",
+        "pre_pr": "d0f4df0c6307~1"
+      },
+      "15441": {
+        "summary": "feat(js-sdk): add MFA auth helpers",
+        "pre_pr": "139d5f9d636d~1"
+      },
+      "15264": {
+        "summary": "fix(core-flows): harden create payment sessions when customer has no account holders",
+        "pre_pr": "22fa3e373aa5~1"
+      },
+      "15386": {
+        "summary": "feat(medusa): enable index when querying products via promotion attribute values and enable sku sear",
+        "pre_pr": "5e8fc904fe00~1"
+      },
+      "13930": {
+        "summary": "feat(product): add SKU search support to admin API",
+        "pre_pr": "5a7b01423674~1"
+      },
+      "15169": {
+        "summary": "feat(medusa,js-sdk,types): add POST /admin/payment-collections/:id/payment-sessions",
+        "pre_pr": "aa407641ce6d~1"
+      }
+    }
+  },
+  "n8n": {
+    "reqs": {
+      "31253": {
+        "summary": "fix(core): Align /credentials/for-workflow response with its frontend type",
+        "pre_pr": "1c3901576bb4~1"
+      },
+      "31212": {
+        "summary": "fix(Stripe Trigger Node): Use stored webhook secret for request verification",
+        "pre_pr": "9e41d03b292b~1"
+      },
+      "31349": {
+        "summary": "fix(editor, core): Enhance source control endpoint access control",
+        "pre_pr": "068547b500a6~1"
+      },
+      "31507": {
+        "summary": "fix(editor): Hide private credential connect controls without update permission",
+        "pre_pr": "13ee461f7639~1"
+      },
+      "30375": {
+        "summary": "fix(Email Trigger (IMAP) Node): Fix emails marked as read without triggering workflow",
+        "pre_pr": "3d45fe626f8b~1"
+      },
+      "31371": {
+        "summary": "fix(MongoDB Node): Validate update key value type",
+        "pre_pr": "439d2601815a~1"
+      },
+      "31374": {
+        "summary": "fix: Only allow specified AWS regions",
+        "pre_pr": "e3c14a47205e~1"
+      },
+      "30528": {
+        "summary": "fix(Postgres Node): Return empty array for SELECTs that match no rows",
+        "pre_pr": "4df05683cc21~1"
+      },
+      "30809": {
+        "summary": "fix(Salesforce Trigger Node): Stop Created triggers refiring on record updates",
+        "pre_pr": "6151660e1771~1"
+      },
+      "31071": {
+        "summary": "fix(Send Email Node): Allow non-inline file attachments",
+        "pre_pr": "c1856aff8d97~1"
+      }
+    }
+  }
+}

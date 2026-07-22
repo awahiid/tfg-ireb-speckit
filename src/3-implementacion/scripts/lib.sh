@@ -28,6 +28,13 @@ init_pipeline() {
     API_BASE="${OPENAI_API_BASE:-}"
     TIMEOUT="${PIPELINE_TIMEOUT:-300}"
     info "Modelo: $MODEL  |  Timeout: ${TIMEOUT}s"
+    # Limpiar referencias a worktrees huérfanos (de ejecuciones anteriores
+    # que pudieron fallar antes del trap EXIT)
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    for bare in "$script_dir"/../.bare/*.git; do
+        [[ -d "$bare" ]] && git -C "$bare" worktree prune 2>/dev/null || true
+    done
     [[ -n "$API_BASE" ]] && info "API base: $API_BASE"
 }
 
@@ -42,9 +49,24 @@ init_output_dir() {
              "$ts_dir/trace" \
              "$ts_dir/metrics"
     # Copiar auth al entorno aislado
-    local auth_src="$HOME/.local/share/opencode/auth.json"
-    local auth_dst="$ts_dir/env/.local/share/opencode/auth.json"
-    [[ -f "$auth_src" ]] && cp "$auth_src" "$auth_dst"
+    local auth_dir="$ts_dir/env/.local/share/opencode"
+    local auth_file="$auth_dir/auth.json"
+    if [[ -n "${OPENCODE_API_KEY:-}" ]]; then
+        # Opción 1: key vía env var
+        mkdir -p "$auth_dir"
+        cat > "$auth_file" << EOF
+{
+  "deepseek": {
+    "type": "api",
+    "key": "$OPENCODE_API_KEY"
+  }
+}
+EOF
+    else
+        # Opción 2: copiar desde ~/.local/share/opencode/auth.json
+        local auth_src="$HOME/.local/share/opencode/auth.json"
+        [[ -f "$auth_src" ]] && cp "$auth_src" "$auth_file"
+    fi
     echo "$ts_dir"
 }
 
@@ -60,7 +82,7 @@ oc_create_worktree() {
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     local bare="$script_dir/../.bare/${repo}.git"
 
-    [[ -z "$dest" ]] && dest="$script_dir/../repos/${repo}-worktree"
+    [[ -z "$dest" ]] && dest="$script_dir/../.bare/${repo}-worktree"
     mkdir -p "$(dirname "$dest")"
 
     # Redirect git output to stderr so it doesn't contaminate the returned path
@@ -110,8 +132,22 @@ oc_run() {
     fi
     local oc="$OPENCODE_BIN"
 
-    # Montar prompt completo anotado con el paso
-    local full_prompt="[step $step_id]
+    # Montar prompt completo anotado con el paso + directriz anti-gates
+    local preamble="## AUTOMATED PIPELINE — RULES
+
+You are running in an automated pipeline. Strictly follow these rules:
+
+1. **Never ask questions.** Never prompt the user for input, confirmation, or decisions.
+2. **Never stop for gates.** If a checklist is incomplete, proceed anyway. If something is ambiguous, make a reasonable choice and continue.
+3. **Always produce output.** Generate the best possible result with the information available.
+4. **No interactive prompts.** Do not write \"(yes/no)\" or wait for answers. Assume affirmative answer to any question.
+5. **Execute and produce.** Your job is to execute the step and produce artifacts. Do not stall.
+
+FAILURE MODE: If you ask a question, the pipeline will hang until timeout and fail.
+"
+    local full_prompt="$preamble
+
+[step $step_id]
 $context
 
 === INSTRUCCIÓN ACTUAL ===
@@ -387,7 +423,7 @@ print(f'  Tokens: {s[\"tokens\"]:,}  |  Coste: \${s[\"cost_usd\"]}')
 import json
 s=json.load(open('$out_dir/summary.json'))
 s['files_created']=$diff_files
-s['diff_lines']=$(wc -l < '$out_dir/diff.patch')
+s['diff_lines']=$(wc -l < $out_dir/diff.patch)
 json.dump(s,open('$out_dir/summary.json','w'),indent=2)
 " 2>/dev/null || true
         fi
@@ -417,6 +453,25 @@ fi)
 EOF
 }
 
+# ── Sanitizar auth.json (eliminar credenciales) ──
+#   Se llama al final de cada pipeline. Sustituye todo el contenido del
+#   auth.json por un placeholder, eliminando cualquier key/c secreta
+#   independientemente del proveedor o formato.
+oc_sanitize_auth() {
+    local out_dir="$1"
+    local auth_file="$out_dir/env/.local/share/opencode/auth.json"
+    if [[ -f "$auth_file" ]]; then
+        cat > "$auth_file" << 'EOF'
+{
+  "SANITIZADO": "La key real se elimina al finalizar cada pipeline para no persistir credenciales en los resultados"
+}
+EOF
+    fi
+    # También sanitizar logs que pudieran contener trazas de la key
+    local log_file="$out_dir/env/.local/share/opencode/log/opencode.log"
+    [[ -f "$log_file" ]] && : > "$log_file" 2>/dev/null || true
+}
+
 # ── Capturar métricas (tokens/coste) ──
 oc_capture_metrics() {
     local out_dir="$1"
@@ -442,4 +497,45 @@ oc_capture_metrics() {
             "$OPENCODE_BIN" export "$sid" > "$out_dir/trace/transcript.json" 2>/dev/null || true
         done
     fi
+}
+
+# ── Guardar generated/ (todos los archivos generados) ──
+#   Copia archivos modificados + nuevos (untracked) del worktree a
+#   $OUTPUT_DIR/generated/ antes de que se elimine el worktree.
+#   Uso: oc_save_generated <repo-dir> <output-dir>
+oc_save_generated() {
+    local repo_dir="$1"
+    local out_dir="$2"
+    local gen_dir="$out_dir/generated"
+    local count=0
+
+    [[ ! -d "$repo_dir" ]] && { warn "Worktree no encontrado: $repo_dir"; return 1; }
+
+    rm -rf "$gen_dir"
+    mkdir -p "$gen_dir"
+
+    cd "$repo_dir"
+
+    # Archivos modificados (tracked)
+    while IFS= read -r f; do
+        [[ -z "$f" ]] && continue
+        mkdir -p "$gen_dir/$(dirname "$f")"
+        cp "$repo_dir/$f" "$gen_dir/$f" 2>/dev/null && count=$((count + 1))
+    done < <(git diff --name-only 2>/dev/null || true)
+
+    # Archivos nuevos (untracked)
+    while IFS= read -r f; do
+        [[ -z "$f" ]] && continue
+        mkdir -p "$gen_dir/$(dirname "$f")"
+        cp "$repo_dir/$f" "$gen_dir/$f" 2>/dev/null && count=$((count + 1))
+    done < <(git ls-files --others --exclude-standard 2>/dev/null || true)
+
+    cd - >/dev/null
+
+    # También input y summary
+    cp "$out_dir"/00-input-* "$gen_dir/input.md" 2>/dev/null || true
+    cp "$out_dir/summary.json" "$gen_dir/summary.json" 2>/dev/null || true
+    cp "$out_dir/diff.patch" "$gen_dir/diff.patch" 2>/dev/null || true
+
+    info "✅ generated/ — $count archivos guardados"
 }

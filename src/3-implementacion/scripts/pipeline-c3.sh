@@ -14,20 +14,19 @@ source "$SCRIPT_DIR/lib.sh"
 
 REPO_NAME="$1"
 REQ_ID="$2"
-CASES_FILE="$SCRIPT_DIR/../casos.json"
+REQS_FILE="$SCRIPT_DIR/../reqs.json"
 
-# ── Leer casos.json ──
+# ── Leer caso ──
 CASE_DATA=$(python3 -c "
 import json
-with open('$CASES_FILE') as f:
-    d = json.load(f)
-paths = d['_paths']
-case = d['$REPO_NAME']['reqs']['$REQ_ID']
-print(f\"{case['pre_pr']}|{case['summary']}|{paths['repos']}|{paths['prompts']}\")
+with open('$REQS_FILE') as f:
+    reqs = json.load(f)
+case = reqs['$REPO_NAME']['reqs']['$REQ_ID']
+print(f"{case['pre_pr']}|{case['summary']}")
 ")
-IFS='|' read -r PRE_PR SUMMARY REPOS_BASE PROMPTS_BASE <<< "$CASE_DATA"
+IFS='|' read -r PRE_PR SUMMARY <<< "$CASE_DATA"
+PROMPTS_BASE="${PIPELINE_PROMPTS_DIR:-../../2.5-prompts}"
 
-REPO_DIR="$SCRIPT_DIR/../$REPOS_BASE/$REPO_NAME"
 CASE_ID="${REPO_NAME}-${REQ_ID}"
 OUTPUT_DIR="$SCRIPT_DIR/../resultados/C3/$CASE_ID"
 OUTPUT_DIR=$(init_output_dir "$OUTPUT_DIR")
@@ -46,6 +45,7 @@ init_pipeline
 
 # Crear worktree aislado
 WORKTREE=$(oc_create_worktree "$REPO_NAME" "$PRE_PR" "$OUTPUT_DIR/repo")
+trap "oc_remove_worktree '$WORKTREE'" EXIT
 REPO_DIR="$WORKTREE"
 START_TIME=$(date +%s)
 
@@ -78,10 +78,12 @@ oc_run "01-output" "$MRS_PROMPT" "" "$OUTPUT_DIR" "$REPO_DIR" || {
 step "Diff"
 oc_capture_diff "$REPO_DIR" "$OUTPUT_DIR" || true
 oc_capture_metrics "$OUTPUT_DIR"
+oc_save_generated "$REPO_DIR" "$OUTPUT_DIR"
 
 END_TIME=$(date +%s)
 ELAPSED=$((END_TIME - START_TIME))
 oc_summary "$OUTPUT_DIR" "$CASE_ID" "C3 (Vibe Coding)" "$MODEL" "$ELAPSED" 0
+oc_sanitize_auth "$OUTPUT_DIR"
 
 echo ""
 echo "=============================================="

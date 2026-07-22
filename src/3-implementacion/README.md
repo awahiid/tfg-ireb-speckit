@@ -15,8 +15,9 @@ open-source y pide a un agente (opencode + DeepSeek) que lo implemente.
 | **C2** | `pipeline-c2.sh` | SpecKit + IREB v2 | Igual que C1 + contrato de alcance anti-scope-creep (10 pasos) |
 | **C3** | `pipeline-c3.sh` | MRS directo | Sin SpecKit. Se pasa el MRS (especificación en lenguaje natural) directamente |
 
-Los prompts se leen de `casos.json` y los ficheros generados en fases anteriores
-(`2.5-prompts/` para MRS, `2-requisitos/` para los requisitos IREB).
+Los casos experimentales se definen en `reqs.json` y la configuración (rutas,
+credenciales) en `.env`. Los ficheros generados en fases anteriores se leen de
+`2.5-prompts/` (MRS) y `2-requisitos/` (requisitos IREB).
 
 ## Estructura del proyecto
 
@@ -31,14 +32,15 @@ src/3-implementacion/
 │   └── capturar-metricas.sh  ← Extrae tokens/coste de opencode
 ├── ireb-kit-v1/              ← Plantillas y constitución IREB v1
 ├── ireb-kit-v2/              ← Plantillas y constitución IREB v2
-├── repos/                    ← Repositorios clonados de proyectos open-source
+├── .bare/                    ← Bare repos (Git puro) para crear worktrees
 ├── resultados/               ← Resultados de ejecución (ver abajo)
-└── casos.json                ← Registro de casos (repo, commit pre-PR, resumen)
+├── .env                      ← Configuración (modelo, API key, rutas)
+└── reqs.json                 ← Registro de casos (repo, commit pre-PR, resumen)
 ```
 
-## Registro de casos (`casos.json`)
+## Registro de casos (`reqs.json`)
 
-Cada caso experimental se define en `casos.json` con la estructura:
+Los casos experimentales se definen en `reqs.json`:
 
 ```json
 {
@@ -58,10 +60,16 @@ Cada caso experimental se define en `casos.json` con la estructura:
 - **`summary`**: texto descriptivo que se usa como changelog en C0
 - **`pre_pr`**: commit padre del merge (punto de partida limpio para el pipeline)
 
+Las rutas a ficheros externos se definen en `.env`:
+
+```bash
+PIPELINE_PROMPTS_DIR=../../2.5-prompts
+PIPELINE_REQUISITOS_DIR=../../2-requisitos
+```
+
 Los pipelines resuelven automáticamente:
-- Ruta al repo: `repos/<repo>/`
-- Ruta al MRS: `2.5-prompts/<repo>/REQ-<REPO>-<ID>.md`
-- Ruta al requisito IREB: `2-requisitos/<repo>/REQ-<REPO>-<ID>.md`
+- Ruta al MRS: `$PIPELINE_PROMPTS_DIR/<repo>/REQ-<REPO>-<ID>.md`
+- Ruta al requisito IREB: `$PIPELINE_REQUISITOS_DIR/<repo>/REQ-<REPO>-<ID>.md`
 
 ## Aislamiento: `env/`
 
@@ -91,7 +99,7 @@ Ventajas del aislamiento:
 ## Uso
 
 Cada pipeline acepta dos argumentos: repo e ID de requisito.
-Los pipelines buscan el resto en `casos.json` y resetean el repo automáticamente.
+Los pipelines leen `.env` (rutas, credenciales) y `reqs.json` (casos), y resetean el repo automáticamente desde el `pre_pr`.
 
 ### Ejecución individual
 

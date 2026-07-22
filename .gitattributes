@@ -1,0 +1,50 @@
+# =============================================================================
+# .gitattributes — Exclusiones a nivel Git: diffs, merges, estadísticas
+# =============================================================================
+# Objetivo: reducir el ruido en diffs y evitar que GitHub Linguist
+# contabilice archivos generados/datos como código fuente.
+
+# ── Datos crudos de PR (56 JSON, ~11.5k líneas, irrelevantes en diffs) ─────
+src/1-evidencia/datos-pr/*.json linguist-generated=true -diff -merge
+
+# ── Texto crudo de apuntes CPRE (359 KB, sin valor diferencial) ────────────
+docs/cpre/cpre.txt linguist-generated=true -diff
+
+# ── Archivos originales / archivados (no son código activo) ────────────────
+src/_original/** linguist-generated=true -diff
+src/0-analisis/_archive/** linguist-generated=true -diff
+src/3-implementacion/scripts/_archive/** linguist-generated=true -diff
+
+# ── Lock files (dependencias, no lógica de proyecto) ───────────────────────
+**/package-lock.json linguist-generated=true -diff
+**/yarn.lock linguist-generated=true -diff
+**/pnpm-lock.yaml linguist-generated=true -diff
+**/poetry.lock linguist-generated=true -diff
+**/composer.lock linguist-generated=true -diff
+**/Gemfile.lock linguist-generated=true -diff
+
+# ── Artefactos LaTeX (generados, no fuente) ────────────────────────────────
+docs/**/*.aux linguist-generated=true -diff
+docs/**/*.bbl linguist-generated=true -diff
+docs/**/*.blg linguist-generated=true -diff
+docs/**/*.bcf linguist-generated=true -diff
+docs/**/*.fls linguist-generated=true -diff
+docs/**/*.fdb_latexmk linguist-generated=true -diff
+docs/**/*.lof linguist-generated=true -diff
+docs/**/*.log linguist-generated=true -diff
+docs/**/*.lot linguist-generated=true -diff
+docs/**/*.out linguist-generated=true -diff
+docs/**/*.run.xml linguist-generated=true -diff
+docs/**/*.toc linguist-generated=true -diff
+docs/**/*.synctex* linguist-generated=true -diff
+docs/**/*.mtc* linguist-generated=true -diff
+docs/**/*.maf linguist-generated=true -diff
+docs/**/*.xdv linguist-generated=true -diff
+docs/**/*.dvi linguist-generated=true -diff
+docs/**/_minted-main/** linguist-generated=true -diff
+
+# ── PDFs (binarios) ────────────────────────────────────────────────────────
+docs/**/*.pdf linguist-generated=true -diff
+
+# ── Resultados de implementación (reproducibles) ───────────────────────────
+src/3-implementacion/resultados/** linguist-generated=true -diff

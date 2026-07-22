@@ -1,0 +1,6 @@
+# Entorno Python para analisis-automatico
+# Instalar: bash setup.sh
+# Activar: source .venv/bin/activate
+
+semgrep>=1.0.0        # Analisis estatico multilenguaje (30+ lenguajes)
+pyflakes>=3.0.0       # Linter Python (bugs: vars sin definir, imports muertos)

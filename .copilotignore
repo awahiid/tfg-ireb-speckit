@@ -1,0 +1,89 @@
+# =============================================================================
+# .copilotignore — Excluye archivos del contexto de Copilot para ahorrar tokens
+# =============================================================================
+# Todo lo listado aquí NO se enviará como contexto a Copilot.
+# Reglas igual que .gitignore (glob patterns).
+
+# ── LaTeX: artefactos generados ─────────────────────────────────────────────
+docs/**/*.aux
+docs/**/*.bbl
+docs/**/*.bcf
+docs/**/*.blg
+docs/**/*.fdb_latexmk
+docs/**/*.fls
+docs/**/*.lof
+docs/**/*.log
+docs/**/*.lot
+docs/**/*.out
+docs/**/*.run.xml
+docs/**/*.toc
+docs/**/*.synctex*
+docs/**/*.mtc*
+docs/**/*.maf
+docs/**/_minted-main/
+docs/**/*.xdv
+docs/**/*.dvi
+
+# ── PDFs (binarios, no aportan contexto) ────────────────────────────────────
+docs/**/*.pdf
+
+# ── Dependencias ────────────────────────────────────────────────────────────
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# ── Repos clonados y resultados (grandes, irrelevantes para contexto) ───────
+src/3-implementacion/repos/
+src/3-implementacion/resultados/
+src/3-implementacion/.bare/
+
+# ── Datos crudos de PR (56 JSON, ~11.5k líneas, 4 MB en total) ──────────────
+src/1-evidencia/datos-pr/
+
+# ── Archivos originales / archivados (históricos, no código activo) ─────────
+src/_original/
+src/0-analisis/_archive/
+src/3-implementacion/scripts/_archive/
+
+# ── Volcado textual CPRE (359 KB, 8015 líneas) ──────────────────────────────
+docs/cpre/cpre.txt
+
+# ── Archivos comprimidos ────────────────────────────────────────────────────
+*.zip
+*.tar.gz
+*.tar
+*.7z
+
+# ── Assets binarios ─────────────────────────────────────────────────────────
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.woff
+*.woff2
+*.ttf
+*.eot
+
+# ── Lock files (ruido, no lógica) ───────────────────────────────────────────
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+composer.lock
+Gemfile.lock
+poetry.lock
+
+# ── Configuración local ─────────────────────────────────────────────────────
+.env
+.env.local
+.megaignore
+
+# ── Backups y temporales ────────────────────────────────────────────────────
+*~
+*.bak
+*.swp
+*.swo
