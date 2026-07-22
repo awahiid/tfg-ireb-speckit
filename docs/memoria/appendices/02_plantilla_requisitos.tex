@@ -1,0 +1,96 @@
+\chapter{Plantilla de formalizaci\'on de requisitos}
+\label{anexo:plantilla}
+
+Este anexo presenta la plantilla utilizada en la Fase~2 para formalizar los requisitos del corpus. La plantilla define 12 atributos basados en IREB CPRE Foundation Level, ISO/IEC/IEEE~29148 e INCOSE Guide for Writing Requirements.
+
+\section{Atributos de la plantilla}
+
+\begin{table}[h]
+\centering
+\caption{Los 12 atributos de la plantilla de formalizaci\'on}
+\label{tab:plantilla-anexo}
+\begin{tabular}{lp{3cm}p{7cm}}
+\toprule
+\textbf{Atributo} & \textbf{Valores} & \textbf{Descripci\'on} \\
+\midrule
+\textbf{ID} & \texttt{REQ-[DOM]-[N]} & Identificador \'unico e inmutable. Formato: \texttt{REQ-}\emph{dominio}\texttt{-}\emph{n\'umero}. \\
+\textbf{Nombre} & 2--8 palabras & T\'itulo breve sin detalles de implementaci\'on. \\
+\textbf{Tipo} & Funcional / Calidad / Restricci\'on & Clasificaci\'on seg\'un la naturaleza del requisito. \\
+\textbf{Descripci\'on formal} & ``El sistema deber\'a\dots'' & Enunciado con verbo observable, una \'unica obligaci\'on y condiciones cuantificables. \\
+\textbf{Fuente} & URL + versi\'on + PR/commit & Origen documentado con trazabilidad verificable. \\
+\textbf{Rationale} & Texto libre & Justificaci\'on de la necesidad: ¿por qu\'e existe este requisito? \\
+\textbf{Prioridad} & Alta / Media / Baja & Importancia relativa para el negocio. \\
+\textbf{Verificaci\'on} & Criterio observable & M\'etodo objetivo para comprobar el cumplimiento (prueba, an\'alisis, inspecci\'on o demostraci\'on). \\
+\textbf{Estado} & Borrador / Elaborado / Validado / Implementado / Archivado & Situaci\'on en el ciclo de vida del requisito. \\
+\textbf{Versi\'on} & \texttt{Mayor.Menor} & Control de revisiones. Se incrementa al modificar contenido aprobado. \\
+\textbf{Dependencias} & Lista de IDs \texttt{REQ-*} & Requisitos de los que depende funcionalmente. Vac\'io si no tiene. \\
+\textbf{M\'odulo} & Subsistema o componente & Agrupaci\'on funcional dentro del repositorio. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Plantilla resultante}
+
+Cada requisito formalizado en el corpus sigue esta estructura:
+
+\begin{quote}
+\begin{verbatim}
+ID:           REQ-XXX-NNN
+Nombre:       
+Tipo:         [Funcional | Calidad | Restricción]
+Descripción:  El sistema deberá ...
+Fuente:       
+Rationale:    
+Prioridad:    [Alta | Media | Baja]
+Verificación: 
+Estado:       [Borrador | Elaborado | Validado | Implementado | Archivado]
+Versión:      Mayor.Menor
+Dependencias: 
+Módulo:       
+\end{verbatim}
+\end{quote}
+
+\section{Reglas obligatorias para la descripci\'on formal}
+
+La descripci\'on formal debe cumplir ocho reglas, de las cuales tres son bloqueantes en el \emph{quality gate} de la Fase~2:
+
+\begin{enumerate}
+    \item Expresar una \'unica obligaci\'on.
+    \item Comenzar por la f\'ormula \textbf{``El sistema deber\'a\dots''} \hfill\textit{(bloqueante: R5)}
+    \item Contener un verbo observable y verificable \hfill\textit{(bloqueante: R7)}
+    \item Evitar t\'erminos subjetivos o ambiguos (\emph{r\'apido}, \emph{eficiente}, \emph{intuitivo}).
+    \item Incluir condiciones cuantificables cuando sea posible.
+    \item Poder verificarse mediante prueba, an\'alisis, inspecci\'on o demostraci\'on \hfill\textit{(bloqueante: R9)}
+    \item Ser comprensible sin necesidad de interpretar otros requisitos.
+    \item No describir detalles de implementaci\'on salvo que sea una restricci\'on expl\'icita.
+\end{enumerate}
+
+\section{Ejemplo de requisito formalizado}
+
+A continuaci\'on se muestra un requisito real del corpus, correspondiente a Cal.com:
+
+\begin{table}[h]
+\centering
+\caption{Ejemplo: REQ-CALCOM-26812 (Cal.com)}
+\label{tab:ejemplo-req}
+\begin{tabular}{lp{10cm}}
+\toprule
+\textbf{Atributo} & \textbf{Valor} \\
+\midrule
+ID & \texttt{REQ-CALCOM-26812} \\
+Nombre & Bloqueo de OAuth para cuentas no verificadas \\
+Tipo & Funcional \\
+Descripci\'on formal & El sistema deber\'a impedir la vinculaci\'on de cuentas OAuth para usuarios cuya direcci\'on de correo electr\'onico no haya sido verificada. \\
+Fuente & Release v6.0.10, PR \#26598 \\
+Rationale & Evitar la vinculaci\'on de identidades externas a cuentas cuya propiedad no ha sido validada. \\
+Prioridad & Alta \\
+Verificaci\'on & Intentar vincular una cuenta OAuth desde un usuario con correo no verificado y comprobar que la operaci\'on es rechazada. \\
+Estado & Validado \\
+Versi\'on & 1.0 \\
+Dependencias & \texttt{REQ-CALCOM-26801} \\
+M\'odulo & Auth / OAuth \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Este requisito obtuvo una puntuaci\'on de 12/12 en la r\'ubrica de formalizaci\'on descrita en el cap\'itulo~\ref{chap:metodologia} (Fase~2), superando los tres criterios bloqueantes (R5, R7, R9).

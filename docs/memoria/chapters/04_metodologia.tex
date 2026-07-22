@@ -3,11 +3,11 @@
 
 \section{Dise\~no general}
 
-El mapeo se estructura en cuatro fases, cada una vinculada a un marco normativo de referencia (v\'ease tabla~\ref{tab:fases}).
+El trabajo se estructura en cuatro fases principales m\'as una fase intermedia de derivaci\'on de MRS, cada una vinculada a un marco normativo de referencia. Se ejecutan 6 casos (uno por repositorio) en 4 flujos experimentales (C0--C3), produciendo 24 ejecuciones evaluadas con doble metodolog\'ia: an\'alisis autom\'atico de calidad de c\'odigo y r\'ubrica SRCI v3.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-\caption{Las cuatro fases de la metodolog\'ia}
+\caption{Fases de la metodolog\'ia}
 \label{tab:fases}
 \begin{tabularx}{\textwidth}{lXl}
 \toprule
@@ -15,114 +15,123 @@ El mapeo se estructura en cuatro fases, cada una vinculada a un marco normativo 
 \midrule
 Fase 1. Evidencia & Obtener requisitos del mundo real & IREB Elicitaci\'on \\
 Fase 2. Formalizaci\'on & Requisitos con atributos normativos & IREB + ISO 29148 + INCOSE \\
-Fase 3. Ejecuci\'on SpecKit & Observar el pipeline SDD & SpecKit SDD \\
-Fase 4. An\'alisis del mapeo & Contrastar flujo observado vs. normativo & IREB + ISO 29148 + INCOSE \\
+Fase 2.5. MRS & Derivar prompts replicables & IREB Elicitaci\'on \\
+Fase 3. Ejecuci\'on & Ejecutar 4 flujos sobre 6 casos & SpecKit SDD \\
+Fase 4. Evaluaci\'on & Doble metodolog\'ia: autom\'atica + SRCI & IREB + ISO 29148 + ISO 25010 \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \section{Fase 1: Extracci\'on de evidencia}
 
-La primera fase corresponde a la elicitaci\'on IREB. Se identifican cambios concretos en seis repositorios \emph{Open Source} representativos de distintos tipos de sistema (v\'ease tabla~\ref{tab:repos}).
+Se identifican cambios en seis repositorios \emph{Open Source} seleccionados para cubrir seis tipos de sistema software (tabla~\ref{tab:repos}). Glass y Vessey~\cite{glass1995taxonomy} establecieron que los problemas de desarrollo var\'ian sistem\'aticamente seg\'un el dominio de la aplicaci\'on, y que los estudios emp\'iricos deben controlar esta variable. Siguiendo ese criterio, cada repositorio representa un tipo distinto: Appwrite encarna el dominio transaccional, Medusa el financiero, Authentik el de identidad y seguridad, Cal.com el colaborativo, Directus el de datos y contenido, y n8n el de integraci\'on de servicios. Esta selecci\'on garantiza que los resultados no dependan de un \'unico tipo de sistema, sino que reflejen un espectro amplio de dominios, en l\'inea con la pr\'actica consolidada de estudiar repositorios \emph{Open Source} como fuente de evidencia emp\'irica~\cite{hassan2019msr}.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-\caption{Repositorios seleccionados}
+\caption{Repositorios seleccionados: tipo de sistema y justificaci\'on}
 \label{tab:repos}
-\begin{tabularx}{\textwidth}{lX}
+\begin{tabularx}{\textwidth}{lp{3.5cm}X}
 \toprule
-\textbf{Repositorio} & \textbf{Tipo de sistema} \\
+\textbf{Repositorio} & \textbf{Tipo de sistema} & \textbf{Justificaci\'on} \\
 \midrule
-Appwrite & Sistemas transaccionales (BaaS) \\
-Medusa & Sistemas financieros (e-commerce) \\
-Authentik & Identidad y seguridad \\
-Cal.com & Sistemas colaborativos \\
-Directus & Datos y contenido (headless CMS) \\
-n8n & Integraci\'on y composici\'on de servicios \\
+Appwrite & Transaccional (BaaS) & APIs REST transaccionales, patr\'on dominante en SaaS \\
+Medusa & Financiero (e-commerce) & Requisitos con integridad transaccional y flujos de pago \\
+Authentik & Identidad y seguridad & RBAC (\emph{Role-Based Access Control}), sesiones, flujos de autorizaci\'on multi-protocolo \\
+Cal.com & Colaborativo & Estado multiusuario, concurrencia, notificaciones \\
+Directus & Datos (headless CMS) & Esquemas din\'amicos, APIs autogeneradas \\
+n8n & Integraci\'on de servicios & Eventos, webhooks, orquestaci\'on de servicios \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Para la selecci\'on de cambios se define una r\'ubrica con cuatro dimensiones (v\'ease tabla~\ref{tab:rubrica-seleccion}). Se descart\'o una r\'ubrica basada en IEEE 830 porque su aplicaci\'on sobre \emph{changelogs} generaba un rechazo pr\'acticamente universal de entradas, incluso aquellas con alto valor de trazabilidad.
-
-\begin{table}[h]
-\centering
-\caption{R\'ubrica de selecci\'on de cambios (Fase 1)}
-\label{tab:rubrica-seleccion}
-\begin{tabularx}{\textwidth}{lX}
-\toprule
-\textbf{Dimensi\'on} & \textbf{Descripci\'on} \\
-\midrule
-Trazabilidad & La entrada referencia una PR o commit concreto con diff localizable \\
-Se\'nales estructurales & Menciona superficie t\'ecnica, condici\'on o actor relevante \\
-Utilidad para derivaci\'on & Describe comportamiento formalizable como requisito verificable \\
-Defendibilidad & La inclusi\'on puede justificarse con razonamiento expl\'icito \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-Se almacenan \'unicamente textos literales con trazabilidad m\'inima (versi\'on, URL, PR, commit, se\'nales expl\'icitas), sin redactar requisitos en esta fase. La conservaci\'on del texto literal separa la observaci\'on de la formalizaci\'on y mejora la auditabilidad, en l\'inea con la distinci\'on IREB entre elicitaci\'on y documentaci\'on.
+Para la selecci\'on de cambios individuales se aplica una r\'ubrica de cuatro dimensiones: trazabilidad (referencia a PR o commit con diff localizable), se\~nales estructurales (menciona superficie t\'ecnica o actor relevante), utilidad para derivaci\'on (comportamiento formalizable como requisito) y defendibilidad (inclusi\'on justificable). Se descart\'o una r\'ubrica IEEE 830 por generar rechazo casi universal sobre \emph{changelogs}. Se almacenan \'unicamente textos literales con trazabilidad m\'inima, sin redactar requisitos en esta fase.
 
 \section{Fase 2: Formalizaci\'on de requisitos}
 
-La evidencia se transforma en requisitos siguiendo una plantilla con 12 atributos basados en IREB, ISO 29148 e INCOSE: ID, Nombre, Tipo, Descripci\'on formal, Fuente, Rationale, Prioridad, Verificaci\'on, Estado, Versi\'on, Dependencias y M\'odulo.
+La evidencia se transforma en requisitos siguiendo una plantilla con 12 atributos IREB/ISO 29148 (v\'ease Anexo~\ref{anexo:plantilla}): ID, Nombre, Tipo, Descripci\'on formal, Fuente, Rationale, Prioridad, Verificaci\'on, Estado, Versi\'on, Dependencias y M\'odulo. La descripci\'on formal debe cumplir ocho reglas: obligaci\'on \'unica, f\'ormula ``El sistema deber\'a...'', verbo observable, sin t\'erminos subjetivos, condiciones cuantificables, verificable, autosuficiente y sin detalles de implementaci\'on.
 
-La descripci\'on formal debe cumplir ocho reglas obligatorias: expresar una \'unica obligaci\'on, comenzar por la f\'ormula ``El sistema deber\'a...'', contener un verbo observable, evitar t\'erminos subjetivos, incluir condiciones cuantificables, ser verificable, ser autosuficiente y no describir detalles de implementaci\'on.
+Cada requisito supera un \emph{quality gate} de 12 criterios en tres bloques: identificaci\'on (R1--R4c), redacci\'on (R5--R9) y completitud (R10), con tres criterios bloqueantes: R5 (estructura formal), R7 (verbo observable) y R9 (verificabilidad).
 
-Cada requisito debe superar un \emph{quality gate} de 12 criterios organizados en tres bloques (v\'ease Anexo~\ref{anexo:rubrica}):
+\section{Fase 2.5: Derivaci\'on de MRS}
 
-\begin{description}
-    \item[Bloque A. Identificaci\'on y gesti\'on (R1--R4c):] R1 (identificador \'unico), R2 (clasificaci\'on v\'alida), R3 (fuente trazable), R4 (prioridad asignada), R4b (dependencias documentadas), R4c (m\'odulo asignado).
-    \item[Bloque B. Redacci\'on y verificabilidad (R5--R9):] R5 (estructura formal ``El sistema deber\'a...''), R6 (obligaci\'on \'unica), R7 (verbo observable), R8 (ausencia de ambig\"uedad cr\'itica), R9 (verificabilidad observable).
-    \item[Bloque C. Completitud contextual (R10):] R10 (autosuficiencia del requisito).
-\end{description}
+Cada requisito formalizado se transforma en un \emph{Minimal Requirement Seed} (MRS): un prompt m\'inimo de 3--5 l\'ineas con estructura can\'onica ``Como [ROL], quiero que el sistema [COMPORTAMIENTO] [contexto], para [MOTIVACI\'ON]''. Un MRS debe cumplir tres propiedades: suficiencia, minimalidad y replicabilidad.
 
-Tres criterios son \textbf{bloqueantes}: R5 (estructura formal ausente), R7 (verbo no observable) y R9 (sin verificabilidad). Su incumplimiento provoca rechazo autom\'atico independientemente de la puntuaci\'on total.
+\section{Fase 3: Ejecuci\'on comparativa}
 
-\section{Fase 2.5: Derivaci\'on de MRS (Minimal Requirement Seeds)}
+Se definen cuatro condiciones experimentales (tabla~\ref{tab:flujos}), ejecutadas mediante scripts automatizados (\texttt{pipeline-*.sh}) que usan \texttt{opencode} + DeepSeek V4 Flash sobre entornos aislados (\texttt{env/} como \texttt{\$HOME} temporal).
 
-La Fase 2.5 introduce un paso intermedio entre la formalizaci\'on y la ejecuci\'on del pipeline. Su objetivo es transformar cada requisito formalizado IREB en un \emph{Minimal Requirement Seed} (MRS): un prompt m\'inimo y replicable que un usuario de \textsc{SpecKit} necesitar\'ia formular para que el agente derive de forma aut\'onoma el requisito formal equivalente.
-
-Un MRS debe satisfacer tres propiedades: \textbf{suficiencia} (contiene toda la informaci\'on necesaria para inferir los campos obligatorios de la plantilla), \textbf{minimalidad} (no sobredetermina la soluci\'on) y \textbf{replicabilidad} (dos agentes independientes producen requisitos equivalentes al leer el mismo MRS). La estructura can\'onica sigue el formato:
-
-\begin{quote}
-\textit{Como [ROL], quiero que el sistema [COMPORTAMIENTO OBSERVABLE] [contexto], para [MOTIVACI\'ON].}
-\end{quote}
-
-Se derivaron 52 MRS a partir de los 52 requisitos formalizados, utilizando un script asistido por LLM con reglas deterministas documentadas. Cada MRS conserva la trazabilidad hacia su \texttt{REQ-*.md} de origen mediante el ID.
-
-\section{Fase 3: Ejecuci\'on comparativa de SpecKit}
-
-La Fase 3 constituye el n\'ucleo experimental del trabajo. Para cada caso del corpus se ejecutan dos flujos paralelos sobre el mismo repositorio en el \emph{commit} inmediatamente anterior al cambio de referencia, cambiando \'unicamente el tratamiento del requisito de entrada:
-
-\subsection{Flow A (baseline) --- SpecKit sin marco IREB}
-
-Pipeline m\'inimo de 4 pasos: \texttt{/speckit.specify} (recibiendo el texto literal del \emph{changelog}) $\rightarrow$ \texttt{/speckit.plan} $\rightarrow$ \texttt{/speckit.tasks} $\rightarrow$ \texttt{/speckit.implement}. Sin \texttt{constitution} personalizado, sin \texttt{clarify}, sin \texttt{checklist}, sin \texttt{analyze}.
-
-\subsection{Flow B (IREB-enhanced) --- SpecKit con IREB Kit}
-
-Pipeline ampliado de 9 pasos: \texttt{/speckit.constitution} (con 9 principios IREB personalizados) $\rightarrow$ \texttt{/speckit.specify} (recibiendo el REQ formalizado con 12 atributos) $\rightarrow$ \texttt{/speckit.clarify} $\rightarrow$ \texttt{/speckit.checklist} $\rightarrow$ \texttt{/speckit.plan} $\rightarrow$ \texttt{/speckit.tasks} $\rightarrow$ \texttt{/speckit.analyze} (pre-implementaci\'on) $\rightarrow$ \texttt{/speckit.implement} $\rightarrow$ \texttt{/speckit.analyze} (post-implementaci\'on).
-
-Se desarrollaron dos versiones del IREB Kit:
+\begin{table}[htbp]
+\centering
+\caption{Las cuatro condiciones experimentales}
+\label{tab:flujos}
+\begin{tabularx}{\textwidth}{llXl}
+\toprule
+\textbf{Flujo} & \textbf{Script} & \textbf{Descripci\'on} & \textbf{Pasos} \\
+\midrule
+C0 & \texttt{pipeline-c0.sh} & \textsc{SpecKit} vanilla (\emph{baseline}) & 4 \\
+C1 & \texttt{pipeline-c1.sh} & \textsc{SpecKit} + IREB v1 & 9 \\
+C2 & \texttt{pipeline-c2.sh} & \textsc{SpecKit} + IREB v2 + \emph{scope contract} & 10 \\
+C3 & \texttt{pipeline-c3.sh} & MRS directo, sin \textsc{SpecKit} & 1 \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \begin{description}
-    \item[Kit v1:] Constitution + plantillas de spec, plan, checklist, clarify y analyze. Pipeline de 9 pasos sin mecanismo de control de alcance en la implementaci\'on.
-    \item[Kit v2:] A\~nade \texttt{AGENTS.md} con 5 reglas universales (R0: no alucinar contexto, R1: trazabilidad, R2: verificabilidad, R3: minimalidad, R4: no ambig\"uedad) y un \textbf{scope contract} pre-implementaci\'on que acota expl\'icitamente los archivos a modificar. Este scope contract se genera antes del paso \texttt{implement} para prevenir \emph{scope creep}.
+    \item[C0,  SpecKit vanilla:] Pipeline m\'inimo: \texttt{specify} (recibe \emph{changelog} literal) $\rightarrow$ \texttt{plan} $\rightarrow$ \texttt{tasks} $\rightarrow$ \texttt{implement}. Sin constituci\'on IREB, sin \texttt{clarify}, sin \texttt{checklist}. L\'inea base: ¿qu\'e produce \textsc{SpecKit} sin tratamiento metodol\'ogico?
+
+    \item[C1 , IREB v1:] Pipeline de 9 pasos con IREB Kit v1: \texttt{constitution} (9 principios IREB) $\rightarrow$ \texttt{specify} (REQ con 12 atributos) $\rightarrow$ \texttt{clarify} $\rightarrow$ \texttt{checklist} $\rightarrow$ \texttt{plan} $\rightarrow$ \texttt{tasks} $\rightarrow$ \texttt{analyze} (pre) $\rightarrow$ \texttt{implement} $\rightarrow$ \texttt{analyze} (post). Sin \texttt{AGENTS.md} ni \emph{scope contract}.
+
+    \item[C2,  IREB v2:] Pipeline de 10 pasos. A\~nade a C1: \texttt{AGENTS.md} con 5 reglas universales (no alucinar, trazabilidad, verificabilidad, minimalidad, no ambig\"uedad) y \emph{scope contract} pre-implementaci\'on que define expl\'icitamente qu\'e archivos modificar y cu\'ales no.
+
+    \item[C3,  MRS directo:] El MRS se pasa directamente a \texttt{opencode} sin \textsc{SpecKit}. Un solo paso. Referencia extrema: ¿qu\'e ocurre sin metodolog\'ia alguna?
 \end{description}
 
-De los 52 casos del corpus, se seleccionaron 6 (2 por repositorio) de los 3 repositorios con preparaci\'on m\'as eficiente (n8n, Cal.com, Directus) para la ejecuci\'on comparativa en ambos flujos. Esta reducci\'on fue necesaria porque cada caso requiere dos ejecuciones manuales en Copilot Chat.
+\section{Fase 4: Evaluaci\'on en dos fases}
 
-\section{Fase 4: Evaluaci\'on con r\'ubrica SRCI v3}
+\subsection{An\'alisis autom\'atico}
 
-La Fase 4 aplica la r\'ubrica SRCI v3 (\emph{Structured Requirement Conformance Inspection}) sobre los artefactos generados por cada flujo. La r\'ubrica organiza 24 criterios en cuatro bloques que siguen el flujo del pipeline (v\'ease Anexo~\ref{anexo:rubrica-eval}):
+Scripts Python aplican seis herramientas sobre los 24 artefactos generados: \texttt{semgrep} (seguridad), \texttt{eslint} (calidad JS/TS), \texttt{phpcs} (estilo PHP), \texttt{shellcheck} (shell), \texttt{pyflakes} (Python) y \texttt{cloc} (l\'ineas de c\'odigo). Cada herramienta cubre una dimensi\'on del modelo ISO/IEC 25010.
+
+\subsection{R\'ubrica SRCI v3}
+
+Evaluaci\'on manual mediante inspecci\'on directa de los artefactos generados, con cinco bloques ponderados:
 
 \begin{description}
-    \item[Bloque A (12 criterios, 35\%).] Preservaci\'on del requisito en \texttt{spec.md}. Eval\'ua si \textsc{SpecKit} conserva los 12 atributos IREB del requisito de entrada o los degrada. Aplica la misma r\'ubrica de validaci\'on de la Fase 2.
-    \item[Bloque B (5 criterios, 30\%).] Conformidad de la implementaci\'on. Eval\'ua cobertura de la intenci\'on principal, proporcionalidad del cambio, ausencia de regresiones, correspondencia con el dominio t\'ecnico y evidencia de intenci\'on en el c\'odigo.
-    \item[Bloque C (3 criterios, 20\%).] Verificaci\'on y testing. Eval\'ua presencia de tests, cobertura de los criterios de verificaci\'on y adecuaci\'on del tipo de test.
-    \item[Bloque D (4 criterios, 15\%).] Trazabilidad del pipeline. Eval\'ua si los artefactos intermedios (\texttt{plan.md}, \texttt{tasks.md}, \texttt{checklist.md}) soportan la trazabilidad requisito $\rightarrow$ implementaci\'on.
+    \item[Bloque A , Preservaci\'on del requisito (25\%):] ¿Conserva \textsc{SpecKit} los 12 atributos IREB en \texttt{spec.md}?
+    \item[Bloque B,  Conformidad (20\%):] ¿Satisface el c\'odigo el requisito sin desviaciones?
+    \item[Bloque C , Verificaci\'on y testing (12\%):] ¿Hay tests? ¿Cubren los criterios de verificaci\'on?
+    \item[Bloque D,  Trazabilidad:] ¿Soportan los artefactos intermedios la trazabilidad requisito $\rightarrow$ implementaci\'on?
+    \item[Bloque E,  TSR (\emph{Test Satisfaction Rate}, 43\%):] ¿Qu\'e porcentaje de requisitos satisface el c\'odigo?
 \end{description}
 
-Cuatro criterios son \textbf{no compensables} (su incumplimiento provoca clasificaci\'on autom\'atica como No conforme): A11 (alucinaci\'on de contexto), B1 (no cubre la intenci\'on principal), B3 (regresi\'on evidente) y C1 (sin tests).
+\section{Dise\~no experimental}
 
-La puntuaci\'on se calcula como suma ponderada de los cuatro bloques, normalizada a escala 0--10. Las categor\'ias finales son: Conforme ($\geq 8.0$), Parcialmente conforme (6.0--7.9), Conformidad baja (4.0--5.9) y No conforme ($<4.0$).
+El experimento compara cuatro condiciones (C0--C3) que difieren \'unicamente en la informaci\'on que recibe el agente y en la configuraci\'on del pipeline. El dise\~no permite aislar el efecto de cada componente:
+
+\begin{itemize}
+    \item \textbf{C3 $\rightarrow$ C0} mide el efecto de usar un pipeline estructurado (\textsc{SpecKit}) frente a una petici\'on directa al modelo. Es la diferencia entre tener un proceso y no tenerlo.
+    \item \textbf{C0 $\rightarrow$ C1} mide el efecto de formalizar los requisitos con la plantilla IREB. Ambas condiciones usan \textsc{SpecKit}, pero C1 recibe requisitos con 12 atributos en lugar del texto literal del \emph{changelog}.
+    \item \textbf{C1 $\rightarrow$ C2} mide el efecto de a\~nadir mecanismos de robustez (\texttt{AGENTS.md} y \emph{scope contract}) sobre un pipeline que ya usa requisitos formalizados.
+\end{itemize}
+
+Este dise\~no sigue la l\'ogica de la gu\'ia metodol\'ogica de referencia, que propone comparar una petici\'on informal (C0), una especificaci\'on estructurada (C1) y una especificaci\'on construida con requisitos elicitados (C2). La condici\'on C3 se a\~nade como extensi\'on para establecer un l\'imite inferior absoluto: qu\'e ocurre cuando no hay ni pipeline ni especificaci\'on.
+
+\section{Decisiones metodol\'ogicas}
+
+\begin{table}[htbp]
+\centering
+\caption{Decisiones metodol\'ogicas y alternativas descartadas}
+\label{tab:decisiones}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Decisi\'on} & \textbf{Alternativa descartada} & \textbf{Justificaci\'on} \\
+\midrule
+IREB como marco & IEEE~830 (SRS) & IREB es m\'as abstracto y adaptable a fuentes documentales sin \emph{stakeholders} \\
+Elicitaci\'on v\'ia \emph{changelogs} & \emph{Stakeholders} reales & Inviable en un TFG. \emph{Changelogs} con trazabilidad p\'ublica verificable \\
+Plantilla 12 atributos & Notaci\'on formal (Rupp, l\'ogica) & Desproporcionada. Lenguaje natural con criterios de verificaci\'on \\
+Ejecuci\'on \'unica & Iterativa con intervenci\'on humana & La iteraci\'on enmascara el comportamiento nativo del pipeline \\
+SRCI 3 niveles & Evaluaci\'on binaria & La granularidad ternaria enriquece el an\'alisis cualitativo \\
+4 flujos (C0--C3) & 2 flujos (Flow A/B) & Permite aislar efectos: C3 (sin pipeline), C0 (pipeline solo), C1 (+IREB), C2 (+robustez) \\
+\bottomrule
+\end{tabularx}
+\end{table}

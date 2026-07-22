@@ -1,188 +1,132 @@
 \chapter{\resultsname}
 \label{chap:resultados}
 
-\section{Evaluaci\'on comparativa: Sin-Kit vs. Kit v1 vs. Kit v2}
+Se ejecutaron 24 casos (6 proyectos $\times$ 4 flujos) mediante scripts automatizados sobre entornos aislados. Todas las ejecuciones se completaron. En Authentik, C0 gener\'o una funcionalidad distinta a la solicitada (SCIM provisioning donde se ped\'ia una correcci\'on de compatibilidad FIPS), lo que muestra que sin una especificaci\'on clara el agente puede interpretar incorrectamente el objetivo.
 
-Se evaluaron los tres flujos del pipeline ---Sin-Kit (Flow A, baseline), Kit v1 (IREB-enhanced inicial) y Kit v2 (IREB-enhanced con scope contract)--- aplicando la r\'ubrica SRCI v3 de 24 criterios sobre los 6 casos del subconjunto de evaluaci\'on. La tabla~\ref{tab:resultados-final} presenta los resultados agregados.
+\section{Evaluaci\'on autom\'atica de calidad de c\'odigo}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-\caption{Resultados comparativos: nota /10 por caso y flujo}
-\label{tab:resultados-final}
-\begin{tabular}{lccc}
+\caption{An\'alisis autom\'atico: hallazgos clave}
+\label{tab:auto-resumen}
+\begin{tabularx}{\textwidth}{lX}
 \toprule
-\textbf{Caso} & \textbf{Sin-Kit} & \textbf{Kit v1} & \textbf{Kit v2} \\
+\textbf{Herramienta} & \textbf{Hallazgo} \\
 \midrule
-appwrite-e3 (Cache TTL) & 5.7 & 3.4 & \textbf{9.7} \\
-authentik-e1 (FIPS API) & 5.0 & 0.0 & \textbf{9.4} \\
-cal-e1 (Opt-In Scope)   & 5.7 & 5.2 & \textbf{8.5} \\
-directus-e9 (MIME client) & 4.4 & 5.5 & \textbf{9.2} \\
-medusa-e5 (SKU search)  & 5.7 & 4.5 & \textbf{8.8} \\
-n8n-e5 (IMAP trigger)   & 5.2 & 2.0 & \textbf{9.7} \\
-\midrule
-\textbf{Media}           & \textbf{5.3} & \textbf{3.4} & \textbf{9.2} \\
+\texttt{semgrep} & 1 issue de seguridad (ReDoS en C0 Directus). C\'odigo limpio de bugs en general. \\
+\texttt{eslint} & 2--74 incidencias por caso. M\'as incidencias donde hay m\'as TypeScript. \\
+\texttt{phpcs} & \textbf{16.009 incidencias en C0 Appwrite} vs. \textbf{1.597 en C1} ($-$90\%). \\
+\texttt{shellcheck} & 12 incidencias est\'andar en C0--C2 (boilerplate SpecKit). \\
+\texttt{pyflakes} & 0--1 incidencias. C\'odigo Python limpio. \\
+\texttt{cloc} & C2 genera m\'as l\'ineas (14.218) que C0 (5.948) por incluir tests y documentaci\'on. \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
-\textbf{Kit v2 gana 6-0} con una diferencia media de +3.9 puntos sobre Sin-Kit (9.2 vs. 5.3). Kit v1 fue peor que Sin-Kit en 3 de 6 casos (3.4 vs. 5.3), lo que demuestra que a\~nadir pasos al pipeline sin garantizar su completitud es contraproducente.
-
-\subsection{Distribuci\'on por categor\'ia}
-
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-\caption{Categor\'ias SRCI por flujo (6 casos cada uno)}
-\label{tab:categorias-flujos}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Categor\'ia} & \textbf{Sin-Kit} & \textbf{Kit v1} & \textbf{Kit v2} \\
-\midrule
-Conforme ($\geq 8.0$) & 0 & 0 & \textbf{6} \\
-Parcialmente conforme (6.0--7.9) & 0 & 0 & 0 \\
-Conformidad baja (4.0--5.9) & \textbf{6} & 3 & 0 \\
-No conforme ($<4.0$) & 0 & \textbf{3} & 0 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\section{An\'alisis por bloque de la r\'ubrica}
-
-\subsection{Bloque A --- Preservaci\'on del requisito (35\%)}
-
-La tabla~\ref{tab:bloque-a} muestra la puntuaci\'on media en el Bloque A (12 criterios, m\'aximo 12 puntos).
-
-\begin{table}[h]
-\centering
-\caption{Puntuaci\'on media Bloque A: preservaci\'on del requisito}
-\label{tab:bloque-a}
+\caption{Incidencias \texttt{phpcs}: Appwrite (10832)}
+\label{tab:phpcs}
 \begin{tabular}{lcc}
 \toprule
-\textbf{Flujo} & \textbf{Media A (/12)} & \textbf{Observaci\'on} \\
+\textbf{Flujo} & \textbf{Incidencias} & \textbf{vs.\ C0} \\
 \midrule
-Sin-Kit & 2.0 & Spec libre sin atributos IREB. El agente no recibe plantilla. \\
-Kit v1  & 2.7 & Solo 1 de 6 casos (medusa-e5) preserva atributos. Pipeline incompleto en 3 casos. \\
-Kit v2  & \textbf{10.2} & Todos los casos preservan $\geq 9$ atributos. \\
+C0 & 16.009 & --- \\
+C1 & \textbf{1.597} & \textbf{$-$90\%} \\
+C2 & 14.577 & $-$9\% \\
+C3 & 326 & $-$98\% (c\'odigo m\'inimo) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Sin plantilla IREB, \textsc{SpecKit} genera especificaciones en prosa libre sin estructura formal. La plantilla de 12 atributos del Kit v2 es el factor determinante. El Kit v1 fracas\'o por inestabilidad del pipeline (3/6 casos no completaron el paso \texttt{specify}).
+\FloatBarrier
+\section{Evaluaci\'on manual: r\'ubrica SRCI v3}
 
-\subsection{Bloque B --- Conformidad de la implementaci\'on (30\%)}
-
-Los tres flujos implementan correctamente la intenci\'on principal cuando el pipeline completa. La diferencia est\'a en la \textbf{proporcionalidad}: Kit v2 con scope contract genera diffs significativamente m\'as contenidos. El caso m\'as ilustrativo es n8n-e5, donde el diff pas\'o de 4238 l\'ineas (Kit v1, sin scope contract) a 222 l\'ineas (Kit v2, con scope contract), una reducci\'on de 19$\times$ sin p\'erdida de cobertura funcional.
-
-\subsection{Bloque C --- Verificaci\'on y testing (20\%)}
-
-Kit v2 alcanza puntuaci\'on perfecta en verificaci\'on (3.0/3). La presencia de criterios de verificaci\'on expl\'icitos en el \texttt{spec.md} permite que los tests generados los cubran directamente. Sin spec formal (Sin-Kit), los tests existen pero sin garant\'ia de que verifiquen exactamente lo requerido.
-
-\subsection{Bloque D --- Documentaci\'on del pipeline (15\%)}
-
-Kit v2 es el \'unico flujo que alcanza puntuaci\'on completa en trazabilidad (4.0/4), generando plan, tasks, checklist y scope contract para los 6 casos. Sin-Kit produce plan y tasks pero sin vinculaci\'on formal al requisito. Kit v1 es inconsistente (3 casos con documentaci\'on completa, 3 sin nada).
-
-\section{Mapa de alineaci\'on agregado}
-
-El an\'alisis comparativo entre el flujo de \textsc{SpecKit} y el flujo normativo de referencia se resume en la tabla~\ref{tab:mapa-agregado}.
-
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-\caption{Mapa de alineaci\'on: actividades IREB vs. SpecKit}
-\label{tab:mapa-agregado}
-\begin{tabularx}{\textwidth}{lccc}
+\caption{Evaluaci\'on SRCI v3: notas globales /10}
+\label{tab:srci-global}
+\begin{tabular}{lccccc}
 \toprule
-\textbf{Actividad IREB} & \textbf{Cobertura} & \textbf{Comandos relacionados} & \textbf{Observaciones} \\
+\textbf{Flujo} & \textbf{A (/12)} & \textbf{B (/5)} & \textbf{C (/3)} & \textbf{TSR} & \textbf{Nota/10} \\
 \midrule
-Elicitaci\'on & $\bigcirc$ & --- & \textsc{SpecKit} no ofrece elicitaci\'on \\
-Documentaci\'on & $\bullet$ & \texttt{specify}, \texttt{plan}, \texttt{tasks} & Con Kit v2 alcanza $\blacksquare$ (12 atributos) \\
-Validaci\'on & $\bullet$ & \texttt{clarify}, \texttt{checklist}, \texttt{analyze} & Solo consistencia interna \\
-Negociaci\'on & $\bigcirc$ & --- & Sin mecanismo de resoluci\'on de conflictos \\
-Gesti\'on de req. & $\bigcirc$ & --- & Sin trazabilidad bidireccional \\
-Verificaci\'on & $\bullet$ & \texttt{analyze} (pre/post) & Con Kit v2: verificaci\'on trazable a criterios \\
+C0 SpecKit vanilla   & 3.0 & 3.9 & 0.3 & 0.92 & 6.3 \\
+C1 IREB v1           & 3.2 & 4.0 & 0.7 & 1.00 & 6.8 \\
+C2 IREB v2           & 3.2 & 4.0 & 1.7 & 1.00 & 7.2 \\
+C3 MRS directo       & 3.0 & 3.6 & 0.0 & 0.17 & 2.8 \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
-Leyenda: $\blacksquare$ = Alineado, $\bullet$ = Parcial, $\bigcirc$ = No cubierto.
+La progresi\'on C3 (2.8) $\rightarrow$ C0 (6.3) $\rightarrow$ C1 (6.8) $\rightarrow$ C2 (7.2) muestra que cada paso a\~nadido mejora el resultado: el pipeline m\'inimo (+3.5 puntos), la formalizaci\'on IREB (+0.5), los mecanismos de robustez (+0.4). Por bloques, la formalizaci\'on IREB (C0 $\rightarrow$ C1) mejora la conformidad de la implementaci\'on (Bloque B: 3.9 $\rightarrow$ 4.0) y eleva el TSR al 100\,\%. El \emph{scope contract} y \texttt{AGENTS.md} (C1 $\rightarrow$ C2) concentran su efecto en la verificaci\'on: C2 es el \'unico flujo que genera tests en los 6 casos.
 
-\section{Mapa de alineaci\'on contra est\'andares de calidad}
+\FloatBarrier
+\section{An\'alisis de coste}
 
-\subsection{Criterios ISO/IEC/IEEE 29148}
-
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-\caption{Alineaci\'on con criterios ISO 29148 (con y sin IREB Kit)}
-\label{tab:calidad}
-\begin{tabularx}{\textwidth}{lXcc}
-\toprule
-\textbf{Criterio} & \textbf{Efecto del Kit v2} & \textbf{Sin-Kit} & \textbf{Kit v2} \\
-\midrule
-Necesario & Sin cambio & $\bigcirc$ & $\bigcirc$ \\
-No ambiguo & Mejora con checklist R8 & $\bullet$ & $\blacksquare$ \\
-Verificable & Mejora con criterios expl\'icitos & $\bullet$ & $\blacksquare$ \\
-Singular & Mejora con plantilla (R6) & $\bigcirc$ & $\blacksquare$ \\
-Trazable & Mejora con 12 atributos & $\bullet$ & $\blacksquare$ \\
-Consistente & Sin cambio (un requisito por ejecuci\'on) & $\bigcirc$ & $\bigcirc$ \\
-Completo & Mejora con atributos obligatorios & $\bullet$ & $\bullet$ \\
-Factible & Mejora con scope contract & $\bullet$ & $\blacksquare$ \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsection{Principios IREB}
-
-\begin{table}[h]
-\centering
-\caption{Alineaci\'on con los 9 principios IREB}
-\label{tab:9principios}
-\begin{tabularx}{\textwidth}{lXc}
-\toprule
-\textbf{Principio IREB} & \textbf{Observaci\'on} & \textbf{Nivel} \\
-\midrule
-Valor orientado al negocio & SDD pone la especificaci\'on como centro del valor & $\blacksquare$ \\
-Implicaci\'on de stakeholders & No hay concepto de stakeholder en el flujo & $\bigcirc$ \\
-Entendimiento compartido & Plantillas ayudan, pero sin validaci\'on externa & $\bullet$ \\
-Problema antes que soluci\'on & ``Focus on WHAT, not HOW'' es pilar de SDD & $\blacksquare$ \\
-Lenguaje com\'un & Markdown accesible, glosario en Kit v2 & $\bullet$ \\
-Contexto del sistema & No hay modelado de contexto ni diagramas & $\bigcirc$ \\
-Tipos de requisitos & Kit v2 clasifica (Funcional/Calidad/Restricci\'on) & $\blacksquare$ \\
-Priorizaci\'on & Kit v2 incluye Prioridad (Alta/Media/Baja) & $\blacksquare$ \\
-Aseguramiento de calidad & Checklist ISO 29148 en Kit v2 & $\blacksquare$ \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\section{Patrones de comportamiento identificados}
-
-El an\'alisis cualitativo de los 18 casos-ejecuci\'on (6 casos $\times$ 3 flujos) revela los siguientes patrones:
-
-\begin{description}
-    \item[Fortalaza en documentaci\'on estructurada (con Kit v2):] Con la plantilla IREB, \textsc{SpecKit} genera especificaciones que preservan consistentemente los 12 atributos normativos (10.2/12 de media en Bloque A). Sin plantilla, genera prosa libre sin estructura formal.
-    
-    \item[El scope contract como factor cr\'itico de proporcionalidad:] El scope contract del Kit v2 reduce los diffs en un factor de 2--19$\times$ sin p\'erdida de cobertura funcional. n8n-e5 pas\'o de 4238 l\'ineas (Kit v1, sin scope contract) a 222 l\'ineas (Kit v2, con scope contract).
-    
-    \item[La estabilidad del pipeline es condici\'on necesaria:] Kit v1 tuvo 3/6 casos con pipeline incompleto (3.4/10 de media). A\~nadir pasos sin garantizar su completitud es contraproducente: Kit v1 fue peor que Sin-Kit en la mitad de los casos.
-    
-    \item[La prevenci\'on de alucinaciones funciona:] El art\'iculo 0 de la constituci\'on (no inventar stakeholders, fuentes ni objetivos) y el checklist R13 del Kit v2 eliminaron las alucinaciones de contexto en los 6 casos (A11=$\checkmark$ en 6/6).
-\end{description}
-
-\section{Criterios cr\'iticos (no compensables)}
-
-La verificaci\'on de los 4 criterios cr\'iticos muestra que Kit v2 es el \'unico flujo que los supera en el 100\% de los casos:
-
-\begin{table}[h]
-\centering
-\caption{Superaci\'on de criterios cr\'iticos por flujo}
-\label{tab:criticos}
+\caption{Coste monetario por flujo (media de 6 casos)}
+\label{tab:coste-real}
 \begin{tabular}{lccc}
 \toprule
-\textbf{Criterio cr\'itico} & \textbf{Sin-Kit} & \textbf{Kit v1} & \textbf{Kit v2} \\
+\textbf{Flujo} & \textbf{Coste medio} & \textbf{Nota/10} & \textbf{Eficiencia (pts/\$)} \\
 \midrule
-A11 (no alucinaci\'on) & 6/6 & 3/6 & \textbf{6/6} \\
-B1 (intenci\'on principal) & 6/6 & 3/6 & \textbf{6/6} \\
-B3 (no regresi\'on) & 6/6 & 3/6 & \textbf{6/6} \\
-C1 (presencia de tests) & 5/6 & 3/6 & \textbf{6/6} \\
+C0 & \$0.0407 & 6.3 & 155 \\
+C1 & \$0.0608 & 6.8 & 112 \\
+C2 & \$0.0696 & 7.2 & 103 \\
+C3 & \$0.0115 & 2.8 & 243 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El coste crece con la calidad: C2 cuesta un 71\,\% m\'as que C0, pero es el \'unico flujo con tests en todos los casos. C3 es la opci\'on m\'as econ\'omica, aunque su capacidad para implementar requisitos reales es limitada (TSR del 17\,\%).
+
+\section{Visualizaci\'on comparativa}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=18pt,
+    width=0.6\textwidth,
+    height=6cm,
+    ylabel={SRCI (/10)},
+    ymin=0, ymax=9,
+    xtick=data,
+    xticklabels={C3, C0, C1, C2},
+    enlarge x limits=0.3,
+    grid=major,
+    nodes near coords,
+    every node near coord/.append style={font=\footnotesize}
+]
+\addplot[fill=gray!30]   coordinates {(1,2.8)};
+\addplot[fill=red!30]    coordinates {(2,6.3)};
+\addplot[fill=yellow!40] coordinates {(3,6.8)};
+\addplot[fill=green!40]  coordinates {(4,7.2)};
+\end{axis}
+\end{tikzpicture}
+\caption{Puntuaci\'on SRCI media de cada condici\'on experimental (media de 6 casos).}
+\label{fig:barras-4flujos}
+\end{figure}
+
+\section{Resumen de m\'etricas}
+
+\begin{table}[htbp]
+\centering
+\caption{Tabla resumen de todas las m\'etricas por flujo}
+\label{tab:resumen-metricas}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{M\'etrica} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
 \midrule
-\textbf{Superan todos} & \textbf{5/6} & \textbf{2/6} & \textbf{6/6} \\
+SRCI (/10) & 6.3 & 6.8 & \textbf{7.2} & 2.8 \\
+TSR (\%) & 92 & \textbf{100} & \textbf{100} & 17 \\
+Tests (casos con tests) & 1/6 & 3/6 & \textbf{6/6} & 0/6 \\
+Coste medio (\$) & 0.0407 & 0.0608 & 0.0696 & \textbf{0.0115} \\
+L\'ineas c\'odigo (media) & 5.948 & 18.522 & 14.218 & \textbf{289} \\
+\midrule
+\textbf{Eficiencia (pts/\$)} & 155 & 112 & 103 & \textbf{243} \\
 \bottomrule
 \end{tabular}
 \end{table}

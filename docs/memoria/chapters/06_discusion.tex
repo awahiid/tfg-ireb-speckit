@@ -1,0 +1,99 @@
+\chapter{Discusi\'on}
+\label{chap:discusion}
+
+\section{Respuesta a las preguntas de investigaci\'on}
+
+\subsection{P1: ¿Qu\'e cubre \textsc{SpecKit} del flujo RE normativo?}
+
+La tabla~\ref{tab:mapa-detallado} muestra el nivel de cobertura de cada actividad IREB por parte de \textsc{SpecKit}, tanto en su configuraci\'on nativa (C0) como con el IREB Kit (C2).
+
+\begin{table}[htbp]
+\centering
+\caption{Mapa de alineaci\'on: actividades IREB frente a \textsc{SpecKit} sin y con IREB Kit}
+\label{tab:mapa-detallado}
+\begin{tabular}{lp{5.5cm}cc}
+\toprule
+\textbf{Actividad IREB} & \textbf{Comandos/artefactos relacionados} & \textbf{C0} & \textbf{C2} \\
+\midrule
+Elicitaci\'on & No hay comandos. Depende de fuentes externas. & \xmark & \xmark \\
+Documentaci\'on & \texttt{specify}, plantilla 12 atributos IREB & \pmark & \cmark \\
+Validaci\'on & \texttt{clarify}, \texttt{checklist}, \texttt{analyze} & \pmark & \cmark \\
+Negociaci\'on & No hay mecanismo de resoluci\'on de conflictos & \xmark & \xmark \\
+Gesti\'on de requisitos & Sin \emph{baselines}, versionado ni CCB & \xmark & \xmark \\
+Verificaci\'on & \texttt{analyze} (pre/post), tests generados & \pmark & \cmark \\
+Trazabilidad & Cadena spec $\rightarrow$ plan $\rightarrow$ tasks $\rightarrow$ code & \pmark & \cmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textsc{SpecKit} sin modificaciones cubre las fases centrales de documentaci\'on e implementaci\'on, pero lo hace de forma parcial porque carece de atributos formales, criterios de verificaci\'on expl\'icitos y trazabilidad bidireccional. Con el IREB Kit, la documentaci\'on, validaci\'on, verificaci\'on y trazabilidad alcanzan cobertura completa. La elicitaci\'on, la negociaci\'on y la gesti\'on de requisitos quedan fuera del alcance del pipeline y requieren intervenci\'on humana. Esto no es una carencia de \textsc{SpecKit}, sino una divisi\'on natural de responsabilidades: el ingeniero de requisitos se ocupa de las fases iniciales y \textsc{SpecKit} automatiza la transformaci\'on a c\'odigo.
+
+\subsection{P2: ¿Mejoran los resultados con requisitos formalizados IREB?}
+
+S\'i, de forma acumulativa y medible. La progresi\'on C3 (2.8) $\rightarrow$ C0 (6.3) $\rightarrow$ C1 (6.8) $\rightarrow$ C2 (7.2) muestra que cada componente a\~nadido al proceso aporta una mejora concreta. El paso de no tener pipeline a tenerlo (C3 $\rightarrow$ C0) es el que m\'as impacto tiene (+3.5 puntos). Formalizar los requisitos (C0 $\rightarrow$ C1) aporta otros 0.5 puntos y eleva el TSR del 92\,\% al 100\,\%. A\~nadir mecanismos de control de alcance y reglas de comportamiento (C1 $\rightarrow$ C2) suma 0.4 puntos adicionales y convierte a C2 en el \'unico flujo que genera tests en todos los casos.
+
+\section{An\'alisis comparativo por condici\'on}
+
+A continuaci\'on se analiza cada condici\'on individualmente, indicando sus puntos fuertes y sus limitaciones seg\'un los datos obtenidos.
+
+\subsection{C3: MRS directo, sin pipeline}
+
+\textbf{Virtudes:} Es la condici\'on m\'as econ\'omica (\$0.0115 por ejecuci\'on) y la m\'as r\'apida (un solo paso). Para cambios muy peque\~nos y autocontenidos, puede ser suficiente.
+
+\textbf{Limitaciones:} Con una puntuaci\'on SRCI de 2.8 y un TSR del 17\,\%, no es capaz de implementar requisitos con la complejidad habitual de un proyecto real. No genera \texttt{spec.md}, no produce planificaci\'on, no escribe tests y el c\'odigo resultante es m\'inimo (289 l\'ineas de media). El ahorro econ\'omico no compensa la falta de calidad cuando el objetivo es obtener una implementaci\'on trazable y verificable.
+
+\subsection{C0: SpecKit vanilla}
+
+\textbf{Virtudes:} Con solo cuatro pasos, alcanza una puntuaci\'on SRCI de 6.3 y un TSR del 92\,\%. El pipeline estructurado obliga al agente a especificar antes de implementar, lo que produce mejores resultados que una petici\'on directa. Es la opci\'on con mejor relaci\'on coste/calidad entre los flujos que usan \textsc{SpecKit} (155 pts/\$).
+
+\textbf{Limitaciones:} Sin plantilla IREB, la especificaci\'on generada es prosa libre sin estructura formal. Solo genera tests en 1 de cada 6 casos. En Authentik, el agente implement\'o una funcionalidad distinta a la solicitada porque el \emph{changelog} no proporcionaba suficiente contexto. No hay mecanismo que acote el alcance de la implementaci\'on, por lo que el agente puede modificar m\'as archivos de los necesarios.
+
+\subsection{C1: SpecKit + IREB v1}
+
+\textbf{Virtudes:} La formalizaci\'on de los requisitos eleva la puntuaci\'on a 6.8 y el TSR al 100\,\%. La plantilla de 12 atributos mejora la conformidad de la implementaci\'on (Bloque B: 4.0/5). En Appwrite, las incidencias de estilo PHP se redujeron un 90\,\% respecto a C0, lo que indica que la formalizaci\'on tambi\'en mejora la calidad interna del c\'odigo.
+
+\textbf{Limitaciones:} Sin \texttt{AGENTS.md} ni \emph{scope contract}, el pipeline carece de mecanismos que garanticen un comportamiento homog\'eneo del agente en todos los pasos. Solo genera tests en 3 de cada 6 casos. En n8n, la ausencia de control de alcance provoc\'o que el agente modificara 4238 l\'ineas para un cambio que requer\'ia 222.
+
+\subsection{C2: SpecKit + IREB v2}
+
+\textbf{Virtudes:} Es la condici\'on con mejor puntuaci\'on global (7.2) y la \'unica que genera tests en el 100\,\% de los casos. El \emph{scope contract} mantiene los cambios acotados al alcance del requisito. Las reglas de \texttt{AGENTS.md} garantizan que el agente siga un comportamiento consistente en todos los comandos del pipeline. La combinaci\'on de constituci\'on IREB y checklist de calidad ayuda a que el agente no se desv\'ie del objetivo.
+
+\textbf{Limitaciones:} Es la condici\'on m\'as costosa (\$0.0696 por ejecuci\'on, un 71\,\% m\'as que C0). El mayor n\'umero de pasos implica m\'as tiempo de ejecuci\'on y m\'as tokens consumidos. Para cambios muy peque\~nos donde la trazabilidad y los tests no sean necesarios, puede resultar excesiva.
+
+\section{De la evidencia a las conclusiones}
+
+La tabla~\ref{tab:evidencia-conclusiones} resume las observaciones principales respaldadas por los datos y las conclusiones que se derivan de ellas.
+
+\begin{table}[htbp]
+\centering
+\caption{De la evidencia a las conclusiones}
+\label{tab:evidencia-conclusiones}
+\begin{tabular}{p{5.5cm}p{8cm}}
+\toprule
+\textbf{Lo que se observa} & \textbf{Lo que se concluye} \\
+\midrule
+C2 (7.2) $>$ C1 (6.8) $>$ C0 (6.3) $\gg$ C3 (2.8) & Cada paso que se a\~nade al proceso (pipeline, formalizaci\'on, control de alcance) contribuye de forma acumulativa a la calidad final \\
+C3 (TSR 0.17) vs.\ C0 (TSR 0.92): +0.75 al estructurar la petici\'on & Usar un pipeline como \textsc{SpecKit}, incluso en su forma m\'as b\'asica, mejora notablemente los resultados frente a una petici\'on directa al modelo \\
+C2 genera tests en 6/6; C1 en 3/6; C0 en 1/6; C3 en 0/6 & Para que el agente genere tests de forma consistente hace falta combinar requisitos formalizados, control de alcance y reglas de comportamiento \\
+C1 reduce phpcs 90\% vs.\ C0 (Appwrite: 1.597 vs.\ 16.009) & Formalizar los requisitos no solo ayuda a que el c\'odigo haga lo que debe, sino que tambi\'en mejora su estilo y calidad interna \\
+Scope contract reduce diff hasta 19$\times$ (n8n: 4238 $\rightarrow$ 222) & Acotar expl\'icitamente qu\'e archivos puede modificar el agente evita que genere cambios innecesarios \\
+C0 en Authentik implement\'o una funcionalidad distinta a la solicitada; C2 implement\'o exactamente lo pedido & Dar al agente un requisito bien definido y reglas claras sobre qu\'e debe y no debe hacer ayuda a que no se desv\'ie del objetivo \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Implicaciones pr\'acticas}
+
+Los resultados muestran que \textsc{SpecKit} con IREB Kit puede integrarse en un flujo RE profesional con una divisi\'on clara: el ingeniero elicita y formaliza los requisitos; \textsc{SpecKit} los transforma en implementaciones trazables y verificables. Las herramientas profesionales de RE (DOORS, Jama) y \textsc{SpecKit} no compiten: las primeras gestionan el ciclo de vida del requisito, la segunda automatiza el paso a c\'odigo.
+
+Para el dise\~no de herramientas SDD, los resultados sugieren tres mejoras: incorporar atributos obligatorios en las plantillas de especificaci\'on, a\~nadir un mecanismo de \emph{scope contract} nativo, e incluir reglas que ayuden al agente a ce\~nirse al requisito de entrada.
+
+\section{Limitaciones}
+
+El estudio tiene las limitaciones propias de un trabajo realizado con recursos acotados de tiempo y presupuesto. La evaluaci\'on se basa en 6 casos (uno por tipo de sistema) ejecutados una vez por configuraci\'on. Ampliar a m\'as casos o realizar m\'ultiples ejecuciones por caso habr\'ia requerido un tiempo de c\'omputo y un coste econ\'omico superiores a los disponibles. Los 46 casos restantes del corpus quedan preparados para que trabajos futuros puedan extender la evaluaci\'on.
+
+La r\'ubrica SRCI v3 ha sido aplicada por el autor. Para reducir la subjetividad, sus criterios son operativos y est\'an definidos antes de evaluar los resultados. Todos los artefactos generados en cada ejecuci\'on se conservan, de modo que cualquier persona puede revisarlos y verificar las puntuaciones.
+
+El estudio emplea una versi\'on concreta de \textsc{SpecKit} (v0.10.2) y del modelo DeepSeek V4 Flash. Dado que tanto \textsc{SpecKit} como los modelos de lenguaje evolucionan r\'apidamente, los valores num\'ericos concretos pueden variar en versiones futuras, aunque la direcci\'on de las diferencias observadas entre configuraciones es consistente con lo esperado seg\'un el marco te\'orico.
+
+Las condiciones C1 y C2 reciben requisitos formalizados con m\'as informaci\'on que C0 (que solo recibe el texto del \emph{changelog}). Esto no resta valor al estudio, ya que el objetivo es precisamente medir cu\'anto mejora el resultado cuando se invierte tiempo en formalizar los requisitos antes de pasarlos al agente.

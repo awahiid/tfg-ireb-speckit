@@ -1,11 +1,55 @@
 \chapter{Implementaci\'on y desarrollo}
 \label{chap:implementacion}
 
+Este cap\'itulo describe los productos construidos durante el trabajo: el corpus de requisitos, el IREB Kit for SpecKit y la ejecuci\'on del pipeline. Mientras que el cap\'itulo anterior describi\'o la metodolog\'ia (\emph{c\'omo} se hizo), este cap\'itulo presenta los resultados intermedios (\emph{qu\'e} se produjo) antes de la evaluaci\'on final del cap\'itulo~\ref{chap:resultados}.
+
+\section{Corpus de requisitos}
+
+Las fases de elicitaci\'on y formalizaci\'on produjeron un corpus de 52 requisitos. La tabla~\ref{tab:corpus} resume su composici\'on.
+
+\begin{table}[htbp]
+\centering
+\caption{Composici\'on del corpus de requisitos}
+\label{tab:corpus}
+\begin{tabular}{lp{2.5cm}cp{4cm}}
+\toprule
+\textbf{Repositorio} & \textbf{Tipo de sistema} & \textbf{Reqs.} & \textbf{Perfil dominante} \\
+\midrule
+Appwrite & Transaccional (BaaS) & 10 & APIs REST, operaciones CRUD \\
+Authentik & Identidad y seguridad & 9 & Autenticaci\'on, RBAC, sesiones \\
+Cal.com & Colaborativo & 10 & Concurrencia, notificaciones \\
+Directus & Datos (headless CMS) & 9 & Esquemas din\'amicos, APIs \\
+Medusa & Financiero (e-commerce) & 5 & \'Ordenes, flujos de pago \\
+n8n & Integraci\'on de servicios & 9 & Eventos, webhooks, orquestaci\'on \\
+\midrule
+\textbf{Total} & & \textbf{52} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La calidad media del corpus es de 10{,}8 sobre 12 (desviaci\'on t\'ipica 0{,}9). Por tipo: 38 funcionales (73\,\%), 8 de calidad (15\,\%) y 6 restricciones (12\,\%). Por prioridad: 27 altas (52\,\%), 18 medias (35\,\%) y 7 bajas (13\,\%).
+
+A partir de los 52 requisitos se derivaron 52 \emph{Minimal Requirement Seeds} (MRS) con estructura ``Como [ROL], quiero que el sistema [COMPORTAMIENTO] [contexto], para [MOTIVACI\'ON]''. Los MRS son la entrada de la condici\'on C3 y garantizan que cualquier persona pueda reproducir el experimento partiendo de los mismos datos.
+
 \section{IREB Kit for SpecKit}
 
-El IREB Kit es el producto central de este trabajo. Se compone de 10 artefactos que se inyectan en un repositorio con \textsc{SpecKit} para aplicar ingenier\'ia de requisitos profesional. La tabla~\ref{tab:ireb-kit} resume su composici\'on.
+El IREB Kit es el producto central de este trabajo. Responde a una necesidad concreta identificada durante el an\'alisis inicial de \textsc{SpecKit}: la herramienta tiene mecanismos de extensi\'on (plantillas, presets, workflows) que permiten modificar su comportamiento sin alterar su c\'odigo, pero nadie los hab\'ia utilizado para incorporar pr\'acticas de ingenier\'ia de requisitos basada en normas. El Kit ocupa ese espacio vac\'io.
 
-\begin{table}[h]
+\subsection{Dise\~no del kit: problema y soluci\'on}
+
+El dise\~no del kit parti\'o de un diagn\'ostico de cinco problemas del pipeline nativo de \textsc{SpecKit} cuando se utiliza sin tratamiento metodol\'ogico:
+
+\begin{enumerate}
+    \item \textbf{Especificaciones sin estructura formal}: el comando \texttt{specify} genera texto en prosa libre. Sin una plantilla que exija atributos como tipo, fuente o criterio de verificaci\'on, la especificaci\'on resultante es \'util para un desarrollador pero inadecuada para un proceso de RE conforme a normas.
+    \item \textbf{Constituci\'on gen\'erica}: la constituci\'on por defecto de \textsc{SpecKit} contiene principios de dise\~no de software (Library-First, Anti-Abstraction, TDD) que nada tienen que ver con la calidad de los requisitos. Sin una constituci\'on alineada con IREB, el agente no recibe directrices sobre verificabilidad, trazabilidad o minimalidad.
+    \item \textbf{Alucinaciones de contexto}: en ejecuciones preliminares, el agente inventaba \emph{stakeholders}, fuentes y objetivos de negocio que no aparec\'ian en el requisito de entrada. Este fen\'omeno, que denominamos ``alucinaci\'on de contexto'', contaminaba la trazabilidad y compromet\'ia la validez del mapeo.
+    \item \textbf{Scope creep}: sin restricciones expl\'icitas, el paso \texttt{implement} modificaba archivos no relacionados con el requisito, introduciendo refactorizaciones, cambios de configuraci\'on y dependencias nuevas que dilu\'ian la correspondencia requisito $\rightarrow$ implementaci\'on.
+    \item \textbf{Pipeline inestable}: los comandos opcionales (\texttt{clarify}, \texttt{checklist}, \texttt{analyze}) no siempre se completaban correctamente, dejando el pipeline en un estado inconsistente donde pasos posteriores depend\'ian de artefactos no generados.
+\end{enumerate}
+
+El IREB Kit aborda estos cinco problemas mediante 10 artefactos organizados en cuatro capas, cada una vinculada a un comando o fase del pipeline nativo. La tabla~\ref{tab:ireb-kit} detalla sus componentes.
+
+\begin{table}[htbp]
 \centering
 \caption{Componentes del IREB Kit for SpecKit}
 \label{tab:ireb-kit}
@@ -13,107 +57,60 @@ El IREB Kit es el producto central de este trabajo. Se compone de 10 artefactos 
 \toprule
 \textbf{Artefacto} & \textbf{Prop\'osito} & \textbf{Comando} \\
 \midrule
-\texttt{AGENTS.md} & 5 reglas universales (R0--R4) & Todos \\
-\texttt{constitution.md} & 9 art\'iculos IREB + ISO 29148 + INCOSE & \texttt{/speckit.constitution} \\
-\texttt{spec.template.md} & 12 atributos IREB & \texttt{/speckit.specify} \\
-\texttt{clarify.template.md} & Detector de ambig\"uedades y alucinaciones & \texttt{/speckit.clarify} \\
-\texttt{checklist.template.md} & 13 criterios ISO 29148 (R13 bloqueante) & \texttt{/speckit.checklist} \\
-\texttt{plan.template.md} & Gates IREB pre-planificaci\'on & \texttt{/speckit.plan} \\
-\texttt{tasks.template.md} & Trazabilidad obligatoria [REQ-ID] por tarea & \texttt{/speckit.tasks} \\
+\texttt{AGENTS.md} & 5 reglas universales (R0--R4) para todos los comandos & Todos \\
+\texttt{constitution.md} & 9 art\'iculos IREB + ISO 29148 + INCOSE + Art.~0 anti-alucinaci\'on & \texttt{/speckit.constitution} \\
+\texttt{spec.template.md} & Plantilla de especificaci\'on con 12 atributos IREB & \texttt{/speckit.specify} \\
+\texttt{clarify.template.md} & Detector de ambig\"uedades y alucinaciones de contexto & \texttt{/speckit.clarify} \\
+\texttt{checklist.template.md} & 13 criterios ISO 29148, con R13 como bloqueante anti-alucinaci\'on & \texttt{/speckit.checklist} \\
+\texttt{plan.template.md} & Plan t\'ecnico con \emph{gates} IREB pre-planificaci\'on & \texttt{/speckit.plan} \\
+\texttt{tasks.template.md} & Descomposici\'on en tareas con trazabilidad obligatoria \texttt{[REQ-ID]} & \texttt{/speckit.tasks} \\
 \texttt{analyze.template.md} & Matriz de trazabilidad spec$\rightarrow$plan$\rightarrow$tasks$\rightarrow$code$\rightarrow$tests & \texttt{/speckit.analyze} \\
-\texttt{prompt.template.md} & Prompt para generar REQ desde changelogs & Manual \\
-\texttt{pipeline.sh} & Pipeline automatizado con scope contract & Autom\'atico \\
+\texttt{prompt.template.md} & Prompt para generar requisitos formalizados desde \emph{changelogs} & Manual (Fase~2) \\
+\texttt{pipeline.sh} & Pipeline automatizado con generaci\'on de \emph{scope contract} & Autom\'atico \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\subsection{Los 6 hilos conductores}
+\subsection{Principios del kit}
 
-Cada componente del kit ataca un fallo concreto del flujo sin IREB. Estos 6 principios garantizan que el flujo con kit mejore sistem\'aticamente al baseline:
+Cada componente materializa uno de los siguientes principios que garantizan la mejora sobre el \emph{baseline}:
 
 \begin{description}
-    \item[\textbf{H1 --- No alucinar contexto}:] Regla R0 bloqueante en \texttt{AGENTS.md}: Source y Rationale solo del input original. Si no hay $\rightarrow$ ``sin fuente documentada''. Verificado por \texttt{clarify} y \texttt{checklist} (R13).
-    \item[\textbf{H2 --- Scope contract}:] Antes de \texttt{implement}, se define exactamente qu\'e archivos tocar, cu\'ales NO tocar, y qu\'e comportamiento implementar. Evita que el agente borre 2554 l\'ineas (medusa-e5) o genere 4238 l\'ineas para un cambio simple (n8n-e5).
-    \item[\textbf{H3 --- Trazabilidad obligatoria}:] Cada artefacto (spec, plan, tarea, c\'odigo, test) debe enlazar a un REQ-ID. Sin trazabilidad $\rightarrow$ no se genera.
-    \item[\textbf{H4 --- Verificaci\'on observable}:] Todo requisito debe tener al menos un criterio de verificaci\'on concreto (respuesta HTTP, cambio de estado, evento).
-    \item[\textbf{H5 --- Minimalidad}:] ``Solo lo necesario para satisfacer el requisito''. Proh\'ibe refactorizar, a\~nadir dependencias o modificar configuraciones globales.
-    \item[\textbf{H6 --- Contexto destilado}:] El paso \texttt{implement} recibe solo spec + scope contract + tasks ($\sim$3K tokens). El resto de la documentaci\'on IREB se genera pero no se inyecta en el prompt de c\'odigo.
+    \item[\textbf{H1,  No alucinar contexto}:] Regla R0 de \texttt{AGENTS.md} + art\'iculo~0 de la constituci\'on + criterio R13 del \emph{checklist}. Bloqueante: si el \emph{checklist} detecta alucinaci\'on, el pipeline se detiene.
+
+    \item[\textbf{H2 , Scope contract}:] Documento pre-\texttt{implement} que define qu\'e archivos modificar, cu\'ales NO modificar y qu\'e comportamiento implementar. Surgi\'o como respuesta a los fallos de C1: 4238 l\'ineas para un cambio simple (n8n) y 2554 l\'ineas borradas innecesariamente (medusa).
+
+    \item[\textbf{H3: Trazabilidad}:] Cada artefacto enlaza al \texttt{REQ-*}: la especificaci\'on en su ID, el plan en su secci\'on de trazabilidad, cada tarea en su cabecera, el c\'odigo en comentarios de m\'odulo.
+
+    \item[\textbf{H4,  Verificaci\'on observable}:] Todo requisito tiene al menos un criterio de verificaci\'on concreto (respuesta HTTP, cambio de estado, evento). No valen verbos como ``gestionar'' o ``soportar'' sin concreci\'on.
+
+    \item[\textbf{H5 , Minimalidad}:] ``Solo lo necesario para satisfacer el requisito''. Proh\'ibido: refactorizar c\'odigo no relacionado, a\~nadir dependencias no requeridas, modificar configuraciones globales.
+
+    \item[\textbf{H6,  Contexto destilado}:] \texttt{implement} recibe solo especificaci\'on + \emph{scope contract} + tareas ($\sim$3K tokens). El resto de documentaci\'on IREB se almacena pero no se inyecta en el \emph{prompt} de generaci\'on.
 \end{description}
-
-\section{Corpus de requisitos}
-
-Se extrajeron un total de 56 entradas de \emph{changelogs} de los seis repositorios, de las cuales 52 fueron formalizadas como requisitos tras pasar la r\'ubrica de calidad (tasa de aceptaci\'on del 92.9\,\%). La tabla~\ref{tab:corpus} muestra la distribuci\'on por repositorio.
-
-\begin{table}[h]
-\centering
-\caption{Distribuci\'on del corpus de requisitos}
-\label{tab:corpus}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Repositorio} & \textbf{Entradas} & \textbf{Requisitos} \\
-\midrule
-Appwrite & 10 & 10 \\
-Authentik & 9 & 9 \\
-Cal.com & 10 & 10 \\
-Directus & 9 & 9 \\
-Medusa & 5 & 5 \\
-n8n & 9 & 9 \\
-\midrule
-\textbf{Total} & \textbf{52} & \textbf{52} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Todos los requisitos superaron el umbral de aceptaci\'on, con una media de 10.8 puntos (sobre 12) y una desviaci\'on t\'ipica de 0.9. La distribuci\'on por tipo fue: 38 funcionales (73\,\%), 8 de calidad (15\,\%) y 6 restricciones (12\,\%). Por prioridad: 27 Altas (52\,\%), 18 Medias (35\,\%) y 7 Bajas (13\,\%).
-
-\subsection{Derivaci\'on de MRS}
-
-A partir de los 52 requisitos formalizados se derivaron 52 \emph{Minimal Requirement Seeds} (MRS) utilizando un script asistido por LLM. Cada MRS es un prompt m\'inimo de 3--5 l\'ineas con estructura can\'onica ``Como [ROL], quiero que el sistema [COMPORTAMIENTO] [contexto], para [MOTIVACI\'ON]''. Los MRS act\'uan como entrada replicable para el pipeline \textsc{SpecKit} en el Flow B.
 
 \section{Ejecuci\'on del pipeline}
 
-\subsection{Preparaci\'on del entorno}
+Los cuatro flujos se ejecutan mediante scripts automatizados (\texttt{pipeline-c0.sh} a \texttt{pipeline-c3.sh}) que usan \texttt{opencode} + DeepSeek V4 Flash sobre entornos aislados. Para cada caso, el script clona el repositorio en el \emph{commit} pre-PR, instala dependencias, ejecuta el flujo correspondiente y captura el \texttt{diff.patch}, \texttt{summary.json} y artefactos intermedios.
 
-Para cada caso, el script \texttt{preparar-caso.sh} automatiza:
-\begin{enumerate}
-    \item Clone del repositorio en el commit padre del merge commit (c\'odigo ANTES de la PR original).
-    \item Instalaci\'on de dependencias y verificaci\'on de tests existentes.
-    \item Ejecuci\'on de \texttt{specify init} para inicializar la estructura de \textsc{SpecKit}.
-    \item Copia del REQ formalizado a \texttt{.specify/memory/} para el paso \texttt{specify}.
-\end{enumerate}
+La tabla~\ref{tab:artefactos-flujos} muestra los artefactos generados por cada flujo. La diferencia cr\'itica entre C1 y C2 es que C2 a\~nade \texttt{AGENTS.md} y \emph{scope contract}, lo que garantiza que todos los pasos se completen y que \texttt{implement} no introduzca \emph{scope creep}.
 
-\subsection{Ejecuci\'on manual en VS Code Copilot Chat}
-
-Cada caso se ejecuta manualmente en Copilot Chat Agent, introduciendo los comandos \texttt{/speckit.*} en secuencia. Tras la ejecuci\'on, el script \texttt{capturar-resultado.sh} genera:
-\begin{itemize}
-    \item \texttt{diff.patch}: diff completo de los cambios introducidos.
-    \item \texttt{summary.json}: metadata del caso (commit, l\'ineas, archivos).
-    \item \texttt{full-snapshot.zip}: repositorio completo sin dependencias.
-\end{itemize}
-
-\subsection{Comparaci\'on de versiones del kit}
-
-El Kit v1 y el Kit v2 comparten la misma base de plantillas IREB. La diferencia cr\'itica es que el Kit v2 a\~nade \texttt{AGENTS.md} con reglas universales y un paso de \textbf{scope contract} (07.5) antes de \texttt{implement}. Este scope contract lista expl\'icitamente los archivos a modificar y los archivos a no tocar, acotando el alcance de la implementaci\'on.
-
-La tabla~\ref{tab:artefactos-flujos} compara los artefactos disponibles en cada flujo.
-
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Artefactos generados por flujo (6 casos cada uno)}
 \label{tab:artefactos-flujos}
-\begin{tabular}{lccc}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Artefacto} & \textbf{Sin-Kit} & \textbf{Kit v1} & \textbf{Kit v2} \\
+\textbf{Artefacto} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
 \midrule
-spec.md & 6/6 & 3/6 & \textbf{6/6} \\
-constitution & 0/6 & 3/6 & \textbf{6/6} \\
-clarify & 0/6 & 3/6 & \textbf{6/6} \\
-checklist & 0/6 & 3/6 & \textbf{6/6} \\
-plan.md & 6/6 & 3/6 & \textbf{6/6} \\
-tasks.md & 6/6 & 3/6 & \textbf{6/6} \\
-analyze (pre/post) & 0/6 & 3/6 & \textbf{6/6} \\
-scope contract & 0/6 & 0/6 & \textbf{6/6} \\
-diff.patch & 6/6 & 5/6 & \textbf{6/6} \\
+spec.md & 6/6 & 3/6 & \textbf{6/6} & 0/6 \\
+constitution + clarify + checklist & 0/6 & 3/6 & \textbf{6/6} & 0/6 \\
+plan.md + tasks.md & 6/6 & 3/6 & \textbf{6/6} & 0/6 \\
+analyze (pre/post) & 0/6 & 3/6 & \textbf{6/6} & 0/6 \\
+scope contract & 0/6 & 0/6 & \textbf{6/6} & 0/6 \\
+diff.patch & 6/6 & 5/6 & \textbf{6/6} & 6/6 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+La automatizaci\'on de los experimentos constituye un resultado adicional del trabajo. Cada pipeline se ejecuta en un entorno aislado mediante un directorio \texttt{env/} que act\'ua como \texttt{\$HOME} temporal para \texttt{opencode}. Esto garantiza que las sesiones, bases de datos y conversaciones de cada ejecuci\'on son independientes y no se contaminan entre s\'i. Los cuatro flujos comparten una librer\'ia de funciones (\texttt{lib.sh}) que unifica la captura de resultados: extrae el \emph{diff} del c\'odigo generado, registra el consumo de tokens y el coste monetario desde los \texttt{transcript.json} de \texttt{opencode}, y genera un resumen (\texttt{summary.json}) con todas las m\'etricas. Esta infraestructura permite ejecutar los experimentos de forma paralela, ya que cada caso es autocontenido, y facilita la revisi\'on de los resultados al conservar la traza completa de cada ejecuci\'on. Los scripts est\'an disponibles junto con el resto de artefactos del trabajo para que cualquier persona pueda reproducir los experimentos o extenderlos con nuevos casos.

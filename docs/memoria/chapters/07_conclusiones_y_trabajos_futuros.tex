@@ -12,29 +12,70 @@ Este trabajo ha realizado un mapeo sistem\'atico y una evaluaci\'on emp\'irica d
 
     \item \textbf{R\'ubrica SRCI v3}: 24 criterios organizados en 4 bloques (preservaci\'on del requisito, conformidad de la implementaci\'on, verificaci\'on y testing, trazabilidad del pipeline) con trazabilidad normativa expl\'icita, dise\~nada para ser reproducible y pragm\'atica.
 
-    \item \textbf{Evaluaci\'on emp\'irica de 3 flujos sobre 6 casos}: 18 ejecuciones del pipeline que demuestran que el IREB Kit v2 mejora la puntuaci\'on SRCI de 5.3 a 9.2 (escala 0--10), gana 6--0 frente al baseline, y supera los 4 criterios cr\'iticos en el 100\% de los casos.
+    \item \textbf{Evaluaci\'on emp\'irica de 4 flujos sobre 6 casos}: 24 ejecuciones del pipeline que demuestran la progresi\'on C3 (2.8) $\rightarrow$ C0 (6.3) $\rightarrow$ C1 (6.8) $\rightarrow$ C2 (7.2), donde cada incremento en madurez metodol\'ogica a\~nade valor medible. C2 es el \'unico flujo que genera tests en el 100\% de los casos.
 
     \item \textbf{Mapa de alineaci\'on IREB--SpecKit}: contraste detallado de cada actividad IREB (7), cada criterio ISO 29148 (8) y cada principio IREB (9) contra los comandos y artefactos de \textsc{SpecKit}, con y sin el IREB Kit.
 \end{enumerate}
 
 \section{Conclusiones principales}
 
-\textbf{1. El IREB Kit mejora los resultados de forma consistente y medible.} Kit v2 gana 6--0 con +3.9 puntos de ventaja sobre Sin-Kit (9.2 vs. 5.3). La mejora no est\'a en la capacidad de implementar (SpecKit implementa bien en ambos flujos), sino en la preservaci\'on de la calidad del requisito (Bloque A: 10.2 vs. 2.0) y en la trazabilidad del pipeline (Bloque D: 4.0 vs. 1.5).
+\textbf{1. Cada incremento en madurez metodol\'ogica a\~nade valor medible.} La progresi\'on C3 (2.8) $\rightarrow$ C0 (6.3) $\rightarrow$ C1 (6.8) $\rightarrow$ C2 (7.2) muestra que ninguna intervenci\'on es inocua. Incluso el pipeline m\'inimo de \textsc{SpecKit} sin IREB (C0) multiplica por m\'as de 2 la calidad frente a preguntar directamente al LLM (C3). La formalizaci\'on IREB (C1) a\~nade 0.5 puntos m\'as. La robustez del pipeline (C2) a\~nade otros 0.4. La mejora es acumulativa: cada componente del IREB Kit contribuye de forma aditiva.
 
-\textbf{2. El scope contract es el hallazgo m\'as relevante para la pr\'actica.} Reduce los diffs en un factor de 2--19$\times$ sin p\'erdida de cobertura funcional. n8n-e5 pas\'o de 4238 l\'ineas (Kit v1, sin scope contract) a 222 l\'ineas (Kit v2, con scope contract). Este mecanismo es directamente transferible a cualquier uso de \textsc{SpecKit}, con o sin IREB.
+\textbf{2. La verificaci\'on (tests) es el punto d\'ebil del pipeline y donde m\'as impacto tiene IREB v2.} C2 es el \'unico flujo que genera tests en 6/6 casos. C1 lo hace en 3/6, C0 en 1/6, C3 en 0/6. La generaci\'on de tests verificables requiere la combinaci\'on completa de formalizaci\'on IREB + \emph{scope contract} + \texttt{AGENTS.md}. Ning\'un subconjunto es suficiente.
 
-\textbf{3. A\~nadir pasos sin robustez es contraproducente.} Kit v1 (3.4/10) fue peor que Sin-Kit (5.3/10) en la mitad de los casos. La lecci\'on es clara: un pipeline m\'as largo no implica mejor resultado si los pasos no se completan de forma fiable. La arquitectura del Kit v2 (AGENTS.md + scope contract + pipeline estable) corrige este problema.
+\textbf{3. El pipeline estructurado es necesario para codebases reales.} La diferencia C3 $-$ C0 (+3.5 puntos) es la mayor del estudio. C3 (MRS directo, sin pipeline) genera c\'odigo m\'inimo (289 l\'ineas, 2 archivos) que no satisface los requisitos (TSR 0.17). C0 (\textsc{SpecKit} vanilla, 4 pasos) alcanza un TSR de 0.92. La estructura del pipeline no es opcional cuando el objetivo es implementar requisitos sobre codebases de m\'as de 100K l\'ineas: es la condici\'on m\'inima necesaria.
 
-\textbf{4. SDD e IREB son complementarios, no sustitutivos.} \textsc{SpecKit} no es una herramienta IREB-compliant, pero con el Kit v2 se aproxima significativamente. La separaci\'on de responsabilidades es clara: el ingeniero de requisitos realiza la elicitaci\'on y formalizaci\'on siguiendo IREB; \textsc{SpecKit} transforma los requisitos formalizados en implementaciones trazables y verificables.
+\textbf{4. La ingenier\'ia de requisitos y SDD se complementan.} \textsc{SpecKit} sin IREB Kit produce c\'odigo funcional, pero a\~nadir requisitos formalizados mejora la trazabilidad, la verificabilidad y reduce las desviaciones. El ingeniero de requisitos elicita y formaliza; \textsc{SpecKit} implementa con trazabilidad. La combinaci\'on de ambos enfoques ofrece mejores resultados que cualquiera de ellos por separado.
 
-\textbf{5. La alucinaci\'on de contexto es prevenible.} El art\'iculo 0 de la constituci\'on (no inventar stakeholders, fuentes ni objetivos) y el checklist R13 del Kit v2 eliminaron las alucinaciones de contexto en el 100\% de los casos (6/6). La combinaci\'on de AGENTS.md + constitution + checklist es efectiva como mecanismo de prevenci\'on.
+\textbf{5. Unos requisitos claros y bien definidos ayudan al agente a no desviarse del objetivo.} En el caso de Authentik, C0 implement\'o una funcionalidad distinta a la solicitada porque el \emph{changelog} no proporcionaba suficiente contexto. C2, al recibir un requisito formalizado con criterios de verificaci\'on y reglas de comportamiento, gener\'o exactamente lo esperado. Esto sugiere que dedicar tiempo a escribir buenos requisitos reduce el riesgo de que el agente malinterprete la tarea.
+
+\section{Tabla resumen comparativa}
+
+La tabla~\ref{tab:resumen-final} sintetiza los resultados de las cuatro condiciones en todas las m\'etricas de evaluaci\'on.
+
+\begin{table}[htbp]
+\centering
+\caption{Resumen comparativo C0 / C1 / C2 / C3 en todas las m\'etricas}
+\label{tab:resumen-final}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{M\'etrica} & \textbf{C0 (Sin-Kit)} & \textbf{C1 (Kit v1)} & \textbf{C2 (Kit v2)} & \textbf{C3 (MRS)} \\
+\midrule
+SRCI (escala 0--10) & 6.3 & 6.8 & \textbf{7.2} & 2.8 \\
+TSR (\% criterios satisfechos) & 92\,\% & \textbf{100}\,\% & \textbf{100}\,\% & 17\,\% \\
+Casos con tests & 1/6 & 3/6 & \textbf{6/6} & 0/6 \\
+Coste medio (\$) & 0.0407 & 0.0608 & 0.0696 & \textbf{0.0115} \\
+L\'ineas de c\'odigo (media) & 5.948 & 18.522 & 14.218 & \textbf{289} \\
+\midrule
+\textbf{Eficiencia (pts/\$)} & 155 & 112 & 103 & \textbf{243} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La tabla muestra una progresi\'on clara: C2 obtiene la mejor puntuaci\'on en la m\'etrica principal (SRCI), alcanza TSR completa junto con C1, y es el \'unico flujo que genera tests en todos los casos. C3 es la opci\'on m\'as econ\'omica pero su capacidad para implementar requisitos reales es limitada (TSR 17\%). La elecci\'on entre flujos depende del contexto: para un cambio peque\'no y aislado, C3 puede ser suficiente; para requisitos que necesitan trazabilidad y verificaci\'on, C2 ofrece las mayores garant\'ias.
+
+\section{Lecciones para la pr\'actica}
+
+Los resultados permiten extraer cinco lecciones directamente aplicables a equipos que utilicen herramientas de generaci\'on de c\'odigo asistida por IA:
+
+\begin{enumerate}
+    \item \textbf{La estructura del pipeline no es opcional.} La diferencia C3 $\rightarrow$ C0 (+3.5 puntos, +0.75 TSR) demuestra que incluso el pipeline m\'inimo de \textsc{SpecKit} (4 pasos) multiplica por m\'as de 5 el cumplimiento de requisitos frente a preguntar directamente al LLM.
+    
+    \item \textbf{Formalizar los requisitos antes de usar SpecKit.} La diferencia entre C1 y C0 (+0.5 puntos SRCI, TSR 1.00 vs.\ 0.92) es atribuible a la formalizaci\'on previa con atributos IREB y criterios de verificaci\'on expl\'icitos.
+    
+    \item \textbf{Usar siempre un scope contract.} El mecanismo de \emph{scope contract} reduce los \emph{diffs} en hasta 19$\times$ y es la intervenci\'on con mayor retorno de inversi\'on: un paso de 2--3 minutos antes de \texttt{implement}.
+    
+    \item \textbf{La combinaci\'on completa es necesaria para garantizar tests.} Solo C2 (formalizaci\'on + scope contract + AGENTS.md) genera tests en el 100\% de los casos. Ning\'un subconjunto es suficiente.
+    
+    \item \textbf{La ingenier\'ia de requisitos no compite con SDD: lo potencia.} La progresi\'on C3 $\rightarrow$ C0 $\rightarrow$ C1 $\rightarrow$ C2 muestra que cada incremento en madurez metodol\'ogica produce resultados mediblemente mejores. El valor diferencial no est\'a en la herramienta sino en la calidad de los requisitos.
+\end{enumerate}
 
 \section{Trabajo futuro}
 
 Las siguientes l\'ineas podr\'ian extender los resultados:
 
 \begin{enumerate}
-    \item \textbf{Ampliaci\'on del corpus de evaluaci\'on}: ejecutar los 46 casos restantes del corpus (actualmente solo formalizados) en el flujo Kit v2 para aumentar el tama\~no de la muestra de 6 a 52.
+    \item \textbf{Ampliaci\'on del corpus de evaluaci\'on}: ejecutar los 46 casos restantes del corpus (actualmente solo formalizados) en el flujo C2 (Kit v2) para aumentar el tama\~no de la muestra de 6 a 52.
     \item \textbf{Evaluaci\'on multi-evaluador}: replicar el an\'alisis SRCI con varios evaluadores independientes para calibrar la reproducibilidad de la r\'ubrica.
     \item \textbf{Automatizaci\'on del pipeline}: el \texttt{pipeline.sh} del IREB Kit es un prototipo. Una integraci\'on nativa con la API de \textsc{SpecKit} (cuando est\'e disponible) permitir\'ia ejecuciones completamente automatizadas.
     \item \textbf{Extensi\'on a otros dominios}: incorporar proyectos de dominios no representados en el corpus actual (sistemas cr\'iticos, IoT, tiempo real, sistemas embebidos).
@@ -43,4 +84,4 @@ Las siguientes l\'ineas podr\'ian extender los resultados:
 
 \section{Reflexi\'on final}
 
-La irrupci\'on de herramientas de IA para la generaci\'on de c\'odigo no hace obsoleta la ingenier\'ia de requisitos, sino que la hace m\'as necesaria. Como se\~nal\'o Kim Lauenroth en AIDE\#26 (2026): ``AI amplifies what we put in --- good and bad. Methodological maturity decides the outcome''. Este trabajo demuestra emp\'iricamente que la madurez metodol\'ogica ---en forma de requisitos formalizados seg\'un normas, constituci\'on con principios RE, y mecanismos de control de alcance--- produce resultados mediblemente mejores. La ingenier\'ia de requisitos no compite con SDD: lo potencia.
+La irrupci\'on de herramientas de IA para la generaci\'on de c\'odigo no hace obsoleta la ingenier\'ia de requisitos, sino que la hace m\'as necesaria. Como se\~nal\'o Kim Lauenroth en AIDE\#26 (2026): ``AI amplifies what we put in,  good and bad. Methodological maturity decides the outcome''. Este trabajo demuestra emp\'iricamente que la madurez metodol\'ogica ,en forma de requisitos formalizados seg\'un normas, constituci\'on con principios RE, y mecanismos de control de alcance, produce resultados mediblemente mejores, en l\'inea con lo que la literatura sobre calidad de requisitos lleva dos d\'ecadas defendiendo~\cite{daneva2013agilere,femmer2014reartifacts}. La ingenier\'ia de requisitos no compite con SDD: lo potencia.

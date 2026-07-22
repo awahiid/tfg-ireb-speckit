@@ -3,45 +3,69 @@
 
 \section{Motivaci\'on}
 
-La ingenier\'ia de requisitos es una disciplina fundamental en el desarrollo de software. Como se\~nala el IREB CPRE Foundation Level Handbook, un enfoque sistem\'atico y disciplinado para la especificaci\'on y gesti\'on de requisitos reduce el riesgo de entregar un sistema que no satisface las necesidades de sus \emph{stakeholders}~\cite{cpre}.
+Cuando un equipo de desarrollo quiere usar inteligencia artificial para generar c\'odigo, tiene varias opciones. Puede hacer una petici\'on directa al modelo (``implementa esto''), puede usar una herramienta como \textsc{SpecKit} que estructura el proceso en varios pasos, o puede combinar \textsc{SpecKit} con pr\'acticas de ingenier\'ia de requisitos. La pregunta es: ¿cu\'al de estas opciones da mejores resultados?
 
-En paralelo, la irrupci\'on de herramientas de inteligencia artificial para la generaci\'on de c\'odigo ha transformado el panorama del desarrollo de software. Entre ellas, \textsc{SpecKit} ---un \emph{toolkit} de c\'odigo abierto desarrollado por GitHub--- propone un flujo de trabajo estructurado denominado \emph{Spec-Driven Development} (SDD), en el que las especificaciones se convierten en el artefacto principal del que se derivan implementaciones~\cite{speckit_repo,speckit_sdd}.
+\textsc{SpecKit} es un \emph{toolkit} de c\'odigo abierto desarrollado por GitHub que propone un flujo de trabajo llamado \emph{Spec-Driven Development} (SDD). La idea es sencilla: antes de escribir c\'odigo, se redacta una especificaci\'on; luego se genera un plan t\'ecnico; despu\'es se desglosan las tareas; y finalmente se implementa. Todo esto lo hace un agente de inteligencia artificial integrado en el editor de c\'odigo~\cite{speckit_repo,speckit_sdd}.
 
-Sin embargo, \textsc{SpecKit} no se presenta como una herramienta de ingenier\'ia de requisitos, sino como un generador de c\'odigo asistido por IA que utiliza un pipeline estructurado. Surge entonces la pregunta de hasta qu\'e punto su flujo de trabajo se alinea con las pr\'acticas establecidas por la ingenier\'ia de requisitos profesional basada en normas.
+La ingenier\'ia de requisitos (RE) es la disciplina que estudia c\'omo recoger, documentar y validar lo que un sistema software debe hacer. Existen normas internacionales que definen buenas pr\'acticas para hacerlo bien, como el modelo IREB CPRE (\emph{Certified Professional for Requirements Engineering}), la norma ISO/IEC/IEEE~29148 o la gu\'ia INCOSE~\cite{cpre,iso29148,incose}. Estas normas establecen, por ejemplo, que un requisito debe ser verificable, no ambiguo y trazable hasta su origen.
+
+Este trabajo estudia qu\'e ocurre cuando se juntan ambos mundos: ¿mejoran los resultados de \textsc{SpecKit} si los requisitos que recibe est\'an formalizados seg\'un las normas IREB? ¿Qu\'e partes del flujo normativo de ingenier\'ia de requisitos cubre \textsc{SpecKit} por s\'i solo y cu\'ales no?
 
 \section{Problema y pregunta de investigaci\'on}
 
-El problema que aborda este trabajo es la ausencia de un an\'alisis sistem\'atico que documente en qu\'e medida los pipelines SDD implementados con herramientas como \textsc{SpecKit} se alinean con las actividades, criterios de calidad y artefactos definidos por un flujo RE profesional basado en normas.
-
-La pregunta central que gu\'ia el estudio es:
+No existe un an\'alisis que documente en qu\'e medida herramientas como \textsc{SpecKit} se ajustan a las pr\'acticas establecidas por la ingenier\'ia de requisitos profesional. La pregunta que gu\'ia este trabajo es:
 
 \begin{quote}
 \emph{¿En qu\'e medida se alinea el pipeline de SDD de \textsc{SpecKit} con las actividades, criterios de calidad y artefactos definidos por un flujo de ingenier\'ia de requisitos profesional basado en normas?}
 \end{quote}
 
-Esta pregunta tiene dos dimensiones complementarias:
-\begin{itemize}
-    \item \textbf{Dimensi\'on descriptiva}: documentar el flujo real de \textsc{SpecKit} ---sus comandos, artefactos y mecanismos de calidad--- tal como est\'a definido en su documentaci\'on oficial.
-    \item \textbf{Dimensi\'on comparativa}: contrastar ese flujo con el marco normativo de RE profesional, identificando alineaciones, brechas y \'areas grises.
-\end{itemize}
+Para responderla, el trabajo tiene dos l\'ineas de acci\'on complementarias. Por un lado, mapea cada actividad y criterio del marco normativo contra los comandos y artefactos de \textsc{SpecKit}, documentando qu\'e cubre, qu\'e cubre parcialmente y qu\'e no cubre. Por otro, compara experimentalmente cuatro formas distintas de pedirle a un modelo de lenguaje que implemente un cambio de c\'odigo, midiendo la calidad del resultado en cada caso.
 
-\section{Objetivos}
+\section{Objetivos y preguntas de investigaci\'on}
 
-El objetivo principal de este trabajo es construir un mapa de alineaci\'on entre el pipeline SDD de \textsc{SpecKit} y el flujo RE normativo. Los objetivos espec\'ificos son:
+\subsection{Objetivo general}
+
+El objetivo de este Trabajo de Fin de Grado es \textbf{determinar en qu\'e medida el pipeline de \textsc{SpecKit} se alinea con un flujo profesional de ingenier\'ia de requisitos basado en normas}, y \textbf{evaluar si formalizar los requisitos seg\'un IREB antes de pasarlos a \textsc{SpecKit} produce mejores resultados que usar la herramienta con texto sin tratar}.
+
+\subsection{Preguntas de investigaci\'on}
+
+\begin{description}
+    \item[P1.] \textit{¿Qu\'e actividades y criterios del flujo RE normativo cubre \textsc{SpecKit} por defecto, cu\'ales cubre parcialmente y cu\'ales no cubre?}
+    
+    \item[P2.] \textit{¿Mejoran los resultados cuando los requisitos de entrada se formalizan con una plantilla IREB y se a\~naden mecanismos de control de alcance?}
+\end{description}
+
+\subsection{Objetivos espec\'ificos}
 
 \begin{enumerate}
-    \item Construir un corpus de requisitos derivados de proyectos \emph{Open Source} representativos.
-    \item Formalizar el corpus siguiendo la plantilla IREB con atributos de calidad ISO 29148.
-    \item Ejecutar el pipeline ampliado de \textsc{SpecKit} sobre el corpus y registrar los artefactos generados.
-    \item Aplicar la r\'ubrica SRCI para categorizar cada caso de mapeo.
-    \item Identificar patrones de alineaci\'on y desviaci\'on por tipo de requisito y tipo de sistema.
-    \item Derivar implicaciones para la adopci\'on de SDD en entornos con requisitos de calidad RE.
+    \item \textbf{O1.} Caracterizar el flujo SDD de \textsc{SpecKit}: sus comandos, artefactos y mecanismos de calidad.
+    \item \textbf{O2.} Establecer el marco normativo de referencia con IREB, ISO~29148 e INCOSE.
+    \item \textbf{O3.} Construir un corpus de 52 requisitos a partir de \emph{changelogs} de seis proyectos \emph{Open Source}, formalizados con una plantilla IREB de 12 atributos.
+    \item \textbf{O4.} Dise\~nar el IREB Kit for SpecKit: constituci\'on, plantillas, \emph{checklists}, \emph{scope contract} y reglas de agente.
+    \item \textbf{O5.} Ejecutar cuatro configuraciones experimentales (C0--C3) sobre 6 casos y comparar los resultados.
+    \item \textbf{O6.} Evaluar los 24 artefactos generados combinando an\'alisis autom\'atico de calidad de c\'odigo y r\'ubrica manual SRCI v3 (\emph{Structured Requirement Conformance Inspection}).
+    \item \textbf{O7.} Extraer conclusiones sobre la aplicabilidad del enfoque SDD en entornos que requieren garant\'ias de calidad en los requisitos.
 \end{enumerate}
 
 \section{Alcance y limitaciones}
 
-El estudio se enmarca como an\'alisis cualitativo-exploratorio, no como experimento estad\'istico. El corpus se limita a proyectos \emph{Open Source} con \emph{changelogs} trazables. \textsc{SpecKit} es una herramienta en desarrollo activo (v0.10.2, junio 2026), por lo que los resultados son v\'alidos para la versi\'on analizada. El mapeo eval\'ua el requisito formalizado tal como se deriv\'o, no necesariamente el comportamiento completo del \emph{diff} original.
+El trabajo se ha realizado con recursos limitados de tiempo y presupuesto, lo que ha condicionado algunas decisiones. Para cada una se ha buscado una forma de compensar sus efectos.
+
+El corpus se compone de 52 requisitos extra\'idos de \emph{changelogs} de seis proyectos \emph{Open Source}. Los \emph{changelogs} son res\'umenes p\'ublicos de cambios ya aceptados, lo que los convierte en una fuente trazable, aunque no tienen la granularidad de una especificaci\'on formal. Para compensarlo, cada requisito se ha formalizado con una plantilla de 12 atributos IREB y se ha validado con una r\'ubrica de 12 criterios, alcanzando una calidad media de 10{,}8 sobre 12. Los seis repositorios se seleccionaron siguiendo las taxonom\'ias de Glass y Vessey para cubrir un espectro amplio de tipos de sistema software.
+
+La evaluaci\'on se realiza sobre 6 de los 52 casos (uno por repositorio) en 4 configuraciones, sumando 24 ejecuciones. Ampliar el n\'umero de casos habr\'ia requerido m\'as tiempo de c\'omputo y m\'as presupuesto para el uso del modelo: cada ejecuci\'on tarda unos 30 minutos y tiene un coste asociado. Para mitigarlo, los seis casos se eligieron representando cada uno un tipo de sistema distinto, y la evaluaci\'on combina dos metodolog\'ias complementarias (an\'alisis autom\'atico y r\'ubrica manual). Los 46 casos restantes quedan formalizados para trabajos futuros.
+
+La r\'ubrica SRCI v3 ha sido aplicada por el autor. Para reducir la subjetividad, sus criterios son operativos y se definieron antes de evaluar los resultados. Todos los artefactos generados se conservan para que cualquier persona pueda revisarlos. Los experimentos usan una versi\'on concreta de \textsc{SpecKit} (v0.10.2) y del modelo DeepSeek V4 Flash, y los scripts de ejecuci\'on est\'an disponibles para garantizar la reproducibilidad.
+
+\section{Contribuciones}
+
+\begin{enumerate}
+    \item \textbf{El IREB Kit for SpecKit}: 10 artefactos que transforman el pipeline de \textsc{SpecKit} para trabajar con requisitos formalizados seg\'un IREB.
+    \item \textbf{Un corpus de 52 requisitos formalizados}: derivados de \emph{changelogs} de 6 proyectos \emph{Open Source}, con trazabilidad completa y 52 MRS (\emph{Minimal Requirement Seeds}) para replicabilidad.
+    \item \textbf{Un mapa de alineaci\'on IREB--SpecKit}: qu\'e actividades y criterios del marco normativo cubre \textsc{SpecKit} y cu\'ales no.
+    \item \textbf{Una evaluaci\'on emp\'irica}: 24 ejecuciones en 4 configuraciones, mostrando una progresi\'on clara: C3 (sin pipeline, 2.8/10) $\rightarrow$ C0 (\textsc{SpecKit} solo, 6.3/10) $\rightarrow$ C1 (+IREB, 6.8/10) $\rightarrow$ C2 (+control de alcance, 7.2/10).
+\end{enumerate}
 
 \section{Estructura del documento}
 
-El cap\'itulo~\ref{chap:marco-ireb} presenta el marco te\'orico de referencia basado en IREB, ISO 29148 e INCOSE. El cap\'itulo~\ref{chap:speckit} describe \textsc{SpecKit} y la filosof\'ia SDD. El cap\'itulo~\ref{chap:metodologia} detalla la metodolog\'ia de mapeo. El cap\'itulo~\ref{chap:corpus} presenta el corpus de requisitos. El cap\'itulo~\ref{chap:resultados} expone los resultados del an\'alisis. El cap\'itulo~\ref{chap:discusion} discute las implicaciones. Finalmente, el cap\'itulo~\ref{chap:conclusiones} recoge las conclusiones y el trabajo futuro.
+El cap\'itulo~\ref{chap:estado-arte} presenta los fundamentos: el marco normativo IREB, ISO~29148 e INCOSE, el funcionamiento de \textsc{SpecKit} y el paradigma SDD, y la relaci\'on con otros trabajos. El cap\'itulo~\ref{chap:metodologia} describe las cuatro fases del trabajo y el dise\~no experimental (C0--C3). El cap\'itulo~\ref{chap:implementacion} presenta el corpus de 52 requisitos y el IREB Kit. El cap\'itulo~\ref{chap:resultados} muestra los resultados de la evaluaci\'on. El cap\'itulo~\ref{chap:discusion} los interpreta y responde a las preguntas de investigaci\'on. El cap\'itulo~\ref{chap:conclusiones} recoge las conclusiones y l\'ineas futuras.

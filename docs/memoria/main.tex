@@ -6,9 +6,19 @@
 \usepackage{lipsum}
 \usepackage{tabularx}
 \usepackage{booktabs}
+\usepackage{placeins}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, backgrounds, fit, calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% Símbolos para tablas comparativas
+\newcommand{\cmark}{\checkmark}
+\newcommand{\xmark}{--}
+\newcommand{\pmark}{$\sim$}
 
 % Rellenar con los datos del estudiante y el trabajo
-\estudiante{[Nombre del autor]}{Grado en Ingeniería Informática en Ingeniería del Software}{Mapeo de SpecKit contra flujos profesionales de ingeniería de requisitos basados en normas}
+\estudiante{Abdel Wahed Mahfoud Mouhandizi}{Grado en Ingeniería Informática en Ingeniería del Software}{Mapeo de SpecKit contra flujos profesionales de ingeniería de requisitos basados en normas}
 \title{Mapeo de SpecKit contra flujos profesionales de ingeniería de requisitos basados en normas}
 \keywords{Ingeniería de requisitos\and IREB\and SpecKit\and Spec-Driven Development\and ISO 29148\and mapeo de procesos}
 
@@ -18,7 +28,7 @@
 
 %%%%%%%%%%%%% PORTADA %%%%%%%%%%%%%
 % Poner convocatoria y año de presentación
-\portadaTFE{Convocatoria, Año}
+\portadaTFE{Convocatoria de septiembre, 2026}
 
 \pagestyle{empty}
 
@@ -32,7 +42,7 @@
 % cotutorGender }
 % Especificar un co-tutor lo añade a la contraportada
 % Poner la letra f en cualquier campo de género añade una 'a' al título correspondiente (por ejemplo, studentGender = f hace que se muestre Autora)
-\contraportadaTFE{tutor = Tutor}
+\contraportadaTFE{tutor = Julia González Rodríguez, cotutor = Emilio Delgado Muñoz}
 
 %%%% CAPÍTULOS INTRODUCTORIOS %%%%
 \pagenumbering{gobble}
@@ -41,25 +51,29 @@
 
 \chapter*{Resumen}
 
-Este trabajo tiene dos objetivos: mapear el flujo de trabajo de \textsc{SpecKit} ---un \emph{toolkit} de c\'odigo abierto para \emph{Spec-Driven Development} (SDD) de GitHub--- contra las actividades y criterios de calidad de un flujo profesional de ingenier\'ia de requisitos (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, INCOSE); y evaluar si los resultados mejoran cuando se alimenta a \textsc{SpecKit} con requisitos formalizados seg\'un IREB en lugar de con texto libre.
+Este trabajo tiene dos objetivos. El primero es mapear el flujo de trabajo de \textsc{SpecKit}, un \emph{toolkit} de c\'odigo abierto de GitHub para \emph{Spec-Driven Development} (SDD), contra las actividades y criterios de calidad de un flujo profesional de ingenier\'ia de requisitos basado en normas (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148 e INCOSE). El segundo es evaluar si el c\'odigo que genera \textsc{SpecKit} mejora cuando recibe requisitos formalizados seg\'un IREB, en lugar de texto libre extra\'ido de \emph{changelogs}.
 
-El trabajo produce el \emph{IREB Kit for SpecKit}: un conjunto de 10 artefactos que incluyen una constituci\'on con 9 principios IREB, una plantilla de especificaci\'on con 12 atributos, un checklist de calidad ISO~29148 con 13 criterios, y un mecanismo de scope contract para controlar el alcance de la implementaci\'on.
+Para ello se ha construido un corpus de 52 requisitos a partir de los \emph{changelogs} de seis proyectos \emph{Open Source}: Appwrite, Authentik, Cal.com, Directus, Medusa y n8n. Cada proyecto representa un tipo distinto de sistema software. Los requisitos se han formalizado con una plantilla de 12 atributos basada en IREB e ISO~29148 y se han validado con una r\'ubrica de 12 criterios, obteniendo una puntuaci\'on media de 10{,}8 sobre 12. A partir de ellos se han derivado 52 \emph{Minimal Requirement Seeds} (MRS), descripciones m\'inimas en lenguaje natural que permiten reproducir el experimento.
 
-Para la evaluaci\'on se construye un corpus de 52 requisitos derivados de \emph{changelogs} de seis proyectos \emph{Open Source} (Appwrite, Authentik, Cal.com, Directus, Medusa, n8n) y se derivan 52 \emph{Minimal Requirement Seeds} (MRS). Seis casos del subconjunto de evaluaci\'on se ejecutan en tres flujos paralelos ---Sin-Kit (baseline), Kit v1 (IREB-enhanced inicial) y Kit v2 (IREB-enhanced con scope contract)--- y se eval\'uan mediante una r\'ubrica SRCI de 24 criterios.
+El experimento compara cuatro formas de pedirle a un modelo de lenguaje que implemente un cambio de c\'odigo: C0, usando \textsc{SpecKit} con el texto literal del \emph{changelog}; C1, usando \textsc{SpecKit} con el requisito ya formalizado; C2, usando \textsc{SpecKit} con el requisito formalizado y a\~nadiendo reglas de comportamiento para el agente y un mecanismo que acota qu\'e archivos puede modificar; y C3, pasando directamente el MRS al modelo sin usar \textsc{SpecKit}. Se han ejecutado las cuatro condiciones sobre seis casos (uno por repositorio), sumando 24 ejecuciones en total. Los resultados se han evaluado combinando un an\'alisis autom\'atico de calidad de c\'odigo con seis herramientas y una r\'ubrica manual (SRCI v3) que mide la preservaci\'on del requisito, la conformidad de la implementaci\'on, la presencia de tests y el porcentaje de criterios de verificaci\'on satisfechos (TSR).
 
-Los resultados muestran que \textbf{Kit v2 gana 6--0} con una diferencia media de +3.9 puntos sobre Sin-Kit (9.2 vs. 5.3 en escala 0--10). El scope contract reduce los diffs en un factor de hasta 19$\times$ sin p\'erdida de cobertura funcional. Kit v1 fue peor que Sin-Kit (3.4 vs. 5.3), demostrando que a\~nadir pasos al pipeline sin robustez es contraproducente.
+Los resultados muestran que cada paso que se a\~nade al proceso mejora los resultados. Sin ninguna estructura (C3) se obtiene un 2{,}8 sobre 10 y un TSR del 17\,\%. Con el pipeline b\'asico de \textsc{SpecKit} (C0) se alcanza un 6{,}3 con un TSR del 92\,\%. Al formalizar los requisitos (C1) se llega a 6{,}8 con un TSR del 100\,\%. La configuraci\'on m\'as completa (C2) obtiene un 7{,}2 y es la \'unica que genera tests autom\'aticamente en todos los casos. El coste econ\'omico crece con la calidad, desde \$0{,}01 por ejecuci\'on en C3 hasta \$0{,}07 en C2.
+
+El trabajo produce como contribuci\'on principal el \textbf{IREB Kit for SpecKit}, un conjunto de 10 artefactos (constituci\'on con principios de ingenier\'ia de requisitos, plantillas de especificaci\'on, listas de verificaci\'on de calidad, mecanismo de control de alcance y reglas de comportamiento para el agente) que cualquier equipo puede incorporar a su flujo de trabajo con \textsc{SpecKit}. El mapa de alineaci\'on entre el pipeline de \textsc{SpecKit} y el flujo normativo IREB muestra que ambas aproximaciones son complementarias: \textsc{SpecKit} aporta la automatizaci\'on de la implementaci\'on, mientras que IREB aporta los criterios de calidad que garantizan que el c\'odigo generado responde a lo que realmente se necesita.
 
 \noindent\textbf{Palabras clave}: \printkeywords.
 
 \chapter*{Abstract}
 
-This work pursues two goals: to map \textsc{SpecKit}'s pipeline ---an open-source Spec-Driven Development toolkit by GitHub--- against the activities and quality criteria of a norm-based requirements engineering workflow (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, INCOSE); and to evaluate whether the generated output improves when \textsc{SpecKit} receives IREB-formalized requirements instead of raw text.
+This work has two objectives. The first is to map \textsc{SpecKit}'s workflow, an open-source Spec-Driven Development (SDD) toolkit by GitHub, against the activities and quality criteria of a professional requirements engineering workflow based on international standards (IREB CPRE Foundation Level, ISO/IEC/IEEE~29148, and INCOSE). The second is to evaluate whether the code generated by \textsc{SpecKit} improves when it receives IREB-formalized requirements instead of raw text extracted from changelogs.
 
-The work produces the \emph{IREB Kit for SpecKit}: a 10-artifact toolkit including a constitution with 9 IREB principles, a specification template with 12 attributes, an ISO~29148 quality checklist with 13 criteria, and a scope contract mechanism to control implementation scope.
+To this end, a corpus of 52 requirements was built from the changelogs of six Open Source projects: Appwrite, Authentik, Cal.com, Directus, Medusa, and n8n. Each project represents a different type of software system. The requirements were formalized using a 12-attribute IREB and ISO~29148 template and validated with a 12-criteria rubric, achieving an average quality score of 10.8 out of 12. From these, 52 Minimal Requirement Seeds (MRS) were derived: short natural-language descriptions that enable experiment replication.
 
-For evaluation, a corpus of 52 requirements is derived from the changelogs of six Open Source projects (Appwrite, Authentik, Cal.com, Directus, Medusa, n8n), and 52 Minimal Requirement Seeds (MRS) are derived for replicability. Six cases from the evaluation subset are executed under three parallel flows ---No-Kit (baseline), Kit v1 (initial IREB-enhanced), and Kit v2 (IREB-enhanced with scope contract)--- and evaluated using a 24-criteria SRCI rubric.
+The experiment compares four ways of asking a language model to implement a code change: C0, using \textsc{SpecKit} with the raw changelog text; C1, using \textsc{SpecKit} with the formalized requirement; C2, using \textsc{SpecKit} with the formalized requirement plus agent behavior rules and a mechanism that limits which files it can modify; and C3, passing the MRS directly to the model without \textsc{SpecKit}. All four conditions were run on six cases (one per repository), totaling 24 executions. Results were evaluated through a combination of automated code quality analysis using six tools and a manual rubric (SRCI v3) measuring requirement preservation, implementation conformance, test coverage, and the percentage of verification criteria satisfied (TSR).
 
-Results show that \textbf{Kit v2 wins 6--0} with an average margin of +3.9 points over No-Kit (9.2 vs. 5.3 on a 0--10 scale). The scope contract reduces diffs by up to 19$\times$ without loss of functional coverage. Kit v1 was worse than No-Kit (3.4 vs. 5.3), demonstrating that adding pipeline steps without robustness is counterproductive.
+Results show that each step added to the process improves the outcome. Without any structure (C3), the score is 2.8 out of 10 with a 17\% TSR. With the basic \textsc{SpecKit} pipeline (C0), it reaches 6.3 with a 92\% TSR. Formalizing the requirements (C1) raises it to 6.8 with a 100\% TSR. The most complete configuration (C2) scores 7.2 and is the only one that automatically generates tests in all cases. Economic cost grows with quality, from \$0.01 per run in C3 to \$0.07 in C2.
+
+The main contribution of this work is the \textbf{IREB Kit for SpecKit}, a set of 10 artifacts (requirements engineering constitution, specification templates, quality checklists, scope control mechanism, and agent behavior rules) that any team can incorporate into their \textsc{SpecKit} workflow. The alignment map between \textsc{SpecKit}'s pipeline and the IREB normative workflow shows that both approaches are complementary: \textsc{SpecKit} provides implementation automation, while IREB provides the quality criteria that ensure the generated code meets actual needs.
 
 \noindent\textbf{Keywords}: Requirements engineering, IREB, SpecKit, Spec-Driven Development, ISO~29148, process mapping, code generation.
 
@@ -74,6 +88,33 @@ Results show that \textbf{Kit v2 wins 6--0} with an average margin of +3.9 point
 \listoftables
 \newpage
 \listoffigures
+\newpage
+
+% Lista de acrónimos
+\chapter*{Lista de acr\'onimos y abreviaturas}
+\addcontentsline{toc}{section}{Lista de acr\'onimos y abreviaturas}
+
+\begin{tabular}{ll}
+BaaS & Backend as a Service \\
+CMS & Content Management System \\
+CPRE & Certified Professional for Requirements Engineering \\
+IA & Inteligencia Artificial \\
+IEEE & Institute of Electrical and Electronics Engineers \\
+INCOSE & International Council on Systems Engineering \\
+IREB & International Requirements Engineering Board \\
+ISO & International Organization for Standardization \\
+LLM & Large Language Model \\
+MRS & Minimal Requirement Seed \\
+MSR & Mining Software Repositories \\
+OS & Open Source \\
+PR & Pull Request \\
+RE & Requirements Engineering \\
+SDD & Spec-Driven Development \\
+SRCI & Structured Requirement Conformance Inspection \\
+TSR & Test Satisfaction Rate \\
+UEx & Universidad de Extremadura \\
+\end{tabular}
+
 \newpage
 
 
@@ -119,11 +160,8 @@ Results show that \textbf{Kit v2 wins 6--0} with an average margin of +3.9 point
 \pagestyle{fancy}
 \setcounter{page}{1}
 
-%%%%%%%% INTRODUCCIÓN %%%%%%%%
+%%%%%%%% INTRODUCCIÓN (incluye objetivos) %%%%%%%%
 \import{chapters}{01_introduccion.tex}
-
-%%%%%%%% OBJETIVOS %%%%%%%%
-\import{chapters}{02_objetivos.tex}
 
 %%%%%%%% ESTADO DEL ARTE %%%%%%%%
 \import{chapters}{03_estado_del_arte.tex}
@@ -131,11 +169,14 @@ Results show that \textbf{Kit v2 wins 6--0} with an average margin of +3.9 point
 %%%%%%%% METODOLOGÍA %%%%%%%%
 \import{chapters}{04_metodologia.tex}
 
-%%%%%%%% IMPLEMENTACIÓN Y DESARROLLO %%%%%%%%
+%%%%%%%% IMPLEMENTACIÓN Y DESARROLLO (IREB Kit + Pipeline) %%%%%%%%
 \import{chapters}{05_implementacion_y_desarrollo.tex}
 
-%%%%%%%% RESULTADOS %%%%%%%%
+%%%%%%%% EJECUCIÓN Y RESULTADOS %%%%%%%%
 \import{chapters}{06_resultados.tex}
+
+%%%%%%%% DISCUSIÓN %%%%%%%%
+\import{chapters}{06_discusion.tex}
 
 %%%%%%%% CONCLUSIONES Y TRABAJOS FUTUROS %%%%%%%%
 \import{chapters}{07_conclusiones_y_trabajos_futuros.tex}
@@ -147,8 +188,8 @@ Results show that \textbf{Kit v2 wins 6--0} with an average margin of +3.9 point
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \startappendices
 
-%%%%%%%% ANEXO 1 %%%%%%%%
-\import{appendices}{01_ejemplo_de_anexo.tex}
+%%%%%%%% ANEXO 1: Plantilla de formalización %%%%%%%%
+\import{appendices}{02_plantilla_requisitos.tex}
 
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

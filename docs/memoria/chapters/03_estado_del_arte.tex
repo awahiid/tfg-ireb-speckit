@@ -1,71 +1,57 @@
 \chapter{\stateoftheartname}
-\label{chap:marco-ireb}
+\label{chap:estado-arte}
 
 \section{Ingenier\'ia de requisitos basada en normas}
 
-\subsection{IREB y el CPRE Foundation Level Handbook}
+El marco normativo de referencia se compone de tres pilares complementarios:
 
-El International Requirements Engineering Board (IREB) define un marco de referencia para la ingenier\'ia de requisitos a trav\'es de su programa de certificaci\'on CPRE. El \emph{Foundation Level Handbook}~\cite{cpre} establece los fundamentos conceptuales y las buenas pr\'acticas de la disciplina.
+\textbf{IREB y la certificaci\'on CPRE}~\cite{cpre}. El \emph{International Requirements Engineering Board} (IREB) es el organismo que certifica a profesionales de ingenier\'ia de requisitos mediante el programa CPRE (\emph{Certified Professional for Requirements Engineering}). Su \emph{Foundation Level Handbook} organiza la RE en tres actividades fundamentales, elicitaci\'on, documentaci\'on y validaci\'on, m\'as una transversal de gesti\'on. Define el requisito desde tres perspectivas: necesidad del \emph{stakeholder}, capacidad del sistema, y representaci\'on documentada. \textsc{SpecKit} opera exclusivamente en la tercera. El \emph{handbook} establece nueve principios (orientaci\'on al valor, implicaci\'on de \emph{stakeholders}, entendimiento compartido, contexto del sistema, problema-requisito-soluci\'on, validaci\'on, evoluci\'on, innovaci\'on y trabajo sistem\'atico) que se utilizan como criterio de contraste en el cap\'itulo~\ref{chap:resultados}.
 
-El handbook define \textbf{requisito} desde tres puntos de vista complementarios: como una necesidad percibida por un \emph{stakeholder}, como una capacidad o propiedad que el sistema debe tener, y como la representaci\'on documentada de esa necesidad o capacidad~\cite[p.~10]{cpre}. Define \textbf{Requirements Engineering} como el enfoque sistem\'atico y disciplinado para especificar y gestionar requisitos con el objetivo de entender los deseos y necesidades de los \emph{stakeholders} y reducir el riesgo de entregar un sistema inadecuado~\cite[pp.~10--11]{cpre}.
+\textbf{ISO/IEC/IEEE 29148}~\cite{iso29148} define ocho criterios de calidad para requisitos: necesario, singular, completo, verificable, no ambiguo, consistente, trazable y factible. Estos criterios se utilizan en la Fase~2 como base de la r\'ubrica de formalizaci\'on.
 
-\subsubsection{Las tres actividades fundamentales}
+\textbf{INCOSE Guide for Writing Requirements}~\cite{incose} prescribe la estructura ``El sistema deber\'a [verbo] [objeto] [condici\'on]'' con verbos observables, sin t\'erminos subjetivos y con condiciones cuantificables. Estas reglas se incorporan en los criterios R5, R7 y R8 de la r\'ubrica de formalizaci\'on.
 
-IREB distingue tres actividades fundamentales~\cite[pp.~16--28]{cpre}:
-
-\begin{description}
-    \item[Elicitaci\'on:] el proceso de buscar, capturar y consolidar requisitos desde fuentes disponibles. Las fuentes t\'ipicas incluyen \emph{stakeholders}, documentos, sistemas existentes y observaciones.
-    \item[Documentaci\'on:] la especificaci\'on estructurada de requisitos siguiendo criterios de calidad. IREB recomienda el uso de plantillas y atributos (ID, nombre, fuente, prioridad, \emph{rationale}, estado, versi\'on).
-    \item[Validaci\'on:] el proceso de confirmar que los requisitos documentados reflejan las necesidades reales de los \emph{stakeholders}.
-\end{description}
-
-A estas tres actividades se a\~nade una transversal de \textbf{gesti\'on de requisitos}, que abarca almacenamiento, versionado, trazabilidad y control de cambios.
-
-\subsubsection{Los nueve principios fundamentales}
-
-El handbook establece nueve principios fundamentales~\cite[pp.~16--18]{cpre}: (1) orientaci\'on al valor, (2) implicaci\'on de \emph{stakeholders}, (3) entendimiento compartido, (4) contexto del sistema, (5) problema-requisito-soluci\'on, (6) validaci\'on, (7) evoluci\'on, (8) innovaci\'on, y (9) trabajo sistem\'atico y disciplinado.
-
-\subsection{ISO/IEC/IEEE 29148: criterios de calidad}
-
-La norma ISO/IEC/IEEE 29148~\cite{iso29148} define los criterios que debe cumplir un requisito bien formado: necesario, singular, completo, verificable, no ambiguo, consistente y trazable.
-
-\subsection{INCOSE Guide for Writing Requirements}
-
-La INCOSE Guide~\cite{incose} recomienda la estructura ``El sistema deber\'a [verbo] [objeto] [condici\'on]'', verbos observables, ausencia de t\'erminos subjetivos y autosuficiencia del requisito.
+Se opt\'o por IREB frente a IEEE~830 porque IREB proporciona un marco de actividades m\'as abstracto y adaptable a fuentes documentales (\emph{changelogs}), es el est\'andar de certificaci\'on profesional m\'as extendido en Europa, y su estructura de actividades se presta mejor a un mapeo contra un pipeline de herramientas.
 
 \section{SpecKit y Spec-Driven Development}
 
-\textsc{SpecKit} es un \emph{toolkit} de c\'odigo abierto (MIT) desarrollado por GitHub para practicar SDD. Su repositorio oficial cuenta con m\'as de 112\,000 estrellas, 229 contribuyentes y 162 \emph{releases} (v0.10.2, junio 2026). Est\'a escrito principalmente en Python (94.7\,\%) con scripts auxiliares en Shell y PowerShell~\cite{speckit_repo}.
+\textsc{SpecKit} es un \emph{toolkit} open source (MIT, 112K estrellas, v0.10.2) desarrollado por GitHub para \emph{Spec-Driven Development} (SDD)~\cite{speckit_repo,speckit_sdd}. Su propuesta de valor es transformar especificaciones en implementaciones mediante un pipeline de 8 comandos que un agente de IA ejecuta en VS Code Copilot Chat:
 
-La filosof\'ia SDD se fundamenta en seis principios~\cite{speckit_sdd}: (1) especificaciones como lengua franca, (2) especificaciones ejecutables, (3) refinamiento continuo, (4) contexto impulsado por investigaci\'on, (5) retroalimentaci\'on bidireccional y (6) ramificaci\'on para exploraci\'on. El pipeline b\'asico consta de cinco comandos: \texttt{constitution}, \texttt{specify}, \texttt{plan}, \texttt{tasks} e \texttt{implement}, a los que se a\~naden tres opcionales de calidad: \texttt{clarify}, \texttt{checklist} y \texttt{analyze}~\cite{speckit_docs}.
+\begin{enumerate}
+    \item \texttt{/speckit.constitution}: reglas de gobierno del proyecto.
+    \item \texttt{/speckit.specify}: convierte una descripci\'on en especificaci\'on estructurada (\texttt{spec.md}).
+    \item \texttt{/speckit.clarify}: detecta ambig\"uedades (m\'aximo 3 marcadores \texttt{[NEEDS CLARIFICATION]}).
+    \item \texttt{/speckit.checklist}: genera \emph{checklist} de calidad.
+    \item \texttt{/speckit.plan}: traduce la especificaci\'on a plan t\'ecnico (\texttt{plan.md}) con modelo de datos y contratos.
+    \item \texttt{/speckit.tasks}: descompone el plan en tareas con grafo de dependencias.
+    \item \texttt{/speckit.analyze}: verificaci\'on de consistencia cruzada (pre/post implementaci\'on).
+    \item \texttt{/speckit.implement}: ejecuta las tareas y genera c\'odigo + tests.
+\end{enumerate}
 
-Un aspecto diferencial de \textsc{SpecKit} es su arquitectura extensible, que permite personalizar el flujo mediante \textbf{presets} (22 comunitarios, sobreescriben plantillas), \textbf{extensions} (105 comunitarias, a\~naden comandos como integraci\'on Jira o compuertas de calidad) y \textbf{workflows} (pipeline automatizado en YAML con compuertas de revisi\'on humana)~\cite{speckit_repo}.
+El flujo completo recomendado es: \texttt{constitution} $\rightarrow$ \texttt{specify} $\rightarrow$ \texttt{clarify} $\rightarrow$ \texttt{checklist} $\rightarrow$ \texttt{plan} $\rightarrow$ \texttt{tasks} $\rightarrow$ \texttt{analyze} $\rightarrow$ \texttt{implement} $\rightarrow$ \texttt{analyze}.
 
-\section{Herramientas profesionales de gesti\'on de requisitos}
+\textsc{SpecKit} incorpora mecanismos de calidad internos (\texttt{[NEEDS CLARIFICATION]}, \emph{Constitutional Gates}, \emph{test-first}) y una arquitectura extensible mediante \textbf{Presets} (22, permiten inyectar la plantilla IREB de 12 atributos), \textbf{Extensions} (105) y \textbf{Workflows} YAML. Esta extensibilidad es la que hace viable el IREB Kit sin modificar la herramienta.
 
-Herramientas como IBM DOORS, Jama Connect o Siemens Polarion son el est\'andar industrial para la gesti\'on de requisitos. La tabla~\ref{tab:profesionales} compara sus capacidades con las de \textsc{SpecKit}.
+\section{Herramientas profesionales y trabajos relacionados}
 
-\begin{table}[h]
+Herramientas como IBM DOORS, Jama Connect o Siemens Polarion cubren trazabilidad bidireccional, \emph{baselines}, versionado y flujos de aprobaci\'on, pero ninguna integra generaci\'on de c\'odigo asistida por IA. \textsc{SpecKit} ofrece generaci\'on pero carece de gesti\'on del ciclo de vida. Ambas categor\'ias son complementarias.
+
+En la literatura, el uso de proyectos \emph{Open Source} como corpus emp\'irico es una pr\'actica consolidada en MSR~\cite{hassan2019msr}. Los estudios sobre generaci\'on de c\'odigo con LLMs (\emph{Large Language Models})~\cite{chen2021codex,xu2022llmse} muestran que estos modelos resuelven tareas de programaci\'on con alta precisi\'on cuando reciben descripciones claras, aunque su rendimiento baja con especificaciones ambiguas. Los trabajos sobre productividad con Copilot~\cite{ziegler2024productivity} encuentran que los desarrolladores completan tareas m\'as r\'apido, pero no analizan si la calidad del c\'odigo generado depende de c\'omo se redacta la petici\'on. En el \'ambito RE, los estudios sobre metodolog\'ias \'agiles~\cite{daneva2013agilere} se\~nalan que la documentaci\'on de requisitos tiende a sacrificarse en entornos \'agiles, y los trabajos sobre artefactos RE~\cite{femmer2014reartifacts} proponen t\'ecnicas para detectar defectos en especificaciones, pero ninguno aborda pipelines SDD. La revisi\'on de Hou et al.~\cite{hou2024llmcodereview} confirma que la intersecci\'on entre RE normativo y generaci\'on de c\'odigo es un \'area escasamente explorada. Este trabajo cubre ese vac\'io: mapea un pipeline SDD concreto contra un marco RE normativo utilizando requisitos reales y eval\'ua emp\'iricamente el efecto de formalizarlos.
+
+\begin{table}[htbp]
 \centering
-\caption{Comparativa: herramientas profesionales vs. SpecKit}
-\label{tab:profesionales}
-\begin{tabularx}{\textwidth}{lcccc}
+\caption{Posicionamiento del trabajo frente a la literatura}
+\label{tab:posicionamiento}
+\begin{tabular}{lp{5cm}p{5cm}}
 \toprule
-\textbf{Caracter\'istica} & \textbf{DOORS} & \textbf{Jama} & \textbf{Polarion} & \textbf{SpecKit} \\
+\textbf{Dimensi\'on} & \textbf{Literatura} & \textbf{Este TFG} \\
 \midrule
-Atributos personalizables & \checkmark & \checkmark & \checkmark & $\bigcirc$ \\
-Clasificaci\'on por tipo & \checkmark & \checkmark & \checkmark & $\bigcirc$ \\
-Trazabilidad bidireccional & \checkmark & \checkmark & \checkmark & $\bigcirc$ \\
-Baselines & \checkmark & \checkmark & \checkmark & $\bigcirc$ \\
-Workflow aprobaci\'on & \checkmark & \checkmark & \checkmark & $\bullet$ \\
-Generaci\'on de c\'odigo & $\bigcirc$ & $\bigcirc$ & $\bigcirc$ & \checkmark \\
-Integraci\'on IA nativa & $\bigcirc$ & $\bigcirc$ & $\bullet$ & \checkmark \\
+Objeto de estudio & Herramientas RE \'o generaci\'on, por separado & \textsc{SpecKit} como puente entre ambos \\
+Marco de evaluaci\'on & M\'etricas de c\'odigo \'o criterios RE te\'oricos & R\'ubrica SRCI + an\'alisis autom\'atico \\
+Fuente de requisitos & Datasets sint\'eticos o no p\'ublicos & \emph{Changelogs} de 6 proyectos OS con trazabilidad \\
+Tipo de an\'alisis & Descriptivo o estad\'istico & Mapeo cualitativo + comparativa emp\'irica \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
-Ninguna herramienta profesional integra generaci\'on de c\'odigo asistida por IA, que es precisamente el valor diferencial de \textsc{SpecKit}. Esta complementariedad entre gesti\'on y generaci\'on motiva el presente mapeo.
-
-\section{Trabajos relacionados}
-
-El uso de proyectos \emph{Open Source} como corpus para estudios emp\'iricos de ingenier\'ia del software es una pr\'actica consolidada en la literatura (conferencias MSR, miner\'ia de repositorios). Sin embargo, no existe hasta la fecha un estudio que mapee sistem\'aticamente un pipeline SDD contra un marco RE normativo utilizando requisitos derivados de fuentes documentales reales. Este trabajo cubre ese vac\'io.
+Este trabajo cubre un vac\'io identificado en la intersecci\'on de tres \'areas: la ingenier\'ia de requisitos basada en normas, las herramientas de generaci\'on de c\'odigo asistidas por IA, y la evaluaci\'on emp\'irica con corpus derivados de proyectos reales. El cap\'itulo siguiente describe la metodolog\'ia dise\~nada para abordar este vac\'io de forma sistem\'atica y reproducible.
