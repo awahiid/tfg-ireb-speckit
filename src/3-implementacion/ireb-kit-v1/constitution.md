@@ -14,7 +14,7 @@ information exclusively from the input document provided. No stakeholder,
 business objective, issue reference, regulatory requirement, or origin
 story shall be invented, inferred, or fabricated. If the input does not
 contain sufficient information for a field, the field shall state
-"sin fuente adicional documentada" or "No documentado en la fuente original".
+"no additional documented source" or "Not documented in the original source".
 
 **Justification**: IREB defines Source as a fundamental traceability attribute
 [1, Glossary]. ISO 29148 requires that requirements be traceable to their

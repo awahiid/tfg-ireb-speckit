@@ -1,16 +1,14 @@
-# Fase 2.5 — Derivación de Prompts MRS desde Requisitos Formalizados
+# Fase 2.5 — Derivación de Prompts MRS (Minimal Requirement Specification) desde Requisitos Formalizados
 
-> **Versión**: 1.0  
-> **Ubicación en el pipeline**: Entre Fase 2 (Formalización) y Fase 3 (Ejecución SpecKit)  
-> **Propósito**: Transformar cada requisito formalizado IREB/ISO 29148 en un *Minimal Requirement Seed* (MRS) que sirva como entrada replicable al pipeline SpecKit.
+> **Propósito**: Transformar cada requisito formalizado IREB/ISO 29148 en un *Minimal Requirement Specification* (MRS) que sirva como entrada replicable al pipeline SpecKit.
 
 ---
 
 ## 1. ¿Qué es esta fase?
 
-La Fase 2.5 es un paso intermedio entre la formalización de requisitos (Fase 2) y la ejecución del pipeline SpecKit (Fase 3). Su objetivo es **derivar prompts MRS**: semillas mínimas de lenguaje natural que contienen la información estrictamente necesaria para que un agente SpecKit (o cualquier LLM) infiera de forma autónoma el requisito formal completo.
+La Fase 2.5 es un paso intermedio entre la formalización de requisitos (Fase 2) y la ejecución del pipeline SpecKit (Fase 3). Su objetivo es **derivar prompts MRS**: especificaciones mínimas en lenguaje natural que contienen la información estrictamente necesaria para que un agente SpecKit (o cualquier LLM) infiera de forma autónoma el requisito formal completo.
 
-Un MRS no es el requisito formal en sí. Es la semilla que garantiza que dos agentes independientes, partiendo del mismo MRS, produzcan requisitos formales equivalentes.
+Un MRS no es el requisito formal en sí. Es el input que garantiza que dos agentes independientes, partiendo del mismo MRS, produzcan requisitos formales equivalentes.
 
 ## 2. Mapeo con IREB
 

@@ -15,14 +15,24 @@ BASE = Path(__file__).resolve().parent.parent.parent
 RES = BASE.parent / "3-implementacion" / "resultados"
 EVAL = BASE / "evaluaciones"
 FLOWS = ["C0", "C1", "C2", "C3"]
-CASOS = [
-    ("appwrite", "10832"),
-    ("authentik", "10110"),
-    ("calcom", "26812"),
-    ("directus", "26646"),
-    ("medusa", "13930"),
-    ("n8n", "31371"),
-]
+# Auto-descubrir todos los repos de resultados
+def discover_cases():
+    seen = set()
+    cases = []
+    for flow in FLOWS:
+        fd = RES / flow
+        if not fd.exists(): continue
+        for d in sorted(fd.iterdir()):
+            if not d.is_dir(): continue
+            parts = d.name.split("-", 1)
+            if len(parts) != 2: continue
+            key = (parts[0], parts[1])
+            if key not in seen:
+                seen.add(key)
+                cases.append(key)
+    return sorted(cases)
+
+CASOS = discover_cases()
 
 
 def find_latest(flow, repo, req_id):
@@ -39,7 +49,7 @@ def find_latest(flow, repo, req_id):
 
 
 def main():
-    results = []
+    all_results = []
     errors = []
 
     for flow in FLOWS:
@@ -57,108 +67,94 @@ def main():
 
             res = analyze_one(str(rd))
             if res:
-                print(f"  [OK] {flow} {repo}-{rid}")
-                results.append((flow, repo, rid, rd))
+                f1 = res.get("comparacion_pr", {}).get("f1", 0)
+                ireb_art = res.get("cumplimiento_ireb", {}).get("artifact_ratio", 0)
+                spec = res.get("cumplimiento_ireb", {}).get("spec_ireb", {}) or {}
+                sa = spec.get("atributos_preservados", 0)
+                print(f"  [OK] {flow} {repo}-{rid} — F1={f1:.2f} IR_art={ireb_art:.0%} IR_spec={sa}/7")
+                all_results.append(res)
             else:
-                print(f"  [ERROR] {flow} {repo}-{rid}")
+                msg = f"[ERROR] {flow} {repo}-{rid}"
+                print(msg)
+                errors.append(msg)
 
-    # Resumen global
+    # ── Resumen global ──
     print(f"\n{'='*60}")
     print("  RESUMEN GLOBAL")
     print(f"{'='*60}")
-    print(f"  Analizados: {len(results)}/{len(FLOWS)*len(CASOS)}")
+    print(f"  Analizados: {len(all_results)}/{len(FLOWS)*len(CASOS)}")
     if errors:
         print(f"  Errores: {len(errors)}")
         for e in errors:
             print(f"    {e}")
 
-    # Reunir metricas de los informes generados
-    import re as _re
-    rows = []
-    all_data = {}  # {(repo, rid): {flow: {semgrep, linters, cloc, cost, ...}}}
-    for flow, repo, rid, rd in results:
-        ts_dir = f"{rd.parent.name}-{rd.name}"
-        report = EVAL / flow / f"{repo}-{rid}" / ts_dir / "analisis-automatico.md"
-        if not report.exists():
-            continue
-        txt = report.read_text()
-        cloc = cost = tok = src_files = semgrep_total = 0
-        linters = {}  # tool -> total_issues
-        for line in txt.split("\n"):
-            if "cloc)" in line:
-                m = _re.search(r'\|\s*(\d+)\s*\|', line)
-                if m: cloc = int(m.group(1))
-            elif "Coste" in line:
-                m = _re.search(r'\|\s*\$?([\d.]+)\s*\|', line)
-                if m: cost = float(m.group(1))
-            elif "Tok" in line:
-                m = _re.search(r'\|\s*(\d+)\s*\|', line)
-                if m: tok = int(m.group(1))
-            elif "fuente" in line:
-                m = _re.search(r'\|\s*(\d+)\s*\|', line)
-                if m: src_files = int(m.group(1))
-            elif "Total incidencias" in line:
-                m = _re.search(r':\s*(\d+)', line)
-                if m: semgrep_total = int(m.group(1))
-            # Extraer datos de linters: **tool**: N incidencias en M archivos
-            m = _re.match(r'^\*\*([a-z]+(?:-[a-z]+)?)\*\*:\s*(\d+)\s+incidencias', line)
-            if m:
-                linters[m.group(1)] = int(m.group(2))
-        linters_total = sum(linters.values())
-        rows.append(f"| {flow} | {repo}-{rid} | {src_files} | {cloc} | ${cost:.4f} | {tok} | {semgrep_total} | {linters_total} |")
-        all_data.setdefault((repo, rid), {})[flow] = {
-            "cloc": cloc, "cost": cost, "tokens": tok,
-            "src": src_files, "semgrep": semgrep_total, "linters": linters
-        }
+    # ── Guardar JSON global ──
+    from datetime import datetime
+    global_json = EVAL / "resumen-global.json"
+    with open(global_json, "w") as f:
+        json.dump({
+            "generado": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "total_analizados": len(all_results),
+            "total_esperados": len(FLOWS) * len(CASOS),
+            "resultados": all_results
+        }, f, indent=2, ensure_ascii=False)
+    print(f"\n[OK] JSON global: {global_json}")
 
-    # Markdown resumen
-    summary = EVAL / "analisis-automatico.md"
-    with open(summary, "w") as f:
-        from datetime import datetime
-        f.write("# Analisis automatico — resumen global\n\n")
+    # ── Generar markdown resumen ──
+    # NOTA: NO se genera score compuesto. Cada dimensión por separado.
+    # La evaluación principal es la rúbrica SRCI v3 (evaluar.py).
+    summary_md = EVAL / "aauto.md"
+    with open(summary_md, "w") as f:
+        f.write("# Análisis automático — resumen global\n\n")
         f.write(f"Generado: {datetime.now():%Y-%m-%d %H:%M}\n\n")
-        f.write(f"**Ejecuciones analizadas**: {len(results)}/{len(FLOWS)*len(CASOS)}\n\n")
+        f.write(f"**Ejecuciones analizadas**: {len(all_results)}/{len(FLOWS)*len(CASOS)}\n\n")
 
-        # --- Tabla detallada por caso ---
-        f.write("## Detalle por ejecucion\n\n")
-        f.write("| Flow | Caso | Arch. | cloc | Coste | Tokens | semgrep | linters |\n")
-        f.write("|------|------|-------|------|-------|--------|---------|--------|\n")
-        for r in rows:
-            f.write(r + " |\n")
+        f.write("## Detalle por ejecución\n\n")
+        f.write("| Flow | Caso | F1 | IR_art | IR_spec | Src | cloc | Coste | Tokens | sg | lint |\n")
+        f.write("|------|------|----|--------|---------|-----|------|-------|--------|----|------|\n")
+        for r in sorted(all_results, key=lambda x: (x["flow"], x["caso"])):
+            m = r.get("metricas", {})
+            cp = r.get("comparacion_pr", {})
+            ir = r.get("cumplimiento_ireb", {})
+            sp = ir.get("spec_ireb", {}) or {}
+            sa = sp.get("atributos_preservados", 0)
+            f.write(f"| {r['flow']} | {r['caso']} | {cp.get('f1',0):.2f} | {ir.get('artifact_ratio',0):.0%} | {sa}/7 | {m.get('archivos_fuente',0)} | {m.get('cloc',0):,} | ${m.get('coste_usd',0):.4f} | {m.get('tokens',0):,} | {m.get('semgrep_incidencias',0)} | {m.get('linters_incidencias',0)} |\n")
 
-        # --- Tabla comparativa por repositorio (C0 vs C1 vs C2 vs C3) ---
-        f.write("\n## Comparativa por repositorio\n\n")
-        f.write("| Repositorio | Flow | cloc | Coste | semgrep | eslint | phpcs | shellcheck | pyflakes |\n")
-        f.write("|-------------|------|------|-------|---------|--------|-------|-----------|---|\n")
-        for (repo, rid) in sorted(all_data.keys()):
-            flows_data = all_data[(repo, rid)]
-            first = True
-            for flow in FLOWS:
-                if flow not in flows_data:
-                    continue
-                d = flows_data[flow]
-                ls = d["linters"]
-                lbl = f"{repo}-{rid}" if first else ""
-                f.write(f"| {lbl} | {flow} | {d['cloc']} | ${d['cost']:.4f} | {d['semgrep']} | {ls.get('eslint','-')} | {ls.get('phpcs','-')} | {ls.get('shellcheck','-')} | {ls.get('pyflakes','-')} |\n")
-                first = False
-            f.write("|---|----|----|----|---------|--------|-------|-----------|---|\n")
-
-        # --- Promedios por flow ---
-        f.write("\n## Promedios por flow\n\n")
-        f.write("| Flow | Archivos | Lineas (cloc) | Coste | Tokens |\n")
-        f.write("|------|----------|---------------|-------|--------|\n")
+        f.write("## Promedios por flow\n\n")
+        f.write("| Flow | F1 | IR_art | Src | cloc | Coste | Tokens | semgrep | lint |\n")
+        f.write("|------|----|--------|-----|------|-------|--------|---------|------|\n")
         for flow in FLOWS:
-            fr = [r for r in rows if r.startswith(f"| {flow} ")]
-            if not fr:
-                continue
+            fr = [r for r in all_results if r["flow"] == flow]
+            if not fr: continue
             n = len(fr)
-            arch = sum(int(r.split("|")[3].strip()) for r in fr) / n
-            lineas = sum(int(r.split("|")[4].strip()) for r in fr) / n
-            coste = sum(float(r.split("|")[5].strip().replace("$","")) for r in fr) / n
-            tokens = sum(int(r.split("|")[6].strip()) for r in fr) / n
-            f.write(f"| {flow} | {arch:.0f} | {lineas:.0f} | ${coste:.4f} | {tokens:.0f} |\n")
+            f1 = sum(r.get("comparacion_pr",{}).get("f1",0) for r in fr) / n
+            ireb_art = sum(r.get("cumplimiento_ireb",{}).get("artifact_ratio",0) for r in fr) / n
+            arch = sum(r.get("metricas",{}).get("archivos_fuente",0) for r in fr) / n
+            cloc = sum(r.get("metricas",{}).get("cloc",0) for r in fr) / n
+            coste = sum(r.get("metricas",{}).get("coste_usd",0) for r in fr) / n
+            tokens = sum(r.get("metricas",{}).get("tokens",0) for r in fr) / n
+            semg = sum(r.get("metricas",{}).get("semgrep_incidencias",0) for r in fr) / n
+            lint = sum(r.get("metricas",{}).get("linters_incidencias",0) for r in fr) / n
+            f.write(f"| {flow} | {f1:.2f} | {ireb_art:.0%} | {arch:.0f} | {cloc:,.0f} | ${coste:.4f} | {tokens:,.0f} | {semg:.0f} | {lint:.0f} |\n")
 
-    print(f"\n[OK] Resumen: {summary}")
+        f.write("\n## Rankings\n\n")
+        by_f1 = sorted(all_results, key=lambda x: x.get("comparacion_pr",{}).get("f1",0), reverse=True)
+        f.write("### Top 5 por F1 (coincidencia con PR real)\n\n")
+        f.write("| # | Flow | Caso | F1 | IR_art | Coste |\n|---|------|------|----|--------|-------|\n")
+        for i, r in enumerate(by_f1[:5], 1):
+            f1 = r.get("comparacion_pr",{}).get("f1",0)
+            ireb_art = r.get("cumplimiento_ireb",{}).get("artifact_ratio",0)
+            coste = r.get("metricas",{}).get("coste_usd",0)
+            f.write(f"| {i} | {r['flow']} | {r['caso']} | {f1:.2f} | {ireb_art:.0%} | ${coste:.4f} |\n")
+        f.write("\n### Bottom 5 por F1\n\n")
+        f.write("| # | Flow | Caso | F1 | IR_art | Coste |\n|---|------|------|----|--------|-------|\n")
+        for i, r in enumerate(by_f1[-5:], 1):
+            f1 = r.get("comparacion_pr",{}).get("f1",0)
+            ireb_art = r.get("cumplimiento_ireb",{}).get("artifact_ratio",0)
+            coste = r.get("metricas",{}).get("coste_usd",0)
+            f.write(f"| {i} | {r['flow']} | {r['caso']} | {f1:.2f} | {ireb_art:.0%} | ${coste:.4f} |\n")
+
+    print(f"[OK] Resumen: {summary_md}")
 
 
 if __name__ == "__main__":

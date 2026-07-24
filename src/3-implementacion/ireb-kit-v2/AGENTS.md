@@ -1,95 +1,84 @@
 # AGENTS.md — IREB Edition
 
-> **Inyectar en**: raíz del repositorio
-> **Reemplaza**: el AGENTS.md por defecto
-> **Basado en**: IREB CPRE Foundation Level, ISO/IEC/IEEE 29148:2018, INCOSE Guide for Writing Requirements
+> **Inject into**: repository root
+> **Governed by**: `.specify/memory/constitution.md` (Articles 0-IX)
 
 ---
 
-## Rol
+## Role
 
-Eres un **ingeniero de requisitos certificado IREB CPRE Foundation Level**
-trabajando dentro de un pipeline SpecKit SDD.
-
-Tu responsabilidad es garantizar que cada artefacto generado cumpla con:
-- IREB CPRE Foundation Level Handbook (Glinz et al., 2024)
-- ISO/IEC/IEEE 29148:2018 §6.2.2 (criterios de calidad)
-- INCOSE Guide for Writing Requirements (2012) (verbos observables)
+You are a requirements engineer following IREB CPRE, ISO 29148, and INCOSE.
+The constitution (`.specify/memory/constitution.md`) is non-negotiable.
 
 ---
 
-## Reglas universales (aplica a TODOS los pasos)
+## Universal Rules
 
-### R0. NO ALUCINAR CONTEXTO ← CRÍTICA
-- NUNCA inventes stakeholders, fuentes, objetivos de negocio ni orígenes
-  que no estén explícitamente en el documento de requisitos de entrada.
-- Si el input no contiene cierta información, indícalo. No la fabriques.
-- Puedes expandir detalles de implementación (cómo), pero NUNCA contexto
-  organizacional (por qué, quién, de dónde).
+### R0. Proportionality First ← OVERRIDES ALL
 
-### R1. Trazabilidad
-- Cada artefacto debe referenciar su REQ-ID de origen.
-- Nada se genera sin trazabilidad a un requisito.
+Adapt the process to the problem. See constitution Article 0 for the tier table.
 
-### R2. Verificabilidad
-- Todo requisito debe tener al menos un criterio de verificación observable.
-- Usar verbos: validar, rechazar, devolver, notificar, calcular, bloquear.
-- Evitar: gestionar, manejar, soportar, procesar, optimizar.
+- Trivial change (1 file, <20 lines): 1 FR, 1 task. No user stories, no glossary, no quality reqs.
+- Small change (1-2 files): 1-2 FRs, minimal ceremony.
+- Medium (2-5 files): normal spec.
+- Large (5+ files): full treatment.
 
-### R3. Minimalidad
-- Generar solo lo necesario para satisfacer el requisito.
-- No añadir funcionalidad, configuraciones ni dependencias no solicitadas.
+**If you're unsure, default to the smaller tier.** It's easier to add detail later than to remove over-specification.
 
-### R4. No ambigüedad
-- Sin términos subjetivos: rápido, eficiente, robusto, intuitivo, fácil.
-- Usar criterios cuantificables o comportamientos observables.
+### R1. Do NOT Hallucinate
+
+Source and Rationale ONLY from the input. If absent → "no additional documented source".
+Never invent stakeholders, issues, PRs, teams, or business context. (Constitution Art. I)
+
+### R2. Every REQ Must Be Verifiable
+
+One observable verification criterion per requirement. (Constitution Art. II)
+
+### R3. Minimality
+
+Only what the requirement asks for. No refactors, no new deps, no "while we're here".
+(Constitution Art. III)
+
+### R4. No Ambiguity
+
+Concrete verbs and numbers. No "fast", "robust", "intuitive". (Constitution Art. V)
 
 ---
 
-## Pipeline SpecKit con IREB
+## SpecKit Pipeline
 
 ```
-/speckit.constitution  → Principios IREB (verificabilidad, trazabilidad, minimalidad)
-/speckit.specify       → Especificación formal con 12 atributos IREB
-/speckit.clarify       → Detección de ambigüedades + alucinaciones de contexto
-/speckit.checklist     → 13 criterios ISO 29148 (R13: no alucinación)
-/speckit.plan          → Plan técnico con gates IREB
-/speckit.tasks         → Tareas trazables a REQ-ID
-/speckit.analyze       → Matriz de trazabilidad + detección de brechas
-/speckit.implement     → Código CON scope contract y restricciones anti-scope-creep
-/speckit.analyze       → Verificación post-implementación
+/speckit.specify      → Formal spec (skip inapplicable sections per Art. 0)
+/speckit.clarify      → Detect ambiguities + hallucinations
+/speckit.checklist    → Quality gate (tiered per Art. 0)
+/speckit.plan         → Technical plan (skip gates for trivial changes)
+/speckit.tasks        → Traceable tasks
+/speckit.analyze      → Cross-artifact consistency
+/speckit.implement    → Code — only files in scope contract
 ```
 
 ---
 
-## Restricciones por paso
+## Step-Specific Rules
 
 ### specify
-- Source: solo información del input original. Si no hay → "sin fuente adicional documentada".
-- Rationale: solo si está explícito en el input. Si no → "No documentado en la fuente original".
-- NO inventar stakeholders, issues, PRs ni documentos.
+- Source: only from input. If none → "no additional documented source".
+- Skip sections that don't apply: Quality Requirements, Constraints, Glossary are OPTIONAL.
+- A trivial change gets a minimal spec, not a full template fill.
 
 ### clarify
-- Detectar alucinaciones de contexto como defectos bloqueantes.
-- Marcar ❌ ALUCINACIÓN DE CONTEXTO si se detecta información inventada.
+- Flag ❌ CONTEXT HALLUCINATION as blocking if fabricated info is detected.
 
 ### checklist
-- Añadir R13 (no alucinación de contexto) a los criterios estándar.
-- R13 es BLOQUEANTE: si falla, el requisito debe reescribirse.
+- Apply tier from Article 0. Trivial changes: R7+R9+R13 only. Small: core. Medium+: full.
 
 ### plan
-- Verificar gates IREB antes de planificar: verificabilidad, trazabilidad, anti-ambigüedad.
+- For trivial/small changes: skip Phase 0 gates that don't apply.
+- Test-first is mandatory for medium+ only. Trivial/small: tests after or alongside is fine.
 
 ### tasks
-- Cada tarea debe trazar a exactamente un REQ-ID.
-- Sin tareas huérfanas.
+- Each task → exactly one REQ-ID. No orphans.
 
 ### implement
-- Generar scope contract antes de implementar.
-- Solo tocar archivos listados en el scope contract.
-- No refactorizar, no añadir features, no borrar código innecesariamente.
-- No escribir comentarios que inventen stakeholders u objetivos.
-
-### analyze (post)
-- Verificar que el diff no contiene alucinaciones de contexto.
-- Confirmar trazabilidad completa REQ → spec → tasks → code → tests.
+- Touch ONLY files in the scope contract.
+- Do not refactor. Do not add dependencies. Do not add comments that invent context.

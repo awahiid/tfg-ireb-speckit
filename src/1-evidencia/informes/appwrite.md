@@ -22,20 +22,20 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 | ID | Release | Entry text | PR | Link exacto | Valoración breve |
 |---|---|---|---|---|---|
-| appwrite-e1 | 1.9.0 | `MongoDB support (#11312).` | #11312 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | soporte de base de datos + adapter |
-| appwrite-e2 | 1.9.0 | `String types — New varchar, text, mediumtext, and longtext attribute types (#11174).` | #11174 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | schema + tipos concretos |
-| appwrite-e3 | 1.9.0 | `Cached document lists — Document list queries can be cached with configurable TTL (#10832).` | #10832 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | condición explícita + API + TTL |
-| appwrite-e4 | 1.9.0 | `Webhooks API — First-class webhooks management endpoints for creating, listing, and managing webhook configurations (#11033, #11566).` | #11033 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | API nueva + CRUD + actor admin |
-| appwrite-e5 | 1.9.0 | `User impersonation — Admins can now impersonate users for debugging and support (#11533).` | #11533 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | actor doble + condición |
-| appwrite-e6 | 1.9.0 | `Query subscriptions — Subscribe to realtime channels with query filters for targeted updates (#11202, #11237).` | #11202 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | realtime + filtros + condición |
-| appwrite-e7 | 1.9.0 | `Custom JWT duration — Configure JWT expiration time when creating tokens (#11009).` | #11009 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | auth + parámetro concreto |
-| appwrite-e8 | 1.9.0 | `OAuth email verification — Enforce email verification when linking OAuth2 providers (#10986).` | #10986 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | condición clara + seguridad |
-| appwrite-e9 | 1.9.0 | `File encryption/compression parameters — Configure per-file encryption and compression (#11135).` | #11135 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | storage + seguridad + per-file |
-| appwrite-e10 | 1.9.0 | `Sparse document updates — updateDocument() sends only changed attributes (#11465).` | #11465 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | rendimiento + API + condición |
+| appwrite-11312 | 1.9.0 | `MongoDB support (#11312).` | #11312 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | soporte de base de datos + adapter |
+| appwrite-11174 | 1.9.0 | `String types — New varchar, text, mediumtext, and longtext attribute types (#11174).` | #11174 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | schema + tipos concretos |
+| appwrite-10832 | 1.9.0 | `Cached document lists — Document list queries can be cached with configurable TTL (#10832).` | #10832 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | condición explícita + API + TTL |
+| appwrite-11033 | 1.9.0 | `Webhooks API — First-class webhooks management endpoints for creating, listing, and managing webhook configurations (#11033, #11566).` | #11033 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | API nueva + CRUD + actor admin |
+| appwrite-11533 | 1.9.0 | `User impersonation — Admins can now impersonate users for debugging and support (#11533).` | #11533 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | actor doble + condición |
+| appwrite-11202 | 1.9.0 | `Query subscriptions — Subscribe to realtime channels with query filters for targeted updates (#11202, #11237).` | #11202 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | realtime + filtros + condición |
+| appwrite-11009 | 1.9.0 | `Custom JWT duration — Configure JWT expiration time when creating tokens (#11009).` | #11009 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | auth + parámetro concreto |
+| appwrite-10986 | 1.9.0 | `OAuth email verification — Enforce email verification when linking OAuth2 providers (#10986).` | #10986 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | condición clara + seguridad |
+| appwrite-11135 | 1.9.0 | `File encryption/compression parameters — Configure per-file encryption and compression (#11135).` | #11135 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | storage + seguridad + per-file |
+| appwrite-11465 | 1.9.0 | `Sparse document updates — updateDocument() sends only changed attributes (#11465).` | #11465 | https://github.com/appwrite/appwrite/releases/tag/1.9.0 | rendimiento + API + condición |
 
 ## Valoración por candidato
 
-### appwrite-e1
+### appwrite-11312
 **Release:** 1.9.0  
 **Texto literal:**  
 `MongoDB support (#11312).`  
@@ -44,7 +44,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque representa una capacidad funcional mayor: añadir soporte para un nuevo motor de base de datos. Aunque el texto es breve, la PR asociada (#11312) contiene la implementación completa del adapter MongoDB, con cambios en la capa de abstracción de base de datos. Su principal limitación es que el texto del changelog no detalla el alcance exacto del soporte ni sus restricciones. Aun así, entra con claridad porque la capacidad es muy identificable y verificable mediante tests de integración contra MongoDB.
 
-### appwrite-e2
+### appwrite-11174
 **Release:** 1.9.0  
 **Texto literal:**  
 `String types — New varchar, text, mediumtext, and longtext attribute types (#11174).`  
@@ -53,7 +53,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque nombra artefactos técnicos muy concretos (cuatro tipos de string) que amplían el esquema de base de datos del sistema. La PR asociada contiene cambios en validación de atributos, migraciones y API. Su principal limitación es que no detalla restricciones de tamaño para cada tipo ni cómo interactúan con las queries existentes. Aun así, es excelente para derivación porque los tipos son enumerables y verificables.
 
-### appwrite-e3
+### appwrite-10832
 **Release:** 1.9.0  
 **Texto literal:**  
 `Cached document lists — Document list queries can be cached with configurable TTL (#10832).`  
@@ -62,7 +62,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque combina una superficie API clara (list queries de documentos), un mecanismo concreto (caché con TTL configurable) y un comportamiento observable (consultas cacheadas vs no cacheadas). Su principal limitación es que no especifica la granularidad del TTL ni su interacción con invalidaciones. Entra muy bien porque el cambio es acotado y verificable: se puede comprobar que dos listados idénticos en el intervalo TTL devuelven el mismo resultado cacheado.
 
-### appwrite-e4
+### appwrite-11033
 **Release:** 1.9.0  
 **Texto literal:**  
 `Webhooks API — First-class webhooks management endpoints for creating, listing, and managing webhook configurations (#11033, #11566).`  
@@ -71,7 +71,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque describe una API nueva completa con operaciones CRUD sobre configuraciones de webhook. La referencia a dos PRs sugiere que el cambio tiene entidad suficiente. Menciona un actor implícito (admin) y una superficie pública bien definida (endpoints de gestión). Su principal limitación es que el changelog no enumera los endpoints concretos ni los eventos disparables. Entra con fuerza porque es un subsistema nuevo y autocontenido, ideal para derivación y verificación.
 
-### appwrite-e5
+### appwrite-11533
 **Release:** 1.9.0  
 **Texto literal:**  
 `User impersonation — Admins can now impersonate users for debugging and support (#11533).`  
@@ -80,7 +80,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque involucra dos actores explícitos (admins y users) y una condición de uso clara (debugging y soporte). La acción es muy concreta: impersonar a un usuario. Su principal limitación es que no detalla cómo se audita la impersonación ni qué permisos se requieren. Aun así, es excelente para derivación porque la funcionalidad es acotada, observable y tiene implicaciones de seguridad claras.
 
-### appwrite-e6
+### appwrite-11202
 **Release:** 1.9.0  
 **Texto literal:**  
 `Query subscriptions — Subscribe to realtime channels with query filters for targeted updates (#11202, #11237).`  
@@ -89,7 +89,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque introduce un mecanismo de filtrado sobre suscripciones en tiempo real, combinando dos conceptos técnicos (realtime channels + query filters). La condición es explícita: solo recibe actualizaciones que coinciden con el filtro. Su principal limitación es que no especifica la sintaxis de los filtros ni su expresividad. Entra bien porque el comportamiento esperado es claramente contrastable: suscripciones sin filtro reciben todo; con filtro, solo el subconjunto.
 
-### appwrite-e7
+### appwrite-11009
 **Release:** 1.9.0  
 **Texto literal:**  
 `Custom JWT duration — Configure JWT expiration time when creating tokens (#11009).`  
@@ -98,7 +98,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque describe un parámetro de seguridad concreto (duración del JWT) sobre una operación existente (creación de tokens). El cambio es perfectamente acotable: antes la duración era fija; ahora es configurable. Su principal limitación es que no especifica los límites mínimo y máximo permitidos ni el valor por defecto. Entra con claridad porque el observable es directo: crear un token con duración N y verificar que expira en N.
 
-### appwrite-e8
+### appwrite-10986
 **Release:** 1.9.0  
 **Texto literal:**  
 `OAuth email verification — Enforce email verification when linking OAuth2 providers (#10986).`  
@@ -107,7 +107,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque combina un actor (usuario que vincula OAuth), una condición explícita (email no verificado) y un resultado observable (la vinculación es rechazada). Es un cambio de seguridad con comportamiento binario: permitir o denegar. Su principal limitación es que no detalla el mensaje de error ni el código HTTP de rechazo. Entra muy bien porque es un guard clause clásico, fácil de formalizar y verificar.
 
-### appwrite-e9
+### appwrite-11135
 **Release:** 1.9.0  
 **Texto literal:**  
 `File encryption/compression parameters — Configure per-file encryption and compression (#11135).`  
@@ -116,7 +116,7 @@ No se exige perfección ni completitud total. La decisión se basa en suficienci
 
 **Valoración.** Esta entrada se selecciona porque introduce parámetros de storage configurables por archivo (encryption y compression). La granularidad per-file es una señal estructural fuerte. Su principal limitación es que no especifica los algoritmos soportados ni cómo se reflejan los parámetros en la respuesta de la API. Entra bien porque el cambio es acotado a la operación de subida de archivos y el observable es verificable: un archivo subido con encryption=true debe almacenarse cifrado.
 
-### appwrite-e10
+### appwrite-11465
 **Release:** 1.9.0  
 **Texto literal:**  
 `Sparse document updates — updateDocument() sends only changed attributes (#11465).`  

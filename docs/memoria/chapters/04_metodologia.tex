@@ -3,7 +3,7 @@
 
 \section{Dise\~no general}
 
-El trabajo se estructura en cuatro fases principales m\'as una fase intermedia de derivaci\'on de MRS, cada una vinculada a un marco normativo de referencia. Se ejecutan 6 casos (uno por repositorio) en 4 flujos experimentales (C0--C3), produciendo 24 ejecuciones evaluadas con doble metodolog\'ia: an\'alisis autom\'atico de calidad de c\'odigo y r\'ubrica SRCI v3.
+El trabajo se estructura en cuatro fases principales m\'as una fase intermedia de derivaci\'on de MRS, cada una vinculada a un marco normativo de referencia. Se ejecutan 24 casos (4 por repositorio) en 4 flujos experimentales (C0--C3), produciendo 96 ejecuciones evaluadas mediante an\'alisis autom\'atico de calidad de c\'odigo y comparaci\'on con los PR reales.
 
 \begin{table}[htbp]
 \centering
@@ -16,8 +16,8 @@ El trabajo se estructura en cuatro fases principales m\'as una fase intermedia d
 Fase 1. Evidencia & Obtener requisitos del mundo real & IREB Elicitaci\'on \\
 Fase 2. Formalizaci\'on & Requisitos con atributos normativos & IREB + ISO 29148 + INCOSE \\
 Fase 2.5. MRS & Derivar prompts replicables & IREB Elicitaci\'on \\
-Fase 3. Ejecuci\'on & Ejecutar 4 flujos sobre 6 casos & SpecKit SDD \\
-Fase 4. Evaluaci\'on & Doble metodolog\'ia: autom\'atica + SRCI & IREB + ISO 29148 + ISO 25010 \\
+Fase 3. Ejecuci\'on & Ejecutar 4 flujos sobre 24 casos & SpecKit SDD \\
+Fase 4. Evaluaci\'on & An\'alisis autom\'atico (6 herramientas + comparaci\'on PR) & IREB + ISO 29148 + ISO 25010 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -34,11 +34,11 @@ Se identifican cambios en seis repositorios \emph{Open Source} seleccionados par
 \toprule
 \textbf{Repositorio} & \textbf{Tipo de sistema} & \textbf{Justificaci\'on} \\
 \midrule
-Appwrite & Transaccional (BaaS) & APIs REST transaccionales, patr\'on dominante en SaaS \\
+Appwrite & Transaccional (BaaS, \emph{Backend as a Service}) & APIs REST transaccionales, patr\'on dominante en SaaS \\
 Medusa & Financiero (e-commerce) & Requisitos con integridad transaccional y flujos de pago \\
 Authentik & Identidad y seguridad & RBAC (\emph{Role-Based Access Control}), sesiones, flujos de autorizaci\'on multi-protocolo \\
 Cal.com & Colaborativo & Estado multiusuario, concurrencia, notificaciones \\
-Directus & Datos (headless CMS) & Esquemas din\'amicos, APIs autogeneradas \\
+Directus & Datos (headless CMS, \emph{Content Management System}) & Esquemas din\'amicos, APIs autogeneradas \\
 n8n & Integraci\'on de servicios & Eventos, webhooks, orquestaci\'on de servicios \\
 \bottomrule
 \end{tabularx}
@@ -54,7 +54,7 @@ Cada requisito supera un \emph{quality gate} de 12 criterios en tres bloques: id
 
 \section{Fase 2.5: Derivaci\'on de MRS}
 
-Cada requisito formalizado se transforma en un \emph{Minimal Requirement Seed} (MRS): un prompt m\'inimo de 3--5 l\'ineas con estructura can\'onica ``Como [ROL], quiero que el sistema [COMPORTAMIENTO] [contexto], para [MOTIVACI\'ON]''. Un MRS debe cumplir tres propiedades: suficiencia, minimalidad y replicabilidad.
+Cada requisito formalizado se transforma en un \emph{Minimal Requirement Specification} (MRS): un prompt m\'inimo de 3--5 l\'ineas con estructura can\'onica ``Como [ROL], quiero que el sistema [COMPORTAMIENTO] [contexto], para [MOTIVACI\'ON]''. Un MRS debe cumplir tres propiedades: suficiencia, minimalidad y replicabilidad.
 
 \section{Fase 3: Ejecuci\'on comparativa}
 
@@ -86,35 +86,56 @@ C3 & \texttt{pipeline-c3.sh} & MRS directo, sin \textsc{SpecKit} & 1 \\
     \item[C3,  MRS directo:] El MRS se pasa directamente a \texttt{opencode} sin \textsc{SpecKit}. Un solo paso. Referencia extrema: ¿qu\'e ocurre sin metodolog\'ia alguna?
 \end{description}
 
-\section{Fase 4: Evaluaci\'on en dos fases}
+\section{Fase 4: Evaluaci\'on autom\'atica}
 
-\subsection{An\'alisis autom\'atico}
+La evaluaci\'on se realiza mediante an\'alisis autom\'atico en tres dimensiones complementarias:
 
-Scripts Python aplican seis herramientas sobre los 24 artefactos generados: \texttt{semgrep} (seguridad), \texttt{eslint} (calidad JS/TS), \texttt{phpcs} (estilo PHP), \texttt{shellcheck} (shell), \texttt{pyflakes} (Python) y \texttt{cloc} (l\'ineas de c\'odigo). Cada herramienta cubre una dimensi\'on del modelo ISO/IEC 25010.
+\subsection{Herramientas de calidad de c\'odigo}
 
-\subsection{R\'ubrica SRCI v3}
+Scripts Python aplican seis herramientas sobre los 96 artefactos generados:
 
-Evaluaci\'on manual mediante inspecci\'on directa de los artefactos generados, con cinco bloques ponderados:
+\begin{itemize}
+    \item \texttt{semgrep} (1074 reglas, \texttt{--config=auto}): detecci\'on de bugs de seguridad y l\'ogica en JS, TS, Python y PHP.
+    \item \texttt{eslint} (30+ reglas): estilo y calidad en archivos \texttt{.js}, \texttt{.ts}, \texttt{.jsx} y \texttt{.tsx}.
+    \item \texttt{phpcs} (est\'andar Generic): estilo en archivos \texttt{.php}.
+    \item \texttt{shellcheck}: buenas pr\'acticas en scripts \texttt{.sh} y \texttt{.bash}.
+    \item \texttt{pyflakes}: errores en archivos \texttt{.py}.
+    \item \texttt{cloc}: conteo de l\'ineas de c\'odigo por lenguaje.
+\end{itemize}
 
-\begin{description}
-    \item[Bloque A , Preservaci\'on del requisito (25\%):] ¿Conserva \textsc{SpecKit} los 12 atributos IREB en \texttt{spec.md}?
-    \item[Bloque B,  Conformidad (20\%):] ¿Satisface el c\'odigo el requisito sin desviaciones?
-    \item[Bloque C , Verificaci\'on y testing (12\%):] ¿Hay tests? ¿Cubren los criterios de verificaci\'on?
-    \item[Bloque D,  Trazabilidad:] ¿Soportan los artefactos intermedios la trazabilidad requisito $\rightarrow$ implementaci\'on?
-    \item[Bloque E,  TSR (\emph{Test Satisfaction Rate}, 43\%):] ¿Qu\'e porcentaje de requisitos satisface el c\'odigo?
-\end{description}
+Cada herramienta cubre una dimensi\'on del modelo de calidad ISO/IEC 25010~\cite{iso25010}. Los resultados se agrupan en dos indicadores: \textbf{incidencias semgrep} (problemas de seguridad y l\'ogica) e \textbf{incidencias de linters} (suma de eslint, phpcs, shellcheck y pyflakes). Se opt\'o por este conjunto de herramientas ligeras frente a plataformas de an\'alisis est\'atico m\'as pesadas como SonarQube por tres razones. Primera, la ejecuci\'on de las herramientas es determinista y no requiere configuraci\'on de servidor, lo que permite integrarlas directamente en el script de evaluaci\'on sin infraestructura adicional. Segunda, cada herramienta est\'a especializada en un lenguaje concreto, lo que proporciona una evaluaci\'on m\'as precisa que una herramienta gen\'erica. Tercera, la agregaci\'on de resultados de m\'ultiples herramientas ofrece una visi\'on multidimensional de la calidad que una \'unica plataforma no capturar\'ia con la misma granularidad.
+
+\subsection{Comparaci\'on con el PR real}
+
+Para cada ejecuci\'on, el \texttt{diff.patch} generado por el agente se cruza con el diff real del PR del repositorio. Se calculan tres m\'etricas:
+
+\begin{itemize}
+    \item \textbf{Precisi\'on}: fracci\'on de los archivos generados por el agente que tambi\'en aparecen en el PR real. Mide cu\'anto de lo generado es relevante.
+    \item \textbf{Recall}: fracci\'on de los archivos del PR real que el agente consigui\'o generar. Mide cu\'anto del cambio real se ha cubierto.
+    \item \textbf{F1}: media arm\'onica de precisi\'on y recall. Resume en un solo valor el equilibrio entre relevancia y cobertura.
+\end{itemize}
+
+Solo se contabilizan archivos de c\'odigo (extensiones \texttt{.py}, \texttt{.js}, \texttt{.ts}, \texttt{.php}, etc.), excluyendo scaffolding (\texttt{.specify/}, \texttt{specs/}), documentaci\'on y archivos de configuraci\'on de bloqueo. La comparaci\'on se realiza clonando el repositorio en un mirror bare y ejecutando \texttt{git diff} entre el commit pre-PR y el commit de merge.
+
+\subsection{Cumplimiento del pipeline}
+
+Se verifica para cada ejecuci\'on qu\'e artefactos del flujo esperado se han generado correctamente. C0 espera 1 artefacto (\texttt{spec.md}); C1 espera 6 (\texttt{spec.md}, constituci\'on, clarify, checklist, plan, tasks); C2 espera 7 (los de C1 m\'as \emph{scope contract}); C3 no espera ninguno. Adem\'as, para los flujos que generan \texttt{spec.md}, se comprueba cu\'antos de 7 atributos IREB (ID, nombre, tipo, descripci\'on, fuente, verificaci\'on, dependencias) se preservan en la especificaci\'on generada.
+
+\subsection{Evaluaci\'on manual (pendiente)}
+
+La evaluaci\'on manual mediante r\'ubrica SRCI v3 (\emph{Structured Requirement Conformance Inspection}), con cinco bloques ponderados basados en IREB e ISO 29148, queda pendiente para la siguiente fase del trabajo. Los artefactos generados en las 96 ejecuciones se conservan para que esta evaluaci\'on pueda realizarse sin necesidad de repetir los experimentos.
 
 \section{Dise\~no experimental}
 
 El experimento compara cuatro condiciones (C0--C3) que difieren \'unicamente en la informaci\'on que recibe el agente y en la configuraci\'on del pipeline. El dise\~no permite aislar el efecto de cada componente:
 
 \begin{itemize}
-    \item \textbf{C3 $\rightarrow$ C0} mide el efecto de usar un pipeline estructurado (\textsc{SpecKit}) frente a una petici\'on directa al modelo. Es la diferencia entre tener un proceso y no tenerlo.
+    \item \textbf{C3 $\rightarrow$ C0} mide el efecto de usar un pipeline estructurado (\textsc{SpecKit}) frente a una petici\'on directa al modelo. Ambas condiciones alcanzan un F1 similar, pero difieren radicalmente en el alcance: C3 genera de media 3 archivos con alta precisi\'on (83\,\%), mientras que C0 genera 14 archivos con una cobertura m\'as equilibrada. Es la diferencia entre acertar en poco y cubrir m\'as aunque con menos precisi\'on.
     \item \textbf{C0 $\rightarrow$ C1} mide el efecto de formalizar los requisitos con la plantilla IREB. Ambas condiciones usan \textsc{SpecKit}, pero C1 recibe requisitos con 12 atributos en lugar del texto literal del \emph{changelog}.
     \item \textbf{C1 $\rightarrow$ C2} mide el efecto de a\~nadir mecanismos de robustez (\texttt{AGENTS.md} y \emph{scope contract}) sobre un pipeline que ya usa requisitos formalizados.
 \end{itemize}
 
-Este dise\~no sigue la l\'ogica de la gu\'ia metodol\'ogica de referencia, que propone comparar una petici\'on informal (C0), una especificaci\'on estructurada (C1) y una especificaci\'on construida con requisitos elicitados (C2). La condici\'on C3 se a\~nade como extensi\'on para establecer un l\'imite inferior absoluto: qu\'e ocurre cuando no hay ni pipeline ni especificaci\'on.
+Este dise\~no sigue la l\'ogica de la gu\'ia metodol\'ogica de referencia, que propone comparar una petici\'on informal (C0), una especificaci\'on estructurada (C1) y una especificaci\'on construida con requisitos elicitados (C2). La condici\'on C3 se a\~nade como extensi\'on para establecer qu\'e ocurre cuando no hay ni pipeline ni especificaci\'on: el modelo puede acertar all\'i donde toca, pero toca muy poco.
 
 \section{Decisiones metodol\'ogicas}
 
@@ -130,7 +151,7 @@ IREB como marco & IEEE~830 (SRS) & IREB es m\'as abstracto y adaptable a fuentes
 Elicitaci\'on v\'ia \emph{changelogs} & \emph{Stakeholders} reales & Inviable en un TFG. \emph{Changelogs} con trazabilidad p\'ublica verificable \\
 Plantilla 12 atributos & Notaci\'on formal (Rupp, l\'ogica) & Desproporcionada. Lenguaje natural con criterios de verificaci\'on \\
 Ejecuci\'on \'unica & Iterativa con intervenci\'on humana & La iteraci\'on enmascara el comportamiento nativo del pipeline \\
-SRCI 3 niveles & Evaluaci\'on binaria & La granularidad ternaria enriquece el an\'alisis cualitativo \\
+Evaluaci\'on autom\'atica & Evaluaci\'on manual (SRCI) & La evaluaci\'on autom\'atica con 6 herramientas escala a 96 ejecuciones sin sesgo; la SRCI queda para trabajo futuro \\
 4 flujos (C0--C3) & 2 flujos (Flow A/B) & Permite aislar efectos: C3 (sin pipeline), C0 (pipeline solo), C1 (+IREB), C2 (+robustez) \\
 \bottomrule
 \end{tabularx}

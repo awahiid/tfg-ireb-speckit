@@ -1,85 +1,94 @@
 \chapter{\resultsname}
 \label{chap:resultados}
 
-Se ejecutaron 24 casos (6 proyectos $\times$ 4 flujos) mediante scripts automatizados sobre entornos aislados. Todas las ejecuciones se completaron. En Authentik, C0 gener\'o una funcionalidad distinta a la solicitada (SCIM provisioning donde se ped\'ia una correcci\'on de compatibilidad FIPS), lo que muestra que sin una especificaci\'on clara el agente puede interpretar incorrectamente el objetivo.
+Se ejecutaron 96 casos (24 requisitos $\times$ 4 flujos) mediante scripts automatizados sobre entornos aislados. Todas las ejecuciones se completaron. En Authentik, C0 gener\'o una funcionalidad distinta a la solicitada (SCIM, \emph{System for Cross-domain Identity Management}, donde se ped\'ia una correcci\'on de compatibilidad FIPS, \emph{Federal Information Processing Standards}), lo que muestra que sin una especificaci\'on clara el agente puede interpretar incorrectamente el objetivo.
 
-\section{Evaluaci\'on autom\'atica de calidad de c\'odigo}
+\section{Comparaci\'on con los PR reales}
 
-\begin{table}[htbp]
-\centering
-\caption{An\'alisis autom\'atico: hallazgos clave}
-\label{tab:auto-resumen}
-\begin{tabularx}{\textwidth}{lX}
-\toprule
-\textbf{Herramienta} & \textbf{Hallazgo} \\
-\midrule
-\texttt{semgrep} & 1 issue de seguridad (ReDoS en C0 Directus). C\'odigo limpio de bugs en general. \\
-\texttt{eslint} & 2--74 incidencias por caso. M\'as incidencias donde hay m\'as TypeScript. \\
-\texttt{phpcs} & \textbf{16.009 incidencias en C0 Appwrite} vs. \textbf{1.597 en C1} ($-$90\%). \\
-\texttt{shellcheck} & 12 incidencias est\'andar en C0--C2 (boilerplate SpecKit). \\
-\texttt{pyflakes} & 0--1 incidencias. C\'odigo Python limpio. \\
-\texttt{cloc} & C2 genera m\'as l\'ineas (14.218) que C0 (5.948) por incluir tests y documentaci\'on. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+La tabla~\ref{tab:f1-global} presenta la comparaci\'on entre el c\'odigo generado por cada flujo y el diff real del PR de referencia. Las m\'etricas miden cu\'anto del cambio real consigue reproducir el agente (F1), con qu\'e precisi\'on (fracci\'on de lo generado que es relevante) y con qu\'e cobertura (fracci\'on del PR real cubierta).
 
 \begin{table}[htbp]
 \centering
-\caption{Incidencias \texttt{phpcs}: Appwrite (10832)}
-\label{tab:phpcs}
-\begin{tabular}{lcc}
+\caption{Comparaci\'on con PR real: medias de 24 casos por flujo}
+\label{tab:f1-global}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Flujo} & \textbf{Incidencias} & \textbf{vs.\ C0} \\
+\textbf{M\'etrica} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
 \midrule
-C0 & 16.009 & --- \\
-C1 & \textbf{1.597} & \textbf{$-$90\%} \\
-C2 & 14.577 & $-$9\% \\
-C3 & 326 & $-$98\% (c\'odigo m\'inimo) \\
+F1 medio & 0.46 & 0.52 & \textbf{0.62} & \textbf{0.62} \\
+Precisi\'on media & 49.5\,\% & 53.2\,\% & 70.2\,\% & \textbf{83.0\,\%} \\
+Recall medio & 54.0\,\% & \textbf{64.8\,\%} & 62.5\,\% & 57.8\,\% \\
+\midrule
+Casos con F1 = 1.0 & 2/24 & 1/24 & \textbf{5/24} & 4/24 \\
+Casos con F1 $<$ 0.2 & 6/24 & 4/24 & \textbf{3/24} & 4/24 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+C2 y C3 comparten el mismo F1 medio (0.62), pero lo consiguen por caminos opuestos. C3 tiene la precisi\'on m\'as alta (83.0\,\%) y el recall m\'as bajo (57.8\,\%): el modelo acierta en los pocos archivos que toca, pero deja sin cubrir casi la mitad del PR real. C2 logra el mejor equilibrio: precisi\'on del 70.2\,\% con recall del 62.5\,\%. C0, sin formalizaci\'on IREB, obtiene el F1 m\'as bajo (0.46) y la precisi\'on m\'as baja (49.5\,\%): sin una especificaci\'on clara, el agente genera m\'as c\'odigo no relacionado con el cambio real.
+
+\section{An\'alisis de calidad de c\'odigo}
+
+La tabla~\ref{tab:calidad-global} resume los resultados de las seis herramientas de an\'alisis autom\'atico aplicadas sobre los 96 artefactos generados.
+
+\begin{table}[htbp]
+\centering
+\caption{Calidad de c\'odigo: medias de 24 casos por flujo}
+\label{tab:calidad-global}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{M\'etrica} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
+\midrule
+Incidencias semgrep (seguridad) & 0 & 0 & 0 & 0 \\
+Incidencias linters (estilo) & \textbf{126} & 2.096 & 1.068 & 364 \\
+L\'ineas de c\'odigo (cloc) & 13.453 & \textbf{19.696} & 12.491 & 3.221 \\
+Archivos fuente generados & 14 & 15 & 15 & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El c\'odigo generado est\'a libre de problemas de seguridad en los cuatro flujos (0 incidencias semgrep en las 96 ejecuciones). Las incidencias de estilo crecen con la cantidad de c\'odigo generado: C1 produce el mayor volumen (19.696 l\'ineas de media) y tambi\'en la mayor cantidad de avisos de linters (2.096), mientras que C3 genera poco c\'odigo (3.221 l\'ineas) y pocos avisos (364). C0 es el m\'as limpio entre los flujos con pipeline (126 incidencias para 13.453 l\'ineas).
 
 \FloatBarrier
-\section{Evaluaci\'on manual: r\'ubrica SRCI v3}
+\section{Cumplimiento del pipeline}
+
+La tabla~\ref{tab:cumplimiento} muestra en qu\'e medida cada flujo genera los artefactos esperados seg\'un su dise\~no y cu\'antos atributos IREB preserva en la especificaci\'on.
 
 \begin{table}[htbp]
 \centering
-\caption{Evaluaci\'on SRCI v3: notas globales /10}
-\label{tab:srci-global}
-\begin{tabular}{lccccc}
+\caption{Cumplimiento del pipeline y preservaci\'on de atributos IREB}
+\label{tab:cumplimiento}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Flujo} & \textbf{A (/12)} & \textbf{B (/5)} & \textbf{C (/3)} & \textbf{TSR} & \textbf{Nota/10} \\
+\textbf{M\'etrica} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
 \midrule
-C0 SpecKit vanilla   & 3.0 & 3.9 & 0.3 & 0.92 & 6.3 \\
-C1 IREB v1           & 3.2 & 4.0 & 0.7 & 1.00 & 6.8 \\
-C2 IREB v2           & 3.2 & 4.0 & 1.7 & 1.00 & 7.2 \\
-C3 MRS directo       & 3.0 & 3.6 & 0.0 & 0.17 & 2.8 \\
-\bottomrule
+Artefactos generados / esperados & \textbf{100\,\%} & 48\,\% & 57\,\% & --- \\
+Atributos IREB en \texttt{spec.md} (de 7) & 1.5 & 6.7 & \textbf{7.0} & --- \\
+\midrule
 \end{tabular}
 \end{table}
 
-La progresi\'on C3 (2.8) $\rightarrow$ C0 (6.3) $\rightarrow$ C1 (6.8) $\rightarrow$ C2 (7.2) muestra que cada paso a\~nadido mejora el resultado: el pipeline m\'inimo (+3.5 puntos), la formalizaci\'on IREB (+0.5), los mecanismos de robustez (+0.4). Por bloques, la formalizaci\'on IREB (C0 $\rightarrow$ C1) mejora la conformidad de la implementaci\'on (Bloque B: 3.9 $\rightarrow$ 4.0) y eleva el TSR al 100\,\%. El \emph{scope contract} y \texttt{AGENTS.md} (C1 $\rightarrow$ C2) concentran su efecto en la verificaci\'on: C2 es el \'unico flujo que genera tests en los 6 casos.
+C0 tiene un cumplimiento del 100\,\% porque solo se le pide un artefacto (\texttt{spec.md}), que genera en los 24 casos. Sin embargo, los \texttt{spec.md} de C0 apenas conservan atributos IREB (1.5 de 7), ya que el \emph{changelog} de entrada no contiene esa informaci\'on. C1 y C2 reciben requisitos formalizados y sus \texttt{spec.md} preservan 6.7 y 7.0 atributos respectivamente, pero el pipeline completo solo se completa en el 48\,\% y 57\,\% de los casos: los comandos opcionales (\texttt{clarify}, \texttt{checklist}, \texttt{analyze}) no siempre generan su artefacto correspondiente. C3 no genera artefactos IREB porque carece de pipeline.
 
 \FloatBarrier
 \section{An\'alisis de coste}
 
 \begin{table}[htbp]
 \centering
-\caption{Coste monetario por flujo (media de 6 casos)}
+\caption{Coste monetario y eficiencia por flujo (media de 24 casos)}
 \label{tab:coste-real}
-\begin{tabular}{lccc}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Flujo} & \textbf{Coste medio} & \textbf{Nota/10} & \textbf{Eficiencia (pts/\$)} \\
+\textbf{M\'etrica} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
 \midrule
-C0 & \$0.0407 & 6.3 & 155 \\
-C1 & \$0.0608 & 6.8 & 112 \\
-C2 & \$0.0696 & 7.2 & 103 \\
-C3 & \$0.0115 & 2.8 & 243 \\
-\bottomrule
+Coste medio (\$) & 0.0573 & 0.0915 & 0.0763 & \textbf{0.0191} \\
+Tokens medios & 4.877.245 & 6.686.810 & 4.642.567 & \textbf{1.608.276} \\
+L\'ineas por d\'olar & 234.782 & 215.257 & 163.712 & \textbf{168.639} \\
+\midrule
 \end{tabular}
 \end{table}
 
-El coste crece con la calidad: C2 cuesta un 71\,\% m\'as que C0, pero es el \'unico flujo con tests en todos los casos. C3 es la opci\'on m\'as econ\'omica, aunque su capacidad para implementar requisitos reales es limitada (TSR del 17\,\%).
+C3 es, con diferencia, la opci\'on m\'as econ\'omica (\$0.0191 por ejecuci\'on, una tercera parte de C0). Sin embargo, el ahorro econ\'omico va acompa\~nado de una generaci\'on de c\'odigo mucho menor (3.221 l\'ineas frente a 12.491--19.696). C2 resulta m\'as econ\'omico que C1 (\$0.0763 frente a \$0.0915) a pesar de tener m\'as pasos, porque el \emph{scope contract} y las reglas de \texttt{AGENTS.md} reducen el n\'umero de tokens consumidos al acotar el contexto que recibe el agente en cada paso.
 
 \section{Visualizaci\'on comparativa}
 
@@ -91,42 +100,52 @@ El coste crece con la calidad: C2 cuesta un 71\,\% m\'as que C0, pero es el \'un
     bar width=18pt,
     width=0.6\textwidth,
     height=6cm,
-    ylabel={SRCI (/10)},
-    ymin=0, ymax=9,
-    xtick=data,
-    xticklabels={C3, C0, C1, C2},
+    ylabel={F1 vs PR real},
+    ymin=0, ymax=0.8,
+    xtick={1,2,3,4},
+    xticklabels={C0, C1, C2, C3},
     enlarge x limits=0.3,
     grid=major,
     nodes near coords,
     every node near coord/.append style={font=\footnotesize}
 ]
-\addplot[fill=gray!30]   coordinates {(1,2.8)};
-\addplot[fill=red!30]    coordinates {(2,6.3)};
-\addplot[fill=yellow!40] coordinates {(3,6.8)};
-\addplot[fill=green!40]  coordinates {(4,7.2)};
+\addplot[fill=red!30,    bar shift=0pt] coordinates {(1,0.46)};
+\addplot[fill=yellow!40, bar shift=0pt] coordinates {(2,0.52)};
+\addplot[fill=green!40,  bar shift=0pt] coordinates {(3,0.62)};
+\addplot[fill=gray!30,   bar shift=0pt] coordinates {(4,0.62)};
 \end{axis}
 \end{tikzpicture}
-\caption{Puntuaci\'on SRCI media de cada condici\'on experimental (media de 6 casos).}
+\caption{F1 medio de cada condici\'on experimental frente al PR real (media de 24 casos).}
 \label{fig:barras-4flujos}
 \end{figure}
 
+El gr\'afico muestra que a\~nadir estructura al proceso mejora el F1 de forma consistente: C0 (0.46) $\rightarrow$ C1 (0.52) $\rightarrow$ C2 (0.62). C3, que prescinde del pipeline, iguala a C2 en F1 (0.62), pero esta m\'etrica por s\'i sola no refleja las diferencias cualitativas entre ambos flujos: la secci\'on~\ref{sec:resumen-metricas} desglosa las m\'etricas complementarias que los distinguen.
+
+\FloatBarrier
 \section{Resumen de m\'etricas}
+\label{sec:resumen-metricas}
 
 \begin{table}[htbp]
 \centering
-\caption{Tabla resumen de todas las m\'etricas por flujo}
+\caption{Tabla resumen de todas las m\'etricas por flujo (media de 24 casos)}
 \label{tab:resumen-metricas}
 \begin{tabular}{lcccc}
 \toprule
 \textbf{M\'etrica} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
 \midrule
-SRCI (/10) & 6.3 & 6.8 & \textbf{7.2} & 2.8 \\
-TSR (\%) & 92 & \textbf{100} & \textbf{100} & 17 \\
-Tests (casos con tests) & 1/6 & 3/6 & \textbf{6/6} & 0/6 \\
-Coste medio (\$) & 0.0407 & 0.0608 & 0.0696 & \textbf{0.0115} \\
-L\'ineas c\'odigo (media) & 5.948 & 18.522 & 14.218 & \textbf{289} \\
+F1 vs PR real & 0.46 & 0.52 & \textbf{0.62} & \textbf{0.62} \\
+Precisi\'on & 49.5\,\% & 53.2\,\% & 70.2\,\% & \textbf{83.0\,\%} \\
+Recall & 54.0\,\% & \textbf{64.8\,\%} & 62.5\,\% & 57.8\,\% \\
 \midrule
-\textbf{Eficiencia (pts/\$)} & 155 & 112 & 103 & \textbf{243} \\
+Artefactos pipeline & \textbf{100\,\%} & 48\,\% & 57\,\% & --- \\
+Atributos IREB (de 7) & 1.5 & 6.7 & \textbf{7.0} & --- \\
+\midrule
+Archivos fuente & 14 & 15 & 15 & 3 \\
+L\'ineas de c\'odigo & 13.453 & \textbf{19.696} & 12.491 & 3.221 \\
+Incidencias linters & \textbf{126} & 2.096 & 1.068 & 364 \\
+Incidencias semgrep & 0 & 0 & 0 & 0 \\
+\midrule
+Coste medio (\$) & 0.0573 & 0.0915 & 0.0763 & \textbf{0.0191} \\
 \bottomrule
 \end{tabular}
 \end{table}

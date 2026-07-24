@@ -1,20 +1,20 @@
-# IREB Kit v1 — Versión inestable (sin AGENTS.md ni scope contract)
+# IREB Kit v1 — Unstable version (no AGENTS.md or scope contract)
 
-> ⚠️ **ADVERTENCIA**: Esta es la versión del Kit que causaba verborrea y alucinaciones.
-> Se conserva como condición experimental C1 para comparación con Kit v2.
+> ⚠️ **WARNING**: This is the Kit version that caused verbosity and hallucinations.
+> It is kept as experimental condition C1 for comparison with Kit v2.
 
-## Qué le falta respecto a Kit v2
+## What is missing compared to Kit v2
 
-| Componente | Kit v1 | Kit v2 |
+| Component | Kit v1 | Kit v2 |
 |---|---|---|
-| AGENTS.md (reglas universales R0-R4) | ❌ Ausente | ✅ 5 reglas |
-| constitution.md (Art. 0 anti-alucinación) | ✅ | ✅ |
+| AGENTS.md (universal rules R0-R4) | ❌ Missing | ✅ 5 rules |
+| constitution.md (Art. 0 anti-hallucination) | ✅ | ✅ |
 | spec/clarify/checklist/plan/tasks/analyze | ✅ | ✅ |
-| Scope contract (paso 07.5) | ❌ Ausente | ✅ |
-| pipeline.sh con scope contract | ❌ | ✅ |
+| Scope contract (step 07.5) | ❌ Missing | ✅ |
+| pipeline.sh with scope contract | ❌ | ✅ |
 
-## Efectos observados
+## Observed effects
 
-- **Sin AGENTS.md**: el agente no recibe reglas universales. Cada comando `/speckit.*` puede comportarse de forma inconsistente.
-- **Sin scope contract**: el paso `implement` modifica archivos sin restricciones, causando scope creep (hasta 4238 líneas en n8n-e5).
-- **Resultado**: 3 de 6 casos no completan el pipeline. Puntuación media SRCI: 3.4/10.
+- **Without AGENTS.md**: the agent does not receive universal rules. Each `/speckit.*` command may behave inconsistently.
+- **Without scope contract**: the `implement` step modifies files without restrictions, causing scope creep (up to 4238 lines in n8n-e5).
+- **Result**: 3 out of 6 cases did not complete the pipeline. Average SRCI score: 3.4/10.

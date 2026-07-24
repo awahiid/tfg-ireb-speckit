@@ -29,7 +29,7 @@ n8n & Integraci\'on de servicios & 9 & Eventos, webhooks, orquestaci\'on \\
 
 La calidad media del corpus es de 10{,}8 sobre 12 (desviaci\'on t\'ipica 0{,}9). Por tipo: 38 funcionales (73\,\%), 8 de calidad (15\,\%) y 6 restricciones (12\,\%). Por prioridad: 27 altas (52\,\%), 18 medias (35\,\%) y 7 bajas (13\,\%).
 
-A partir de los 52 requisitos se derivaron 52 \emph{Minimal Requirement Seeds} (MRS) con estructura ``Como [ROL], quiero que el sistema [COMPORTAMIENTO] [contexto], para [MOTIVACI\'ON]''. Los MRS son la entrada de la condici\'on C3 y garantizan que cualquier persona pueda reproducir el experimento partiendo de los mismos datos.
+A partir de los 52 requisitos se derivaron 52 \emph{Minimal Requirement Specifications} (MRS) con estructura ``Como [ROL], quiero que el sistema [COMPORTAMIENTO] [contexto], para [MOTIVACI\'ON]''. Los MRS son la entrada de la condici\'on C3 y garantizan que cualquier persona pueda reproducir el experimento partiendo de los mismos datos.
 
 \section{IREB Kit for SpecKit}
 
@@ -93,24 +93,20 @@ Cada componente materializa uno de los siguientes principios que garantizan la m
 
 Los cuatro flujos se ejecutan mediante scripts automatizados (\texttt{pipeline-c0.sh} a \texttt{pipeline-c3.sh}) que usan \texttt{opencode} + DeepSeek V4 Flash sobre entornos aislados. Para cada caso, el script clona el repositorio en el \emph{commit} pre-PR, instala dependencias, ejecuta el flujo correspondiente y captura el \texttt{diff.patch}, \texttt{summary.json} y artefactos intermedios.
 
-La tabla~\ref{tab:artefactos-flujos} muestra los artefactos generados por cada flujo. La diferencia cr\'itica entre C1 y C2 es que C2 a\~nade \texttt{AGENTS.md} y \emph{scope contract}, lo que garantiza que todos los pasos se completen y que \texttt{implement} no introduzca \emph{scope creep}.
+La tabla~\ref{tab:artefactos-flujos} muestra la tasa de generaci\'on de artefactos por flujo, calculada como el porcentaje de artefactos esperados seg\'un el dise\~no que el pipeline consigui\'o generar en cada ejecuci\'on. La diferencia cr\'itica entre C1 y C2 es que C2 a\~nade \texttt{AGENTS.md} y \emph{scope contract}, lo que eleva la tasa de cumplimiento del 48\,\% al 57\,\% y garantiza que \texttt{implement} no introduzca \emph{scope creep}. C0, al tener un solo artefacto esperado (\texttt{spec.md}), alcanza el 100\,\% de cumplimiento en todos los casos.
 
 \begin{table}[htbp]
 \centering
-\caption{Artefactos generados por flujo (6 casos cada uno)}
+\caption{Tasa de generaci\'on de artefactos por flujo (24 casos cada uno)}
 \label{tab:artefactos-flujos}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Artefacto} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
+\textbf{M\'etrica} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
 \midrule
-spec.md & 6/6 & 3/6 & \textbf{6/6} & 0/6 \\
-constitution + clarify + checklist & 0/6 & 3/6 & \textbf{6/6} & 0/6 \\
-plan.md + tasks.md & 6/6 & 3/6 & \textbf{6/6} & 0/6 \\
-analyze (pre/post) & 0/6 & 3/6 & \textbf{6/6} & 0/6 \\
-scope contract & 0/6 & 0/6 & \textbf{6/6} & 0/6 \\
-diff.patch & 6/6 & 5/6 & \textbf{6/6} & 6/6 \\
-\bottomrule
+Artefactos generados / esperados & 100\,\% & 48\,\% & 57\,\% & --- \\
+Atributos IREB preservados en \texttt{spec.md} (de 7) & 1.5 & 6.7 & 7.0 & --- \\
+\midrule
 \end{tabular}
 \end{table}
 
-La automatizaci\'on de los experimentos constituye un resultado adicional del trabajo. Cada pipeline se ejecuta en un entorno aislado mediante un directorio \texttt{env/} que act\'ua como \texttt{\$HOME} temporal para \texttt{opencode}. Esto garantiza que las sesiones, bases de datos y conversaciones de cada ejecuci\'on son independientes y no se contaminan entre s\'i. Los cuatro flujos comparten una librer\'ia de funciones (\texttt{lib.sh}) que unifica la captura de resultados: extrae el \emph{diff} del c\'odigo generado, registra el consumo de tokens y el coste monetario desde los \texttt{transcript.json} de \texttt{opencode}, y genera un resumen (\texttt{summary.json}) con todas las m\'etricas. Esta infraestructura permite ejecutar los experimentos de forma paralela, ya que cada caso es autocontenido, y facilita la revisi\'on de los resultados al conservar la traza completa de cada ejecuci\'on. Los scripts est\'an disponibles junto con el resto de artefactos del trabajo para que cualquier persona pueda reproducir los experimentos o extenderlos con nuevos casos.
+La automatizaci\'on de los experimentos constituye un resultado adicional del trabajo. Cada pipeline se ejecuta en un entorno aislado mediante un directorio \texttt{env/} que act\'ua como \texttt{\$HOME} temporal para \texttt{opencode}, lo que garantiza que las sesiones, bases de datos y conversaciones de cada ejecuci\'on son independientes y no se contaminan entre s\'i. Los cuatro flujos comparten una librer\'ia de funciones (\texttt{lib.sh}) que unifica la captura de resultados: extrae el \emph{diff} del c\'odigo generado, registra el consumo de tokens y el coste monetario desde los \texttt{transcript.json} de \texttt{opencode}, y genera un resumen (\texttt{summary.json}) con todas las m\'etricas. Esta infraestructura permite ejecutar los experimentos de forma paralela, ya que cada caso es autocontenido, y facilita la revisi\'on de los resultados al conservar la traza completa de cada ejecuci\'on. La automatizaci\'on fue necesaria porque la ejecuci\'on manual de 96 experimentos habr\'ia sido inviable en el plazo del trabajo: cada ejecuci\'on requiere entre 20 y 40 minutos, y la intervenci\'on humana en cada paso habr\'ia introducido variabilidad no controlada. Los scripts est\'an disponibles junto con el resto de artefactos del trabajo para que cualquier persona pueda reproducir los experimentos o extenderlos con nuevos casos.

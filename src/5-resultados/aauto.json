@@ -1,0 +1,4039 @@
+{
+  "generado": "2026-07-23 19:25",
+  "total_analizados": 96,
+  "total_esperados": 96,
+  "resultados": [
+    {
+      "flow": "C0",
+      "caso": "appwrite-10832",
+      "repo": "appwrite",
+      "reqid": "10832",
+      "timestamp": "2026-07-22/221608",
+      "metricas": {
+        "cloc": 10794,
+        "coste_usd": 0.1106,
+        "tokens": 10217659,
+        "archivos_diff": 52,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 739,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 3,
+        "comunes": 1,
+        "solo_agente": 3,
+        "solo_pr": 2,
+        "precision": 0.25,
+        "recall": 0.333,
+        "f1": 0.286
+      },
+      "eficiencia": {
+        "coste_usd": 0.1106,
+        "cost_efficiency_score": 0.262,
+        "tokens_por_dolar": 92356340.0,
+        "lineas_por_dolar": 97566.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 2,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "appwrite-11009",
+      "repo": "appwrite",
+      "reqid": "11009",
+      "timestamp": "2026-07-22/133617",
+      "metricas": {
+        "cloc": 10051,
+        "coste_usd": 0.0282,
+        "tokens": 1958423,
+        "archivos_diff": 50,
+        "archivos_fuente": 11,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 351,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 2,
+        "comunes": 0,
+        "solo_agente": 1,
+        "solo_pr": 2,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0282,
+        "cost_efficiency_score": 0.812,
+        "tokens_por_dolar": 69405784.0,
+        "lineas_por_dolar": 356204.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "appwrite-11312",
+      "repo": "appwrite",
+      "reqid": "11312",
+      "timestamp": "2026-07-23/070041",
+      "metricas": {
+        "cloc": 10197,
+        "coste_usd": 0.0669,
+        "tokens": 4115438,
+        "archivos_diff": 49,
+        "archivos_fuente": 10,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.941
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 362,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 361,
+        "precision": 1.0,
+        "recall": 0.003,
+        "f1": 0.006
+      },
+      "eficiencia": {
+        "coste_usd": 0.0669,
+        "cost_efficiency_score": 0.554,
+        "tokens_por_dolar": 61486852.0,
+        "lineas_por_dolar": 152349.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "appwrite-11465",
+      "repo": "appwrite",
+      "reqid": "11465",
+      "timestamp": "2026-07-23/070042",
+      "metricas": {
+        "cloc": 11004,
+        "coste_usd": 0.0682,
+        "tokens": 4779883,
+        "archivos_diff": 51,
+        "archivos_fuente": 12,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 1331,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 57,
+        "comunes": 0,
+        "solo_agente": 3,
+        "solo_pr": 57,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0682,
+        "cost_efficiency_score": 0.546,
+        "tokens_por_dolar": 70135623.0,
+        "lineas_por_dolar": 161463.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "authentik-10110",
+      "repo": "authentik",
+      "reqid": "10110",
+      "timestamp": "2026-07-23/070042",
+      "metricas": {
+        "cloc": 58491,
+        "coste_usd": 0.0319,
+        "tokens": 1839858,
+        "archivos_diff": 54,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.99
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.857
+      },
+      "eficiencia": {
+        "coste_usd": 0.0319,
+        "cost_efficiency_score": 0.787,
+        "tokens_por_dolar": 57618001.0,
+        "lineas_por_dolar": 1831736.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 2,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "authentik-10124",
+      "repo": "authentik",
+      "reqid": "10124",
+      "timestamp": "2026-07-23/070042",
+      "metricas": {
+        "cloc": 9740,
+        "coste_usd": 0.0413,
+        "tokens": 2385824,
+        "archivos_diff": 50,
+        "archivos_fuente": 11,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.938
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0413,
+        "cost_efficiency_score": 0.725,
+        "tokens_por_dolar": 57798924.0,
+        "lineas_por_dolar": 235961.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 3,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "authentik-20744",
+      "repo": "authentik",
+      "reqid": "20744",
+      "timestamp": "2026-07-23/070043",
+      "metricas": {
+        "cloc": 10056,
+        "coste_usd": 0.0312,
+        "tokens": 1654412,
+        "archivos_diff": 53,
+        "archivos_fuente": 14,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.94
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 1,
+        "comunes": 1,
+        "solo_agente": 2,
+        "solo_pr": 0,
+        "precision": 0.333,
+        "recall": 1.0,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.0312,
+        "cost_efficiency_score": 0.792,
+        "tokens_por_dolar": 53063442.0,
+        "lineas_por_dolar": 322535.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "authentik-21803",
+      "repo": "authentik",
+      "reqid": "21803",
+      "timestamp": "2026-07-23/070043",
+      "metricas": {
+        "cloc": 10084,
+        "coste_usd": 0.0368,
+        "tokens": 2260725,
+        "archivos_diff": 52,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 1,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.936
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.667,
+        "recall": 1.0,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.0368,
+        "cost_efficiency_score": 0.754,
+        "tokens_por_dolar": 61354384.0,
+        "lineas_por_dolar": 273672.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "calcom-25640",
+      "repo": "calcom",
+      "reqid": "25640",
+      "timestamp": "2026-07-23/071244",
+      "metricas": {
+        "cloc": 17139,
+        "coste_usd": 0.0833,
+        "tokens": 6984066,
+        "archivos_diff": 71,
+        "archivos_fuente": 32,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 45,
+        "code_quality_score": 0.869
+      },
+      "comparacion_pr": {
+        "archivos_agente": 21,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 19,
+        "solo_pr": 1,
+        "precision": 0.095,
+        "recall": 0.667,
+        "f1": 0.167
+      },
+      "eficiencia": {
+        "coste_usd": 0.0833,
+        "cost_efficiency_score": 0.444,
+        "tokens_por_dolar": 83796055.0,
+        "lineas_por_dolar": 205637.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "calcom-26598",
+      "repo": "calcom",
+      "reqid": "26598",
+      "timestamp": "2026-07-22/133657",
+      "metricas": {
+        "cloc": 15309,
+        "coste_usd": 0.0379,
+        "tokens": 3242531,
+        "archivos_diff": 52,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 56,
+        "code_quality_score": 0.817
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.857
+      },
+      "eficiencia": {
+        "coste_usd": 0.0379,
+        "cost_efficiency_score": 0.747,
+        "tokens_por_dolar": 85446690.0,
+        "lineas_por_dolar": 403420.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "calcom-26812",
+      "repo": "calcom",
+      "reqid": "26812",
+      "timestamp": "2026-07-23/071245",
+      "metricas": {
+        "cloc": 10667,
+        "coste_usd": 0.071,
+        "tokens": 6643512,
+        "archivos_diff": 53,
+        "archivos_fuente": 14,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 28,
+        "code_quality_score": 0.869
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 1,
+        "precision": 0.667,
+        "recall": 0.667,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.071,
+        "cost_efficiency_score": 0.527,
+        "tokens_por_dolar": 93544241.0,
+        "lineas_por_dolar": 150197.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 3,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "calcom-26826",
+      "repo": "calcom",
+      "reqid": "26826",
+      "timestamp": "2026-07-23/071245",
+      "metricas": {
+        "cloc": 10448,
+        "coste_usd": 0.0805,
+        "tokens": 4879613,
+        "archivos_diff": 53,
+        "archivos_fuente": 14,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 28,
+        "code_quality_score": 0.866
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0805,
+        "cost_efficiency_score": 0.463,
+        "tokens_por_dolar": 60608029.0,
+        "lineas_por_dolar": 129771.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "directus-26646",
+      "repo": "directus",
+      "reqid": "26646",
+      "timestamp": "2026-07-23/071245",
+      "metricas": {
+        "cloc": 11386,
+        "coste_usd": 0.0689,
+        "tokens": 4970659,
+        "archivos_diff": 56,
+        "archivos_fuente": 17,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 30,
+        "code_quality_score": 0.868
+      },
+      "comparacion_pr": {
+        "archivos_agente": 5,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 3,
+        "solo_pr": 1,
+        "precision": 0.4,
+        "recall": 0.667,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.0689,
+        "cost_efficiency_score": 0.541,
+        "tokens_por_dolar": 72151469.0,
+        "lineas_por_dolar": 165273.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "directus-26772",
+      "repo": "directus",
+      "reqid": "26772",
+      "timestamp": "2026-07-22/133719",
+      "metricas": {
+        "cloc": 15742,
+        "coste_usd": 0.0704,
+        "tokens": 9117163,
+        "archivos_diff": 69,
+        "archivos_fuente": 30,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 101,
+        "code_quality_score": 0.679
+      },
+      "comparacion_pr": {
+        "archivos_agente": 20,
+        "archivos_pr": 43,
+        "comunes": 7,
+        "solo_agente": 13,
+        "solo_pr": 36,
+        "precision": 0.35,
+        "recall": 0.163,
+        "f1": 0.222
+      },
+      "eficiencia": {
+        "coste_usd": 0.0704,
+        "cost_efficiency_score": 0.531,
+        "tokens_por_dolar": 129589831.0,
+        "lineas_por_dolar": 223754.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "directus-26836",
+      "repo": "directus",
+      "reqid": "26836",
+      "timestamp": "2026-07-23/071246",
+      "metricas": {
+        "cloc": 15352,
+        "coste_usd": 0.0793,
+        "tokens": 8279163,
+        "archivos_diff": 59,
+        "archivos_fuente": 20,
+        "semgrep_incidencias": 3,
+        "linters_incidencias": 27,
+        "code_quality_score": 0.902
+      },
+      "comparacion_pr": {
+        "archivos_agente": 6,
+        "archivos_pr": 5,
+        "comunes": 3,
+        "solo_agente": 3,
+        "solo_pr": 2,
+        "precision": 0.5,
+        "recall": 0.6,
+        "f1": 0.545
+      },
+      "eficiencia": {
+        "coste_usd": 0.0793,
+        "cost_efficiency_score": 0.471,
+        "tokens_por_dolar": 104433354.0,
+        "lineas_por_dolar": 193650.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "directus-26976",
+      "repo": "directus",
+      "reqid": "26976",
+      "timestamp": "2026-07-23/071246",
+      "metricas": {
+        "cloc": 10296,
+        "coste_usd": 0.0652,
+        "tokens": 6201541,
+        "archivos_diff": 51,
+        "archivos_fuente": 12,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 17,
+        "code_quality_score": 0.917
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 1,
+        "comunes": 1,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0652,
+        "cost_efficiency_score": 0.565,
+        "tokens_por_dolar": 95076287.0,
+        "lineas_por_dolar": 157849.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 2,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "medusa-13930",
+      "repo": "medusa",
+      "reqid": "13930",
+      "timestamp": "2026-07-23/073144",
+      "metricas": {
+        "cloc": 13922,
+        "coste_usd": 0.055,
+        "tokens": 4430033,
+        "archivos_diff": 50,
+        "archivos_fuente": 11,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 79,
+        "code_quality_score": 0.716
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 1,
+        "solo_pr": 1,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.055,
+        "cost_efficiency_score": 0.633,
+        "tokens_por_dolar": 80570958.0,
+        "lineas_por_dolar": 253206.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 4,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "medusa-15264",
+      "repo": "medusa",
+      "reqid": "15264",
+      "timestamp": "2026-07-22/133737",
+      "metricas": {
+        "cloc": 9010,
+        "coste_usd": 0.0353,
+        "tokens": 3648949,
+        "archivos_diff": 46,
+        "archivos_fuente": 7,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.933
+      },
+      "comparacion_pr": {
+        "archivos_agente": 0,
+        "archivos_pr": 2,
+        "comunes": 0,
+        "solo_agente": 0,
+        "solo_pr": 2,
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0353,
+        "cost_efficiency_score": 0.765,
+        "tokens_por_dolar": 103314052.0,
+        "lineas_por_dolar": 255103.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "medusa-15396",
+      "repo": "medusa",
+      "reqid": "15396",
+      "timestamp": "2026-07-23/073144",
+      "metricas": {
+        "cloc": 11212,
+        "coste_usd": 0.0725,
+        "tokens": 7714496,
+        "archivos_diff": 54,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 24,
+        "code_quality_score": 0.893
+      },
+      "comparacion_pr": {
+        "archivos_agente": 6,
+        "archivos_pr": 4,
+        "comunes": 3,
+        "solo_agente": 3,
+        "solo_pr": 1,
+        "precision": 0.5,
+        "recall": 0.75,
+        "f1": 0.6
+      },
+      "eficiencia": {
+        "coste_usd": 0.0725,
+        "cost_efficiency_score": 0.517,
+        "tokens_por_dolar": 106411245.0,
+        "lineas_por_dolar": 154655.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 4,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "medusa-15441",
+      "repo": "medusa",
+      "reqid": "15441",
+      "timestamp": "2026-07-23/073145",
+      "metricas": {
+        "cloc": 10457,
+        "coste_usd": 0.0517,
+        "tokens": 5774968,
+        "archivos_diff": 58,
+        "archivos_fuente": 19,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 25,
+        "code_quality_score": 0.88
+      },
+      "comparacion_pr": {
+        "archivos_agente": 8,
+        "archivos_pr": 5,
+        "comunes": 1,
+        "solo_agente": 7,
+        "solo_pr": 4,
+        "precision": 0.125,
+        "recall": 0.2,
+        "f1": 0.154
+      },
+      "eficiencia": {
+        "coste_usd": 0.0517,
+        "cost_efficiency_score": 0.655,
+        "tokens_por_dolar": 111664791.0,
+        "lineas_por_dolar": 202197.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "n8n-30375",
+      "repo": "n8n",
+      "reqid": "30375",
+      "timestamp": "2026-07-22/133801",
+      "metricas": {
+        "cloc": 10257,
+        "coste_usd": 0.0377,
+        "tokens": 2889885,
+        "archivos_diff": 49,
+        "archivos_fuente": 10,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 26,
+        "code_quality_score": 0.873
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 1,
+        "solo_pr": 1,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.0377,
+        "cost_efficiency_score": 0.748,
+        "tokens_por_dolar": 76587735.0,
+        "lineas_por_dolar": 271831.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "n8n-31253",
+      "repo": "n8n",
+      "reqid": "31253",
+      "timestamp": "2026-07-23/073145",
+      "metricas": {
+        "cloc": 9501,
+        "coste_usd": 0.0387,
+        "tokens": 2355584,
+        "archivos_diff": 48,
+        "archivos_fuente": 9,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.937
+      },
+      "comparacion_pr": {
+        "archivos_agente": 0,
+        "archivos_pr": 4,
+        "comunes": 0,
+        "solo_agente": 0,
+        "solo_pr": 4,
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0387,
+        "cost_efficiency_score": 0.742,
+        "tokens_por_dolar": 60869376.0,
+        "lineas_por_dolar": 245510.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "n8n-31349",
+      "repo": "n8n",
+      "reqid": "31349",
+      "timestamp": "2026-07-23/073145",
+      "metricas": {
+        "cloc": 9936,
+        "coste_usd": 0.0452,
+        "tokens": 2998043,
+        "archivos_diff": 50,
+        "archivos_fuente": 11,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 13,
+        "code_quality_score": 0.935
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 13,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 11,
+        "precision": 1.0,
+        "recall": 0.154,
+        "f1": 0.267
+      },
+      "eficiencia": {
+        "coste_usd": 0.0452,
+        "cost_efficiency_score": 0.699,
+        "tokens_por_dolar": 66390075.0,
+        "lineas_por_dolar": 220027.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C0",
+      "caso": "n8n-31371",
+      "repo": "n8n",
+      "reqid": "31371",
+      "timestamp": "2026-07-23/073146",
+      "metricas": {
+        "cloc": 11810,
+        "coste_usd": 0.0681,
+        "tokens": 7711454,
+        "archivos_diff": 51,
+        "archivos_fuente": 12,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 32,
+        "code_quality_score": 0.865
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 4,
+        "comunes": 3,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.857
+      },
+      "eficiencia": {
+        "coste_usd": 0.0681,
+        "cost_efficiency_score": 0.546,
+        "tokens_por_dolar": 113210611.0,
+        "lineas_por_dolar": 173381.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 1.0,
+        "artefactos_ok": 1,
+        "artefactos_esperados": 1,
+        "spec_atributos": 1,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "appwrite-10832",
+      "repo": "appwrite",
+      "reqid": "10832",
+      "timestamp": "2026-07-22/221608",
+      "metricas": {
+        "cloc": 15908,
+        "coste_usd": 0.1514,
+        "tokens": 11577764,
+        "archivos_diff": 28,
+        "archivos_fuente": 8,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 16864,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 7,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 5,
+        "solo_pr": 1,
+        "precision": 0.286,
+        "recall": 0.667,
+        "f1": 0.4
+      },
+      "eficiencia": {
+        "coste_usd": 0.1514,
+        "cost_efficiency_score": 0,
+        "tokens_por_dolar": 76463280.0,
+        "lineas_por_dolar": 105062.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 4,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "appwrite-11009",
+      "repo": "appwrite",
+      "reqid": "11009",
+      "timestamp": "2026-07-22/160755",
+      "metricas": {
+        "cloc": 21179,
+        "coste_usd": 0.0643,
+        "tokens": 5197145,
+        "archivos_diff": 60,
+        "archivos_fuente": 19,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 13097,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 6,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 5,
+        "solo_pr": 1,
+        "precision": 0.167,
+        "recall": 0.5,
+        "f1": 0.25
+      },
+      "eficiencia": {
+        "coste_usd": 0.0643,
+        "cost_efficiency_score": 0.572,
+        "tokens_por_dolar": 80880604.0,
+        "lineas_por_dolar": 329598.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "appwrite-11312",
+      "repo": "appwrite",
+      "reqid": "11312",
+      "timestamp": "2026-07-23/060501",
+      "metricas": {
+        "cloc": 83578,
+        "coste_usd": 0.1035,
+        "tokens": 10139496,
+        "archivos_diff": 64,
+        "archivos_fuente": 23,
+        "semgrep_incidencias": 7,
+        "linters_incidencias": 4340,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 11,
+        "archivos_pr": 362,
+        "comunes": 3,
+        "solo_agente": 8,
+        "solo_pr": 359,
+        "precision": 0.273,
+        "recall": 0.008,
+        "f1": 0.016
+      },
+      "eficiencia": {
+        "coste_usd": 0.1035,
+        "cost_efficiency_score": 0.31,
+        "tokens_por_dolar": 97958573.0,
+        "lineas_por_dolar": 807454.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "appwrite-11465",
+      "repo": "appwrite",
+      "reqid": "11465",
+      "timestamp": "2026-07-23/060502",
+      "metricas": {
+        "cloc": 21738,
+        "coste_usd": 0.1149,
+        "tokens": 7076312,
+        "archivos_diff": 53,
+        "archivos_fuente": 12,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 15273,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 57,
+        "comunes": 0,
+        "solo_agente": 2,
+        "solo_pr": 57,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.1149,
+        "cost_efficiency_score": 0.234,
+        "tokens_por_dolar": 61565804.0,
+        "lineas_por_dolar": 189126.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "authentik-10110",
+      "repo": "authentik",
+      "reqid": "10110",
+      "timestamp": "2026-07-22/160816",
+      "metricas": {
+        "cloc": 68956,
+        "coste_usd": 0.0558,
+        "tokens": 3728653,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.991
+      },
+      "comparacion_pr": {
+        "archivos_agente": 5,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 2,
+        "solo_pr": 0,
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.75
+      },
+      "eficiencia": {
+        "coste_usd": 0.0558,
+        "cost_efficiency_score": 0.628,
+        "tokens_por_dolar": 66872072.0,
+        "lineas_por_dolar": 1236701.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "authentik-10124",
+      "repo": "authentik",
+      "reqid": "10124",
+      "timestamp": "2026-07-23/060502",
+      "metricas": {
+        "cloc": 11401,
+        "coste_usd": 0.0595,
+        "tokens": 3392466,
+        "archivos_diff": 54,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 13,
+        "code_quality_score": 0.943
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0595,
+        "cost_efficiency_score": 0.603,
+        "tokens_por_dolar": 57028695.0,
+        "lineas_por_dolar": 191655.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "authentik-20744",
+      "repo": "authentik",
+      "reqid": "20744",
+      "timestamp": "2026-07-23/060502",
+      "metricas": {
+        "cloc": 11742,
+        "coste_usd": 0.0765,
+        "tokens": 4696886,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.949
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 1,
+        "comunes": 1,
+        "solo_agente": 2,
+        "solo_pr": 0,
+        "precision": 0.333,
+        "recall": 1.0,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.0765,
+        "cost_efficiency_score": 0.49,
+        "tokens_por_dolar": 61412455.0,
+        "lineas_por_dolar": 153528.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "authentik-21803",
+      "repo": "authentik",
+      "reqid": "21803",
+      "timestamp": "2026-07-23/060503",
+      "metricas": {
+        "cloc": 12195,
+        "coste_usd": 0.0786,
+        "tokens": 5376436,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.951
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.667,
+        "recall": 1.0,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.0786,
+        "cost_efficiency_score": 0.476,
+        "tokens_por_dolar": 68420774.0,
+        "lineas_por_dolar": 155194.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "calcom-25640",
+      "repo": "calcom",
+      "reqid": "25640",
+      "timestamp": "2026-07-23/060503",
+      "metricas": {
+        "cloc": 13415,
+        "coste_usd": 0.0875,
+        "tokens": 6593921,
+        "archivos_diff": 62,
+        "archivos_fuente": 21,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 42,
+        "code_quality_score": 0.843
+      },
+      "comparacion_pr": {
+        "archivos_agente": 6,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 4,
+        "solo_pr": 1,
+        "precision": 0.333,
+        "recall": 0.667,
+        "f1": 0.444
+      },
+      "eficiencia": {
+        "coste_usd": 0.0875,
+        "cost_efficiency_score": 0.417,
+        "tokens_por_dolar": 75341015.0,
+        "lineas_por_dolar": 153277.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "calcom-26598",
+      "repo": "calcom",
+      "reqid": "26598",
+      "timestamp": "2026-07-23/060504",
+      "metricas": {
+        "cloc": 17208,
+        "coste_usd": 0.0984,
+        "tokens": 7476569,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 58,
+        "code_quality_score": 0.831
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.857
+      },
+      "eficiencia": {
+        "coste_usd": 0.0984,
+        "cost_efficiency_score": 0.344,
+        "tokens_por_dolar": 75958234.0,
+        "lineas_por_dolar": 174825.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "calcom-26812",
+      "repo": "calcom",
+      "reqid": "26812",
+      "timestamp": "2026-07-23/063044",
+      "metricas": {
+        "cloc": 12575,
+        "coste_usd": 0.121,
+        "tokens": 10949000,
+        "archivos_diff": 57,
+        "archivos_fuente": 16,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 31,
+        "code_quality_score": 0.877
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 2,
+        "solo_pr": 1,
+        "precision": 0.5,
+        "recall": 0.667,
+        "f1": 0.571
+      },
+      "eficiencia": {
+        "coste_usd": 0.121,
+        "cost_efficiency_score": 0.193,
+        "tokens_por_dolar": 90485360.0,
+        "lineas_por_dolar": 103923.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "calcom-26826",
+      "repo": "calcom",
+      "reqid": "26826",
+      "timestamp": "2026-07-23/063045",
+      "metricas": {
+        "cloc": 14818,
+        "coste_usd": 0.0976,
+        "tokens": 6789184,
+        "archivos_diff": 55,
+        "archivos_fuente": 14,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 45,
+        "code_quality_score": 0.848
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.857
+      },
+      "eficiencia": {
+        "coste_usd": 0.0976,
+        "cost_efficiency_score": 0.349,
+        "tokens_por_dolar": 69561311.0,
+        "lineas_por_dolar": 151824.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "directus-26646",
+      "repo": "directus",
+      "reqid": "26646",
+      "timestamp": "2026-07-23/063045",
+      "metricas": {
+        "cloc": 12410,
+        "coste_usd": 0.087,
+        "tokens": 5579107,
+        "archivos_diff": 58,
+        "archivos_fuente": 17,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 39,
+        "code_quality_score": 0.843
+      },
+      "comparacion_pr": {
+        "archivos_agente": 5,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 2,
+        "solo_pr": 0,
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.75
+      },
+      "eficiencia": {
+        "coste_usd": 0.087,
+        "cost_efficiency_score": 0.42,
+        "tokens_por_dolar": 64139462.0,
+        "lineas_por_dolar": 142670.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "directus-26772",
+      "repo": "directus",
+      "reqid": "26772",
+      "timestamp": "2026-07-23/063046",
+      "metricas": {
+        "cloc": 12500,
+        "coste_usd": 0.1149,
+        "tokens": 7762385,
+        "archivos_diff": 60,
+        "archivos_fuente": 19,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 34,
+        "code_quality_score": 0.864
+      },
+      "comparacion_pr": {
+        "archivos_agente": 6,
+        "archivos_pr": 43,
+        "comunes": 4,
+        "solo_agente": 2,
+        "solo_pr": 39,
+        "precision": 0.667,
+        "recall": 0.093,
+        "f1": 0.163
+      },
+      "eficiencia": {
+        "coste_usd": 0.1149,
+        "cost_efficiency_score": 0.234,
+        "tokens_por_dolar": 67577743.0,
+        "lineas_por_dolar": 108822.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "directus-26836",
+      "repo": "directus",
+      "reqid": "26836",
+      "timestamp": "2026-07-23/063046",
+      "metricas": {
+        "cloc": 15063,
+        "coste_usd": 0.0861,
+        "tokens": 4659189,
+        "archivos_diff": 58,
+        "archivos_fuente": 17,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 19,
+        "code_quality_score": 0.937
+      },
+      "comparacion_pr": {
+        "archivos_agente": 5,
+        "archivos_pr": 5,
+        "comunes": 3,
+        "solo_agente": 2,
+        "solo_pr": 2,
+        "precision": 0.6,
+        "recall": 0.6,
+        "f1": 0.6
+      },
+      "eficiencia": {
+        "coste_usd": 0.0861,
+        "cost_efficiency_score": 0.426,
+        "tokens_por_dolar": 54114322.0,
+        "lineas_por_dolar": 174950.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "directus-26976",
+      "repo": "directus",
+      "reqid": "26976",
+      "timestamp": "2026-07-23/063046",
+      "metricas": {
+        "cloc": 11964,
+        "coste_usd": 0.0944,
+        "tokens": 7077758,
+        "archivos_diff": 57,
+        "archivos_fuente": 16,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 17,
+        "code_quality_score": 0.929
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 1,
+        "comunes": 1,
+        "solo_agente": 2,
+        "solo_pr": 0,
+        "precision": 0.333,
+        "recall": 1.0,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.0944,
+        "cost_efficiency_score": 0.371,
+        "tokens_por_dolar": 74965926.0,
+        "lineas_por_dolar": 126720.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "medusa-13930",
+      "repo": "medusa",
+      "reqid": "13930",
+      "timestamp": "2026-07-23/063047",
+      "metricas": {
+        "cloc": 15841,
+        "coste_usd": 0.1092,
+        "tokens": 8454310,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 81,
+        "code_quality_score": 0.744
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 3,
+        "solo_pr": 1,
+        "precision": 0.25,
+        "recall": 0.5,
+        "f1": 0.333
+      },
+      "eficiencia": {
+        "coste_usd": 0.1092,
+        "cost_efficiency_score": 0.272,
+        "tokens_por_dolar": 77398449.0,
+        "lineas_por_dolar": 145023.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "medusa-15264",
+      "repo": "medusa",
+      "reqid": "15264",
+      "timestamp": "2026-07-23/161123",
+      "metricas": {
+        "cloc": 11889,
+        "coste_usd": 0.0724,
+        "tokens": 4676160,
+        "archivos_diff": 55,
+        "archivos_fuente": 14,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 36,
+        "code_quality_score": 0.849
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.667,
+        "recall": 1.0,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.0724,
+        "cost_efficiency_score": 0.517,
+        "tokens_por_dolar": 64590522.0,
+        "lineas_por_dolar": 164220.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "medusa-15396",
+      "repo": "medusa",
+      "reqid": "15396",
+      "timestamp": "2026-07-23/161124",
+      "metricas": {
+        "cloc": 18243,
+        "coste_usd": 0.1166,
+        "tokens": 11307075,
+        "archivos_diff": 57,
+        "archivos_fuente": 16,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 107,
+        "code_quality_score": 0.707
+      },
+      "comparacion_pr": {
+        "archivos_agente": 6,
+        "archivos_pr": 4,
+        "comunes": 4,
+        "solo_agente": 2,
+        "solo_pr": 0,
+        "precision": 0.667,
+        "recall": 1.0,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.1166,
+        "cost_efficiency_score": 0.223,
+        "tokens_por_dolar": 96984844.0,
+        "lineas_por_dolar": 156477.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "medusa-15441",
+      "repo": "medusa",
+      "reqid": "15441",
+      "timestamp": "2026-07-23/161124",
+      "metricas": {
+        "cloc": 11268,
+        "coste_usd": 0.0895,
+        "tokens": 7085075,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 33,
+        "code_quality_score": 0.854
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 5,
+        "comunes": 1,
+        "solo_agente": 2,
+        "solo_pr": 4,
+        "precision": 0.333,
+        "recall": 0.2,
+        "f1": 0.25
+      },
+      "eficiencia": {
+        "coste_usd": 0.0895,
+        "cost_efficiency_score": 0.404,
+        "tokens_por_dolar": 79207099.0,
+        "lineas_por_dolar": 125970.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "n8n-30375",
+      "repo": "n8n",
+      "reqid": "30375",
+      "timestamp": "2026-07-23/161124",
+      "metricas": {
+        "cloc": 20505,
+        "coste_usd": 0.0921,
+        "tokens": 4807971,
+        "archivos_diff": 57,
+        "archivos_fuente": 16,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 28,
+        "code_quality_score": 0.932
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 2,
+        "solo_pr": 1,
+        "precision": 0.333,
+        "recall": 0.5,
+        "f1": 0.4
+      },
+      "eficiencia": {
+        "coste_usd": 0.0921,
+        "cost_efficiency_score": 0.386,
+        "tokens_por_dolar": 52229330.0,
+        "lineas_por_dolar": 222747.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "n8n-31253",
+      "repo": "n8n",
+      "reqid": "31253",
+      "timestamp": "2026-07-23/161125",
+      "metricas": {
+        "cloc": 15175,
+        "coste_usd": 0.067,
+        "tokens": 4197746,
+        "archivos_diff": 54,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 83,
+        "code_quality_score": 0.727
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 4,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 2,
+        "precision": 0.667,
+        "recall": 0.5,
+        "f1": 0.571
+      },
+      "eficiencia": {
+        "coste_usd": 0.067,
+        "cost_efficiency_score": 0.553,
+        "tokens_por_dolar": 62650120.0,
+        "lineas_por_dolar": 226482.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "n8n-31349",
+      "repo": "n8n",
+      "reqid": "31349",
+      "timestamp": "2026-07-23/161125",
+      "metricas": {
+        "cloc": 10882,
+        "coste_usd": 0.0666,
+        "tokens": 4450318,
+        "archivos_diff": 53,
+        "archivos_fuente": 12,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 14,
+        "code_quality_score": 0.936
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 13,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 11,
+        "precision": 1.0,
+        "recall": 0.154,
+        "f1": 0.267
+      },
+      "eficiencia": {
+        "coste_usd": 0.0666,
+        "cost_efficiency_score": 0.556,
+        "tokens_por_dolar": 66784489.0,
+        "lineas_por_dolar": 163303.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C1",
+      "caso": "n8n-31371",
+      "repo": "n8n",
+      "reqid": "31371",
+      "timestamp": "2026-07-23/161126",
+      "metricas": {
+        "cloc": 12244,
+        "coste_usd": 0.0908,
+        "tokens": 7432526,
+        "archivos_diff": 53,
+        "archivos_fuente": 12,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 21,
+        "code_quality_score": 0.914
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 4,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 2,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0908,
+        "cost_efficiency_score": 0.395,
+        "tokens_por_dolar": 81891187.0,
+        "lineas_por_dolar": 134904.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.5,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 4,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "appwrite-10832",
+      "repo": "appwrite",
+      "reqid": "10832",
+      "timestamp": "2026-07-22/221608",
+      "metricas": {
+        "cloc": 10753,
+        "coste_usd": 0.1212,
+        "tokens": 9410429,
+        "archivos_diff": 59,
+        "archivos_fuente": 18,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 726,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 1,
+        "precision": 0.667,
+        "recall": 0.667,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.1212,
+        "cost_efficiency_score": 0.192,
+        "tokens_por_dolar": 77613706.0,
+        "lineas_por_dolar": 88687.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "appwrite-11009",
+      "repo": "appwrite",
+      "reqid": "11009",
+      "timestamp": "2026-07-22/231022",
+      "metricas": {
+        "cloc": 16262,
+        "coste_usd": 0.0677,
+        "tokens": 3989668,
+        "archivos_diff": 57,
+        "archivos_fuente": 16,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 9150,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0677,
+        "cost_efficiency_score": 0.549,
+        "tokens_por_dolar": 58962934.0,
+        "lineas_por_dolar": 240335.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "appwrite-11312",
+      "repo": "appwrite",
+      "reqid": "11312",
+      "timestamp": "2026-07-22/235351",
+      "metricas": {
+        "cloc": 10615,
+        "coste_usd": 0.0861,
+        "tokens": 4193789,
+        "archivos_diff": 54,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.943
+      },
+      "comparacion_pr": {
+        "archivos_agente": 0,
+        "archivos_pr": 362,
+        "comunes": 0,
+        "solo_agente": 0,
+        "solo_pr": 362,
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0861,
+        "cost_efficiency_score": 0.426,
+        "tokens_por_dolar": 48716272.0,
+        "lineas_por_dolar": 123307.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.4,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "appwrite-11465",
+      "repo": "appwrite",
+      "reqid": "11465",
+      "timestamp": "2026-07-22/235444",
+      "metricas": {
+        "cloc": 20153,
+        "coste_usd": 0.0842,
+        "tokens": 5492917,
+        "archivos_diff": 54,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 15151,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 57,
+        "comunes": 0,
+        "solo_agente": 2,
+        "solo_pr": 57,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0842,
+        "cost_efficiency_score": 0.439,
+        "tokens_por_dolar": 65262897.0,
+        "lineas_por_dolar": 239443.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "authentik-10110",
+      "repo": "authentik",
+      "reqid": "10110",
+      "timestamp": "2026-07-22/231054",
+      "metricas": {
+        "cloc": 9762,
+        "coste_usd": 0.0695,
+        "tokens": 4175899,
+        "archivos_diff": 55,
+        "archivos_fuente": 14,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.939
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.667,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.0695,
+        "cost_efficiency_score": 0.537,
+        "tokens_por_dolar": 60099578.0,
+        "lineas_por_dolar": 140495.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "authentik-10124",
+      "repo": "authentik",
+      "reqid": "10124",
+      "timestamp": "2026-07-22/231104",
+      "metricas": {
+        "cloc": 9840,
+        "coste_usd": 0.057,
+        "tokens": 3144700,
+        "archivos_diff": 54,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.939
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.057,
+        "cost_efficiency_score": 0.62,
+        "tokens_por_dolar": 55172111.0,
+        "lineas_por_dolar": 172638.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "authentik-20744",
+      "repo": "authentik",
+      "reqid": "20744",
+      "timestamp": "2026-07-22/235843",
+      "metricas": {
+        "cloc": 9349,
+        "coste_usd": 0.0486,
+        "tokens": 1875884,
+        "archivos_diff": 51,
+        "archivos_fuente": 10,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.936
+      },
+      "comparacion_pr": {
+        "archivos_agente": 0,
+        "archivos_pr": 1,
+        "comunes": 0,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0486,
+        "cost_efficiency_score": 0.676,
+        "tokens_por_dolar": 38630231.0,
+        "lineas_por_dolar": 192525.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "authentik-21803",
+      "repo": "authentik",
+      "reqid": "21803",
+      "timestamp": "2026-07-22/235445",
+      "metricas": {
+        "cloc": 10139,
+        "coste_usd": 0.0553,
+        "tokens": 2821237,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.941
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0553,
+        "cost_efficiency_score": 0.632,
+        "tokens_por_dolar": 51061265.0,
+        "lineas_por_dolar": 183505.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "calcom-25640",
+      "repo": "calcom",
+      "reqid": "25640",
+      "timestamp": "2026-07-22/235446",
+      "metricas": {
+        "cloc": 11068,
+        "coste_usd": 0.0873,
+        "tokens": 5069281,
+        "archivos_diff": 59,
+        "archivos_fuente": 18,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 33,
+        "code_quality_score": 0.851
+      },
+      "comparacion_pr": {
+        "archivos_agente": 5,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 3,
+        "solo_pr": 1,
+        "precision": 0.4,
+        "recall": 0.667,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.0873,
+        "cost_efficiency_score": 0.418,
+        "tokens_por_dolar": 58048083.0,
+        "lineas_por_dolar": 126739.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "calcom-26598",
+      "repo": "calcom",
+      "reqid": "26598",
+      "timestamp": "2026-07-22/231113",
+      "metricas": {
+        "cloc": 15714,
+        "coste_usd": 0.0869,
+        "tokens": 6443877,
+        "archivos_diff": 58,
+        "archivos_fuente": 16,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 55,
+        "code_quality_score": 0.825
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.857
+      },
+      "eficiencia": {
+        "coste_usd": 0.0869,
+        "cost_efficiency_score": 0.421,
+        "tokens_por_dolar": 74140840.0,
+        "lineas_por_dolar": 180799.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.4,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "calcom-26812",
+      "repo": "calcom",
+      "reqid": "26812",
+      "timestamp": "2026-07-22/231126",
+      "metricas": {
+        "cloc": 10857,
+        "coste_usd": 0.0707,
+        "tokens": 4316492,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 28,
+        "code_quality_score": 0.871
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 1,
+        "precision": 0.667,
+        "recall": 0.667,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0707,
+        "cost_efficiency_score": 0.529,
+        "tokens_por_dolar": 61088197.0,
+        "lineas_por_dolar": 153651.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "calcom-26826",
+      "repo": "calcom",
+      "reqid": "26826",
+      "timestamp": "2026-07-22/235446",
+      "metricas": {
+        "cloc": 10811,
+        "coste_usd": 0.0728,
+        "tokens": 3514947,
+        "archivos_diff": 57,
+        "archivos_fuente": 16,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 28,
+        "code_quality_score": 0.871
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0728,
+        "cost_efficiency_score": 0.515,
+        "tokens_por_dolar": 48310110.0,
+        "lineas_por_dolar": 148588.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "directus-26646",
+      "repo": "directus",
+      "reqid": "26646",
+      "timestamp": "2026-07-22/231136",
+      "metricas": {
+        "cloc": 15278,
+        "coste_usd": 0.1059,
+        "tokens": 5822900,
+        "archivos_diff": 62,
+        "archivos_fuente": 21,
+        "semgrep_incidencias": 1,
+        "linters_incidencias": 46,
+        "code_quality_score": 0.846
+      },
+      "comparacion_pr": {
+        "archivos_agente": 7,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 5,
+        "solo_pr": 1,
+        "precision": 0.286,
+        "recall": 0.667,
+        "f1": 0.4
+      },
+      "eficiencia": {
+        "coste_usd": 0.1059,
+        "cost_efficiency_score": 0.294,
+        "tokens_por_dolar": 54977623.0,
+        "lineas_por_dolar": 144249.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "directus-26772",
+      "repo": "directus",
+      "reqid": "26772",
+      "timestamp": "2026-07-22/231145",
+      "metricas": {
+        "cloc": 12010,
+        "coste_usd": 0.1162,
+        "tokens": 8826291,
+        "archivos_diff": 60,
+        "archivos_fuente": 19,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 27,
+        "code_quality_score": 0.888
+      },
+      "comparacion_pr": {
+        "archivos_agente": 6,
+        "archivos_pr": 43,
+        "comunes": 6,
+        "solo_agente": 0,
+        "solo_pr": 37,
+        "precision": 1.0,
+        "recall": 0.14,
+        "f1": 0.245
+      },
+      "eficiencia": {
+        "coste_usd": 0.1162,
+        "cost_efficiency_score": 0.226,
+        "tokens_por_dolar": 75981294.0,
+        "lineas_por_dolar": 103388.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "directus-26836",
+      "repo": "directus",
+      "reqid": "26836",
+      "timestamp": "2026-07-22/235843",
+      "metricas": {
+        "cloc": 14839,
+        "coste_usd": 0.0705,
+        "tokens": 4298472,
+        "archivos_diff": 59,
+        "archivos_fuente": 18,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 22,
+        "code_quality_score": 0.926
+      },
+      "comparacion_pr": {
+        "archivos_agente": 5,
+        "archivos_pr": 5,
+        "comunes": 3,
+        "solo_agente": 2,
+        "solo_pr": 2,
+        "precision": 0.6,
+        "recall": 0.6,
+        "f1": 0.6
+      },
+      "eficiencia": {
+        "coste_usd": 0.0705,
+        "cost_efficiency_score": 0.53,
+        "tokens_por_dolar": 60993728.0,
+        "lineas_por_dolar": 210560.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.4,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "directus-26976",
+      "repo": "directus",
+      "reqid": "26976",
+      "timestamp": "2026-07-23/011051",
+      "metricas": {
+        "cloc": 10063,
+        "coste_usd": 0.0425,
+        "tokens": 2262007,
+        "archivos_diff": 55,
+        "archivos_fuente": 14,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 13,
+        "code_quality_score": 0.935
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 1,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0425,
+        "cost_efficiency_score": 0.717,
+        "tokens_por_dolar": 53237473.0,
+        "lineas_por_dolar": 236838.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "medusa-13930",
+      "repo": "medusa",
+      "reqid": "13930",
+      "timestamp": "2026-07-22/231154",
+      "metricas": {
+        "cloc": 9824,
+        "coste_usd": 0.0627,
+        "tokens": 3885802,
+        "archivos_diff": 52,
+        "archivos_fuente": 11,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0.939
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0627,
+        "cost_efficiency_score": 0.582,
+        "tokens_por_dolar": 61989344.0,
+        "lineas_por_dolar": 156720.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.4,
+        "artefactos_ok": 2,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "medusa-15264",
+      "repo": "medusa",
+      "reqid": "15264",
+      "timestamp": "2026-07-22/231200",
+      "metricas": {
+        "cloc": 10021,
+        "coste_usd": 0.0516,
+        "tokens": 2317536,
+        "archivos_diff": 53,
+        "archivos_fuente": 11,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 31,
+        "code_quality_score": 0.845
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0516,
+        "cost_efficiency_score": 0.656,
+        "tokens_por_dolar": 44907396.0,
+        "lineas_por_dolar": 194179.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "medusa-15396",
+      "repo": "medusa",
+      "reqid": "15396",
+      "timestamp": "2026-07-23/011115",
+      "metricas": {
+        "cloc": 16338,
+        "coste_usd": 0.071,
+        "tokens": 4413105,
+        "archivos_diff": 59,
+        "archivos_fuente": 17,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 89,
+        "code_quality_score": 0.728
+      },
+      "comparacion_pr": {
+        "archivos_agente": 5,
+        "archivos_pr": 4,
+        "comunes": 4,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.889
+      },
+      "eficiencia": {
+        "coste_usd": 0.071,
+        "cost_efficiency_score": 0.527,
+        "tokens_por_dolar": 62180931.0,
+        "lineas_por_dolar": 230203.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "medusa-15441",
+      "repo": "medusa",
+      "reqid": "15441",
+      "timestamp": "2026-07-22/235448",
+      "metricas": {
+        "cloc": 10219,
+        "coste_usd": 0.0852,
+        "tokens": 4598952,
+        "archivos_diff": 55,
+        "archivos_fuente": 14,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 17,
+        "code_quality_score": 0.917
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 5,
+        "comunes": 1,
+        "solo_agente": 2,
+        "solo_pr": 4,
+        "precision": 0.333,
+        "recall": 0.2,
+        "f1": 0.25
+      },
+      "eficiencia": {
+        "coste_usd": 0.0852,
+        "cost_efficiency_score": 0.432,
+        "tokens_por_dolar": 53983379.0,
+        "lineas_por_dolar": 119953.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "n8n-30375",
+      "repo": "n8n",
+      "reqid": "30375",
+      "timestamp": "2026-07-22/231208",
+      "metricas": {
+        "cloc": 10582,
+        "coste_usd": 0.0783,
+        "tokens": 6331611,
+        "archivos_diff": 55,
+        "archivos_fuente": 12,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 26,
+        "code_quality_score": 0.877
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.667,
+        "recall": 1.0,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.0783,
+        "cost_efficiency_score": 0.478,
+        "tokens_por_dolar": 80876914.0,
+        "lineas_por_dolar": 135169.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "n8n-31253",
+      "repo": "n8n",
+      "reqid": "31253",
+      "timestamp": "2026-07-22/235449",
+      "metricas": {
+        "cloc": 14872,
+        "coste_usd": 0.0751,
+        "tokens": 4050098,
+        "archivos_diff": 56,
+        "archivos_fuente": 15,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 83,
+        "code_quality_score": 0.721
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 4,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 2,
+        "precision": 0.667,
+        "recall": 0.5,
+        "f1": 0.571
+      },
+      "eficiencia": {
+        "coste_usd": 0.0751,
+        "cost_efficiency_score": 0.499,
+        "tokens_por_dolar": 53898540.0,
+        "lineas_por_dolar": 197916.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "n8n-31349",
+      "repo": "n8n",
+      "reqid": "31349",
+      "timestamp": "2026-07-22/235844",
+      "metricas": {
+        "cloc": 18827,
+        "coste_usd": 0.0825,
+        "tokens": 4731312,
+        "archivos_diff": 57,
+        "archivos_fuente": 16,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 18,
+        "code_quality_score": 0.952
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 13,
+        "comunes": 3,
+        "solo_agente": 0,
+        "solo_pr": 10,
+        "precision": 1.0,
+        "recall": 0.231,
+        "f1": 0.375
+      },
+      "eficiencia": {
+        "coste_usd": 0.0825,
+        "cost_efficiency_score": 0.45,
+        "tokens_por_dolar": 57347151.0,
+        "lineas_por_dolar": 228198.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C2",
+      "caso": "n8n-31371",
+      "repo": "n8n",
+      "reqid": "31371",
+      "timestamp": "2026-07-22/231217",
+      "metricas": {
+        "cloc": 11585,
+        "coste_usd": 0.0821,
+        "tokens": 5434413,
+        "archivos_diff": 54,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 17,
+        "code_quality_score": 0.927
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 4,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 2,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0821,
+        "cost_efficiency_score": 0.453,
+        "tokens_por_dolar": 66192607.0,
+        "lineas_por_dolar": 141108.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0.6,
+        "artefactos_ok": 3,
+        "artefactos_esperados": 5,
+        "spec_atributos": 7,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "appwrite-10832",
+      "repo": "appwrite",
+      "reqid": "10832",
+      "timestamp": "2026-07-21/022028",
+      "metricas": {
+        "cloc": 264,
+        "coste_usd": 0.021,
+        "tokens": 1661299,
+        "archivos_diff": 2,
+        "archivos_fuente": 2,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 326,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.667,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.021,
+        "cost_efficiency_score": 0.86,
+        "tokens_por_dolar": 79252886.0,
+        "lineas_por_dolar": 12594.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "appwrite-11009",
+      "repo": "appwrite",
+      "reqid": "11009",
+      "timestamp": "2026-07-22/072958",
+      "metricas": {
+        "cloc": 3972,
+        "coste_usd": 0.0076,
+        "tokens": 633696,
+        "archivos_diff": 2,
+        "archivos_fuente": 2,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 5324,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0076,
+        "cost_efficiency_score": 0.949,
+        "tokens_por_dolar": 83337191.0,
+        "lineas_por_dolar": 522357.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "appwrite-11312",
+      "repo": "appwrite",
+      "reqid": "11312",
+      "timestamp": "2026-07-23/013248",
+      "metricas": {
+        "cloc": 1939,
+        "coste_usd": 0.0667,
+        "tokens": 6082522,
+        "archivos_diff": 3,
+        "archivos_fuente": 3,
+        "semgrep_incidencias": 2,
+        "linters_incidencias": 2335,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 362,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 360,
+        "precision": 1.0,
+        "recall": 0.006,
+        "f1": 0.011
+      },
+      "eficiencia": {
+        "coste_usd": 0.0667,
+        "cost_efficiency_score": 0.555,
+        "tokens_por_dolar": 91218218.0,
+        "lineas_por_dolar": 29079.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "appwrite-11465",
+      "repo": "appwrite",
+      "reqid": "11465",
+      "timestamp": "2026-07-23/013248",
+      "metricas": {
+        "cloc": 342,
+        "coste_usd": 0.0304,
+        "tokens": 1977032,
+        "archivos_diff": 1,
+        "archivos_fuente": 1,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 424,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 57,
+        "comunes": 0,
+        "solo_agente": 1,
+        "solo_pr": 57,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0304,
+        "cost_efficiency_score": 0.797,
+        "tokens_por_dolar": 64978374.0,
+        "lineas_por_dolar": 11240.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "authentik-10110",
+      "repo": "authentik",
+      "reqid": "10110",
+      "timestamp": "2026-07-21/040137",
+      "metricas": {
+        "cloc": 48979,
+        "coste_usd": 0.0066,
+        "tokens": 457042,
+        "archivos_diff": 3,
+        "archivos_fuente": 3,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 0,
+        "code_quality_score": 1.0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 3,
+        "comunes": 3,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0066,
+        "cost_efficiency_score": 0.956,
+        "tokens_por_dolar": 69660418.0,
+        "lineas_por_dolar": 7465173.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "authentik-10124",
+      "repo": "authentik",
+      "reqid": "10124",
+      "timestamp": "2026-07-22/073011",
+      "metricas": {
+        "cloc": 134,
+        "coste_usd": 0.0035,
+        "tokens": 196436,
+        "archivos_diff": 2,
+        "archivos_fuente": 2,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 0,
+        "code_quality_score": 1.0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0035,
+        "cost_efficiency_score": 0.977,
+        "tokens_por_dolar": 55869170.0,
+        "lineas_por_dolar": 38111.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "authentik-20744",
+      "repo": "authentik",
+      "reqid": "20744",
+      "timestamp": "2026-07-23/013249",
+      "metricas": {
+        "cloc": 221,
+        "coste_usd": 0.0137,
+        "tokens": 565335,
+        "archivos_diff": 2,
+        "archivos_fuente": 2,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 0,
+        "code_quality_score": 1.0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 1,
+        "comunes": 1,
+        "solo_agente": 1,
+        "solo_pr": 0,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0137,
+        "cost_efficiency_score": 0.908,
+        "tokens_por_dolar": 41169167.0,
+        "lineas_por_dolar": 16094.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "authentik-21803",
+      "repo": "authentik",
+      "reqid": "21803",
+      "timestamp": "2026-07-23/013249",
+      "metricas": {
+        "cloc": 178,
+        "coste_usd": 0.0134,
+        "tokens": 564775,
+        "archivos_diff": 2,
+        "archivos_fuente": 2,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 0,
+        "code_quality_score": 1.0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0134,
+        "cost_efficiency_score": 0.911,
+        "tokens_por_dolar": 42084575.0,
+        "lineas_por_dolar": 13264.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "calcom-25640",
+      "repo": "calcom",
+      "reqid": "25640",
+      "timestamp": "2026-07-23/013250",
+      "metricas": {
+        "cloc": 322,
+        "coste_usd": 0.0242,
+        "tokens": 1506229,
+        "archivos_diff": 5,
+        "archivos_fuente": 5,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 4,
+        "code_quality_score": 0.379
+      },
+      "comparacion_pr": {
+        "archivos_agente": 4,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 2,
+        "solo_pr": 1,
+        "precision": 0.5,
+        "recall": 0.667,
+        "f1": 0.571
+      },
+      "eficiencia": {
+        "coste_usd": 0.0242,
+        "cost_efficiency_score": 0.838,
+        "tokens_por_dolar": 62148416.0,
+        "lineas_por_dolar": 13286.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "calcom-26598",
+      "repo": "calcom",
+      "reqid": "26598",
+      "timestamp": "2026-07-22/073034",
+      "metricas": {
+        "cloc": 1110,
+        "coste_usd": 0.0061,
+        "tokens": 359331,
+        "archivos_diff": 1,
+        "archivos_fuente": 1,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 22,
+        "code_quality_score": 0.009
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 3,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 2,
+        "precision": 1.0,
+        "recall": 0.333,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.0061,
+        "cost_efficiency_score": 0.959,
+        "tokens_por_dolar": 58743011.0,
+        "lineas_por_dolar": 181462.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "calcom-26812",
+      "repo": "calcom",
+      "reqid": "26812",
+      "timestamp": "2026-07-21/040155",
+      "metricas": {
+        "cloc": 706,
+        "coste_usd": 0.0071,
+        "tokens": 457887,
+        "archivos_diff": 2,
+        "archivos_fuente": 2,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 16,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.667,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.0071,
+        "cost_efficiency_score": 0.953,
+        "tokens_por_dolar": 64382312.0,
+        "lineas_por_dolar": 99269.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "calcom-26826",
+      "repo": "calcom",
+      "reqid": "26826",
+      "timestamp": "2026-07-23/013250",
+      "metricas": {
+        "cloc": 702,
+        "coste_usd": 0.0177,
+        "tokens": 629610,
+        "archivos_diff": 2,
+        "archivos_fuente": 2,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 13,
+        "code_quality_score": 0.074
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.667,
+        "f1": 0.8
+      },
+      "eficiencia": {
+        "coste_usd": 0.0177,
+        "cost_efficiency_score": 0.882,
+        "tokens_por_dolar": 35517008.0,
+        "lineas_por_dolar": 39601.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "directus-26646",
+      "repo": "directus",
+      "reqid": "26646",
+      "timestamp": "2026-07-21/040220",
+      "metricas": {
+        "cloc": 664,
+        "coste_usd": 0.0104,
+        "tokens": 809667,
+        "archivos_diff": 3,
+        "archivos_fuente": 3,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 14,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 3,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 1,
+        "precision": 0.667,
+        "recall": 0.667,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0104,
+        "cost_efficiency_score": 0.931,
+        "tokens_por_dolar": 78107949.0,
+        "lineas_por_dolar": 64056.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "directus-26772",
+      "repo": "directus",
+      "reqid": "26772",
+      "timestamp": "2026-07-22/073120",
+      "metricas": {
+        "cloc": 2092,
+        "coste_usd": 0.0246,
+        "tokens": 3393998,
+        "archivos_diff": 6,
+        "archivos_fuente": 6,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 4,
+        "code_quality_score": 0.904
+      },
+      "comparacion_pr": {
+        "archivos_agente": 6,
+        "archivos_pr": 43,
+        "comunes": 6,
+        "solo_agente": 0,
+        "solo_pr": 37,
+        "precision": 1.0,
+        "recall": 0.14,
+        "f1": 0.245
+      },
+      "eficiencia": {
+        "coste_usd": 0.0246,
+        "cost_efficiency_score": 0.836,
+        "tokens_por_dolar": 137922546.0,
+        "lineas_por_dolar": 85013.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "directus-26836",
+      "repo": "directus",
+      "reqid": "26836",
+      "timestamp": "2026-07-23/014022",
+      "metricas": {
+        "cloc": 2826,
+        "coste_usd": 0.0311,
+        "tokens": 3213284,
+        "archivos_diff": 4,
+        "archivos_fuente": 4,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 1,
+        "code_quality_score": 0.982
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 5,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 3,
+        "precision": 0.667,
+        "recall": 0.4,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.0311,
+        "cost_efficiency_score": 0.792,
+        "tokens_por_dolar": 103198253.0,
+        "lineas_por_dolar": 90760.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "directus-26976",
+      "repo": "directus",
+      "reqid": "26976",
+      "timestamp": "2026-07-23/014021",
+      "metricas": {
+        "cloc": 326,
+        "coste_usd": 0.0143,
+        "tokens": 728093,
+        "archivos_diff": 1,
+        "archivos_fuente": 1,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 1,
+        "code_quality_score": 0.847
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 1,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0143,
+        "cost_efficiency_score": 0.905,
+        "tokens_por_dolar": 51022635.0,
+        "lineas_por_dolar": 22845.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "medusa-13930",
+      "repo": "medusa",
+      "reqid": "13930",
+      "timestamp": "2026-07-21/040243",
+      "metricas": {
+        "cloc": 108,
+        "coste_usd": 0.0032,
+        "tokens": 140481,
+        "archivos_diff": 1,
+        "archivos_fuente": 1,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 0,
+        "code_quality_score": 1.0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0032,
+        "cost_efficiency_score": 0.978,
+        "tokens_por_dolar": 43411928.0,
+        "lineas_por_dolar": 33375.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "medusa-15264",
+      "repo": "medusa",
+      "reqid": "15264",
+      "timestamp": "2026-07-22/073148",
+      "metricas": {
+        "cloc": 158,
+        "coste_usd": 0.0032,
+        "tokens": 159141,
+        "archivos_diff": 1,
+        "archivos_fuente": 1,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 12,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 1,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667
+      },
+      "eficiencia": {
+        "coste_usd": 0.0032,
+        "cost_efficiency_score": 0.979,
+        "tokens_por_dolar": 49623012.0,
+        "lineas_por_dolar": 49267.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "medusa-15396",
+      "repo": "medusa",
+      "reqid": "15396",
+      "timestamp": "2026-07-23/014022",
+      "metricas": {
+        "cloc": 1013,
+        "coste_usd": 0.0402,
+        "tokens": 3649598,
+        "archivos_diff": 7,
+        "archivos_fuente": 7,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 42,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 7,
+        "archivos_pr": 4,
+        "comunes": 3,
+        "solo_agente": 4,
+        "solo_pr": 1,
+        "precision": 0.429,
+        "recall": 0.75,
+        "f1": 0.545
+      },
+      "eficiencia": {
+        "coste_usd": 0.0402,
+        "cost_efficiency_score": 0.732,
+        "tokens_por_dolar": 90808609.0,
+        "lineas_por_dolar": 25205.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "medusa-15441",
+      "repo": "medusa",
+      "reqid": "15441",
+      "timestamp": "2026-07-23/014023",
+      "metricas": {
+        "cloc": 443,
+        "coste_usd": 0.019,
+        "tokens": 1333012,
+        "archivos_diff": 3,
+        "archivos_fuente": 3,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 1,
+        "code_quality_score": 0.887
+      },
+      "comparacion_pr": {
+        "archivos_agente": 3,
+        "archivos_pr": 5,
+        "comunes": 2,
+        "solo_agente": 1,
+        "solo_pr": 3,
+        "precision": 0.667,
+        "recall": 0.4,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.019,
+        "cost_efficiency_score": 0.873,
+        "tokens_por_dolar": 70011134.0,
+        "lineas_por_dolar": 23267.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "n8n-30375",
+      "repo": "n8n",
+      "reqid": "30375",
+      "timestamp": "2026-07-22/073221",
+      "metricas": {
+        "cloc": 801,
+        "coste_usd": 0.009,
+        "tokens": 985770,
+        "archivos_diff": 2,
+        "archivos_fuente": 2,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 14,
+        "code_quality_score": 0.126
+      },
+      "comparacion_pr": {
+        "archivos_agente": 2,
+        "archivos_pr": 2,
+        "comunes": 1,
+        "solo_agente": 1,
+        "solo_pr": 1,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "eficiencia": {
+        "coste_usd": 0.009,
+        "cost_efficiency_score": 0.94,
+        "tokens_por_dolar": 109603069.0,
+        "lineas_por_dolar": 89059.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "n8n-31253",
+      "repo": "n8n",
+      "reqid": "31253",
+      "timestamp": "2026-07-23/014023",
+      "metricas": {
+        "cloc": 1145,
+        "coste_usd": 0.0129,
+        "tokens": 799704,
+        "archivos_diff": 1,
+        "archivos_fuente": 1,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 13,
+        "code_quality_score": 0.432
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 4,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 3,
+        "precision": 1.0,
+        "recall": 0.25,
+        "f1": 0.4
+      },
+      "eficiencia": {
+        "coste_usd": 0.0129,
+        "cost_efficiency_score": 0.914,
+        "tokens_por_dolar": 62064726.0,
+        "lineas_por_dolar": 88863.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "n8n-31349",
+      "repo": "n8n",
+      "reqid": "31349",
+      "timestamp": "2026-07-23/014024",
+      "metricas": {
+        "cloc": 8000,
+        "coste_usd": 0.0513,
+        "tokens": 6027274,
+        "archivos_diff": 13,
+        "archivos_fuente": 13,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 176,
+        "code_quality_score": 0
+      },
+      "comparacion_pr": {
+        "archivos_agente": 13,
+        "archivos_pr": 13,
+        "comunes": 13,
+        "solo_agente": 0,
+        "solo_pr": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "eficiencia": {
+        "coste_usd": 0.0513,
+        "cost_efficiency_score": 0.658,
+        "tokens_por_dolar": 117467823.0,
+        "lineas_por_dolar": 155915.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    },
+    {
+      "flow": "C3",
+      "caso": "n8n-31371",
+      "repo": "n8n",
+      "reqid": "31371",
+      "timestamp": "2026-07-21/040320",
+      "metricas": {
+        "cloc": 863,
+        "coste_usd": 0.0208,
+        "tokens": 2267397,
+        "archivos_diff": 1,
+        "archivos_fuente": 1,
+        "semgrep_incidencias": 0,
+        "linters_incidencias": 4,
+        "code_quality_score": 0.768
+      },
+      "comparacion_pr": {
+        "archivos_agente": 1,
+        "archivos_pr": 4,
+        "comunes": 1,
+        "solo_agente": 0,
+        "solo_pr": 3,
+        "precision": 1.0,
+        "recall": 0.25,
+        "f1": 0.4
+      },
+      "eficiencia": {
+        "coste_usd": 0.0208,
+        "cost_efficiency_score": 0.861,
+        "tokens_por_dolar": 108909986.0,
+        "lineas_por_dolar": 41453.0
+      },
+      "cumplimiento_ireb": {
+        "artifact_ratio": 0,
+        "artefactos_ok": 0,
+        "artefactos_esperados": 0,
+        "spec_atributos": 0,
+        "spec_atributos_total": 7,
+        "tiene_constitucion": false,
+        "tiene_scope_contract": false
+      }
+    }
+  ]
+}

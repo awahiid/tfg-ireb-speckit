@@ -30,35 +30,62 @@ Trazabilidad & Cadena spec $\rightarrow$ plan $\rightarrow$ tasks $\rightarrow$ 
 
 \subsection{P2: ¿Mejoran los resultados con requisitos formalizados IREB?}
 
-S\'i, de forma acumulativa y medible. La progresi\'on C3 (2.8) $\rightarrow$ C0 (6.3) $\rightarrow$ C1 (6.8) $\rightarrow$ C2 (7.2) muestra que cada componente a\~nadido al proceso aporta una mejora concreta. El paso de no tener pipeline a tenerlo (C3 $\rightarrow$ C0) es el que m\'as impacto tiene (+3.5 puntos). Formalizar los requisitos (C0 $\rightarrow$ C1) aporta otros 0.5 puntos y eleva el TSR del 92\,\% al 100\,\%. A\~nadir mecanismos de control de alcance y reglas de comportamiento (C1 $\rightarrow$ C2) suma 0.4 puntos adicionales y convierte a C2 en el \'unico flujo que genera tests en todos los casos.
+S\'i, de forma consistente y en varias dimensiones. La progresi\'on de F1, desde C0 (0.46) pasando por C1 (0.52) hasta C2 (0.62), muestra que cada nivel adicional de madurez metodol\'ogica mejora la alineaci\'on con el PR real. La formalizaci\'on IREB (C0 $\rightarrow$ C1) aporta +0.06 en F1, mejora la precisi\'on del 49.5\,\% al 53.2\,\% y eleva el recall del 54.0\,\% al 64.8\,\%. Los mecanismos de robustez (C1 $\rightarrow$ C2) a\~naden otros +0.10 en F1, con una mejora notable en precisi\'on (del 53.2\,\% al 70.2\,\%).
 
+El dato m\'as revelador es la comparaci\'on entre C3 y C2: ambos alcanzan F1=0.62, pero por caminos opuestos. C3 tiene la precisi\'on m\'as alta (83.0\,\%) y el recall m\'as bajo (57.8\,\%): genera pocos archivos (3 de media) pero acierta en la mayor\'ia de ellos. C2 logra un equilibrio: 70.2\,\% de precisi\'on con 62.5\,\% de recall, generando 15 archivos de media. La diferencia refleja dos estrategias distintas: C3 maximiza la precisi\'on a costa de un alcance limitado, mientras que C2 persigue un equilibrio entre precisi\'on y cobertura. Para implementar un requisito sobre una base de c\'odigo de cientos de miles de l\'ineas, el segundo enfoque resulta m\'as adecuado, ya que cubre una fracci\'on mayor del cambio real sin una p\'erdida de precisi\'on que lo invalide.
+
+\subsection{P3: ¿En qu\'e tipos de sistema tiene mayor impacto la formalizaci\'on IREB?}
+
+La tabla~\ref{tab:f1-por-repo} desglosa el F1 medio por repositorio para C0 y C2, ordenado por la mejora absoluta que aporta la formalizaci\'on IREB.
+
+\begin{table}[htbp]
+\centering
+\caption{F1 medio por repositorio: C0 vs.\ C2 (4 casos por repo)}
+\label{tab:f1-por-repo}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Repositorio} & \textbf{C0} & \textbf{C2} & \textbf{Mejora} \\
+\midrule
+Medusa (e-commerce) & 0.31 & 0.70 & \textbf{+0.39} \\
+Appwrite (BaaS) & 0.07 & 0.42 & \textbf{+0.34} \\
+n8n (integraci\'on) & 0.41 & 0.60 & +0.20 \\
+Directus (CMS) & 0.48 & 0.56 & +0.08 \\
+Cal.com (colaborativo) & 0.67 & 0.76 & +0.08 \\
+Authentik (identidad) & 0.79 & 0.70 & $-$0.09 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Los resultados muestran un patr\'on claro: la formalizaci\'on IREB produce el mayor impacto en los sistemas donde los \emph{changelogs} son menos descriptivos. Medusa y Appwrite, cuyos \emph{changelogs} contienen descripciones breves de cambios transaccionales, se benefician sustancialmente de la formalizaci\'on (+0.39 y +0.34 en F1). En el extremo opuesto, Authentik obtiene un F1 elevado incluso sin IREB (0.79 en C0) porque sus \emph{changelogs} ya son t\'ecnicamente precisos al describir cambios en flujos de autenticaci\'on y autorizaci\'on. Esto sugiere que el valor de la formalizaci\'on IREB no es uniforme: es mayor cuando la fuente original es ambigua o incompleta, y menor cuando la fuente ya contiene informaci\'on t\'ecnica detallada.
+
+\FloatBarrier
 \section{An\'alisis comparativo por condici\'on}
 
 A continuaci\'on se analiza cada condici\'on individualmente, indicando sus puntos fuertes y sus limitaciones seg\'un los datos obtenidos.
 
 \subsection{C3: MRS directo, sin pipeline}
 
-\textbf{Virtudes:} Es la condici\'on m\'as econ\'omica (\$0.0115 por ejecuci\'on) y la m\'as r\'apida (un solo paso). Para cambios muy peque\~nos y autocontenidos, puede ser suficiente.
+\textbf{Virtudes:} Es la condici\'on m\'as econ\'omica (\$0.0191 por ejecuci\'on), la m\'as r\'apida (un solo paso) y la de mayor precisi\'on (83.0\,\%). Cuando el modelo acierta el archivo correcto, la implementaci\'on suele ser acertada. En 4 de los 24 casos alcanza un F1 de 1.0.
 
-\textbf{Limitaciones:} Con una puntuaci\'on SRCI de 2.8 y un TSR del 17\,\%, no es capaz de implementar requisitos con la complejidad habitual de un proyecto real. No genera \texttt{spec.md}, no produce planificaci\'on, no escribe tests y el c\'odigo resultante es m\'inimo (289 l\'ineas de media). El ahorro econ\'omico no compensa la falta de calidad cuando el objetivo es obtener una implementaci\'on trazable y verificable.
+\textbf{Limitaciones:} La alta precisi\'on conlleva una cobertura reducida. C3 genera de media 3 archivos fuente frente a los 14--15 de los flujos con pipeline. El recall del 57.8\,\% indica que, en promedio, deja sin modificar el 42\,\% de los archivos que el PR real modific\'o. No genera \texttt{spec.md}, no produce planificaci\'on, no preserva trazabilidad y no escribe tests. Para cambios de alcance reducido y autocontenidos puede ser suficiente; para requisitos que afectan a m\'ultiples m\'odulos, resulta insuficiente.
 
 \subsection{C0: SpecKit vanilla}
 
-\textbf{Virtudes:} Con solo cuatro pasos, alcanza una puntuaci\'on SRCI de 6.3 y un TSR del 92\,\%. El pipeline estructurado obliga al agente a especificar antes de implementar, lo que produce mejores resultados que una petici\'on directa. Es la opci\'on con mejor relaci\'on coste/calidad entre los flujos que usan \textsc{SpecKit} (155 pts/\$).
+\textbf{Virtudes:} Con solo cuatro pasos, alcanza un F1 de 0.46 y genera 14 archivos de media. Es la opci\'on m\'as limpia en t\'erminos de estilo (126 incidencias de linters, la menor de todos los flujos) y tiene un coste moderado (\$0.0573). El pipeline estructurado obliga al agente a especificar antes de implementar, lo que produce resultados m\'as completos que una petici\'on directa.
 
-\textbf{Limitaciones:} Sin plantilla IREB, la especificaci\'on generada es prosa libre sin estructura formal. Solo genera tests en 1 de cada 6 casos. En Authentik, el agente implement\'o una funcionalidad distinta a la solicitada porque el \emph{changelog} no proporcionaba suficiente contexto. No hay mecanismo que acote el alcance de la implementaci\'on, por lo que el agente puede modificar m\'as archivos de los necesarios.
+\textbf{Limitaciones:} Sin plantilla IREB, la especificaci\'on generada es prosa libre que apenas conserva 1.5 de 7 atributos IREB. La precisi\'on es la m\'as baja de todos los flujos (49.5\,\%): casi la mitad de los archivos que genera no aparecen en el PR real. En Authentik, el agente implement\'o una funcionalidad distinta a la solicitada porque el \emph{changelog} no proporcionaba suficiente contexto. En 6 de los 24 casos el F1 es inferior a 0.2.
 
 \subsection{C1: SpecKit + IREB v1}
 
-\textbf{Virtudes:} La formalizaci\'on de los requisitos eleva la puntuaci\'on a 6.8 y el TSR al 100\,\%. La plantilla de 12 atributos mejora la conformidad de la implementaci\'on (Bloque B: 4.0/5). En Appwrite, las incidencias de estilo PHP se redujeron un 90\,\% respecto a C0, lo que indica que la formalizaci\'on tambi\'en mejora la calidad interna del c\'odigo.
+\textbf{Virtudes:} La formalizaci\'on de los requisitos eleva el F1 a 0.52 y el recall al 64.8\,\%, el m\'as alto de todos los flujos. Los \texttt{spec.md} generados preservan 6.7 de 7 atributos IREB.
 
-\textbf{Limitaciones:} Sin \texttt{AGENTS.md} ni \emph{scope contract}, el pipeline carece de mecanismos que garanticen un comportamiento homog\'eneo del agente en todos los pasos. Solo genera tests en 3 de cada 6 casos. En n8n, la ausencia de control de alcance provoc\'o que el agente modificara 4238 l\'ineas para un cambio que requer\'ia 222.
+\textbf{Limitaciones:} Es el flujo m\'as caro (\$0.0915) y el que m\'as incidencias de linters genera (2.096), en parte porque tambi\'en es el que m\'as c\'odigo produce (19.696 l\'ineas). Sin \texttt{AGENTS.md} ni \emph{scope contract}, el pipeline carece de mecanismos que acoten el alcance de la implementaci\'on: solo el 48\,\% de los artefactos esperados se generan correctamente.
 
 \subsection{C2: SpecKit + IREB v2}
 
-\textbf{Virtudes:} Es la condici\'on con mejor puntuaci\'on global (7.2) y la \'unica que genera tests en el 100\,\% de los casos. El \emph{scope contract} mantiene los cambios acotados al alcance del requisito. Las reglas de \texttt{AGENTS.md} garantizan que el agente siga un comportamiento consistente en todos los comandos del pipeline. La combinaci\'on de constituci\'on IREB y checklist de calidad ayuda a que el agente no se desv\'ie del objetivo.
+\textbf{Virtudes:} Es la condici\'on con mejor equilibrio global. Alcanza el F1 m\'as alto (0.62, empatado con C3), la segunda mejor precisi\'on (70.2\,\%) y un recall competitivo (62.5\,\%). Es el \'unico flujo que preserva los 7 atributos IREB en \texttt{spec.md}. Con 5 de 24 casos con F1=1.0, es el flujo que m\'as veces acierta completamente el cambio real. El \emph{scope contract} mantiene el c\'odigo acotado (12.491 l\'ineas, frente a 19.696 de C1) y reduce el coste respecto a C1 (\$0.0763 frente a \$0.0915).
 
-\textbf{Limitaciones:} Es la condici\'on m\'as costosa (\$0.0696 por ejecuci\'on, un 71\,\% m\'as que C0). El mayor n\'umero de pasos implica m\'as tiempo de ejecuci\'on y m\'as tokens consumidos. Para cambios muy peque\~nos donde la trazabilidad y los tests no sean necesarios, puede resultar excesiva.
+\textbf{Limitaciones:} El pipeline solo se completa en el 57\,\% de los casos porque los comandos opcionales (\texttt{clarify}, \texttt{checklist}, \texttt{analyze}) no siempre generan su artefacto correspondiente. El coste es un 33\,\% superior al de C0. Para cambios muy peque\~nos donde la trazabilidad no sea necesaria, el sobrecoste puede no estar justificado.
 
 \section{De la evidencia a las conclusiones}
 
@@ -72,16 +99,17 @@ La tabla~\ref{tab:evidencia-conclusiones} resume las observaciones principales r
 \toprule
 \textbf{Lo que se observa} & \textbf{Lo que se concluye} \\
 \midrule
-C2 (7.2) $>$ C1 (6.8) $>$ C0 (6.3) $\gg$ C3 (2.8) & Cada paso que se a\~nade al proceso (pipeline, formalizaci\'on, control de alcance) contribuye de forma acumulativa a la calidad final \\
-C3 (TSR 0.17) vs.\ C0 (TSR 0.92): +0.75 al estructurar la petici\'on & Usar un pipeline como \textsc{SpecKit}, incluso en su forma m\'as b\'asica, mejora notablemente los resultados frente a una petici\'on directa al modelo \\
-C2 genera tests en 6/6; C1 en 3/6; C0 en 1/6; C3 en 0/6 & Para que el agente genere tests de forma consistente hace falta combinar requisitos formalizados, control de alcance y reglas de comportamiento \\
-C1 reduce phpcs 90\% vs.\ C0 (Appwrite: 1.597 vs.\ 16.009) & Formalizar los requisitos no solo ayuda a que el c\'odigo haga lo que debe, sino que tambi\'en mejora su estilo y calidad interna \\
-Scope contract reduce diff hasta 19$\times$ (n8n: 4238 $\rightarrow$ 222) & Acotar expl\'icitamente qu\'e archivos puede modificar el agente evita que genere cambios innecesarios \\
+F1: C2 (0.62) $>$ C1 (0.52) $>$ C0 (0.46); C3 (0.62) pero con solo 3 archivos & Cada nivel de madurez metodol\'ogica mejora la alineaci\'on con el PR real. C3 alcanza el mismo F1 que C2 pero con un alcance sustancialmente menor, lo que limita su aplicabilidad a cambios de peque\~na envergadura \\
+C3: precisi\'on 83\,\% con 3 archivos; C2: precisi\'on 70\,\% con 15 archivos & El pipeline no solo mejora la precisi\'on absoluta, sino que permite cubrir m\'as alcance sin sacrificarla en exceso \\
+C1: recall 64.8\,\% (el m\'as alto); C1: 19.696 l\'ineas (el m\'as alto) & Formalizar los requisitos ayuda al agente a encontrar m\'as archivos relevantes, pero sin control de alcance tambi\'en genera m\'as c\'odigo innecesario \\
+C1: 48\,\% artefactos; C2: 57\,\% artefactos & Los comandos opcionales de \textsc{SpecKit} (\texttt{clarify}, \texttt{checklist}, \texttt{analyze}) muestran menor regularidad que los comandos principales, incluso con IREB Kit. El \emph{scope contract} de C2 ayuda a mejorar esta tasa \\
+C2: 7.0/7 atributos IREB; C0: 1.5/7 & La plantilla de especificaci\'on IREB no solo estructura la salida, sino que el agente la respeta: los atributos se preservan \\
 C0 en Authentik implement\'o una funcionalidad distinta a la solicitada; C2 implement\'o exactamente lo pedido & Dar al agente un requisito bien definido y reglas claras sobre qu\'e debe y no debe hacer ayuda a que no se desv\'ie del objetivo \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+\FloatBarrier
 \section{Implicaciones pr\'acticas}
 
 Los resultados muestran que \textsc{SpecKit} con IREB Kit puede integrarse en un flujo RE profesional con una divisi\'on clara: el ingeniero elicita y formaliza los requisitos; \textsc{SpecKit} los transforma en implementaciones trazables y verificables. Las herramientas profesionales de RE (DOORS, Jama) y \textsc{SpecKit} no compiten: las primeras gestionan el ciclo de vida del requisito, la segunda automatiza el paso a c\'odigo.
@@ -90,10 +118,10 @@ Para el dise\~no de herramientas SDD, los resultados sugieren tres mejoras: inco
 
 \section{Limitaciones}
 
-El estudio tiene las limitaciones propias de un trabajo realizado con recursos acotados de tiempo y presupuesto. La evaluaci\'on se basa en 6 casos (uno por tipo de sistema) ejecutados una vez por configuraci\'on. Ampliar a m\'as casos o realizar m\'ultiples ejecuciones por caso habr\'ia requerido un tiempo de c\'omputo y un coste econ\'omico superiores a los disponibles. Los 46 casos restantes del corpus quedan preparados para que trabajos futuros puedan extender la evaluaci\'on.
+El estudio tiene las limitaciones propias de un trabajo realizado con recursos acotados de tiempo y presupuesto. La evaluaci\'on se basa en 96 ejecuciones (24 casos $\times$ 4 flujos), cada una ejecutada una sola vez. Realizar m\'ultiples ejecuciones por caso permitir\'ia medir la variabilidad del modelo y fortalecer la significaci\'on estad\'istica de las diferencias observadas.
 
-La r\'ubrica SRCI v3 ha sido aplicada por el autor. Para reducir la subjetividad, sus criterios son operativos y est\'an definidos antes de evaluar los resultados. Todos los artefactos generados en cada ejecuci\'on se conservan, de modo que cualquier persona puede revisarlos y verificar las puntuaciones.
+La evaluaci\'on se ha realizado exclusivamente mediante an\'alisis autom\'atico. La r\'ubrica SRCI v3, que evaluar\'ia aspectos cualitativos como la conformidad funcional y la calidad de los tests generados, queda pendiente para la siguiente fase del trabajo. Para mitigar esta limitaci\'on, el an\'alisis autom\'atico se ha dise\~nado con tres dimensiones complementarias (calidad de c\'odigo, comparaci\'on con PR real y cumplimiento del pipeline) que cubren parcialmente los aspectos que la r\'ubrica manual abordar\'ia. Adem\'as, todos los artefactos generados en las 96 ejecuciones se conservan para que la evaluaci\'on manual pueda realizarse sin necesidad de repetir los experimentos.
 
-El estudio emplea una versi\'on concreta de \textsc{SpecKit} (v0.10.2) y del modelo DeepSeek V4 Flash. Dado que tanto \textsc{SpecKit} como los modelos de lenguaje evolucionan r\'apidamente, los valores num\'ericos concretos pueden variar en versiones futuras, aunque la direcci\'on de las diferencias observadas entre configuraciones es consistente con lo esperado seg\'un el marco te\'orico.
+El estudio emplea una versi\'on concreta de \textsc{SpecKit} (v0.10.2) y del modelo DeepSeek V4 Flash. Dado que tanto \textsc{SpecKit} como los modelos de lenguaje evolucionan r\'apidamente, los valores num\'ericos concretos pueden variar en versiones futuras. Para facilitar la replicabilidad, todos los scripts, artefactos generados y datos de evaluaci\'on se conservan y est\'an disponibles junto con este documento.
 
 Las condiciones C1 y C2 reciben requisitos formalizados con m\'as informaci\'on que C0 (que solo recibe el texto del \emph{changelog}). Esto no resta valor al estudio, ya que el objetivo es precisamente medir cu\'anto mejora el resultado cuando se invierte tiempo en formalizar los requisitos antes de pasarlos al agente.

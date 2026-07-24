@@ -8,80 +8,47 @@ Este trabajo ha realizado un mapeo sistem\'atico y una evaluaci\'on emp\'irica d
 \begin{enumerate}
     \item \textbf{IREB Kit for SpecKit}: un conjunto de 10 artefactos (constitution con 9 art\'iculos, plantilla de spec con 12 atributos, checklist ISO 29148 de 13 criterios, AGENTS.md con 5 reglas universales, scope contract, y plantillas de plan, tasks, clarify y analyze) que transforman el pipeline nativo de \textsc{SpecKit} en un flujo alineado con pr\'acticas normativas de RE.
 
-    \item \textbf{Corpus de 52 requisitos formalizados}: extra\'idos de \emph{changelogs} de 6 proyectos \emph{Open Source} representativos de distintos tipos de sistema, formalizados con 12 atributos IREB y validados mediante r\'ubrica de calidad. Complementado con 52 MRS (\emph{Minimal Requirement Seeds}) derivados para replicabilidad.
+    \item \textbf{Corpus de 52 requisitos formalizados}: extra\'idos de \emph{changelogs} de 6 proyectos \emph{Open Source} representativos de distintos tipos de sistema, formalizados con 12 atributos IREB y validados mediante r\'ubrica de calidad. Complementado con 52 MRS (\emph{Minimal Requirement Specifications}) derivados para replicabilidad.
 
-    \item \textbf{R\'ubrica SRCI v3}: 24 criterios organizados en 4 bloques (preservaci\'on del requisito, conformidad de la implementaci\'on, verificaci\'on y testing, trazabilidad del pipeline) con trazabilidad normativa expl\'icita, dise\~nada para ser reproducible y pragm\'atica.
+    \item \textbf{Infraestructura de evaluaci\'on autom\'atica}: scripts que aplican 6 herramientas (semgrep, eslint, phpcs, shellcheck, pyflakes y cloc) y comparan el c\'odigo generado con los PR reales mediante m\'etricas de precisi\'on, recall y F1. La r\'ubrica SRCI v3, dise\~nada como complemento cualitativo, queda preparada para su aplicaci\'on en la siguiente fase.
 
-    \item \textbf{Evaluaci\'on emp\'irica de 4 flujos sobre 6 casos}: 24 ejecuciones del pipeline que demuestran la progresi\'on C3 (2.8) $\rightarrow$ C0 (6.3) $\rightarrow$ C1 (6.8) $\rightarrow$ C2 (7.2), donde cada incremento en madurez metodol\'ogica a\~nade valor medible. C2 es el \'unico flujo que genera tests en el 100\% de los casos.
+    \item \textbf{Evaluaci\'on emp\'irica de 4 flujos sobre 24 casos}: 96 ejecuciones que muestran c\'omo cada nivel de madurez metodol\'ogica mejora la alineaci\'on con el PR real: C0 (F1=0.46) $\rightarrow$ C1 (+IREB, F1=0.52) $\rightarrow$ C2 (+control de alcance, F1=0.62). C3, sin pipeline, alcanza el mismo F1 que C2 (0.62) pero con un perfil distinto: mucha precisi\'on (83\,\%) sobre pocos archivos (3 de media), frente al equilibrio de C2 (70\,\% de precisi\'on sobre 15 archivos).
 
     \item \textbf{Mapa de alineaci\'on IREB--SpecKit}: contraste detallado de cada actividad IREB (7), cada criterio ISO 29148 (8) y cada principio IREB (9) contra los comandos y artefactos de \textsc{SpecKit}, con y sin el IREB Kit.
 \end{enumerate}
 
 \section{Conclusiones principales}
 
-\textbf{1. Cada incremento en madurez metodol\'ogica a\~nade valor medible.} La progresi\'on C3 (2.8) $\rightarrow$ C0 (6.3) $\rightarrow$ C1 (6.8) $\rightarrow$ C2 (7.2) muestra que ninguna intervenci\'on es inocua. Incluso el pipeline m\'inimo de \textsc{SpecKit} sin IREB (C0) multiplica por m\'as de 2 la calidad frente a preguntar directamente al LLM (C3). La formalizaci\'on IREB (C1) a\~nade 0.5 puntos m\'as. La robustez del pipeline (C2) a\~nade otros 0.4. La mejora es acumulativa: cada componente del IREB Kit contribuye de forma aditiva.
+\textbf{1. A\~nadir estructura al proceso de generaci\'on mejora los resultados de forma consistente.} La progresi\'on de F1, desde C0 (0.46) pasando por C1 (0.52) hasta C2 (0.62), muestra que cada nivel adicional de formalizaci\'on y control acerca el c\'odigo generado al cambio real de referencia. La precisi\'on pasa del 49.5\,\% al 70.2\,\%, y la preservaci\'on de atributos IREB en la especificaci\'on sube de 1.5 a 7.0 sobre 7. La mejora es acumulativa: cada componente del IREB Kit contribuye de forma aditiva.
 
-\textbf{2. La verificaci\'on (tests) es el punto d\'ebil del pipeline y donde m\'as impacto tiene IREB v2.} C2 es el \'unico flujo que genera tests en 6/6 casos. C1 lo hace en 3/6, C0 en 1/6, C3 en 0/6. La generaci\'on de tests verificables requiere la combinaci\'on completa de formalizaci\'on IREB + \emph{scope contract} + \texttt{AGENTS.md}. Ning\'un subconjunto es suficiente.
+\textbf{2. El pipeline determina el alcance de la implementaci\'on generada.} C3 y C2 comparten el mismo F1 medio (0.62), pero lo consiguen por caminos complementarios. C3 destaca en precisi\'on (83.0\,\%) con una media de 3 archivos generados; C2 ofrece un equilibrio entre precisi\'on (70.2\,\%) y cobertura (62.5\,\%) sobre 15 archivos. Ambos perfiles resultan \'utiles en contextos distintos: C3 para cambios de alcance reducido y autocontenidos, C2 para requisitos que requieren trazabilidad y una cobertura amplia del cambio.
 
-\textbf{3. El pipeline estructurado es necesario para codebases reales.} La diferencia C3 $-$ C0 (+3.5 puntos) es la mayor del estudio. C3 (MRS directo, sin pipeline) genera c\'odigo m\'inimo (289 l\'ineas, 2 archivos) que no satisface los requisitos (TSR 0.17). C0 (\textsc{SpecKit} vanilla, 4 pasos) alcanza un TSR de 0.92. La estructura del pipeline no es opcional cuando el objetivo es implementar requisitos sobre codebases de m\'as de 100K l\'ineas: es la condici\'on m\'inima necesaria.
+\textbf{3. El control de alcance es el mecanismo con mayor impacto individual.} El salto C1 $\rightarrow$ C2 (+0.10 en F1, +17 puntos porcentuales en precisi\'on) supera al salto C0 $\rightarrow$ C1 (+0.06 en F1). El \emph{scope contract} y las reglas de \texttt{AGENTS.md} no solo mejoran la precisi\'on: tambi\'en reducen el coste (de \$0.0915 a \$0.0763) y acotan el c\'odigo generado (de 19.696 a 12.491 l\'ineas), porque el agente consume menos tokens en c\'odigo no relacionado con el requisito.
 
-\textbf{4. La ingenier\'ia de requisitos y SDD se complementan.} \textsc{SpecKit} sin IREB Kit produce c\'odigo funcional, pero a\~nadir requisitos formalizados mejora la trazabilidad, la verificabilidad y reduce las desviaciones. El ingeniero de requisitos elicita y formaliza; \textsc{SpecKit} implementa con trazabilidad. La combinaci\'on de ambos enfoques ofrece mejores resultados que cualquiera de ellos por separado.
+\textbf{4. La ingenier\'ia de requisitos y SDD se complementan.} \textsc{SpecKit} sin IREB Kit produce c\'odigo funcional y cubre 14 archivos de media. Al a\~nadir requisitos formalizados, la precisi\'on, la cobertura y la trazabilidad mejoran en todas las m\'etricas. El ingeniero de requisitos elicita y formaliza; \textsc{SpecKit} implementa con trazabilidad. La combinaci\'on de ambos enfoques ofrece mejores resultados que cualquiera de ellos por separado.
 
-\textbf{5. Unos requisitos claros y bien definidos ayudan al agente a no desviarse del objetivo.} En el caso de Authentik, C0 implement\'o una funcionalidad distinta a la solicitada porque el \emph{changelog} no proporcionaba suficiente contexto. C2, al recibir un requisito formalizado con criterios de verificaci\'on y reglas de comportamiento, gener\'o exactamente lo esperado. Esto sugiere que dedicar tiempo a escribir buenos requisitos reduce el riesgo de que el agente malinterprete la tarea.
+\textbf{5. Unos requisitos claros y bien definidos ayudan al agente a no desviarse del objetivo.} En el caso de Authentik, C0 implement\'o una funcionalidad distinta a la solicitada porque el \emph{changelog} no proporcionaba suficiente contexto. C2, al recibir un requisito formalizado con criterios de verificaci\'on y reglas de comportamiento, gener\'o exactamente lo esperado. Dedicar tiempo a escribir buenos requisitos reduce el riesgo de que el agente malinterprete la tarea.
 
-\section{Tabla resumen comparativa}
+\textbf{6. El impacto de la formalizaci\'on IREB depende de la calidad de la fuente original.} Los repositorios cuyos \emph{changelogs} son menos descriptivos, como Medusa (+0.39 en F1) y Appwrite (+0.34), obtienen el mayor beneficio de la formalizaci\'on. En el extremo opuesto, Authentik ($-$0.09) ya alcanza un F1 elevado sin IREB porque sus \emph{changelogs} contienen descripciones t\'ecnicamente precisas. Esto indica que la formalizaci\'on IREB no es una pr\'actica de talla \'unica: su valor es directamente proporcional a la ambig\"uedad de la fuente de requisitos original.
 
-La tabla~\ref{tab:resumen-final} sintetiza los resultados de las cuatro condiciones en todas las m\'etricas de evaluaci\'on.
+\section{Resumen comparativo}
 
-\begin{table}[htbp]
-\centering
-\caption{Resumen comparativo C0 / C1 / C2 / C3 en todas las m\'etricas}
-\label{tab:resumen-final}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{M\'etrica} & \textbf{C0 (Sin-Kit)} & \textbf{C1 (Kit v1)} & \textbf{C2 (Kit v2)} & \textbf{C3 (MRS)} \\
-\midrule
-SRCI (escala 0--10) & 6.3 & 6.8 & \textbf{7.2} & 2.8 \\
-TSR (\% criterios satisfechos) & 92\,\% & \textbf{100}\,\% & \textbf{100}\,\% & 17\,\% \\
-Casos con tests & 1/6 & 3/6 & \textbf{6/6} & 0/6 \\
-Coste medio (\$) & 0.0407 & 0.0608 & 0.0696 & \textbf{0.0115} \\
-L\'ineas de c\'odigo (media) & 5.948 & 18.522 & 14.218 & \textbf{289} \\
-\midrule
-\textbf{Eficiencia (pts/\$)} & 155 & 112 & 103 & \textbf{243} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-La tabla muestra una progresi\'on clara: C2 obtiene la mejor puntuaci\'on en la m\'etrica principal (SRCI), alcanza TSR completa junto con C1, y es el \'unico flujo que genera tests en todos los casos. C3 es la opci\'on m\'as econ\'omica pero su capacidad para implementar requisitos reales es limitada (TSR 17\%). La elecci\'on entre flujos depende del contexto: para un cambio peque\'no y aislado, C3 puede ser suficiente; para requisitos que necesitan trazabilidad y verificaci\'on, C2 ofrece las mayores garant\'ias.
-
-\section{Lecciones para la pr\'actica}
-
-Los resultados permiten extraer cinco lecciones directamente aplicables a equipos que utilicen herramientas de generaci\'on de c\'odigo asistida por IA:
-
-\begin{enumerate}
-    \item \textbf{La estructura del pipeline no es opcional.} La diferencia C3 $\rightarrow$ C0 (+3.5 puntos, +0.75 TSR) demuestra que incluso el pipeline m\'inimo de \textsc{SpecKit} (4 pasos) multiplica por m\'as de 5 el cumplimiento de requisitos frente a preguntar directamente al LLM.
-    
-    \item \textbf{Formalizar los requisitos antes de usar SpecKit.} La diferencia entre C1 y C0 (+0.5 puntos SRCI, TSR 1.00 vs.\ 0.92) es atribuible a la formalizaci\'on previa con atributos IREB y criterios de verificaci\'on expl\'icitos.
-    
-    \item \textbf{Usar siempre un scope contract.} El mecanismo de \emph{scope contract} reduce los \emph{diffs} en hasta 19$\times$ y es la intervenci\'on con mayor retorno de inversi\'on: un paso de 2--3 minutos antes de \texttt{implement}.
-    
-    \item \textbf{La combinaci\'on completa es necesaria para garantizar tests.} Solo C2 (formalizaci\'on + scope contract + AGENTS.md) genera tests en el 100\% de los casos. Ning\'un subconjunto es suficiente.
-    
-    \item \textbf{La ingenier\'ia de requisitos no compite con SDD: lo potencia.} La progresi\'on C3 $\rightarrow$ C0 $\rightarrow$ C1 $\rightarrow$ C2 muestra que cada incremento en madurez metodol\'ogica produce resultados mediblemente mejores. El valor diferencial no est\'a en la herramienta sino en la calidad de los requisitos.
-\end{enumerate}
+La tabla~6.5 del cap\'itulo anterior recoge todas las m\'etricas. En resumen: C2 lidera en F1 (0.62), precisi\'on (70.2\,\%) y preservaci\'on de atributos IREB (7.0/7); C1 ofrece el mejor recall (64.8\,\%); C3 es la opci\'on m\'as econ\'omica (\$0.0191) y de mayor precisi\'on (83.0\,\%), con un alcance m\'as reducido (3 archivos de media); C0 destaca por su bajo coste dentro de los flujos con pipeline (14 archivos a \$0.0573) y por generar el c\'odigo con menos incidencias de estilo (126). La elecci\'on depende del contexto: para cambios peque\~nos y autocontenidos, C3 resulta adecuado; para requisitos que necesitan trazabilidad y cobertura, C2 ofrece las mayores garant\'ias.
 
 \section{Trabajo futuro}
 
-Las siguientes l\'ineas podr\'ian extender los resultados:
-
 \begin{enumerate}
-    \item \textbf{Ampliaci\'on del corpus de evaluaci\'on}: ejecutar los 46 casos restantes del corpus (actualmente solo formalizados) en el flujo C2 (Kit v2) para aumentar el tama\~no de la muestra de 6 a 52.
-    \item \textbf{Evaluaci\'on multi-evaluador}: replicar el an\'alisis SRCI con varios evaluadores independientes para calibrar la reproducibilidad de la r\'ubrica.
-    \item \textbf{Automatizaci\'on del pipeline}: el \texttt{pipeline.sh} del IREB Kit es un prototipo. Una integraci\'on nativa con la API de \textsc{SpecKit} (cuando est\'e disponible) permitir\'ia ejecuciones completamente automatizadas.
-    \item \textbf{Extensi\'on a otros dominios}: incorporar proyectos de dominios no representados en el corpus actual (sistemas cr\'iticos, IoT, tiempo real, sistemas embebidos).
-    \item \textbf{Estudio longitudinal}: evaluar si las mejoras introducidas por el IREB Kit se mantienen a lo largo de m\'ultiples iteraciones de desarrollo sobre el mismo c\'odigo base.
+    \item \textbf{Evaluaci\'on manual SRCI v3}: aplicar la r\'ubrica de inspecci\'on de requisitos a los 96 artefactos generados, que ya est\'an disponibles y no requieren repetir los experimentos.
+
+    \item \textbf{M\'ultiples ejecuciones por caso}: repetir cada configuraci\'on 3--5 veces para medir la variabilidad del modelo y realizar an\'alisis estad\'istico de las diferencias observadas.
+
+    \item \textbf{Ampliar el corpus de ejecuci\'on}: extender la evaluaci\'on a los 28 requisitos del corpus que no se han ejecutado, para comprobar si los resultados se mantienen en una muestra m\'as amplia.
+
+    \item \textbf{Explorar otros modelos}: repetir los experimentos con modelos alternativos para verificar si las diferencias entre flujos son consistentes independientemente del modelo de lenguaje utilizado.
+
+    \item \textbf{Integraci\'on con herramientas profesionales}: estudiar la viabilidad de conectar el IREB Kit con herramientas como DOORS o Jama para cerrar el ciclo completo desde la gesti\'on de requisitos hasta la generaci\'on de c\'odigo.
 \end{enumerate}
 
 \section{Reflexi\'on final}
 
-La irrupci\'on de herramientas de IA para la generaci\'on de c\'odigo no hace obsoleta la ingenier\'ia de requisitos, sino que la hace m\'as necesaria. Como se\~nal\'o Kim Lauenroth en AIDE\#26 (2026): ``AI amplifies what we put in,  good and bad. Methodological maturity decides the outcome''. Este trabajo demuestra emp\'iricamente que la madurez metodol\'ogica ,en forma de requisitos formalizados seg\'un normas, constituci\'on con principios RE, y mecanismos de control de alcance, produce resultados mediblemente mejores, en l\'inea con lo que la literatura sobre calidad de requisitos lleva dos d\'ecadas defendiendo~\cite{daneva2013agilere,femmer2014reartifacts}. La ingenier\'ia de requisitos no compite con SDD: lo potencia.
+Este trabajo comenz\'o con una pregunta concreta: ¿qu\'e ocurre al integrar la ingenier\'ia de requisitos con las herramientas de generaci\'on de c\'odigo asistida por IA? La respuesta, respaldada por 96 ejecuciones sobre 24 requisitos reales, es que ambas disciplinas se potencian mutuamente. Un pipeline sin requisitos formalizados (C0) ya ofrece una base s\'olida de partida. Formalizar esos requisitos (C1, C2) mejora todos los indicadores. Incluso sin pipeline (C3), el modelo es capaz de producir implementaciones precisas, aunque de alcance limitado. La conclusi\'on principal es que el camino m\'as productivo no consiste en elegir entre ingenier\'ia de requisitos y generaci\'on autom\'atica, sino en combinarlas: el ingeniero aporta el rigor en la definici\'on de qu\'e debe hacerse, y el pipeline estructurado se encarga de transformar esa definici\'on en c\'odigo con trazabilidad y precisi\'on.

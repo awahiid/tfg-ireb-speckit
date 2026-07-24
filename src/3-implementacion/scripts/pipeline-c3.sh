@@ -3,8 +3,6 @@
 # pipeline-c3.sh — C3: Vibe Coding PURO (1 prompt, sin SpecKit, sin IREB)
 #
 # Uso: ./pipeline-c3.sh <repo> <req-id>
-#   repo   = nombre del directorio en repos/ (ej: appwrite)
-#   req-id = número del requisito (ej: 10832)
 # ===========================================================================
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -14,25 +12,24 @@ source "$SCRIPT_DIR/lib.sh"
 
 REPO_NAME="$1"
 REQ_ID="$2"
-REQS_FILE="$SCRIPT_DIR/../reqs.json"
 
-# ── Leer caso ──
+# ── Leer reqs.json ──
 CASE_DATA=$(python3 -c "
-import json
-with open('$REQS_FILE') as f:
-    reqs = json.load(f)
-case = reqs['$REPO_NAME']['reqs']['$REQ_ID']
-print(f"{case['pre_pr']}|{case['summary']}")
+import json, sys
+with open('$CASES_FILE') as f:
+    d = json.load(f)
+case = d['$REPO_NAME']['reqs']['$REQ_ID']
+print(f\"{case['pre_pr']}|{case['summary']}\")
 ")
 IFS='|' read -r PRE_PR SUMMARY <<< "$CASE_DATA"
-PROMPTS_BASE="${PIPELINE_PROMPTS_DIR:-../../2.5-prompts}"
+[[ -z "$PRE_PR" ]] && { error "Req ID '$REQ_ID' no encontrado en $CASES_FILE para '$REPO_NAME'"; exit 1; }
 
 CASE_ID="${REPO_NAME}-${REQ_ID}"
-OUTPUT_DIR="$SCRIPT_DIR/../resultados/C3/$CASE_ID"
+OUTPUT_DIR="$OUTPUT_DIR_BASE/C3/$CASE_ID"
 OUTPUT_DIR=$(init_output_dir "$OUTPUT_DIR")
 
 # ── Leer MRS desde 2.5-prompts ──
-MRS_FILE="$SCRIPT_DIR/$PROMPTS_BASE/$REPO_NAME/REQ-${REPO_NAME^^}-${REQ_ID}.md"
+MRS_FILE="$PROMPTS_DIR/$REPO_NAME/REQ-${REPO_NAME^^}-${REQ_ID}.md"
 if [[ ! -f "$MRS_FILE" ]]; then
     error "MRS no encontrado: $MRS_FILE"
     exit 1
@@ -45,6 +42,7 @@ init_pipeline
 
 # Crear worktree aislado
 WORKTREE=$(oc_create_worktree "$REPO_NAME" "$PRE_PR" "$OUTPUT_DIR/repo")
+[[ -d "$WORKTREE" ]] || { error "Worktree no creado: $WORKTREE"; exit 1; }
 trap "oc_remove_worktree '$WORKTREE'" EXIT
 REPO_DIR="$WORKTREE"
 START_TIME=$(date +%s)
@@ -83,7 +81,6 @@ oc_save_generated "$REPO_DIR" "$OUTPUT_DIR"
 END_TIME=$(date +%s)
 ELAPSED=$((END_TIME - START_TIME))
 oc_summary "$OUTPUT_DIR" "$CASE_ID" "C3 (Vibe Coding)" "$MODEL" "$ELAPSED" 0
-oc_sanitize_auth "$OUTPUT_DIR"
 
 echo ""
 echo "=============================================="

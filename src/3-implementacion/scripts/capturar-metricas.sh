@@ -5,19 +5,27 @@
 # Uso:
 #   ./capturar-metricas.sh <output-dir> [session-id-1 session-id-2 ...]
 #
-# Si no se pasan IDs, busca sesiones recientes con 'opencode session list'.
+# Si no se pasan IDs, busca sesiones recientes en la DB de opencode.
 # Genera: metrics.json + costs.csv en <output-dir>
 # ===========================================================================
-# Sin set -e: opencode session list puede fallar sin ser crítico
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/lib.sh"
 
 OUTPUT_DIR="${1:-.}"
 shift 2>/dev/null || true
 SESSION_IDS=("$@")
 
-# ── Si no se pasan IDs, listar sesiones recientes ──
+# ── Si no se pasan IDs, obtener todas las sesiones de la DB ──
+#    opencode session list solo muestra las del proyecto actual (cwd);
+#    como el worktree ya no existe, usamos sqlite3 para listar TODAS.
 if [[ ${#SESSION_IDS[@]} -eq 0 ]]; then
-    echo "[INFO] Buscando sesiones recientes..."
-    mapfile -t SESSION_IDS < <(opencode session list 2>/dev/null | grep '^ses_' | head -20 | awk '{print $1}')
+    echo "[INFO] Buscando sesiones..."
+    DB_FILE="${HOME}/.local/share/opencode/opencode.db"
+    if [[ -f "$DB_FILE" ]] && command -v sqlite3 &>/dev/null; then
+        mapfile -t SESSION_IDS < <(sqlite3 "$DB_FILE" \
+            "SELECT id FROM session ORDER BY time_updated DESC LIMIT 50;" 2>/dev/null)
+    fi
     echo "[INFO] Encontradas ${#SESSION_IDS[@]} sesiones"
 fi
 
@@ -36,7 +44,7 @@ for sid in "${SESSION_IDS[@]}"; do
     echo -n "[INFO] $sid ... "
     
     TMPFILE=$(mktemp)
-    opencode export "$sid" > "$TMPFILE" 2>/dev/null || { echo "vacío"; rm -f "$TMPFILE"; continue; }
+    "${OPENCODE_BIN:-opencode}" export "$sid" > "$TMPFILE" 2>/dev/null || { echo "vacío"; rm -f "$TMPFILE"; continue; }
     [[ ! -s "$TMPFILE" ]] && { echo "vacío"; rm -f "$TMPFILE"; continue; }
     
     METRICS=$(python3 -c "

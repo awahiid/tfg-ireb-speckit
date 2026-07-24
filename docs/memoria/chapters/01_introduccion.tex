@@ -33,6 +33,8 @@ El objetivo de este Trabajo de Fin de Grado es \textbf{determinar en qu\'e medid
     \item[P1.] \textit{¿Qu\'e actividades y criterios del flujo RE normativo cubre \textsc{SpecKit} por defecto, cu\'ales cubre parcialmente y cu\'ales no cubre?}
     
     \item[P2.] \textit{¿Mejoran los resultados cuando los requisitos de entrada se formalizan con una plantilla IREB y se a\~naden mecanismos de control de alcance?}
+
+    \item[P3.] \textit{¿En qu\'e tipos de sistema software tiene mayor impacto la formalizaci\'on IREB de los requisitos?}
 \end{description}
 
 \subsection{Objetivos espec\'ificos}
@@ -42,8 +44,8 @@ El objetivo de este Trabajo de Fin de Grado es \textbf{determinar en qu\'e medid
     \item \textbf{O2.} Establecer el marco normativo de referencia con IREB, ISO~29148 e INCOSE.
     \item \textbf{O3.} Construir un corpus de 52 requisitos a partir de \emph{changelogs} de seis proyectos \emph{Open Source}, formalizados con una plantilla IREB de 12 atributos.
     \item \textbf{O4.} Dise\~nar el IREB Kit for SpecKit: constituci\'on, plantillas, \emph{checklists}, \emph{scope contract} y reglas de agente.
-    \item \textbf{O5.} Ejecutar cuatro configuraciones experimentales (C0--C3) sobre 6 casos y comparar los resultados.
-    \item \textbf{O6.} Evaluar los 24 artefactos generados combinando an\'alisis autom\'atico de calidad de c\'odigo y r\'ubrica manual SRCI v3 (\emph{Structured Requirement Conformance Inspection}).
+    \item \textbf{O5.} Ejecutar cuatro configuraciones experimentales (C0--C3) sobre 24 casos (4 requisitos por repositorio) y comparar los resultados.
+    \item \textbf{O6.} Evaluar los 96 artefactos generados mediante an\'alisis autom\'atico de calidad de c\'odigo (6 herramientas: semgrep, eslint, phpcs, shellcheck, pyflakes y cloc) y comparaci\'on con los PR reales.
     \item \textbf{O7.} Extraer conclusiones sobre la aplicabilidad del enfoque SDD en entornos que requieren garant\'ias de calidad en los requisitos.
 \end{enumerate}
 
@@ -53,18 +55,20 @@ El trabajo se ha realizado con recursos limitados de tiempo y presupuesto, lo qu
 
 El corpus se compone de 52 requisitos extra\'idos de \emph{changelogs} de seis proyectos \emph{Open Source}. Los \emph{changelogs} son res\'umenes p\'ublicos de cambios ya aceptados, lo que los convierte en una fuente trazable, aunque no tienen la granularidad de una especificaci\'on formal. Para compensarlo, cada requisito se ha formalizado con una plantilla de 12 atributos IREB y se ha validado con una r\'ubrica de 12 criterios, alcanzando una calidad media de 10{,}8 sobre 12. Los seis repositorios se seleccionaron siguiendo las taxonom\'ias de Glass y Vessey para cubrir un espectro amplio de tipos de sistema software.
 
-La evaluaci\'on se realiza sobre 6 de los 52 casos (uno por repositorio) en 4 configuraciones, sumando 24 ejecuciones. Ampliar el n\'umero de casos habr\'ia requerido m\'as tiempo de c\'omputo y m\'as presupuesto para el uso del modelo: cada ejecuci\'on tarda unos 30 minutos y tiene un coste asociado. Para mitigarlo, los seis casos se eligieron representando cada uno un tipo de sistema distinto, y la evaluaci\'on combina dos metodolog\'ias complementarias (an\'alisis autom\'atico y r\'ubrica manual). Los 46 casos restantes quedan formalizados para trabajos futuros.
+La evaluaci\'on se realiza sobre 24 de los 52 casos (4 por repositorio) en 4 configuraciones, sumando 96 ejecuciones. Ampliar el n\'umero de casos habr\'ia requerido m\'as tiempo de c\'omputo y m\'as presupuesto para el uso del modelo: cada ejecuci\'on tarda unos 30 minutos y tiene un coste asociado. Para mitigarlo, los 24 casos se seleccionaron cubriendo distintos tipos de cambio (correcciones, funcionalidades nuevas, mejoras) dentro de cada repositorio. Los 28 casos restantes quedan formalizados para trabajos futuros.
 
-La r\'ubrica SRCI v3 ha sido aplicada por el autor. Para reducir la subjetividad, sus criterios son operativos y se definieron antes de evaluar los resultados. Todos los artefactos generados se conservan para que cualquier persona pueda revisarlos. Los experimentos usan una versi\'on concreta de \textsc{SpecKit} (v0.10.2) y del modelo DeepSeek V4 Flash, y los scripts de ejecuci\'on est\'an disponibles para garantizar la reproducibilidad.
+La evaluaci\'on se ha realizado \'unicamente mediante an\'alisis autom\'atico (linters, semgrep y comparaci\'on con los PR reales). La evaluaci\'on manual mediante r\'ubrica SRCI v3 queda pendiente para la siguiente fase del trabajo. Los experimentos usan una versi\'on concreta de \textsc{SpecKit} (v0.10.2) y del modelo DeepSeek V4 Flash, y los scripts de ejecuci\'on est\'an disponibles para garantizar la reproducibilidad.
 
 \section{Contribuciones}
 
 \begin{enumerate}
     \item \textbf{El IREB Kit for SpecKit}: 10 artefactos que transforman el pipeline de \textsc{SpecKit} para trabajar con requisitos formalizados seg\'un IREB.
-    \item \textbf{Un corpus de 52 requisitos formalizados}: derivados de \emph{changelogs} de 6 proyectos \emph{Open Source}, con trazabilidad completa y 52 MRS (\emph{Minimal Requirement Seeds}) para replicabilidad.
+    \item \textbf{Un corpus de 52 requisitos formalizados}: derivados de \emph{changelogs} de 6 proyectos \emph{Open Source}, con trazabilidad completa y 52 MRS (\emph{Minimal Requirement Specifications}) para replicabilidad.
     \item \textbf{Un mapa de alineaci\'on IREB--SpecKit}: qu\'e actividades y criterios del marco normativo cubre \textsc{SpecKit} y cu\'ales no.
-    \item \textbf{Una evaluaci\'on emp\'irica}: 24 ejecuciones en 4 configuraciones, mostrando una progresi\'on clara: C3 (sin pipeline, 2.8/10) $\rightarrow$ C0 (\textsc{SpecKit} solo, 6.3/10) $\rightarrow$ C1 (+IREB, 6.8/10) $\rightarrow$ C2 (+control de alcance, 7.2/10).
+    \item \textbf{Una evaluaci\'on emp\'irica}: 96 ejecuciones en 4 configuraciones sobre 24 casos, mostrando que cada nivel de madurez metodol\'ogica mejora la alineaci\'on con el PR real: C0 (F1=0.46) $\rightarrow$ C1 (+IREB, F1=0.52) $\rightarrow$ C2 (+control de alcance, F1=0.62). C3 (sin pipeline, F1=0.62) alcanza el mismo F1 medio que C2 pero con un perfil radicalmente distinto: 3 archivos generados frente a 15.
 \end{enumerate}
+
+El hallazgo principal del trabajo es que a\~nadir estructura al proceso de generaci\'on de c\'odigo asistida por IA no solo mejora la calidad del resultado, sino que modifica su naturaleza. Una petici\'on directa al modelo (C3) puede alcanzar una precisi\'on elevada (83\,\%), pero su alcance es reducido: genera una media de 3 archivos frente a los 14--15 de los flujos que utilizan pipeline. \textsc{SpecKit} en su configuraci\'on m\'inima (C0) ya produce implementaciones sustancialmente m\'as completas (F1=0.46, 14 archivos). Formalizar los requisitos con IREB (C1) mejora tanto la cobertura (F1=0.52) como la precisi\'on (53.2\,\%). La incorporaci\'on de mecanismos de control de alcance y reglas de comportamiento (C2) alcanza el mejor equilibrio: F1=0.62, 70.2\,\% de precisi\'on y 15 archivos de media. La ingenier\'ia de requisitos y las herramientas de generaci\'on de c\'odigo no compiten: se complementan.
 
 \section{Estructura del documento}
 

@@ -62,3 +62,4 @@ src/3-implementacion/repos/
 .env
 .env.local
 src/3-implementacion/resultados/
+.tmp

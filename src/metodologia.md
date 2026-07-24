@@ -22,8 +22,8 @@ El marco normativo de referencia es IREB, complementado con ISO/IEC/IEEE 29148 e
 | Fase 1. Extracción de evidencia | Obtener requisitos del mundo real | IREB Elicitación |
 | Fase 2. Formalización | Producir requisitos con atributos normativos | IREB Documentación + ISO 29148 |
 | Fase 2.5. Derivación MRS | Transformar requisitos en prompts replicables | IREB Elicitación (problem framing) |
-| Fase 3. Ejecución comparativa | Ejecutar 4 flujos (C0–C3) sobre 6 casos | SpecKit SDD + opencode |
-| Fase 4. Evaluación | Doble metodología: automática (linters) + manual (SRCI v3) | IREB + ISO 29148 + ISO 25010 |
+| Fase 3. Ejecución comparativa | Ejecutar 4 flujos (C0–C3) sobre 24 casos (4 por repositorio) | SpecKit SDD + opencode |
+| Fase 4. Evaluación | Análisis automático (6 herramientas + comparación PR real) | IREB + ISO 29148 + ISO 25010 |
 
 ### Diseño experimental: 4 condiciones (C0–C3)
 
@@ -36,20 +36,21 @@ El marco normativo de referencia es IREB, complementado con ISO/IEC/IEEE 29148 e
 
 ### Evaluación en dos fases
 
-**Fase 4a — Automática**: semgrep, eslint, phpcs, shellcheck, pyflakes, cloc sobre los 24 artefactos generados.
+**Fase 4 — Automática**: semgrep, eslint, phpcs, shellcheck, pyflakes, cloc sobre los 96 artefactos generados. Comparación del diff generado con el PR real mediante métricas de precisión, recall y F1. La evaluación manual (rúbrica SRCI v3) queda pendiente.
 
-**Fase 4b — Manual**: rúbrica SRCI v3 con 5 bloques (A: Preservación 25%, B: Conformidad 20%, C: Verificación 12%, D: Trazabilidad, E: TSR 43%).
-
-### Resultados clave
+### Resultados clave (análisis automático, medias de 24 casos por flujo)
 
 | Métrica | C0 | C1 | C2 | C3 |
 |---|---|---|---|---|
-| SRCI (/10) | 6.3 | 6.8 | **7.2** | 2.8 |
-| TSR | 92% | **100%** | **100%** | 17% |
-| Tests | 1/6 | 3/6 | **6/6** | 0/6 |
-| Coste | $0.041 | $0.061 | $0.070 | **$0.012** |
+| F1 vs PR real | 0.46 | 0.52 | **0.62** | **0.62** |
+| Precisión | 49.5% | 53.2% | 70.2% | **83.0%** |
+| Recall | 54.0% | **64.8%** | 62.5% | 57.8% |
+| Archivos fuente | 14 | 15 | 15 | 3 |
+| Líneas de código | 13,453 | 19,696 | 12,491 | 3,221 |
+| Artefactos pipeline | **100%** | 48% | 57% | --- |
+| Coste | $0.057 | $0.092 | $0.076 | **$0.019** |
 
-**Conclusión**: cada incremento en madurez metodológica añade valor medible. C3 → C0 (+3.5 puntos) demuestra que el pipeline mínimo es necesario. C0 → C1 (+0.5) muestra el valor de la formalización IREB. C1 → C2 (+0.4) muestra el valor de la robustez (AGENTS.md + scope contract).
+**Conclusión**: cada nivel de madurez metodológica mejora la alineación con el PR real: C0 (0.46) → C1 (0.52) → C2 (0.62). C3 iguala a C2 en F1 (0.62) pero con un perfil opuesto: precisión del 83% sobre solo 3 archivos, frente al equilibrio de C2 (70% sobre 15 archivos). El pipeline no solo mejora la precisión, sino que permite cubrir más alcance sin sacrificarla en exceso.
 
 Se optó por IREB como norma principal frente a IEEE 830 porque IREB proporciona un marco más abstracto y adaptable, mientras que IEEE 830 prescribe una plantilla de especificación concreta que presupone un proceso de elicitación deliberado con stakeholders. ISO 29148 e INCOSE se incorporan como complementos para criterios de calidad de requisitos y buenas prácticas de redacción, respectivamente.
 
@@ -239,11 +240,11 @@ Para cada caso:
 
 ### 3.2 Selección de casos para la comparación
 
-No todos los 52 casos del corpus se ejecutan en ambos flujos. Se selecciona un subconjunto representativo de **6 casos (2 por repositorio) de los 3 repositorios con preparación más eficiente** (n8n, Cal.com, Directus), priorizando aquellos con dependencias Node.js que permiten un setup rápido y reproducible. Esta reducción es necesaria porque cada caso requiere dos ejecuciones manuales en Copilot Chat, y ejecutar los 52 casos en ambos flujos sería inviable en el plazo del trabajo. Los 46 casos restantes se formalizan y documentan como corpus, pero no se ejecutan comparativamente.
+Se seleccionan **24 casos (4 por repositorio)** de los 6 repositorios del corpus, ejecutados en 4 flujos (C0–C3) mediante scripts automatizados que usan `opencode` + DeepSeek V4 Flash, produciendo 96 ejecuciones. Los 28 casos restantes del corpus se formalizan y documentan, pero no se ejecutan comparativamente.
 
 ### 3.3 Limitaciones
 
-La principal limitación es que SpecKit se ejecuta en Copilot Chat sin API headless, lo que obliga a la intervención manual para introducir cada comando. La ejecución única por flujo evita que la intervención humana enmascare el comportamiento nativo del pipeline, pero el tamaño de la muestra (6 casos) limita la generalización de los resultados.
+La ejecución se realiza mediante scripts automatizados sobre `opencode`, lo que garantiza reproducibilidad sin intervención humana. Cada caso se ejecuta una sola vez por flujo para observar el comportamiento nativo del pipeline sin sesgo de iteración. El tamaño de la muestra (24 casos, 96 ejecuciones) ofrece una base suficiente para identificar tendencias, aunque la variabilidad del modelo hace recomendable repetir cada ejecución varias veces en trabajos futuros.
 
 ---
 
@@ -253,7 +254,7 @@ La fase 4 constituye el núcleo analítico del trabajo e integra **los dos objet
 
 **Producto 1 — Mapa de alineación.** Se contrasta el flujo observado de SpecKit (comandos, artefactos, mecanismos de calidad) con cada actividad IREB y cada criterio de calidad ISO 29148, documentando la cobertura como alineado, parcial o no cubierto. El ground truth se utiliza como referencia interpretativa. El resultado no es una "nota de aprobado", sino un mapa que permite identificar dónde encaja SpecKit respecto a un flujo RE profesional.
 
-**Producto 2 — Comparación de flujos.** Para cada caso ejecutado en ambos flujos, se comparan las métricas M1-M4: generación exitosa, compilación, tests, y conformidad SRCI. La comparación permite determinar si el marco IREB mejora los resultados y en qué dimensiones.
+**Producto 2 — Comparación de flujos.** Para cada caso ejecutado en los cuatro flujos, se comparan las métricas de F1 (precisión, recall), calidad de código (linters, semgrep), cumplimiento del pipeline (artefactos IREB) y coste. La comparación permite determinar si el marco IREB mejora los resultados y en qué dimensiones.
 
 ### 4.1 Filtro técnico (quality gate)
 

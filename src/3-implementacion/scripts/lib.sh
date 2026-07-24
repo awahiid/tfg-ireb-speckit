@@ -6,6 +6,7 @@
 #   - Sin set -e. Cada paso decide si un fallo es crítico o no.
 #   - stdout = datos. stderr = logs.
 #   - Los prompts se leen de .github/agents/speckit.*.agent.md (oficiales SpecKit)
+#   - Toda la configuración de rutas viene de .env (ver .env.example)
 # ===========================================================================
 
 # ── Colores ──
@@ -16,23 +17,32 @@ warn()  { echo -e "${AMARILLO}[WARN]${RESET}  $*" >&2; }
 error() { echo -e "${ROJO}[ERROR]${RESET} $*" >&2; }
 step()  { echo "" >&2; echo -e "${AZUL}──────────────────────────────────────────────${RESET}" >&2; echo -e "${AZUL}  $*${RESET}" >&2; echo -e "${AZUL}──────────────────────────────────────────────${RESET}" >&2; }
 
-# ── Configuración común ──
+# ── BASE_DIR = directorio donde viven los .sh y .env ──
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# ── Cargar .env si existe ──
+if [[ -f "$BASE_DIR/.env" ]]; then
+    set -a; source "$BASE_DIR/.env"; set +a
+fi
+
+# ── Derivar rutas desde .env (todas relativas a BASE_DIR) ──
+CASES_FILE="$BASE_DIR/$PIPELINE_CASES_FILE"
+PROMPTS_DIR="$BASE_DIR/$PIPELINE_PROMPTS_DIR"
+KIT_V1_DIR="$BASE_DIR/$PIPELINE_KIT_V1"
+KIT_V2_DIR="$BASE_DIR/$PIPELINE_KIT_V2"
+OUTPUT_DIR_BASE="$BASE_DIR/$PIPELINE_OUTPUT_DIR"
+BARE_DIR="$BASE_DIR/$PIPELINE_BARE_DIR"
+
+# ── Configuración de ejecución ──
 init_pipeline() {
-    OPENCODE_BIN="${OPENCODE_BIN:-opencode}"
-    MODEL="${OPENCODE_MODEL:-${OPENAI_MODEL:-deepseek/deepseek-v4-flash}}"
-    # Normalizar modelo (deepseek-chat → deepseek/deepseek-chat)
-    case "$MODEL" in
-        deepseek/*) ;;
-        deepseek-*)  MODEL="deepseek/$MODEL" ;;
-    esac
+    export OPENCODE_BIN="${OPENCODE_BIN:-opencode}"
+    MODEL="$OPENCODE_MODEL"
     API_BASE="${OPENAI_API_BASE:-}"
     TIMEOUT="${PIPELINE_TIMEOUT:-300}"
     info "Modelo: $MODEL  |  Timeout: ${TIMEOUT}s"
-    # Limpiar referencias a worktrees huérfanos (de ejecuciones anteriores
-    # que pudieron fallar antes del trap EXIT)
-    local script_dir
-    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    for bare in "$script_dir"/../.bare/*.git; do
+    info "Output:  $OUTPUT_DIR_BASE"
+    # Limpiar referencias a worktrees huérfanos
+    for bare in "$BARE_DIR"/*.git; do
         [[ -d "$bare" ]] && git -C "$bare" worktree prune 2>/dev/null || true
     done
     [[ -n "$API_BASE" ]] && info "API base: $API_BASE"
@@ -52,11 +62,11 @@ init_output_dir() {
     local auth_dir="$ts_dir/env/.local/share/opencode"
     local auth_file="$auth_dir/auth.json"
     if [[ -n "${OPENCODE_API_KEY:-}" ]]; then
-        # Opción 1: key vía env var
+        local provider="${OPENCODE_MODEL%%/*}"
         mkdir -p "$auth_dir"
         cat > "$auth_file" << EOF
 {
-  "deepseek": {
+  "$provider": {
     "type": "api",
     "key": "$OPENCODE_API_KEY"
   }
@@ -71,38 +81,33 @@ EOF
 }
 
 # ── Crear worktree temporal ──
-#   Crea un worktree desde el bare repo en el directorio indicado.
 #   Uso: oc_create_worktree <repo> <commit> [dest-dir]
-#   Retorna: ruta del worktree (stdout)
 oc_create_worktree() {
     local repo="$1"
     local commit="$2"
     local dest="${3:-}"
-    local script_dir
-    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    local bare="$script_dir/../.bare/${repo}.git"
+    local bare="$BARE_DIR/${repo}.git"
 
-    [[ -z "$dest" ]] && dest="$script_dir/../.bare/${repo}-worktree"
+    [[ -z "$dest" ]] && dest="$BARE_DIR/${repo}-worktree"
     mkdir -p "$(dirname "$dest")"
 
-    # Redirect git output to stderr so it doesn't contaminate the returned path
-    git -C "$bare" worktree add --force "$dest" "$commit" >/dev/null 2>&1 || {
-        git -C "$bare" worktree remove --force "$dest" >/dev/null 2>&1 || true
+    git -C "$bare" worktree add --force "$dest" "$commit" &>/dev/null || {
+        git -C "$bare" worktree remove --force "$dest" &>/dev/null || true
         rm -rf "$dest"
-        git -C "$bare" worktree add "$dest" "$commit" >/dev/null 2>&1
+        if ! git -C "$bare" worktree add "$dest" "$commit" &>/dev/null; then
+            error "Worktree falló: repo=$repo commit=$commit"
+            return 1
+        fi
     }
     echo "$dest"
 }
 
 # ── Eliminar worktree temporal ──
-#   Uso: oc_remove_worktree <ruta>
 oc_remove_worktree() {
     local dest="$1"
-    local script_dir
-    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     local repo
     repo=$(basename "$(git -C "$dest" rev-parse --git-common-dir 2>/dev/null)" .git 2>/dev/null)
-    local bare="$script_dir/../.bare/${repo}.git"
+    local bare="$BARE_DIR/${repo}.git"
     [[ -d "$bare" ]] && git -C "$bare" worktree remove --force "$dest" 2>/dev/null || true
     rm -rf "$dest" 2>/dev/null || true
 }
@@ -162,10 +167,10 @@ $prompt"
 
     local ec=0
     if [[ -n "$API_BASE" ]]; then
-        OPENAI_API_BASE="$API_BASE" timeout "$TIMEOUT" $oc run "$full_prompt" --model "$MODEL" \
+        OPENAI_API_BASE="$API_BASE" OPENCODE_MODEL="$MODEL" timeout "$TIMEOUT" $oc run "$full_prompt" --model "$MODEL" \
             >> "$terminal_log" 2>&1 || ec=$?
     else
-        timeout "$TIMEOUT" $oc run "$full_prompt" --model "$MODEL" \
+        OPENCODE_MODEL="$MODEL" timeout "$TIMEOUT" $oc run "$full_prompt" --model "$MODEL" \
             >> "$terminal_log" 2>&1 || ec=$?
     fi
 
@@ -234,7 +239,7 @@ oc_clean_repo() {
     rm -rf "$repo_dir/.specify" "$repo_dir/specs" 2>/dev/null || true
 }
 
-# ── Extraer MRS de un .md de 2.5-prompts ──
+# ── Extraer MRS (Minimal Requirement Spec) de un .md de 2.5-prompts ──
 # Busca el bloque "> Como usuario..." y lo devuelve limpio
 oc_extract_mrs() {
     local md_file="$1"
@@ -289,23 +294,26 @@ oc_apply_kit() {
 
     info "Aplicando kit: $kit_name"
 
+    # AGENTS.md → repo root
+    if [[ -f "$kit_dir/AGENTS.md" ]]; then
+        cp "$kit_dir/AGENTS.md" "$repo_dir/AGENTS.md"
+        ok "  AGENTS.md → ./ (repo root)"
+    fi
+
     # Constitution → .specify/memory/
     if [[ -f "$kit_dir/constitution.md" ]]; then
         cp "$kit_dir/constitution.md" "$repo_dir/.specify/memory/constitution.md"
         ok "  constitution.md → .specify/memory/"
     fi
 
-    # Templates → .specify/templates/overrides/
-    local overrides="$repo_dir/.specify/templates/overrides"
-    mkdir -p "$overrides"
-    for tpl in "$kit_dir"/*.template.md; do
+    # Templates → .specify/templates/ (sobrescribe originales de SpecKit)
+    # Los archivos del kit ya tienen el nombre exacto: spec-template.md, plan-template.md, etc.
+    for tpl in "$kit_dir"/*-template.md; do
         [[ -f "$tpl" ]] || continue
         local name
-        name=$(basename "$tpl" .template.md)
-        # Mapear nombres: spec.template → spec-template
-        name="${name//./-}"
-        cp "$tpl" "$overrides/$name.md"
-        ok "  $name.md → overrides/"
+        name=$(basename "$tpl")
+        cp "$tpl" "$repo_dir/.specify/templates/$name"
+        ok "  $name → .specify/templates/ (original sobrescrito)"
     done
 }
 
@@ -532,10 +540,16 @@ oc_save_generated() {
 
     cd - >/dev/null
 
-    # También input y summary
+    # También input, summary, y specs/ (aunque esté en .gitignore)
     cp "$out_dir"/00-input-* "$gen_dir/input.md" 2>/dev/null || true
     cp "$out_dir/summary.json" "$gen_dir/summary.json" 2>/dev/null || true
     cp "$out_dir/diff.patch" "$gen_dir/diff.patch" 2>/dev/null || true
+
+    # specs/ puede estar excluido por .gitignore; forzar copia
+    if [[ -d "$repo_dir/specs" ]]; then
+        cp -r "$repo_dir/specs" "$gen_dir/specs" 2>/dev/null
+        count=$((count + $(find "$gen_dir/specs" -type f 2>/dev/null | wc -l)))
+    fi
 
     info "✅ generated/ — $count archivos guardados"
 }
